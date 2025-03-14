@@ -16,6 +16,11 @@
       <nav id="sidebar">
         <ul>
           <li>
+            <a href="#" class="active" onclick="loadContent('principal')"
+              >Inicio</a
+            >
+          </li>
+          <li>
             <a href="#" class="active" onclick="loadContent('professor')"
               >Sobre o professor</a
             >
@@ -38,16 +43,8 @@
             >
           </li>
         </ul>
-
-        <!-- <h3>Seu Progresso</h3>
-        <div class="progress-bar">
-          <div class="progress" id="progress-bar" style="width: 25%"></div>
-        </div> -->
       </nav>
-
-      <main id="content">
-        <!-- Conteúdo será carregado aqui -->
-      </main>
+      <main id="content"></main>
     </div>
 
     <footer>
@@ -102,7 +99,7 @@
 
       // Carregar conteúdo inicial
       document.addEventListener("DOMContentLoaded", function () {
-        loadContent("introducao");
+        loadContent("principal");
       });
     </script>
   </body>

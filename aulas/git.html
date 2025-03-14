@@ -322,52 +322,60 @@ git push -u origin feature/delete-task</code></pre>
 
   <h3>Exercícios para os Alunos</h3>
 
-  <h4>Exercício 1: Inicializar um repositório e criar o primeiro commit</h4>
+  <div class="desafio">
+    <h4>Exercício 1: Inicializar um repositório e criar o primeiro commit</h4>
 
-  <p>
-    <strong>Objetivo:</strong> Praticar a criação de um repositório Git e o
-    primeiro commit.
-  </p>
+    <p>
+      <strong>Objetivo:</strong> Praticar a criação de um repositório Git e o
+      primeiro commit.
+    </p>
 
-  <p><strong>Instruções:</strong></p>
-  <ol>
-    <li>Crie uma pasta para o projeto TaskMaster no seu computador</li>
-    <li>Abra o terminal (ou prompt de comando) nesta pasta</li>
-    <li>Inicialize um repositório Git</li>
-    <li>Crie um arquivo README.md com uma breve descrição do projeto</li>
-    <li>Adicione o arquivo ao staging</li>
-    <li>Faça o commit com uma mensagem descritiva</li>
-  </ol>
+    <p><strong>Instruções:</strong></p>
+    <ol>
+      <li>Crie uma pasta para o projeto TaskMaster no seu computador</li>
+      <li>Abra o terminal (ou prompt de comando) nesta pasta</li>
+      <li>Inicialize um repositório Git</li>
+      <li>Crie um arquivo README.md com uma breve descrição do projeto</li>
+      <li>Adicione o arquivo ao staging</li>
+      <li>Faça o commit com uma mensagem descritiva</li>
+    </ol>
 
-  <p><strong>Resolução:</strong></p>
-  <pre><code>mkdir TaskMaster
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>mkdir TaskMaster
 cd TaskMaster
 git init
 echo "# TaskMaster" > README.md
 echo "Um aplicativo de gerenciamento de tarefas desenvolvido para o curso de JavaScript." >> README.md
 git add README.md
 git commit -m "Adiciona arquivo README com descrição do projeto"</code></pre>
+    </details>
+  </div>
 
-  <h4>Exercício 2: Trabalhar com branches</h4>
+  <div class="desafio">
+    <h4>Exercício 2: Trabalhar com branches</h4>
 
-  <p>
-    <strong>Objetivo:</strong> Praticar a criação e navegação entre branches.
-  </p>
+    <p>
+      <strong>Objetivo:</strong> Praticar a criação e navegação entre branches.
+    </p>
 
-  <p><strong>Instruções:</strong></p>
-  <ol>
-    <li>Partindo do repositório criado no exercício 1</li>
-    <li>Crie um arquivo index.html com uma estrutura HTML básica</li>
-    <li>Adicione e commit este arquivo</li>
-    <li>Crie um novo branch chamado "feature/estilo"</li>
-    <li>Mude para este branch</li>
-    <li>Crie um arquivo style.css vazio</li>
-    <li>Adicione e commit este arquivo</li>
-    <li>Volte para o branch principal (main ou master)</li>
-  </ol>
+    <p><strong>Instruções:</strong></p>
+    <ol>
+      <li>Partindo do repositório criado no exercício 1</li>
+      <li>Crie um arquivo index.html com uma estrutura HTML básica</li>
+      <li>Adicione e commit este arquivo</li>
+      <li>Crie um novo branch chamado "feature/estilo"</li>
+      <li>Mude para este branch</li>
+      <li>Crie um arquivo style.css vazio</li>
+      <li>Adicione e commit este arquivo</li>
+      <li>Volte para o branch principal (main ou master)</li>
+    </ol>
 
-  <p><strong>Resolução:</strong></p>
-  <pre><code>echo "<!DOCTYPE html>" > index.html
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>echo "<!DOCTYPE html>" > index.html
 echo "<html><head><title>TaskMaster</title></head><body><h1>TaskMaster</h1></body></html>" >> index.html
 git add index.html
 git commit -m "Adiciona estrutura HTML básica"
@@ -377,52 +385,64 @@ touch style.css
 git add style.css
 git commit -m "Adiciona arquivo CSS vazio"
 git checkout main</code></pre>
+    </details>
+  </div>
 
-  <h4>Exercício 3: Merge de branches</h4>
+  <div class="desafio">
+    <h4>Exercício 3: Merge de branches</h4>
 
-  <p>
-    <strong>Objetivo:</strong> Praticar a combinação de mudanças usando merge.
-  </p>
+    <p>
+      <strong>Objetivo:</strong> Praticar a combinação de mudanças usando merge.
+    </p>
 
-  <p><strong>Instruções:</strong></p>
-  <ol>
-    <li>Partindo do estado final do exercício 2</li>
-    <li>
-      No branch "feature/estilo", adicione código CSS básico ao arquivo
-      style.css
-    </li>
-    <li>Adicione e commit esta alteração</li>
-    <li>Volte para o branch principal</li>
-    <li>Faça merge do branch "feature/estilo" para o branch principal</li>
-  </ol>
+    <p><strong>Instruções:</strong></p>
+    <ol>
+      <li>Partindo do estado final do exercício 2</li>
+      <li>
+        No branch "feature/estilo", adicione código CSS básico ao arquivo
+        style.css
+      </li>
+      <li>Adicione e commit esta alteração</li>
+      <li>Volte para o branch principal</li>
+      <li>Faça merge do branch "feature/estilo" para o branch principal</li>
+    </ol>
 
-  <p><strong>Resolução:</strong></p>
-  <pre><code>git checkout feature/estilo
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>git checkout feature/estilo
 echo "body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }" > style.css
 echo "h1 { color: #333; }" >> style.css
 git add style.css
 git commit -m "Adiciona estilos básicos"
 git checkout main
 git merge feature/estilo</code></pre>
+    </details>
+  </div>
 
-  <h4>Exercício 4: Configurar um repositório remoto</h4>
+  <div class="desafio">
+    <h4>Exercício 4: Configurar um repositório remoto</h4>
 
-  <p>
-    <strong>Objetivo:</strong> Praticar a configuração e uso de um repositório
-    remoto.
-  </p>
+    <p>
+      <strong>Objetivo:</strong> Praticar a configuração e uso de um repositório
+      remoto.
+    </p>
 
-  <p><strong>Instruções:</strong></p>
-  <ol>
-    <li>Crie um novo repositório no GitHub (sem inicializar com README)</li>
-    <li>Conecte seu repositório local ao repositório remoto</li>
-    <li>Envie todos os seus commits para o repositório remoto</li>
-  </ol>
+    <p><strong>Instruções:</strong></p>
+    <ol>
+      <li>Crie um novo repositório no GitHub (sem inicializar com README)</li>
+      <li>Conecte seu repositório local ao repositório remoto</li>
+      <li>Envie todos os seus commits para o repositório remoto</li>
+    </ol>
 
-  <p><strong>Resolução:</strong></p>
-  <pre><code># Após criar o repositório no GitHub:
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code># Após criar o repositório no GitHub:
 git remote add origin https://github.com/seu-usuario/taskmaster.git
 git push -u origin main</code></pre>
+    </details>
+  </div>
 
   <h3>Conclusão</h3>
 
@@ -441,4 +461,30 @@ git push -u origin main</code></pre>
     colaboração eficiente e organização do seu código. Continue praticando para
     dominar este sistema de controle de versão!
   </p>
+
+  <style>
+    /* Estilos específicos para esta aula */
+    .desafio {
+      background-color: #f7f8e8;
+      border-left: 4px solid #e2c94a;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    summary {
+      cursor: pointer;
+      color: #2c7be5;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    summary:hover {
+      text-decoration: underline;
+    }
+
+    details {
+      margin-top: 10px;
+    }
+  </style>
 </article>

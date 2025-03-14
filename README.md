@@ -52,9 +52,9 @@ A apostila cobre os seguintes tópicos principais:
 
 ### Acessando Online
 
-A apostila está disponível online através do GitHub Pages:
+A apostila está disponível online através do link:
 
-- [Link para a Apostila](https://seuusuario.github.io/nome-do-repositorio)
+- [Link para a Apostila](http://apostila-curso-webdev.s3-website-us-east-1.amazonaws.com/)
 
 ### Executando Localmente
 
@@ -90,7 +90,7 @@ projeto-apostila/
 ├── index.html             # Arquivo principal
 │
 ├── aulas/                 # Pasta com as aulas
-    ├── sobre-professor.html
+│   ├── sobre-professor.html
 │   ├── introducao.html
 │   ├── git-introducao.html
 │   ├── javascript-basico.html
