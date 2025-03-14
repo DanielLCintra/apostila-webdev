@@ -1,0 +1,230 @@
+<article class="p-6">
+  <h1 class="text-3xl font-bold mb-6 border-b pb-3">
+    🖥️ Ambientação: Preparando seu Ambiente de Desenvolvimento
+  </h1>
+
+  <section class="mb-6">
+    <h2 class="text-2xl font-semibold mb-4">
+      1. Configuração do Ambiente de Desenvolvimento
+    </h2>
+
+    <div class="bg-gray-100 p-4 rounded mb-4">
+      <h3 class="font-bold text-lg mb-2">Editores Recomendados</h3>
+      <ul class="list-disc list-inside">
+        <li>Visual Studio Code</li>
+        <li>Sublime Text</li>
+        <li>Atom</li>
+      </ul>
+    </div>
+
+    <div class="bg-gray-100 p-4 rounded mb-4">
+      <h3 class="font-bold text-lg mb-2">Extensões Essenciais para VS Code</h3>
+      <ul class="list-disc list-inside">
+        <li>JavaScript (ES6) code snippets</li>
+        <li>ESLint</li>
+        <li>Prettier</li>
+        <li>Live Server</li>
+        <li>Html Format</li>
+        <li>GitLens</li>
+        <li>Microsoft Edge Tools for VS Code</li>
+      </ul>
+    </div>
+
+    <div class="bg-gray-100 p-4 rounded mb-4">
+      <h3 class="font-bold text-lg mb-2">Verificação de Instalações</h3>
+      <div class="code-block">
+        <pre><code>
+# Verificar versão do Node.js
+node -v
+
+# Verificar versão do npm
+npm -v
+
+# Verificar versão do git
+git -v
+                </code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-6">
+    <h2 class="text-2xl font-semibold mb-4">2. Console do Navegador</h2>
+
+    <div class="bg-gray-100 p-4 rounded mb-4">
+      <h3 class="font-bold text-lg mb-2">Abrindo DevTools</h3>
+      <p class="mb-2">Atalhos para abrir as ferramentas de desenvolvedor:</p>
+      <ul class="list-disc list-inside">
+        <li>Windows/Linux: <code>F12</code> ou <code>Ctrl+Shift+I</code></li>
+        <li>Mac: <code>Cmd+Option+I</code></li>
+      </ul>
+    </div>
+
+    <div class="bg-gray-100 p-4 rounded mb-4">
+      <h3 class="font-bold text-lg mb-2">Abas Principais do DevTools</h3>
+      <div class="space-y-4">
+        <div>
+          <h4 class="font-semibold mb-2">1. Elements (Elementos)</h4>
+          <p class="text-gray-700">
+            Permite inspecionar e editar o HTML e CSS da página em tempo real. 
+            Ideal para entender a estrutura do documento e fazer ajustes rápidos de estilo.
+            Você pode:
+            <ul class="list-disc list-inside text-gray-600">
+              <li>Navegar pela árvore DOM</li>
+              <li>Editar elementos HTML</li>
+              <li>Modificar estilos CSS instantaneamente</li>
+              <li>Analisar layout e responsividade</li>
+            </ul>
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-2">2. Console</h4>
+          <p class="text-gray-700">
+            Principal ferramenta para debugging e execução de JavaScript. 
+            Permite:
+            <ul class="list-disc list-inside text-gray-600">
+              <li>Executar código JavaScript interativamente</li>
+              <li>Ver logs e mensagens de erro</li>
+              <li>Depurar aplicações web</li>
+              <li>Testar expressões e funções rapidamente</li>
+            </ul>
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-2">3. Sources</h4>
+          <p class="text-gray-700">
+            Ambiente de depuração avançado para JavaScript. 
+            Funcionalidades principais:
+            <ul class="list-disc list-inside text-gray-600">
+              <li>Definir breakpoints</li>
+              <li>Inspecionar código-fonte</li>
+              <li>Depuração passo a passo</li>
+              <li>Visualizar escopo de variáveis</li>
+            </ul>
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-2">4. Network</h4>
+          <p class="text-gray-700">
+            Monitora todas as solicitações de rede feitas pela página.
+            Permite:
+            <ul class="list-disc list-inside text-gray-600">
+              <li>Analisar tempos de carregamento</li>
+              <li>Verificar requisições HTTP/HTTPS</li>
+              <li>Inspecionar cabeçalhos e conteúdo de solicitações</li>
+              <li>Diagnosticar problemas de performance</li>
+            </ul>
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-2">5. Application</h4>
+          <p class="text-gray-700">
+            Gerencia dados armazenados localmente na aplicação.
+            Recursos incluem:
+            <ul class="list-disc list-inside text-gray-600">
+              <li>Visualizar localStorage e sessionStorage</li>
+              <li>Gerenciar cookies</li>
+              <li>Inspecionar Web SQL e IndexedDB</li>
+              <li>Verificar service workers</li>
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-6">
+    <h2 class="text-2xl font-semibold mb-4">3. Primeiro "Hello, World!"</h2>
+
+    <div class="bg-gray-100 p-4 rounded mb-4">
+      <h3 class="font-bold text-lg mb-2">No Console</h3>
+      <div class="code-block">
+        <pre><code>
+console.log("Hello, World!");
+                </code></pre>
+      </div>
+    </div>
+
+    <div class="bg-gray-100 p-4 rounded mb-4">
+      <h3 class="font-bold text-lg mb-2">HTML Básico</h3>
+      <div class="code-block">
+        <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Meu Primeiro JavaScript&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+    &lt;script&gt;
+        console.log("Hello, World! do script interno");
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+                </code></pre>
+      </div>
+    </div>
+
+    <div class="bg-gray-100 p-4 rounded mb-4">
+      <h3 class="font-bold text-lg mb-2">Arquivo Externo script.js</h3>
+      <div class="code-block">
+        <pre><code>
+console.log("Hello, World! do arquivo externo");
+alert("Bem-vindo ao JavaScript!");
+                </code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-6">
+    <h2 class="text-2xl font-semibold mb-4">📚 Links e Recursos Auxiliares</h2>
+    <div class="bg-blue-100 border-l-4 border-blue-500 p-4">
+      <h3 class="font-bold mb-3">Links Úteis para Desenvolvedores</h3>
+      <ul class="list-disc list-inside space-y-2">
+        <li>
+          <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript" 
+             class="text-blue-600 hover:underline" 
+             target="_blank">
+            MDN Web Docs - JavaScript
+          </a>
+          <span class="text-gray-600 text-sm">(Documentação oficial e completa)</span>
+        </li>
+        <li>
+          <a href="https://www.w3schools.com/js/" 
+             class="text-blue-600 hover:underline" 
+             target="_blank">
+            W3Schools JavaScript Tutorial
+          </a>
+          <span class="text-gray-600 text-sm">(Tutoriais interativos)</span>
+        </li>
+        <li>
+          <a href="https://developer.chrome.com/docs/devtools/" 
+             class="text-blue-600 hover:underline" 
+             target="_blank">
+            Chrome DevTools Official Guide
+          </a>
+          <span class="text-gray-600 text-sm">(Guia completo das ferramentas de desenvolvedor)</span>
+        </li>
+        <li>
+          <a href="https://code.visualstudio.com/docs" 
+             class="text-blue-600 hover:underline" 
+             target="_blank">
+            Visual Studio Code - Documentação Oficial
+          </a>
+          <span class="text-gray-600 text-sm">(Guia e dicas para o editor)</span>
+        </li>
+        <li>
+          <a href="https://github.com/getify/You-Dont-Know-JS" 
+             class="text-blue-600 hover:underline" 
+             target="_blank">
+            You Don't Know JS (Livro gratuito)
+          </a>
+          <span class="text-gray-600 text-sm">(Aprofundamento em JavaScript)</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</article>
