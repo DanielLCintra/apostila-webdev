@@ -21,4 +21,4 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync . s3://apostila-curso-webdev --delete --exclude ".git/*" --exclude ".github/*" --exclude "README.md"
+          aws s3 sync . s3://www.curso-webdev.com --delete --exclude ".git/*" --exclude ".github/*" --exclude "README.md"
