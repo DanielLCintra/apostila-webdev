@@ -1,0 +1,339 @@
+<article>
+  <h2>Introdução ao JavaScript</h2>
+
+  <p>
+    Nesta aula, vamos explorar os conceitos básicos de JavaScript através do
+    projeto TaskMaster - um aplicativo de gerenciamento de tarefas que
+    desenvolveremos ao longo do curso.
+  </p>
+
+  <blockquote>
+    <p>
+      "Com grandes poderes vem grandes responsabilidades." - Tio Ben (Stan
+      Lee/Marvel Comics)
+    </p>
+  </blockquote>
+
+  <h3>Dica de Desenvolvimento</h3>
+  <p>
+    Para uma melhor experiência de desenvolvimento, considere instalar a
+    extensão: <strong>Microsoft Edge Tools for VS Code</strong>
+  </p>
+
+  <h3>1. Primeiros Passos com JavaScript</h3>
+
+  <p>
+    Vamos começar com exemplos básicos de JavaScript. O primeiro passo é
+    entender como exibir mensagens no console:
+  </p>
+
+  <div class="code-header">Mensagens no Console</div>
+  <pre><code>// Mensagem de boas-vindas no console
+console.log("Bem-vindo ao TaskMaster!");
+console.log("Versão 0.1 - Introdução ao JavaScript");</code></pre>
+
+  <h3>2. Comentários em JavaScript</h3>
+
+  <p>
+    Comentários são fundamentais para documentar seu código. Em JavaScript,
+    existem dois tipos:
+  </p>
+
+  <div class="code-header">Tipos de Comentários</div>
+  <pre><code>// Este é um comentário de linha única
+
+/* 
+   Este é um comentário
+   de múltiplas linhas
+*/</code></pre>
+
+  <h3>3. Case Sensitivity</h3>
+
+  <p>
+    JavaScript é case-sensitive, o que significa que diferencia letras
+    maiúsculas e minúsculas:
+  </p>
+
+  <div class="code-header">Exemplo de Case Sensitivity</div>
+  <pre><code>// JavaScript é case-sensitive
+let nome = "TaskMaster";
+let Nome = "Outro nome";
+console.log(nome); // TaskMaster
+console.log(Nome); // Outro nome</code></pre>
+
+  <h3>4. Variáveis em JavaScript</h3>
+
+  <p>
+    Variáveis são utilizadas para armazenar dados que podem ser usados em seu
+    código:
+  </p>
+
+  <div class="code-header">Declaração de Variáveis</div>
+  <pre><code>// Exemplos básicos de variáveis
+let appVersion = 0.1;
+let isActive = true;
+
+// Mostrando valores no console
+console.log("Versão do aplicativo:", appVersion);
+console.log("Aplicativo ativo:", isActive);</code></pre>
+
+  <h3>5. Trabalhando com Strings</h3>
+
+  <p>Existem diferentes formas de manipular strings em JavaScript:</p>
+
+  <div class="code-header">Concatenação Tradicional</div>
+  <pre><code>// Exemplo simples de concatenação de strings
+let mensagem = "Olá! Bem-vindo ao " + nome;
+console.log(mensagem);</code></pre>
+
+  <div class="code-header">Template Strings (ES6+)</div>
+  <pre><code>// Exemplo de template string (forma moderna de concatenação)
+let mensagemTemplate = `Aplicativo: ${nome} - Versão: ${appVersion}`;
+console.log(mensagemTemplate);</code></pre>
+
+  <h3>6. Alertas no Navegador</h3>
+
+  <p>
+    Alertas são caixas de diálogo que podem ser usadas para interagir com o
+    usuário:
+  </p>
+
+  <div class="code-header">Exemplos de Alert</div>
+  <pre><code>// Exemplo de alert simples
+// alert("Bem-vindo ao TaskMaster!");
+
+// Exemplo de alert com concatenação de strings
+let mensagemAlert = "Bem-vindo ao " + nome + "!";
+// alert(mensagemAlert);</code></pre>
+
+  <h3>Exercícios Práticos</h3>
+
+  <p>Para fixar o conteúdo, tente resolver os seguintes exercícios:</p>
+
+  <div class="desafio">
+    <h4>Exercício 1: Variáveis Pessoais</h4>
+    <p>
+      Crie duas variáveis com seu nome e idade. Use console.log para mostrar a
+      mensagem "Meu nome é [seu nome] e tenho [sua idade] anos."
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Exemplo de Resolução</div>
+      <pre><code>let meuNome = "João";
+let minhaIdade = 30;
+console.log(`Meu nome é ${meuNome} e tenho ${minhaIdade} anos.`);
+
+// Alternativa sem template string:
+console.log("Meu nome é " + meuNome + " e tenho " + minhaIdade + " anos.");</code></pre>
+    </details>
+  </div>
+
+  <div class="desafio">
+    <h4>Exercício 2: Representando uma Tarefa</h4>
+    <p>
+      Crie variáveis para representar uma tarefa: título da tarefa, descrição e
+      status de conclusão (true/false). Mostre essas informações no console.
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Exemplo de Resolução</div>
+      <pre><code>let tituloTarefa = "Estudar JavaScript";
+let descricaoTarefa = "Aprender os conceitos básicos de JavaScript";
+let tarefaConcluida = false;
+
+console.log("Tarefa:", tituloTarefa);
+console.log("Descrição:", descricaoTarefa);
+console.log("Concluída:", tarefaConcluida);
+
+// Usando template string:
+console.log(`Tarefa: ${tituloTarefa}
+Descrição: ${descricaoTarefa}
+Concluída: ${tarefaConcluida}`);</code></pre>
+    </details>
+  </div>
+
+  <div class="desafio">
+    <h4>Exercício 3: Console do Navegador</h4>
+    <p>
+      Use as ferramentas do navegador para abrir o console JavaScript. Tente
+      modificar o valor da variável 'nome' diretamente no console e confirme se
+      o valor foi alterado.
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Exemplo no Console do Navegador</div>
+      <pre><code>nome = "Outro nome";
+console.log(nome);</code></pre>
+    </details>
+  </div>
+
+  <div class="desafio">
+    <h4>Exercício 4: Trabalhando com Alert</h4>
+    <p>
+      Descomente a linha do alert() em seu código e recarregue a página. Depois,
+      modifique a mensagem do alert e teste novamente.
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>// Remova as barras de comentário (//) para ativar o alert
+alert("Bem-vindo ao TaskMaster!");
+
+// Modificando a mensagem:
+alert("Olá! Bem-vindo ao aplicativo TaskMaster!");</code></pre>
+    </details>
+  </div>
+
+  <div class="desafio">
+    <h4>Exercício 5: Debugging Básico</h4>
+    <p>Copie e cole o seguinte código e observe o resultado no console:</p>
+
+    <pre><code>let numero1 = 10;
+let numero2 = "5";
+console.log(numero1 + numero2);</code></pre>
+
+    <p>
+      O resultado é 105, pois o JavaScript está concatenando ao invés de somar.
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>let numero1 = 10;
+let numero2 = "5";
+console.log(numero1 + Number(numero2)); // ou parseInt(numero2)
+
+// Outra solução:
+let numero1 = 10;
+let numero2 = 5; // Modificar diretamente para um número
+console.log(numero1 + numero2);</code></pre>
+    </details>
+  </div>
+
+  <div class="desafio">
+    <h4>Exercício 6: Nome do Projeto</h4>
+    <p>
+      Crie uma variável para armazenar o nome do seu projeto e exiba-o no
+      console.
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>let nomeDoProjeto = "TaskMaster";
+console.log("Nome do projeto:", nomeDoProjeto);</code></pre>
+    </details>
+  </div>
+
+  <div class="desafio">
+    <h4>Exercício 7: Operações Matemáticas</h4>
+    <p>
+      Crie duas variáveis numéricas e exiba a soma, subtração, multiplicação e
+      divisão delas.
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>let valor1 = 20;
+let valor2 = 5;
+
+console.log("Soma:", valor1 + valor2); // 25
+console.log("Subtração:", valor1 - valor2); // 15
+console.log("Multiplicação:", valor1 * valor2); // 100
+console.log("Divisão:", valor1 / valor2); // 4</code></pre>
+    </details>
+  </div>
+
+  <div class="desafio">
+    <h4>Exercício 8: Template Strings Avançado</h4>
+    <p>
+      Crie uma mensagem de boas-vindas usando template string que inclua o nome
+      do usuário, nome do aplicativo e versão.
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>let nomeUsuario = "Maria";
+let nomeApp = "TaskMaster";
+let versaoApp = 1.0;
+
+let mensagemBoasVindas = `Olá ${nomeUsuario}! 
+Bem-vindo ao ${nomeApp} versão ${versaoApp}.
+Estamos felizes em ter você como usuário!`;
+
+console.log(mensagemBoasVindas);</code></pre>
+    </details>
+  </div>
+
+  <div class="desafio">
+    <h4>Exercício 9: Tipos de Dados</h4>
+    <p>
+      Use console.log com typeof para mostrar o tipo de cada uma das seguintes
+      variáveis: string, número, booleano e uma variável não inicializada.
+    </p>
+
+    <details>
+      <summary>Ver solução</summary>
+      <div class="code-header">Solução</div>
+      <pre><code>let textoExemplo = "JavaScript é incrível";
+let numeroExemplo = 42;
+let verdadeiroFalso = true;
+let variavelNaoInicializada;
+
+console.log("Tipo de textoExemplo:", typeof textoExemplo); // string
+console.log("Tipo de numeroExemplo:", typeof numeroExemplo); // number
+console.log("Tipo de verdadeiroFalso:", typeof verdadeiroFalso); // boolean
+console.log("Tipo de variavelNaoInicializada:", typeof variavelNaoInicializada); // undefined</code></pre>
+    </details>
+  </div>
+
+  <h3>Conclusão</h3>
+  <p>
+    Nesta aula, você aprendeu os conceitos fundamentais de JavaScript,
+    incluindo:
+  </p>
+  <ul>
+    <li>Como usar o console para debugging</li>
+    <li>Declaração de variáveis</li>
+    <li>Concatenação de strings e template strings</li>
+    <li>Operações básicas</li>
+    <li>Tipos de dados em JavaScript</li>
+  </ul>
+
+  <p>
+    Na próxima aula, vamos aprofundar esses conceitos e começar a construir
+    funcionalidades reais para o nosso aplicativo TaskMaster.
+  </p>
+
+  <style>
+    /* Estilos específicos para esta aula */
+    .desafio {
+      background-color: #f7f8e8;
+      border-left: 4px solid #e2c94a;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    summary {
+      cursor: pointer;
+      color: #2c7be5;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    summary:hover {
+      text-decoration: underline;
+    }
+
+    details {
+      margin-top: 10px;
+    }
+  </style>
+</article>

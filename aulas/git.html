@@ -1,0 +1,444 @@
+<article>
+  <h2>Git</h2>
+
+  <p>
+    Nesta aula, vamos aprender sobre o Git, um sistema de controle de versão
+    essencial para desenvolvedores web modernos.
+  </p>
+
+  <h3>1. História e Conceitos Básicos do Git</h3>
+
+  <h4>Origem e Criação</h4>
+  <ul>
+    <li>
+      Criado por Linus Torvalds em 2005 para o desenvolvimento do kernel Linux
+    </li>
+    <li>Sistema de controle de versão distribuído (DVCS)</li>
+    <li>Alternativa a sistemas centralizados como SVN e CVS</li>
+  </ul>
+
+  <h4>Conceitos Fundamentais</h4>
+  <ul>
+    <li>
+      <strong>Repositório:</strong> armazenamento de arquivos e histórico de
+      mudanças
+    </li>
+    <li>
+      <strong>Commit:</strong> snapshot do projeto em um momento específico
+    </li>
+    <li><strong>Branch:</strong> linha independente de desenvolvimento</li>
+    <li><strong>Merge:</strong> combinar alterações de diferentes branches</li>
+    <li><strong>Clone:</strong> cópia completa de um repositório</li>
+    <li><strong>Pull/Push:</strong> sincronização de mudanças</li>
+  </ul>
+
+  <blockquote>
+    <p>
+      Na aula presencial, faremos uma demonstração do funcionamento do
+      versionamento com Git no quadro.
+    </p>
+  </blockquote>
+
+  <h3>1.1 - Criar conta no GitHub</h3>
+  <p>
+    O primeiro passo para começar a trabalhar com Git é criar uma conta no
+    GitHub, uma plataforma de hospedagem de código que usa Git.
+  </p>
+  <ol>
+    <li>Acesse <a href="https://github.com" target="_blank">github.com</a></li>
+    <li>Clique em "Sign up" e siga o processo de criação de conta</li>
+    <li>Confirme seu e-mail</li>
+  </ol>
+
+  <h3>1.2 - Adicionar chave SSH</h3>
+  <p>
+    Chaves SSH permitem uma conexão segura entre seu computador e o GitHub sem
+    precisar digitar senha toda vez.
+  </p>
+
+  <div class="code-header">Gerar uma nova chave SSH</div>
+  <pre><code>ssh-keygen -t ed25519 -C "seu.email@exemplo.com"</code></pre>
+
+  <p>
+    Depois, adicione a chave gerada à sua conta GitHub através das configurações
+    de conta.
+  </p>
+
+  <h3>1.3 - Criar repositório no GitHub</h3>
+  <p>Após criar sua conta, você pode criar um novo repositório:</p>
+  <ol>
+    <li>
+      Clique no botão "+" no canto superior direito e selecione "New repository"
+    </li>
+    <li>Dê um nome ao seu repositório</li>
+    <li>Adicione uma descrição (opcional)</li>
+    <li>Escolha se o repositório será público ou privado</li>
+    <li>
+      Selecione "Initialize this repository with a README" se desejar começar
+      com um arquivo README
+    </li>
+    <li>Clique em "Create repository"</li>
+  </ol>
+
+  <h3>2. Configuração Inicial do Git</h3>
+
+  <p>
+    Antes de começar a usar Git, você precisa configurar seu nome de usuário e
+    e-mail:
+  </p>
+
+  <div class="code-header">Configurar nome de usuário</div>
+  <pre><code>git config --global user.name "Seu Nome"</code></pre>
+
+  <div class="code-header">Configurar email</div>
+  <pre><code>git config --global user.email "seu.email@exemplo.com"</code></pre>
+
+  <div class="code-header">Verificar configurações</div>
+  <pre><code>git config --list</code></pre>
+
+  <h3>3. Comandos Básicos do Git</h3>
+
+  <h4>Iniciando um Repositório</h4>
+
+  <div class="code-header">Criar um novo repositório</div>
+  <pre><code>git init</code></pre>
+
+  <div class="code-header">Verificar status do repositório</div>
+  <pre><code>git status</code></pre>
+
+  <h4>Adicionando e Commitando Arquivos</h4>
+
+  <div class="code-header">
+    Adicionar arquivo específico para área de staging
+  </div>
+  <pre><code>git add arquivo.txt</code></pre>
+
+  <div class="code-header">Adicionar todos os arquivos modificados</div>
+  <pre><code>git add .</code></pre>
+
+  <div class="code-header">Realizar commit das mudanças</div>
+  <pre><code>git commit -m "Mensagem descritiva do commit"</code></pre>
+
+  <div class="code-header">Verificar histórico de commits</div>
+  <pre><code>git log</code></pre>
+
+  <h4>Branches</h4>
+
+  <div class="code-header">Listar branches</div>
+  <pre><code>git branch</code></pre>
+
+  <div class="code-header">Criar novo branch</div>
+  <pre><code>git branch nome-do-branch</code></pre>
+
+  <div class="code-header">Mudar para outro branch</div>
+  <pre><code>git checkout nome-do-branch</code></pre>
+
+  <div class="code-header">Criar e mudar para novo branch (atalho)</div>
+  <pre><code>git checkout -b nome-do-branch</code></pre>
+
+  <h4>Merge e Resolução de Conflitos</h4>
+
+  <div class="code-header">Integrar mudanças de um branch para outro</div>
+  <pre><code>git merge nome-do-branch</code></pre>
+
+  <div class="code-header">
+    Caso haja conflitos, resolver manualmente e depois:
+  </div>
+  <pre><code>git add arquivo-com-conflito
+git commit -m "Resolução de conflitos"</code></pre>
+
+  <h3>4. Trabalhando com Repositórios Remotos</h3>
+
+  <div class="code-header">Clonar repositório existente</div>
+  <pre><code>git clone https://github.com/usuario/repositorio.git</code></pre>
+
+  <div class="code-header">Adicionar repositório remoto</div>
+  <pre><code>git remote add origin https://github.com/usuario/repositorio.git</code></pre>
+
+  <div class="code-header">Enviar alterações para repositório remoto</div>
+  <pre><code>git push origin nome-do-branch</code></pre>
+
+  <div class="code-header">Obter atualizações do repositório remoto</div>
+  <pre><code>git pull origin nome-do-branch</code></pre>
+
+  <div class="code-header">Listar repositórios remotos configurados</div>
+  <pre><code>git remote -v</code></pre>
+
+  <h3>5. Fluxo de Trabalho Básico</h3>
+
+  <p>Um fluxo de trabalho típico com Git segue estes passos:</p>
+
+  <ol>
+    <li>Verificar status: <code>git status</code></li>
+    <li>Atualizar repositório local: <code>git pull</code></li>
+    <li>
+      Criar branch para nova feature:
+      <code>git checkout -b feature/nova-funcionalidade</code>
+    </li>
+    <li>
+      Fazer alterações nos arquivos (Edição manual dos arquivos do projeto)
+    </li>
+    <li>Adicionar arquivos modificados: <code>git add .</code></li>
+    <li>
+      Commitar alterações:
+      <code>git commit -m "Implementa nova funcionalidade"</code>
+    </li>
+    <li>
+      Enviar alterações para o repositório remoto:
+      <code>git push origin feature/nova-funcionalidade</code>
+    </li>
+  </ol>
+
+  <h3>6. Gitignore e Boas Práticas</h3>
+
+  <p>
+    O arquivo .gitignore permite especificar arquivos que o Git deve ignorar:
+  </p>
+
+  <div class="code-header">Criar arquivo .gitignore</div>
+  <pre><code>touch .gitignore</code></pre>
+
+  <div class="code-header">Exemplo de conteúdo para .gitignore</div>
+  <pre><code># Dependências
+node_modules/
+package-lock.json
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Arquivos de build
+/dist
+/build
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de IDE/editores
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace</code></pre>
+
+  <h3>7. Ferramentas e Plataformas</h3>
+
+  <ul>
+    <li>
+      <strong>GitHub:</strong> hospedagem de repositórios, colaboração, issues,
+      pull requests
+    </li>
+    <li><strong>GitLab:</strong> alternativa ao GitHub com CI/CD integrado</li>
+    <li>
+      <strong>Bitbucket:</strong> opção com integração com produtos Atlassian
+    </li>
+    <li>
+      <strong>Interfaces gráficas:</strong> GitKraken, SourceTree, GitHub
+      Desktop, VSCode Git
+    </li>
+  </ul>
+
+  <h3>Exercício Prático: TaskMaster com Controle de Versão</h3>
+
+  <p>
+    <strong>Objetivo:</strong> Implementar controle de versão para o projeto
+    TaskMaster.
+  </p>
+
+  <h4>Instruções:</h4>
+
+  <ol>
+    <li>
+      Inicialize um repositório Git na pasta do projeto TaskMaster:
+      <pre><code>git init</code></pre>
+    </li>
+    <li>
+      Crie um arquivo .gitignore apropriado para projetos web (use o exemplo
+      acima)
+    </li>
+    <li>
+      Adicione os arquivos iniciais (HTML, CSS, JS) e faça o primeiro commit:
+      <pre><code>git add .
+git commit -m "Commit inicial: estrutura básica do TaskMaster"</code></pre>
+    </li>
+    <li>
+      Crie um branch de desenvolvimento chamado <code>dev</code>:
+      <pre><code>git checkout -b dev</code></pre>
+    </li>
+    <li>
+      No branch <code>dev</code>:
+      <ul>
+        <li>Adicione funcionalidade para criar novas tarefas</li>
+        <li>
+          Faça commit das alterações:
+          <pre><code>git add .
+git commit -m "Adiciona funcionalidade para criar novas tarefas"</code></pre>
+        </li>
+      </ul>
+    </li>
+    <li>
+      Crie um branch <code>feature/delete-task</code> a partir do
+      <code>dev</code>:
+      <pre><code>git checkout -b feature/delete-task</code></pre>
+    </li>
+    <li>
+      No branch <code>feature/delete-task</code>:
+      <ul>
+        <li>Implemente a funcionalidade para excluir tarefas</li>
+        <li>
+          Faça commit das alterações:
+          <pre><code>git add .
+git commit -m "Implementa funcionalidade para excluir tarefas"</code></pre>
+        </li>
+      </ul>
+    </li>
+    <li>
+      Volte para o branch <code>dev</code> e faça merge do branch
+      <code>feature/delete-task</code>:
+      <pre><code>git checkout dev
+git merge feature/delete-task</code></pre>
+    </li>
+    <li>
+      Crie um repositório no GitHub (Criar manualmente através do site do
+      GitHub)
+    </li>
+    <li>
+      Adicione o repositório remoto e envie todos os branches:
+      <pre><code>git remote add origin https://github.com/seu-usuario/taskmaster.git
+git push -u origin main
+git push -u origin dev
+git push -u origin feature/delete-task</code></pre>
+    </li>
+  </ol>
+
+  <h3>Exercícios para os Alunos</h3>
+
+  <h4>Exercício 1: Inicializar um repositório e criar o primeiro commit</h4>
+
+  <p>
+    <strong>Objetivo:</strong> Praticar a criação de um repositório Git e o
+    primeiro commit.
+  </p>
+
+  <p><strong>Instruções:</strong></p>
+  <ol>
+    <li>Crie uma pasta para o projeto TaskMaster no seu computador</li>
+    <li>Abra o terminal (ou prompt de comando) nesta pasta</li>
+    <li>Inicialize um repositório Git</li>
+    <li>Crie um arquivo README.md com uma breve descrição do projeto</li>
+    <li>Adicione o arquivo ao staging</li>
+    <li>Faça o commit com uma mensagem descritiva</li>
+  </ol>
+
+  <p><strong>Resolução:</strong></p>
+  <pre><code>mkdir TaskMaster
+cd TaskMaster
+git init
+echo "# TaskMaster" > README.md
+echo "Um aplicativo de gerenciamento de tarefas desenvolvido para o curso de JavaScript." >> README.md
+git add README.md
+git commit -m "Adiciona arquivo README com descrição do projeto"</code></pre>
+
+  <h4>Exercício 2: Trabalhar com branches</h4>
+
+  <p>
+    <strong>Objetivo:</strong> Praticar a criação e navegação entre branches.
+  </p>
+
+  <p><strong>Instruções:</strong></p>
+  <ol>
+    <li>Partindo do repositório criado no exercício 1</li>
+    <li>Crie um arquivo index.html com uma estrutura HTML básica</li>
+    <li>Adicione e commit este arquivo</li>
+    <li>Crie um novo branch chamado "feature/estilo"</li>
+    <li>Mude para este branch</li>
+    <li>Crie um arquivo style.css vazio</li>
+    <li>Adicione e commit este arquivo</li>
+    <li>Volte para o branch principal (main ou master)</li>
+  </ol>
+
+  <p><strong>Resolução:</strong></p>
+  <pre><code>echo "<!DOCTYPE html>" > index.html
+echo "<html><head><title>TaskMaster</title></head><body><h1>TaskMaster</h1></body></html>" >> index.html
+git add index.html
+git commit -m "Adiciona estrutura HTML básica"
+git branch feature/estilo
+git checkout feature/estilo
+touch style.css
+git add style.css
+git commit -m "Adiciona arquivo CSS vazio"
+git checkout main</code></pre>
+
+  <h4>Exercício 3: Merge de branches</h4>
+
+  <p>
+    <strong>Objetivo:</strong> Praticar a combinação de mudanças usando merge.
+  </p>
+
+  <p><strong>Instruções:</strong></p>
+  <ol>
+    <li>Partindo do estado final do exercício 2</li>
+    <li>
+      No branch "feature/estilo", adicione código CSS básico ao arquivo
+      style.css
+    </li>
+    <li>Adicione e commit esta alteração</li>
+    <li>Volte para o branch principal</li>
+    <li>Faça merge do branch "feature/estilo" para o branch principal</li>
+  </ol>
+
+  <p><strong>Resolução:</strong></p>
+  <pre><code>git checkout feature/estilo
+echo "body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }" > style.css
+echo "h1 { color: #333; }" >> style.css
+git add style.css
+git commit -m "Adiciona estilos básicos"
+git checkout main
+git merge feature/estilo</code></pre>
+
+  <h4>Exercício 4: Configurar um repositório remoto</h4>
+
+  <p>
+    <strong>Objetivo:</strong> Praticar a configuração e uso de um repositório
+    remoto.
+  </p>
+
+  <p><strong>Instruções:</strong></p>
+  <ol>
+    <li>Crie um novo repositório no GitHub (sem inicializar com README)</li>
+    <li>Conecte seu repositório local ao repositório remoto</li>
+    <li>Envie todos os seus commits para o repositório remoto</li>
+  </ol>
+
+  <p><strong>Resolução:</strong></p>
+  <pre><code># Após criar o repositório no GitHub:
+git remote add origin https://github.com/seu-usuario/taskmaster.git
+git push -u origin main</code></pre>
+
+  <h3>Conclusão</h3>
+
+  <p>Nesta aula, você aprendeu os fundamentos do Git e GitHub, incluindo:</p>
+
+  <ul>
+    <li>Como configurar e iniciar um repositório Git</li>
+    <li>Comandos básicos para controle de versão</li>
+    <li>Trabalhar com branches para desenvolvimento paralelo</li>
+    <li>Sincronizar seu trabalho com repositórios remotos</li>
+    <li>Fluxo de trabalho profissional com Git</li>
+  </ul>
+
+  <p>
+    O Git é uma ferramenta essencial no desenvolvimento web moderno, permitindo
+    colaboração eficiente e organização do seu código. Continue praticando para
+    dominar este sistema de controle de versão!
+  </p>
+</article>

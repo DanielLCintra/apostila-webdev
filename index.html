@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Apostila de Desenvolvimento Web</title>
+  </head>
+  <body>
+    <header>
+      <h1>Apostila de Desenvolvimento Web - Prof. Daniel Cintra</h1>
+      <button class="toggle-menu">☰</button>
+    </header>
+
+    <div class="container">
+      <nav id="sidebar">
+        <ul>
+          <li>
+            <a href="#" class="active" onclick="loadContent('professor')"
+              >Sobre o professor</a
+            >
+          </li>
+        </ul>
+        <h3>Conteúdo do Curso</h3>
+        <ul>
+          <li>
+            <a href="#" class="active" onclick="loadContent('git')">Git</a>
+          </li>
+          <li>
+            <a href="#" class="active" onclick="loadContent('introducao-js')"
+              >Introdução ao JS</a
+            >
+          </li>
+
+          <li>
+            <a href="#" class="active" onclick="loadContent('variaveis')"
+              >Variáveis e Tipos de Dados</a
+            >
+          </li>
+        </ul>
+
+        <!-- <h3>Seu Progresso</h3>
+        <div class="progress-bar">
+          <div class="progress" id="progress-bar" style="width: 25%"></div>
+        </div> -->
+      </nav>
+
+      <main id="content">
+        <!-- Conteúdo será carregado aqui -->
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 - Apostila de Desenvolvimento Web - Daniel Cintra</p>
+    </footer>
+
+    <script>
+      // Função para carregar o conteúdo das aulas
+      function loadContent(aula) {
+        const contentElement = document.getElementById("content");
+
+        // Ativar link no menu
+        const links = document.querySelectorAll("nav a");
+        links.forEach((link) => link.classList.remove("active"));
+        document
+          .querySelector(`nav a[onclick="loadContent('${aula}')"]`)
+          .classList.add("active");
+
+        // Carregar conteúdo da aula
+        fetch(`aulas/${aula}.html`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Conteúdo não encontrado");
+            }
+            return response.text();
+          })
+          .then((html) => {
+            contentElement.innerHTML = html;
+            // Destacar blocos de código com prism.js se estiver incluso
+            if (window.Prism) {
+              Prism.highlightAll();
+            }
+          })
+          .catch((error) => {
+            contentElement.innerHTML = `
+                        <article>
+                            <h2>Erro ao carregar conteúdo</h2>
+                            <p>Não foi possível carregar o conteúdo solicitado. Verifique se o arquivo existe.</p>
+                            <p>Erro: ${error.message}</p>
+                            <p>Dica: Crie um arquivo chamado '${aula}.html' na pasta 'aulas'.</p>
+                        </article>
+                    `;
+          });
+      }
+
+      // Toggle menu para dispositivos móveis
+      document
+        .querySelector(".toggle-menu")
+        .addEventListener("click", function () {
+          document.getElementById("sidebar").classList.toggle("active");
+        });
+
+      // Carregar conteúdo inicial
+      document.addEventListener("DOMContentLoaded", function () {
+        loadContent("introducao");
+      });
+    </script>
+  </body>
+</html>
