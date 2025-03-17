@@ -32,7 +32,62 @@
     <li><strong>Pull/Push:</strong> sincronização de mudanças</li>
   </ul>
 
-  <h3>1.1 - Criar conta no GitHub</h3>
+  <h3>2. Fluxo Visual do Processo Git</h3>
+
+  <img
+    src="assets/images/processo-git.png"
+    alt="Processo de versionamento Git"
+    style="max-width: 100%; margin: 20px 0"
+  />
+
+  <p>A imagem acima ilustra um fluxo simplificado do versionamento com Git:</p>
+
+  <ol>
+    <li>
+      <strong>Daniel cria a versão inicial (v1)</strong> do documento e envia
+      para o servidor remoto via <code>git push</code>
+    </li>
+    <li>
+      <strong>Matheus baixa a versão v1</strong> do documento usando
+      <code>git pull</code>
+    </li>
+    <li>
+      <strong>Matheus modifica o documento</strong>, criando a versão v2, e
+      envia para o servidor via <code>git push</code>
+    </li>
+    <li>
+      <strong>Daniel atualiza seu repositório local</strong> com a versão v2
+      usando <code>git pull</code>
+    </li>
+  </ol>
+
+  <p>
+    O servidor Git (GitHub, GitLab ou Bitbucket) mantém o histórico completo de
+    todas as versões, permitindo rastrear a evolução do documento e quem fez
+    cada alteração.
+  </p>
+
+  <h4>Processo de Rollback em Caso de Falhas</h4>
+
+  <p>
+    Além do fluxo básico, é importante entender como reverter mudanças
+    problemáticas:
+  </p>
+
+  <ol>
+    <li>Uma versão v3 é criada e enviada ao servidor</li>
+    <li>A equipe detecta falhas nesta versão</li>
+    <li>
+      É executado um <code>git reset</code> para retornar à versão v2 estável
+    </li>
+    <li>A versão corrigida pode então ser desenvolvida a partir da v2</li>
+  </ol>
+
+  <div class="code-header">Voltar para versão anterior (rollback)</div>
+  <pre><code># Voltar para um commit específico
+git reset --hard a1b2c3d</code></pre>
+
+  <h3>3. Criar conta no GitHub</h3>
   <p>
     O primeiro passo para começar a trabalhar com Git é criar uma conta no
     GitHub, uma plataforma de hospedagem de código que usa Git.
@@ -43,7 +98,7 @@
     <li>Confirme seu e-mail</li>
   </ol>
 
-  <h3>1.2 - Adicionar chave SSH ou Configurar HTTPS</h3>
+  <h3>4. Adicionar chave SSH ou Configurar HTTPS</h3>
   <p>
     Existem duas maneiras principais de se conectar com repositórios Git
     remotos: SSH e HTTPS.
@@ -101,7 +156,7 @@
     </li>
   </ol>
 
-  <h3>1.3 - Criar repositório no GitHub</h3>
+  <h3>5. Criar repositório no GitHub</h3>
   <p>Após criar sua conta, você pode criar um novo repositório:</p>
   <ol>
     <li>
@@ -117,7 +172,7 @@
     <li>Clique em "Create repository"</li>
   </ol>
 
-  <h3>2. Configuração Inicial do Git</h3>
+  <h3>6. Configuração Inicial do Git</h3>
 
   <p>
     Antes de começar a usar Git, você precisa configurar seu nome de usuário e
@@ -133,7 +188,7 @@
   <div class="code-header">Verificar configurações</div>
   <pre><code>git config --list</code></pre>
 
-  <h3>3. Comandos Básicos do Git</h3>
+  <h3>7. Comandos Básicos do Git</h3>
 
   <h4>Iniciando um Repositório</h4>
 
@@ -204,7 +259,7 @@ git commit -m "Resolução de conflitos"</code></pre>
   <div class="code-header">Listar repositórios remotos configurados</div>
   <pre><code>git remote -v</code></pre>
 
-  <h3>5. Fluxo de Trabalho Básico</h3>
+  <h3>9. Fluxo de Trabalho Básico</h3>
 
   <p>Um fluxo de trabalho típico com Git segue estes passos:</p>
 
@@ -229,7 +284,7 @@ git commit -m "Resolução de conflitos"</code></pre>
     </li>
   </ol>
 
-  <h3>6. Gitignore e Boas Práticas</h3>
+  <h3>10. Gitignore e Boas Práticas</h3>
 
   <p>
     O arquivo .gitignore permite especificar arquivos que o Git deve ignorar:
@@ -270,7 +325,7 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace</code></pre>
 
-  <h3>7. Ferramentas e Plataformas</h3>
+  <h3>11. Ferramentas e Plataformas</h3>
 
   <ul>
     <li>
@@ -286,63 +341,6 @@ Thumbs.db
       Desktop, VSCode Git
     </li>
   </ul>
-
-  <h3>8. Fluxo Visual do Processo Git</h3>
-
-  <img
-    src="assets/images/processo-git.png"
-    alt="Processo de versionamento Git"
-    style="max-width: 100%; margin: 20px 0"
-  />
-
-  <p>A imagem acima ilustra um fluxo simplificado do versionamento com Git:</p>
-
-  <ol>
-    <li>
-      <strong>Daniel cria a versão inicial (v1)</strong> do documento e envia
-      para o servidor remoto via <code>git push</code>
-    </li>
-    <li>
-      <strong>Matheus baixa a versão v1</strong> do documento usando
-      <code>git pull</code>
-    </li>
-    <li>
-      <strong>Matheus modifica o documento</strong>, criando a versão v2, e
-      envia para o servidor via <code>git push</code>
-    </li>
-    <li>
-      <strong>Daniel atualiza seu repositório local</strong> com a versão v2
-      usando <code>git pull</code>
-    </li>
-  </ol>
-
-  <p>
-    O servidor Git (GitHub, GitLab ou Bitbucket) mantém o histórico completo de
-    todas as versões, permitindo rastrear a evolução do documento e quem fez
-    cada alteração.
-  </p>
-
-  <h4>Processo de Rollback em Caso de Falhas</h4>
-
-  <p>
-    Além do fluxo básico, é importante entender como reverter mudanças
-    problemáticas:
-  </p>
-
-  <ol>
-    <li>Uma versão v3 é criada e enviada ao servidor</li>
-    <li>A equipe detecta falhas nesta versão</li>
-    <li>
-      É executado um <code>git reset</code> para retornar à versão v2 estável
-    </li>
-    <li>A versão corrigida pode então ser desenvolvida a partir da v2</li>
-  </ol>
-
-  <div class="code-header">Voltar para versão anterior (rollback)</div>
-  <pre><code># Voltar para um commit específico
-git reset --hard a1b2c3d</code></pre>
-
-  <h3>9. Plataformas Git</h3>
 
   <p>Existem várias plataformas que hospedam repositórios Git, como:</p>
 
