@@ -32,13 +32,6 @@
     <li><strong>Pull/Push:</strong> sincronização de mudanças</li>
   </ul>
 
-  <blockquote>
-    <p>
-      Na aula presencial, faremos uma demonstração do funcionamento do
-      versionamento com Git no quadro.
-    </p>
-  </blockquote>
-
   <h3>1.1 - Criar conta no GitHub</h3>
   <p>
     O primeiro passo para começar a trabalhar com Git é criar uma conta no
@@ -50,19 +43,63 @@
     <li>Confirme seu e-mail</li>
   </ol>
 
-  <h3>1.2 - Adicionar chave SSH</h3>
+  <h3>1.2 - Adicionar chave SSH ou Configurar HTTPS</h3>
+  <p>
+    Existem duas maneiras principais de se conectar com repositórios Git
+    remotos: SSH e HTTPS.
+  </p>
+
+  <h4>Opção 1: Conexão via SSH (mais segura para uso frequente)</h4>
   <p>
     Chaves SSH permitem uma conexão segura entre seu computador e o GitHub sem
     precisar digitar senha toda vez.
   </p>
 
   <div class="code-header">Gerar uma nova chave SSH</div>
-  <pre><code>ssh-keygen -t ed25519 -C "seu.email@exemplo.com"</code></pre>
+  <pre><code>ssh-keygen -t rsa -C "seu.email@exemplo.com"</code></pre>
 
   <p>
-    Depois, adicione a chave gerada à sua conta GitHub através das configurações
-    de conta.
+    Depois, adicione a chave pública gerada à sua conta GitHub através das
+    configurações de conta (Settings > SSH and GPG Keys).
   </p>
+
+  <div class="code-header">Copiar a chave pública (no Linux/macOS)</div>
+  <pre><code>cat ~/.ssh/id_rsa.pub</code></pre>
+
+  <div class="code-header">
+    Copiar a chave pública (no Windows com Git Bash)
+  </div>
+  <pre><code>cat ~/.ssh/id_rsa.pub</code></pre>
+
+  <p>Finalmente, cole a chave copiada nas configurações SSH do GitHub.</p>
+
+  <h4>Opção 2: Conexão via HTTPS (mais simples para iniciantes)</h4>
+  <p>
+    A conexão HTTPS é mais fácil de configurar inicialmente. Você precisará
+    digitar seu nome de usuário e senha do GitHub cada vez que enviar alterações
+    para o repositório remoto.
+  </p>
+
+  <div class="code-header">Clonar repositório via HTTPS</div>
+  <pre><code>git clone https://github.com/usuario/repositorio.git</code></pre>
+
+  <p>
+    Alternativamente, você pode usar o GitHub Desktop, que oferece uma interface
+    gráfica amigável para gerenciar seus repositórios:
+  </p>
+
+  <ol>
+    <li>
+      Baixe e instale o GitHub Desktop em
+      <a href="https://desktop.github.com/" target="_blank"
+        >desktop.github.com</a
+      >
+    </li>
+    <li>Faça login com sua conta GitHub</li>
+    <li>
+      Use a interface gráfica para clonar, commitar e sincronizar mudanças
+    </li>
+  </ol>
 
   <h3>1.3 - Criar repositório no GitHub</h3>
   <p>Após criar sua conta, você pode criar um novo repositório:</p>
@@ -151,6 +188,9 @@ git commit -m "Resolução de conflitos"</code></pre>
 
   <div class="code-header">Clonar repositório existente</div>
   <pre><code>git clone https://github.com/usuario/repositorio.git</code></pre>
+
+  <div class="code-header">Clonar repositório via SSH</div>
+  <pre><code>git clone git@github.com:usuario/repositorio.git</code></pre>
 
   <div class="code-header">Adicionar repositório remoto</div>
   <pre><code>git remote add origin https://github.com/usuario/repositorio.git</code></pre>
@@ -244,6 +284,77 @@ Thumbs.db
     <li>
       <strong>Interfaces gráficas:</strong> GitKraken, SourceTree, GitHub
       Desktop, VSCode Git
+    </li>
+  </ul>
+
+  <h3>8. Fluxo Visual do Processo Git</h3>
+
+  <img
+    src="assets/images/processo-git.png"
+    alt="Processo de versionamento Git"
+    style="max-width: 100%; margin: 20px 0"
+  />
+
+  <p>A imagem acima ilustra um fluxo simplificado do versionamento com Git:</p>
+
+  <ol>
+    <li>
+      <strong>Daniel cria a versão inicial (v1)</strong> do documento e envia
+      para o servidor remoto via <code>git push</code>
+    </li>
+    <li>
+      <strong>Matheus baixa a versão v1</strong> do documento usando
+      <code>git pull</code>
+    </li>
+    <li>
+      <strong>Matheus modifica o documento</strong>, criando a versão v2, e
+      envia para o servidor via <code>git push</code>
+    </li>
+    <li>
+      <strong>Daniel atualiza seu repositório local</strong> com a versão v2
+      usando <code>git pull</code>
+    </li>
+  </ol>
+
+  <p>
+    O servidor Git (GitHub, GitLab ou Bitbucket) mantém o histórico completo de
+    todas as versões, permitindo rastrear a evolução do documento e quem fez
+    cada alteração.
+  </p>
+
+  <h4>Processo de Rollback em Caso de Falhas</h4>
+
+  <p>
+    Além do fluxo básico, é importante entender como reverter mudanças
+    problemáticas:
+  </p>
+
+  <ol>
+    <li>Uma versão v3 é criada e enviada ao servidor</li>
+    <li>A equipe detecta falhas nesta versão</li>
+    <li>
+      É executado um <code>git reset</code> para retornar à versão v2 estável
+    </li>
+    <li>A versão corrigida pode então ser desenvolvida a partir da v2</li>
+  </ol>
+
+  <div class="code-header">Voltar para versão anterior (rollback)</div>
+  <pre><code># Voltar para um commit específico
+git reset --hard a1b2c3d</code></pre>
+
+  <h3>9. Plataformas Git</h3>
+
+  <p>Existem várias plataformas que hospedam repositórios Git, como:</p>
+
+  <ul>
+    <li>
+      <strong>GitHub</strong>: A mais popular, com grande comunidade e muitos
+      projetos open-source
+    </li>
+    <li><strong>GitLab</strong>: Oferece recursos de CI/CD integrados</li>
+    <li>
+      <strong>Bitbucket</strong>: Integra bem com outros produtos Atlassian como
+      Jira
     </li>
   </ul>
 
@@ -449,11 +560,12 @@ git push -u origin main</code></pre>
   <p>Nesta aula, você aprendeu os fundamentos do Git e GitHub, incluindo:</p>
 
   <ul>
-    <li>Como configurar e iniciar um repositório Git</li>
+    <li>Configuração e inicialização de repositórios Git</li>
     <li>Comandos básicos para controle de versão</li>
-    <li>Trabalhar com branches para desenvolvimento paralelo</li>
-    <li>Sincronizar seu trabalho com repositórios remotos</li>
+    <li>Trabalho com branches para desenvolvimento paralelo</li>
+    <li>Sincronização com repositórios remotos (SSH e HTTPS)</li>
     <li>Fluxo de trabalho profissional com Git</li>
+    <li>Visualização do processo Git com exemplos práticos</li>
   </ul>
 
   <p>
