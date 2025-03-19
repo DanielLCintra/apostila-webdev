@@ -54,7 +54,7 @@ A apostila cobre os seguintes tópicos principais:
 
 A apostila está disponível online através do link:
 
-- [Link para a Apostila](http://apostila-curso-webdev.s3-website-us-east-1.amazonaws.com/)
+- [Link para a Apostila](https://www.curso-webdev.com/)
 
 ### Executando Localmente
 
