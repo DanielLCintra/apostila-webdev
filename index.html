@@ -3,101 +3,190 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Apostila de Desenvolvimento Web - Material para estudo de HTML, CSS, JavaScript e tecnologias web modernas."
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
     <title>Apostila de Desenvolvimento Web</title>
   </head>
   <body>
     <header>
       <h1>Apostila de Desenvolvimento Web - Prof. Daniel Cintra</h1>
-      <button class="toggle-menu">☰</button>
+      <button class="toggle-menu" aria-label="Menu de navegação">
+        <i class="fas fa-bars"></i>
+      </button>
     </header>
 
     <div class="container">
       <nav id="sidebar">
+        <!-- Menu principal -->
+        <h3>Menu Principal</h3>
         <ul>
           <li>
-            <a href="#" class="active" onclick="loadContent('principal')"
-              >Inicio</a
-            >
+            <a href="#" onclick="loadContent('principal')" aria-current="page">
+              <i class="fas fa-home"></i> Início
+            </a>
           </li>
           <li>
-            <a href="#" class="active" onclick="loadContent('professor')"
-              >Sobre o professor</a
-            >
+            <a href="#" onclick="loadContent('professor')">
+              <i class="fas fa-user-graduate"></i> Sobre o professor
+            </a>
           </li>
         </ul>
+
+        <!-- Conteúdo do Curso -->
         <h3>Conteúdo do Curso</h3>
         <ul>
           <li>
-            <a href="#" class="active" onclick="loadContent('ambientacao')"
-              >Ambientação</a
-            >
+            <a href="#" onclick="loadContent('ambientacao')">
+              <i class="fas fa-laptop-code"></i> Ambientação
+            </a>
           </li>
           <li>
-            <a href="#" class="active" onclick="loadContent('git')">Git</a>
+            <a href="#" onclick="loadContent('git')">
+              <i class="fab fa-git-alt"></i> Git
+            </a>
           </li>
           <li>
-            <a href="#" class="active" onclick="loadContent('introducao-js')"
-              >Introdução ao JS</a
-            >
+            <a href="#" onclick="loadContent('introducao-js')">
+              <i class="fab fa-js"></i> Introdução ao JS
+            </a>
           </li>
+          <li>
+            <a href="#" onclick="loadContent('variaveis')">
+              <i class="fas fa-code"></i> Variáveis e Tipos de Dados
+            </a>
+          </li>
+          <li>
+            <a href="#" onclick="loadContent('operadores')">
+              <i class="fas fa-calculator"></i> Operadores
+            </a>
+          </li>
+        </ul>
 
+        <!-- Seção de recursos -->
+        <h3>Recursos</h3>
+        <ul>
           <li>
-            <a href="#" class="active" onclick="loadContent('variaveis')"
-              >Variáveis e Tipos de Dados</a
+            <a
+              href="https://github.com/DanielLCintra/apostila-webdev"
+              target="_blank"
             >
+              <i class="fab fa-github"></i> Repositório no GitHub
+            </a>
           </li>
-
           <li>
-            <a href="#" class="active" onclick="loadContent('operadores')"
-              >Operadores</a
-            >
+            <a href="#" onclick="loadContent('bibliografia')">
+              <i class="fas fa-book"></i> Bibliografia
+            </a>
           </li>
         </ul>
       </nav>
-      <main id="content"></main>
+
+      <main id="content">
+        <!-- O conteúdo será carregado dinamicamente via JavaScript -->
+        <div class="loading-indicator">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Carregando conteúdo...</p>
+        </div>
+      </main>
     </div>
 
     <footer>
       <p>&copy; 2025 - Apostila de Desenvolvimento Web - Daniel Cintra</p>
+      <div class="footer-links">
+        <a href="https://github.com/DanielLCintra" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
     </footer>
+
+    <!-- Adicionando biblioteca Prism.js para destacar sintaxe de código -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
 
     <script>
       // Função para carregar o conteúdo das aulas
-      function loadContent(aula) {
+      function loadContent(pageName) {
         const contentElement = document.getElementById("content");
 
-        // Ativar link no menu
+        // Mostrar indicador de carregamento
+        contentElement.innerHTML = `
+          <div class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Carregando conteúdo...</p>
+          </div>
+        `;
+
+        // Atualizar classe ativa no menu
         const links = document.querySelectorAll("nav a");
-        links.forEach((link) => link.classList.remove("active"));
-        document
-          .querySelector(`nav a[onclick="loadContent('${aula}')"]`)
-          .classList.add("active");
+        links.forEach((link) => {
+          link.removeAttribute("aria-current");
+          link.classList.remove("active");
+        });
+
+        const activeLink = document.querySelector(
+          `nav a[onclick="loadContent('${pageName}')"]`
+        );
+        if (activeLink) {
+          activeLink.setAttribute("aria-current", "page");
+          activeLink.classList.add("active");
+        }
 
         // Carregar conteúdo da aula
-        fetch(`aulas/${aula}.html`)
+        fetch(`aulas/${pageName}.html`)
           .then((response) => {
             if (!response.ok) {
-              throw new Error("Conteúdo não encontrado");
+              throw new Error(`Conteúdo não encontrado (${response.status})`);
             }
             return response.text();
           })
           .then((html) => {
             contentElement.innerHTML = html;
-            // Destacar blocos de código com prism.js se estiver incluso
+
+            // Destacar blocos de código com Prism.js
             if (window.Prism) {
               Prism.highlightAll();
+            }
+
+            // Scroll para o topo da página
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+            // Atualizar título da página
+            const pageTitle = document.querySelector("article h2");
+            if (pageTitle) {
+              document.title = `${pageTitle.textContent} - Apostila Web`;
+            }
+
+            // Fechar menu em dispositivos móveis após navegação
+            if (window.innerWidth < 768) {
+              document.getElementById("sidebar").classList.remove("active");
             }
           })
           .catch((error) => {
             contentElement.innerHTML = `
-                        <article>
-                            <h2>Erro ao carregar conteúdo</h2>
-                            <p>Não foi possível carregar o conteúdo solicitado. Verifique se o arquivo existe.</p>
-                            <p>Erro: ${error.message}</p>
-                            <p>Dica: Crie um arquivo chamado '${aula}.html' na pasta 'aulas'.</p>
-                        </article>
-                    `;
+              <article>
+                <h2>Erro ao carregar conteúdo</h2>
+                <div class="error-box">
+                  <h4>Não foi possível carregar o conteúdo solicitado</h4>
+                  <p>Verifique se o arquivo existe no caminho correto.</p>
+                  <p>Erro: ${error.message}</p>
+                  <p>Dica: Crie um arquivo chamado '${pageName}.html' na pasta 'aulas'.</p>
+                </div>
+              </article>
+            `;
           });
       }
 
@@ -105,12 +194,52 @@
       document
         .querySelector(".toggle-menu")
         .addEventListener("click", function () {
-          document.getElementById("sidebar").classList.toggle("active");
+          const sidebar = document.getElementById("sidebar");
+          sidebar.classList.toggle("active");
+
+          // Alterna o ícone do botão
+          const icon = this.querySelector("i");
+          if (sidebar.classList.contains("active")) {
+            icon.classList.remove("fa-bars");
+            icon.classList.add("fa-times");
+            this.setAttribute("aria-expanded", "true");
+          } else {
+            icon.classList.remove("fa-times");
+            icon.classList.add("fa-bars");
+            this.setAttribute("aria-expanded", "false");
+          }
         });
 
-      // Carregar conteúdo inicial
+      // Carregar conteúdo inicial quando a página é carregada
       document.addEventListener("DOMContentLoaded", function () {
         loadContent("principal");
+
+        // Definir estado inicial do botão de menu
+        document
+          .querySelector(".toggle-menu")
+          .setAttribute("aria-expanded", "false");
+
+        // Ajustar menu ao redimensionar a janela
+        window.addEventListener("resize", function () {
+          if (window.innerWidth >= 768) {
+            document.getElementById("sidebar").classList.remove("active");
+            const menuButton = document.querySelector(".toggle-menu");
+            const icon = menuButton.querySelector("i");
+            icon.classList.remove("fa-times");
+            icon.classList.add("fa-bars");
+            menuButton.setAttribute("aria-expanded", "false");
+          }
+        });
+      });
+
+      // Prevenir cliques em links ativos
+      document.addEventListener("click", function (e) {
+        if (
+          e.target.matches("nav a.active") ||
+          e.target.closest("nav a.active")
+        ) {
+          e.preventDefault();
+        }
       });
     </script>
   </body>
