@@ -87,7 +87,97 @@
   <pre><code># Voltar para um commit específico
 git reset --hard a1b2c3d</code></pre>
 
-  <h3>3. Criar conta no GitHub</h3>
+  <h3>3. Git Flow Simplificado: Organização de Branches em Projetos</h3>
+
+  <img
+    src="assets/images/git-flow-simplificado.png"
+    alt="Git Flow Simplificado"
+    style="max-width: 100%; margin: 20px 0"
+  />
+
+  <p>
+    A imagem acima ilustra o Git Flow simplificado, um modelo de fluxo de
+    trabalho estruturado para projetos Git. Este modelo estabelece uma
+    organização clara de branches e processos que facilitam o desenvolvimento
+    colaborativo e mantêm a integridade do código.
+  </p>
+
+  <p>Os principais componentes deste fluxo são:</p>
+
+  <ul>
+    <li>
+      <strong>Branch Main:</strong> É a branch principal que contém o código de
+      produção estável. Representa o que está atualmente em produção.
+    </li>
+    <li>
+      <strong>Branch Develop:</strong> É a branch de desenvolvimento onde novas
+      funcionalidades são integradas antes de irem para produção.
+    </li>
+    <li>
+      <strong>Feature Branches:</strong> São branches criados a partir da
+      develop para implementar novas funcionalidades.
+    </li>
+    <li>
+      <strong>Hotfix Branches:</strong> São branches criados para correções
+      rápidas ou urgentes que precisam ir direto para produção.
+    </li>
+  </ul>
+
+  <p>
+    Neste fluxo de trabalho, a branch main e a branch develop precisam sempre
+    ser mantidas sincronizadas, com exceção dos períodos em que novas
+    funcionalidades estão em desenvolvimento/homologação na branch develop e
+    ainda não foram integradas à main.
+  </p>
+
+  <p>O processo de trabalho segue estas regras importantes:</p>
+
+  <ol>
+    <li>
+      As feature branches são sempre criadas a partir da branch develop, nunca
+      da main.
+    </li>
+    <li>
+      Nunca fazemos merge direto das feature branches na main. O merge é feito
+      primeiro na develop.
+    </li>
+    <li>
+      Os merges são realizados via pull request, que idealmente é revisado por
+      outro desenvolvedor.
+    </li>
+    <li>
+      As hotfix branches são uma exceção: são criadas a partir da main para
+      correções urgentes que não podem seguir o fluxo padrão.
+    </li>
+    <li>
+      Após o merge de uma hotfix na main, também é necessário mergear essa mesma
+      hotfix na branch develop para manter a sincronização entre as duas
+      branches.
+    </li>
+    <li>
+      Todos os merges são feitos através de pull requests para garantir revisão
+      de código e manter a qualidade.
+    </li>
+  </ol>
+
+  <p>
+    Este fluxo organizado ajuda a reduzir conflitos, facilita a identificação de
+    problemas, e permite que equipes trabalhem simultaneamente em diferentes
+    funcionalidades sem interferir no trabalho umas das outras. Além disso,
+    garante que o código em produção seja sempre estável.
+  </p>
+
+  <p>
+    <strong>Referência:</strong> Para um estudo mais aprofundado sobre o
+    GitFlow, consulte o tutorial oficial da Atlassian:
+    <a
+      href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow"
+      target="_blank"
+      >https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow</a
+    >
+  </p>
+
+  <h3>4. Criar conta no GitHub</h3>
   <p>
     O primeiro passo para começar a trabalhar com Git é criar uma conta no
     GitHub, uma plataforma de hospedagem de código que usa Git.
@@ -98,7 +188,7 @@ git reset --hard a1b2c3d</code></pre>
     <li>Confirme seu e-mail</li>
   </ol>
 
-  <h3>4. Adicionar chave SSH ou Configurar HTTPS</h3>
+  <h3>5. Adicionar chave SSH ou Configurar HTTPS</h3>
   <p>
     Existem duas maneiras principais de se conectar com repositórios Git
     remotos: SSH e HTTPS.
@@ -156,7 +246,7 @@ git reset --hard a1b2c3d</code></pre>
     </li>
   </ol>
 
-  <h3>5. Criar repositório no GitHub</h3>
+  <h3>6. Criar repositório no GitHub</h3>
   <p>Após criar sua conta, você pode criar um novo repositório:</p>
   <ol>
     <li>
@@ -172,7 +262,7 @@ git reset --hard a1b2c3d</code></pre>
     <li>Clique em "Create repository"</li>
   </ol>
 
-  <h3>6. Configuração Inicial do Git</h3>
+  <h3>7. Configuração Inicial do Git</h3>
 
   <p>
     Antes de começar a usar Git, você precisa configurar seu nome de usuário e
@@ -188,7 +278,7 @@ git reset --hard a1b2c3d</code></pre>
   <div class="code-header">Verificar configurações</div>
   <pre><code>git config --list</code></pre>
 
-  <h3>7. Comandos Básicos do Git</h3>
+  <h3>8. Comandos Básicos do Git</h3>
 
   <h4>Iniciando um Repositório</h4>
 
@@ -239,7 +329,7 @@ git reset --hard a1b2c3d</code></pre>
   <pre><code>git add arquivo-com-conflito
 git commit -m "Resolução de conflitos"</code></pre>
 
-  <h3>4. Trabalhando com Repositórios Remotos</h3>
+  <h3>9. Trabalhando com Repositórios Remotos</h3>
 
   <div class="code-header">Clonar repositório existente</div>
   <pre><code>git clone https://github.com/usuario/repositorio.git</code></pre>
@@ -259,7 +349,7 @@ git commit -m "Resolução de conflitos"</code></pre>
   <div class="code-header">Listar repositórios remotos configurados</div>
   <pre><code>git remote -v</code></pre>
 
-  <h3>9. Fluxo de Trabalho Básico</h3>
+  <h3>10. Fluxo de Trabalho Básico</h3>
 
   <p>Um fluxo de trabalho típico com Git segue estes passos:</p>
 
@@ -284,7 +374,7 @@ git commit -m "Resolução de conflitos"</code></pre>
     </li>
   </ol>
 
-  <h3>10. Gitignore e Boas Práticas</h3>
+  <h3>11. Gitignore e Boas Práticas</h3>
 
   <p>
     O arquivo .gitignore permite especificar arquivos que o Git deve ignorar:
@@ -325,7 +415,7 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace</code></pre>
 
-  <h3>11. Ferramentas e Plataformas</h3>
+  <h3>12. Ferramentas e Plataformas</h3>
 
   <ul>
     <li>
@@ -564,6 +654,7 @@ git push -u origin main</code></pre>
     <li>Sincronização com repositórios remotos (SSH e HTTPS)</li>
     <li>Fluxo de trabalho profissional com Git</li>
     <li>Visualização do processo Git com exemplos práticos</li>
+    <li>Implementação do Git Flow Simplificado para organização de projetos</li>
   </ul>
 
   <p>
