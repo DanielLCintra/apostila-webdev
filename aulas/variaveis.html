@@ -1,38 +1,60 @@
-<article>
-  <h2>Variáveis e Tipos de Dados</h2>
+<article class="lesson-content">
+  <h2><i class="fas fa-code"></i> Variáveis e Tipos de Dados</h2>
 
-  <p>
-    Nesta aula vamos explorar os conceitos fundamentais de variáveis e tipos de
-    dados em JavaScript, aplicando-os ao nosso projeto TaskMaster.
-  </p>
-
-  <h3>Declaração de Variáveis</h3>
-
-  <p>Em JavaScript, existem três formas principais de declarar variáveis:</p>
-
-  <div class="code-header">Declaração com var (escopo de função)</div>
-  <pre><code>var oldWay = "Forma antiga de declarar variáveis";</code></pre>
-
-  <div class="code-header">
-    Declaração com let (escopo de bloco, pode ser reatribuída)
+  <!-- Introdução -->
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula vamos explorar os conceitos fundamentais de variáveis e tipos
+      de dados em JavaScript, aplicando-os ao nosso projeto TaskMaster.
+    </p>
   </div>
-  <pre><code>let userName = "Maria";
+
+  <!-- Seção: Declaração de Variáveis -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> Declaração de Variáveis
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Em JavaScript, existem três formas principais de declarar variáveis:
+        </p>
+
+        <div class="code-header">
+          Declaração com <code>var</code> (escopo de função)
+        </div>
+        <pre><code>var oldWay = "Forma antiga de declarar variáveis";</code></pre>
+
+        <div class="code-header">
+          Declaração com <code>let</code> (escopo de bloco, pode ser
+          reatribuída)
+        </div>
+        <pre><code>let userName = "Maria";
 userName = "João"; // Reatribuição permitida</code></pre>
 
-  <div class="code-header">
-    Declaração com const (escopo de bloco, não pode ser reatribuída)
-  </div>
-  <pre><code>const API_URL = "https://api.example.com/tasks";
+        <div class="code-header">
+          Declaração com <code>const</code> (escopo de bloco, não pode ser
+          reatribuída)
+        </div>
+        <pre><code>const API_URL = "https://api.example.com/tasks";
 // API_URL = "nova url"; // Geraria erro: Assignment to constant variable</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>Escopo de Variáveis</h3>
-
-  <p>
-    O escopo de uma variável determina de onde ela pode ser acessada no código:
-  </p>
-
-  <div class="code-header">Demonstração de escopo</div>
-  <pre><code>function demonstrarEscopo() {
+  <!-- Seção: Escopo de Variáveis -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-arrows-alt"></i> Escopo de Variáveis
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O escopo de uma variável determina de onde ela pode ser acessada no
+          código:
+        </p>
+        <div class="code-header">Demonstração de escopo</div>
+        <pre><code>function demonstrarEscopo() {
     var funcScope = "Visível apenas dentro da função";
 
     if (true) {
@@ -44,359 +66,488 @@ userName = "João"; // Reatribuição permitida</code></pre>
     console.log(varInsideBlock); // Acessível (var não respeita o escopo de bloco)
     // console.log(letInsideBlock); // Erro: letInsideBlock is not defined
 }</code></pre>
+        <blockquote>
+          <p>
+            <i class="fa fa-info-circle"></i> <strong>Dica:</strong> Sempre
+            prefira usar <code>let</code> e <code>const</code> em vez de
+            <code>var</code> em JavaScript moderno, pois eles têm comportamento
+            de escopo mais previsível.
+          </p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
 
-  <blockquote>
-    <p>
-      <i class="fa fa-info-circle"></i> <strong>Dica:</strong> Sempre prefira
-      usar <code>let</code> e <code>const</code> em vez de <code>var</code> em
-      JavaScript moderno, pois eles têm comportamento de escopo mais previsível.
-    </p>
-  </blockquote>
+  <!-- Seção: Tipos de Dados Primitivos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-database"></i> Tipos de Dados Primitivos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>JavaScript possui os seguintes tipos de dados primitivos:</p>
 
-  <h3>Tipos de Dados Primitivos</h3>
-
-  <p>JavaScript possui os seguintes tipos de dados primitivos:</p>
-
-  <h4>String - textos</h4>
-  <div class="code-header">Strings em JavaScript</div>
-  <pre><code>let taskTitle = "Estudar JavaScript";
+        <h4>String - textos</h4>
+        <div class="code-header">Strings em JavaScript</div>
+        <pre><code>let taskTitle = "Estudar JavaScript";
 let description = 'Aprender sobre variáveis';
 let template = `Título: ${taskTitle}`; // Template string (ES6)</code></pre>
 
-  <h4>Number - números</h4>
-  <div class="code-header">Numbers em JavaScript</div>
-  <pre><code>let priority = 1;
+        <h4>Number - números</h4>
+        <div class="code-header">Numbers em JavaScript</div>
+        <pre><code>let priority = 1;
 let progress = 75.5;
 let infinity = Infinity;
 let notANumber = NaN;</code></pre>
 
-  <h4>Boolean - verdadeiro ou falso</h4>
-  <div class="code-header">Booleans em JavaScript</div>
-  <pre><code>let isCompleted = false;
+        <h4>Boolean - verdadeiro ou falso</h4>
+        <div class="code-header">Booleans em JavaScript</div>
+        <pre><code>let isCompleted = false;
 let isImportant = true;</code></pre>
 
-  <h4>Undefined - variável sem valor atribuído</h4>
-  <div class="code-header">Undefined em JavaScript</div>
-  <pre><code>let notDefined;</code></pre>
+        <h4>Undefined - variável sem valor atribuído</h4>
+        <div class="code-header">Undefined em JavaScript</div>
+        <pre><code>let notDefined;</code></pre>
 
-  <h4>Null - valor nulo intencional</h4>
-  <div class="code-header">Null em JavaScript</div>
-  <pre><code>let noValue = null;</code></pre>
+        <h4>Null - valor nulo intencional</h4>
+        <div class="code-header">Null em JavaScript</div>
+        <pre><code>let noValue = null;</code></pre>
 
-  <h4>Symbol - valor único (ES6)</h4>
-  <div class="code-header">Symbol em JavaScript</div>
-  <pre><code>let uniqueId = Symbol("id");</code></pre>
+        <h4>Symbol - valor único (ES6)</h4>
+        <div class="code-header">Symbol em JavaScript</div>
+        <pre><code>let uniqueId = Symbol("id");</code></pre>
 
-  <h4>BigInt - números inteiros grandes (ES2020)</h4>
-  <div class="code-header">BigInt em JavaScript</div>
-  <pre><code>let bigNumber = 1234567890123456789012345678901234567890n;</code></pre>
+        <h4>BigInt - números inteiros grandes (ES2020)</h4>
+        <div class="code-header">BigInt em JavaScript</div>
+        <pre><code>let bigNumber = 1234567890123456789012345678901234567890n;</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>Verificação de Tipos</h3>
-
-  <p>
-    O operador <code>typeof</code> permite verificar o tipo de uma variável:
-  </p>
-
-  <div class="code-header">Usando typeof</div>
-  <pre><code>console.log(typeof taskTitle); // string
+  <!-- Seção: Verificação de Tipos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-search"></i> Verificação de Tipos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O operador <code>typeof</code> permite verificar o tipo de uma
+          variável:
+        </p>
+        <div class="code-header">Usando typeof</div>
+        <pre><code>console.log(typeof taskTitle); // string
 console.log(typeof priority); // number
 console.log(typeof isCompleted); // boolean
 console.log(typeof notDefined); // undefined
 console.log(typeof noValue); // object (isso é um bug conhecido em JavaScript)
 console.log(typeof uniqueId); // symbol
 console.log(typeof bigNumber); // bigint</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>Conversão de Tipos</h3>
-
-  <p>JavaScript permite converter entre diferentes tipos de dados:</p>
-
-  <h4>Conversão para String</h4>
-  <div class="code-header">Convertendo para String</div>
-  <pre><code>let numToString = String(42); // "42"
+  <!-- Seção: Conversão de Tipos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-exchange-alt"></i> Conversão de Tipos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>JavaScript permite converter entre diferentes tipos de dados:</p>
+        <h4>Conversão para String</h4>
+        <div class="code-header">Convertendo para String</div>
+        <pre><code>let numToString = String(42); // "42"
 let boolToString = String(true); // "true"
 let numToString2 = 42 + ""; // Conversão implícita: "42"</code></pre>
 
-  <h4>Conversão para Number</h4>
-  <div class="code-header">Convertendo para Number</div>
-  <pre><code>let stringToNum = Number("42"); // 42
+        <h4>Conversão para Number</h4>
+        <div class="code-header">Convertendo para Number</div>
+        <pre><code>let stringToNum = Number("42"); // 42
 let boolToNum = Number(true); // 1
 let parseIntEx = parseInt("42.9"); // 42 (número inteiro)
 let parseFloatEx = parseFloat("42.9"); // 42.9 (número decimal)</code></pre>
 
-  <h4>Conversão para Boolean</h4>
-  <div class="code-header">Convertendo para Boolean</div>
-  <pre><code>let stringToBool = Boolean("hello"); // true (string não vazia)
+        <h4>Conversão para Boolean</h4>
+        <div class="code-header">Convertendo para Boolean</div>
+        <pre><code>let stringToBool = Boolean("hello"); // true (string não vazia)
 let zeroToBool = Boolean(0); // false</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <div class="info-box">
-    <h4>Valores Falsy em JavaScript</h4>
-    <p>
-      Os seguintes valores são convertidos para <code>false</code> quando
-      convertidos para booleanos:
-    </p>
-    <ul>
-      <li><code>""</code> (string vazia)</li>
-      <li><code>0</code> (zero)</li>
-      <li><code>null</code></li>
-      <li><code>undefined</code></li>
-      <li><code>NaN</code> (Not a Number)</li>
-      <li><code>false</code></li>
-    </ul>
-    <p>Todos os outros valores são considerados "truthy" (verdadeiros).</p>
-  </div>
+  <!-- Seção: Valores Falsy -->
+  <section class="mb-5">
+    <div class="info-box">
+      <h4><i class="fa fa-info-circle"></i> Valores Falsy em JavaScript</h4>
+      <p>
+        Os seguintes valores são convertidos para <code>false</code> quando
+        convertidos para booleanos:
+      </p>
+      <ul>
+        <li><code>""</code> (string vazia)</li>
+        <li><code>0</code> (zero)</li>
+        <li><code>null</code></li>
+        <li><code>undefined</code></li>
+        <li><code>NaN</code> (Not a Number)</li>
+        <li><code>false</code></li>
+      </ul>
+      <p>Todos os outros valores são considerados <strong>truthy</strong>.</p>
+    </div>
+  </section>
 
-  <h3>Tipos de Dados Complexos</h3>
+  <!-- Seção: Tipos de Dados Complexos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-layer-group"></i> Tipos de Dados Complexos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Object - Objetos</h4>
+        <p>
+          Objetos são coleções de pares chave-valor que podem conter
+          propriedades e métodos:
+        </p>
+        <div class="code-header">Exemplo de Objeto</div>
+        <pre><code>let task = {
+  id: 1,
+  title: "Aprender JavaScript",
+  completed: false,
+  tags: ["estudo", "programação"],
+  dueDate: new Date("2025-12-31"),
+  assignee: {
+    name: "João",
+    email: "joao@example.com"
+  },
+  toggleComplete: function () {
+    this.completed = !this.completed;
+  }
+};
+console.log(task.title);
+task.toggleComplete();
+console.log(task.completed);</code></pre>
 
-  <h4>Object - objetos</h4>
-  <p>
-    Objetos são coleções de pares chave-valor que podem conter propriedades e
-    métodos:
-  </p>
+        <h4>Array - Arrays</h4>
+        <div class="code-header">Exemplo de Array</div>
+        <pre><code>let tasks = [
+  { id: 1, title: "Tarefa 1", completed: false },
+  { id: 2, title: "Tarefa 2", completed: true },
+  { id: 3, title: "Tarefa 3", completed: false }
+];
+console.log(tasks[0]);
+console.log(tasks[1].title);
+console.log(tasks.length);</code></pre>
 
-  <div class="code-header">Objetos em JavaScript</div>
-  <pre><code>let task = {
-    id: 1,
-    title: "Aprender JavaScript",
-    completed: false,
-    tags: ["estudo", "programação"],
-    dueDate: new Date("2025-12-31"),
-    assignee: {
-        name: "João",
-        email: "joao@example.com"
-    },
-    toggleComplete: function () {
-        this.completed = !this.completed;
-    }
-};</code></pre>
-
-  <div class="code-header">Acessando propriedades de objetos</div>
-  <pre><code>console.log(task.title); // Notação de ponto
-console.log(task["title"]); // Notação de colchetes
-console.log(task.assignee.name); // Propriedades aninhadas
-task.toggleComplete(); // Chamando um método
-console.log(task.completed); // true</code></pre>
-
-  <h4>Array - arrays</h4>
-  <p>Arrays são coleções ordenadas de valores:</p>
-
-  <div class="code-header">Arrays em JavaScript</div>
-  <pre><code>let tasks = [
-    { id: 1, title: "Tarefa 1", completed: false },
-    { id: 2, title: "Tarefa 2", completed: true },
-    { id: 3, title: "Tarefa 3", completed: false }
-];</code></pre>
-
-  <div class="code-header">Acessando elementos de arrays</div>
-  <pre><code>console.log(tasks[0]); // Primeiro elemento
-console.log(tasks[1].title); // Propriedade do segundo elemento
-console.log(tasks.length); // Número de elementos</code></pre>
-
-  <h4>Date - datas</h4>
-  <div class="code-header">Datas em JavaScript</div>
-  <pre><code>let today = new Date();
+        <h4>Date - Datas</h4>
+        <div class="code-header">Exemplo de Datas</div>
+        <pre><code>let today = new Date();
 let specificDate = new Date("2025-12-31");
-let year = today.getFullYear();
-let month = today.getMonth() + 1; // Meses começam do zero (0 = janeiro)</code></pre>
+console.log(today);
+console.log(specificDate);
+console.log(today.getFullYear());
+console.log(today.getMonth() + 1);</code></pre>
 
-  <h4>RegExp - expressões regulares</h4>
-  <div class="code-header">Expressões regulares em JavaScript</div>
-  <pre><code>let pattern = /^[a-z]+$/i;
-let isOnlyLetters = pattern.test("JavaScript"); // true</code></pre>
+        <h4>RegExp - Expressões Regulares</h4>
+        <div class="code-header">Exemplo de Expressão Regular</div>
+        <pre><code>let pattern = /^[a-z]+$/i;
+console.log(pattern.test("JavaScript"));</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>Aplicação ao TaskMaster</h3>
-
-  <p>
-    Aplicando esses conceitos, vamos criar uma estrutura de dados para o nosso
-    aplicativo TaskMaster:
-  </p>
-
-  <div class="code-header">Função para criar uma tarefa</div>
-  <pre><code>const createTask = (title, description, priority, dueDate) => {
-    return {
-        id: Date.now(), // ID baseado no timestamp
-        title: title,
-        description: description,
-        priority: priority,
-        dueDate: dueDate ? new Date(dueDate) : null,
-        createdAt: new Date(),
-        completed: false,
-
-        // Métodos
-        complete() {
-            this.completed = true;
-        },
-
-        isOverdue() {
-            if (!this.dueDate) return false;
-            return !this.completed && this.dueDate < new Date();
-        },
-
-        toString() {
-            return `${this.title} (${this.completed ? 'Concluída' : 'Pendente'})`;
-        }
-    };
+  <!-- Seção: Aplicação ao TaskMaster -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-tasks"></i> Aplicação ao TaskMaster
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Aplicando esses conceitos, vamos criar uma estrutura de dados para o
+          nosso aplicativo TaskMaster:
+        </p>
+        <div class="code-header">Função para criar uma tarefa</div>
+        <pre><code>const createTask = (title, description, priority, dueDate) => {
+  return {
+    id: Date.now(), // ID baseado no timestamp
+    title: title,
+    description: description,
+    priority: priority,
+    dueDate: dueDate ? new Date(dueDate) : null,
+    createdAt: new Date(),
+    completed: false,
+    // Métodos
+    complete() {
+      this.completed = true;
+    },
+    isOverdue() {
+      if (!this.dueDate) return false;
+      return !this.completed && this.dueDate < new Date();
+    },
+    toString() {
+      return `${this.title} (${this.completed ? 'Concluída' : 'Pendente'})`;
+    }
+  };
 };</code></pre>
 
-  <div class="code-header">Criando tarefas com nossa função</div>
-  <pre><code>// Criando algumas tarefas de exemplo
-let task1 = createTask(
-    "Estudar JavaScript",
-    "Aprender sobre variáveis e tipos de dados",
-    "alta",
-    "2025-06-15"
-);
-
-let task2 = createTask(
-    "Preparar apresentação",
-    "Slides sobre arrays em JavaScript",
-    "média",
-    "2025-06-20"
-);
-
-// Array de tarefas
+        <div class="code-header">Criando tarefas com nossa função</div>
+        <pre><code>// Criando tarefas de exemplo
+let task1 = createTask("Estudar JavaScript", "Aprender sobre variáveis e tipos de dados", "alta", "2025-06-15");
+let task2 = createTask("Preparar apresentação", "Slides sobre arrays em JavaScript", "média", "2025-06-20");
 let taskList = [task1, task2];
-
-// Demonstrando uso
 console.log(task1.toString());
 console.log(`Tarefa atrasada? ${task1.isOverdue() ? 'Sim' : 'Não'}`);
-
-// Concluindo uma tarefa
 task2.complete();
 console.log(task2.toString());</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>Desafios para Praticar</h3>
+  <!-- Seção: Desafios para Praticar -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> Desafios para Praticar
+    </h3>
 
-  <div class="desafio">
-    <h4>Desafio 1: Valores padrão para parâmetros</h4>
-    <p>
-      Modifique a função <code>createTask</code> para adicionar um valor padrão
-      para o parâmetro <code>priority</code> ("média")
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>const createTask = (title, description, priority = "média", dueDate) => {
-    return {
-        id: Date.now(), // ID baseado no timestamp
-        title: title,
-        description: description,
-        priority: priority,
-        dueDate: dueDate ? new Date(dueDate) : null,
-        createdAt: new Date(),
-        completed: false,
-
-        // Métodos
-        complete() {
-            this.completed = true;
-        },
-
-        isOverdue() {
-            if (!this.dueDate) return false;
-            return !this.completed && this.dueDate < new Date();
-        },
-
-        toString() {
-            return `${this.title} (${this.completed ? 'Concluída' : 'Pendente'})`;
-        }
-    };
+    <div class="desafio">
+      <h4>Desafio 1: Valores padrão para parâmetros</h4>
+      <p>
+        Modifique a função <code>createTask</code> para adicionar um valor
+        padrão para o parâmetro <code>priority</code> ("média").
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Solução</div>
+        <pre><code>const createTask = (title, description, priority = "média", dueDate) => {
+  return {
+    id: Date.now(),
+    title: title,
+    description: description,
+    priority: priority,
+    dueDate: dueDate ? new Date(dueDate) : null,
+    createdAt: new Date(),
+    completed: false,
+    complete() { this.completed = true; },
+    isOverdue() { return !this.completed && this.dueDate && this.dueDate < new Date(); },
+    toString() { return `${this.title} (${this.completed ? 'Concluída' : 'Pendente'})`; }
+  };
 };</code></pre>
-    </details>
-  </div>
+      </details>
+    </div>
 
-  <div class="desafio">
-    <h4>Desafio 2: Verificação de prazo</h4>
-    <p>Crie uma função simples que verifica se uma tarefa tem prazo definido</p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>const hasDeadline = (task) => {
-    return task.dueDate !== null;
+    <div class="desafio">
+      <h4>Desafio 2: Verificação de prazo</h4>
+      <p>Crie uma função que verifica se uma tarefa tem prazo definido.</p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Solução</div>
+        <pre><code>const hasDeadline = (task) => {
+  return task.dueDate !== null;
 };
-
-// Exemplo de uso:
 console.log(`A tarefa tem prazo? ${hasDeadline(task1) ? 'Sim' : 'Não'}`);</code></pre>
-    </details>
-  </div>
+      </details>
+    </div>
 
-  <div class="desafio">
-    <h4>Desafio 3: Aprimorando o método toString()</h4>
-    <p>
-      Modifique o método <code>toString()</code> para incluir a prioridade da
-      tarefa
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>// No objeto retornado pela função createTask:
+    <div class="desafio">
+      <h4>Desafio 3: Aprimorando o método toString()</h4>
+      <p>
+        Modifique o método <code>toString()</code> para incluir a prioridade da
+        tarefa.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Solução</div>
+        <pre><code>// Dentro do objeto retornado pela função createTask:
 toString() {
-    return `${this.title} (${this.completed ? 'Concluída' : 'Pendente'}) - Prioridade: ${this.priority}`;
+  return `${this.title} (${this.completed ? 'Concluída' : 'Pendente'}) - Prioridade: ${this.priority}`;
 }</code></pre>
-    </details>
-  </div>
+      </details>
+    </div>
 
-  <div class="desafio">
-    <h4>Desafio 4: Função de status da tarefa</h4>
-    <p>
-      Crie uma função que recebe uma tarefa e retorna uma string dizendo se ela
-      está concluída ou pendente
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>const getTaskStatus = (task) => {
-    if (task.completed) {
-        return "A tarefa está concluída!";
-    } else {
-        return "A tarefa ainda está pendente.";
-    }
+    <div class="desafio">
+      <h4>Desafio 4: Função de status da tarefa</h4>
+      <p>
+        Crie uma função que recebe uma tarefa e retorna uma string dizendo se
+        ela está concluída ou pendente.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Solução</div>
+        <pre><code>const getTaskStatus = (task) => {
+  return task.completed ? "A tarefa está concluída!" : "A tarefa ainda está pendente.";
 };
-
-// Exemplo de uso:
 console.log(getTaskStatus(task1));
 console.log(getTaskStatus(task2));</code></pre>
-    </details>
-  </div>
+      </details>
+    </div>
+  </section>
 
-  <h3>Conclusão</h3>
+  <!-- Seção: Conclusão -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta aula, exploramos os diferentes tipos de variáveis e dados
+          disponíveis em JavaScript. Aprendemos sobre:
+        </p>
+        <ul class="feature-list">
+          <li>
+            Declaração de variáveis com <code>var</code>, <code>let</code> e
+            <code>const</code>
+          </li>
+          <li>Os diferentes tipos de dados primitivos e complexos</li>
+          <li>Como verificar e converter tipos</li>
+          <li>
+            Como aplicar esses conceitos para criar uma estrutura robusta para o
+            TaskMaster
+          </li>
+        </ul>
+        <p>
+          Esses fundamentos são essenciais para desenvolver qualquer aplicação
+          JavaScript, especialmente para manipulação de dados e interação com o
+          usuário.
+        </p>
+      </div>
+    </div>
+  </section>
 
-  <p>
-    Nesta aula, exploramos os diferentes tipos de variáveis e dados disponíveis
-    em JavaScript. Aprendemos sobre:
-  </p>
-
-  <ul>
-    <li>
-      Declaração de variáveis com <code>var</code>, <code>let</code> e
-      <code>const</code>
-    </li>
-    <li>Os diferentes tipos de dados primitivos e complexos</li>
-    <li>Como converter entre diferentes tipos</li>
-    <li>
-      Como aplicar esses conceitos para criar uma estrutura de dados robusta
-      para o TaskMaster
-    </li>
-  </ul>
-
-  <p>
-    Esses fundamentos são essenciais para desenvolver qualquer aplicação
-    JavaScript, especialmente quando trabalhamos com manipulação de dados e
-    interação com o usuário.
-  </p>
-
+  <!-- Estilos CSS Específicos para a Página -->
   <style>
-    /* Estilos específicos para esta aula */
+    /* Base e Variáveis */
+    :root {
+      --primary-color: #3498db;
+      --primary-color-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --info-color: #3498db;
+      --white: #fff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --border-radius: 0.5rem;
+      --border-radius-sm: 0.25rem;
+      --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --transition-base: all 0.2s ease-in-out;
+    }
+    .lesson-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .intro-box {
+      background-color: var(--gray-100);
+      padding: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
+    }
+    .section-title.with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
+    }
+    .section-title.with-icon i {
+      color: var(--primary-color);
+    }
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card-header {
+      background-color: var(--gray-100);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .card-header h4 {
+      margin: 0;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--secondary-color);
+    }
+    .card-body {
+      padding: 1.5rem;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .feature-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--gray-200);
+    }
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .concept-item {
+      background-color: var(--gray-100);
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--box-shadow);
+      text-align: center;
+    }
+    .concept-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    .concept-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    .numbered-steps {
+      list-style: decimal;
+      margin-left: 1.5rem;
+    }
     .info-box {
-      background-color: #e8f4f8;
-      border-left: 4px solid #4a90e2;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 4px;
+      background-color: var(--info-color-light, #cce5ff);
+      border-left: 4px solid var(--info-color, #3498db);
+      padding: 1rem;
+      margin-top: 1.5rem;
+      border-radius: var(--border-radius-sm);
+    }
+    .info-box h5 {
+      margin-top: 0;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
+    details {
+      margin-top: 10px;
+    }
+    summary {
+      cursor: pointer;
+      color: #2c7be5;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    summary:hover {
+      text-decoration: underline;
+    }
     .desafio {
       background-color: #f7f8e8;
       border-left: 4px solid #e2c94a;
@@ -404,20 +555,24 @@ console.log(getTaskStatus(task2));</code></pre>
       margin: 20px 0;
       border-radius: 4px;
     }
-
-    summary {
-      cursor: pointer;
-      color: #2c7be5;
-      font-weight: bold;
-      margin-bottom: 10px;
+    .desafio h4 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+    .desafio details {
+      margin-top: 1rem;
+    }
+    .solution pre {
+      margin: 0;
+    }
+    @media (max-width: 576px) {
+      .card-body {
+        padding: 1rem;
+      }
     }
 
-    summary:hover {
-      text-decoration: underline;
-    }
-
-    details {
-      margin-top: 10px;
+    code {
+      color: #000;
     }
   </style>
 </article>

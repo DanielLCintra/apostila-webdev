@@ -1,158 +1,488 @@
-<article class="p-6">
-  <h1 class="text-3xl font-bold mb-6 border-b pb-3">
-    🖥️ Ambientação: Preparando seu Ambiente de Desenvolvimento
-  </h1>
+<article class="lesson-content">
+  <h2>🖥️ Ambientação: Preparando seu Ambiente de Desenvolvimento</h2>
 
-  <section class="mb-6">
-    <h2 class="text-2xl font-semibold mb-4">
-      1. Configuração do Ambiente de Desenvolvimento
-    </h2>
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-cogs"></i> Configuração do Ambiente de Desenvolvimento
+    </h3>
 
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold text-lg mb-2">Editores Recomendados</h3>
-      <ul class="list-disc list-inside">
-        <li>Visual Studio Code</li>
-        <li>Sublime Text</li>
-        <li>Atom</li>
-      </ul>
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-code-branch"></i> Editor Recomendado
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="editor-recommendation">
+          <img
+            src="assets/images/vscode-logo.png"
+            alt="Visual Studio Code Logo"
+            class="editor-logo"
+          />
+          <div>
+            <h5>Visual Studio Code</h5>
+            <p>
+              Um editor de código-fonte leve, mas poderoso, que roda em seu
+              desktop e está disponível para Windows, macOS e Linux. Possui
+              suporte integrado para JavaScript, TypeScript e Node.js com uma
+              rica biblioteca de extensões para outras linguagens.
+            </p>
+            <a
+              href="https://code.visualstudio.com/"
+              target="_blank"
+              class="btn btn-sm btn-primary mt-2"
+            >
+              <i class="fas fa-download"></i> Download Visual Studio Code
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold text-lg mb-2">Extensões Essenciais para VS Code</h3>
-      <ul class="list-disc list-inside">
-        <li>JavaScript (ES6) code snippets</li>
-        <li>ESLint</li>
-        <li>Prettier</li>
-        <li>Live Server</li>
-        <li>Html Format</li>
-        <li>GitLens</li>
-        <li>Microsoft Edge Tools for VS Code</li>
-      </ul>
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-puzzle-piece"></i> Extensões Essenciais para VS Code
+        </h4>
+      </div>
+      <div class="card-body">
+        <p class="mb-3">
+          Recomendamos as seguintes extensões para melhorar sua experiência de
+          desenvolvimento:
+        </p>
+        <ul class="feature-list">
+          <li>JavaScript (ES6) code snippets</li>
+          <li>ESLint</li>
+          <li>Prettier</li>
+          <li>Live Server</li>
+          <li>Html Format</li>
+          <li>GitLens</li>
+          <li>Microsoft Edge Tools for VS Code</li>
+        </ul>
+        <div class="info-box mt-3">
+          <h5><i class="fas fa-lightbulb"></i> Dica</h5>
+          <p>
+            Para instalar extensões no VS Code, clique no ícone de extensões na
+            barra lateral esquerda ou pressione
+            <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> (Windows/Linux) ou
+            <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> (Mac).
+          </p>
+        </div>
+      </div>
     </div>
 
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold text-lg mb-2">Verificação de Instalações</h3>
-      <div class="code-block">
-        <pre><code>
-# Verificar versão do Node.js
+    <!-- INÍCIO DA SEÇÃO MODIFICADA: Instalação do Node.js com details/summary -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fab fa-node-js"></i> Instalação do Node.js
+        </h4>
+      </div>
+      <div class="card-body">
+        <p class="mb-3">
+          O Node.js é uma plataforma JavaScript que nos permite executar código
+          JavaScript fora do navegador. Siga as instruções abaixo para
+          instalá-lo em seu sistema:
+        </p>
+
+        <div class="installation-guides">
+          <!-- Windows -->
+          <details class="os-details">
+            <summary class="os-summary">
+              <i class="fab fa-windows"></i> Windows
+            </summary>
+            <div class="os-content">
+              <ol class="installation-steps">
+                <li>
+                  Visite o site oficial do
+                  <a href="https://nodejs.org/" target="_blank">Node.js</a>
+                </li>
+                <li>
+                  Baixe a versão LTS (Long Term Support) recomendada para a
+                  maioria dos usuários
+                </li>
+                <li>
+                  Execute o instalador baixado e siga as instruções na tela
+                </li>
+                <li>
+                  Por padrão, o instalador adicionará o Node.js ao PATH do
+                  sistema
+                </li>
+                <li>
+                  Após a instalação, reinicie o computador para garantir que as
+                  mudanças entrem em vigor
+                </li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- macOS -->
+          <details class="os-details">
+            <summary class="os-summary">
+              <i class="fab fa-apple"></i> macOS
+            </summary>
+            <div class="os-content">
+              <h5>Opção 1: Instalação direta</h5>
+              <ol class="installation-steps">
+                <li>
+                  Visite o site oficial do
+                  <a href="https://nodejs.org/" target="_blank">Node.js</a>
+                </li>
+                <li>Baixe a versão LTS (Long Term Support) para macOS</li>
+                <li>
+                  Execute o pacote .pkg baixado e siga as instruções na tela
+                </li>
+              </ol>
+
+              <h5 class="mt-3">
+                Opção 2: Usando Homebrew (recomendado se você já tem o Homebrew)
+              </h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Execute o seguinte comando para instalar o Node.js:
+                  <div class="code-block">
+                    <pre><code class="language-bash">brew install node</code></pre>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- Linux -->
+          <details class="os-details">
+            <summary class="os-summary">
+              <i class="fab fa-linux"></i> Linux
+            </summary>
+            <div class="os-content">
+              <h5>Ubuntu, Debian e distribuições baseadas:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Atualize o índice do pacote e instale as dependências:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo apt update
+sudo apt install -y curl</code></pre>
+                  </div>
+                </li>
+                <li>
+                  Adicione o PPA NodeSource (para versão LTS):
+                  <div class="code-block">
+                    <pre><code class="language-bash">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</code></pre>
+                  </div>
+                </li>
+                <li>
+                  Instale o Node.js:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo apt install -y nodejs</code></pre>
+                  </div>
+                </li>
+              </ol>
+
+              <h5 class="mt-3">Fedora, CentOS e RHEL:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Adicione o repositório NodeSource:
+                  <div class="code-block">
+                    <pre><code class="language-bash">curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -</code></pre>
+                  </div>
+                </li>
+                <li>
+                  Instale o Node.js:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo yum install -y nodejs</code></pre>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instalação do Git com details/summary -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fab fa-git-alt"></i> Instalação do Git</h4>
+      </div>
+      <div class="card-body">
+        <p class="mb-3">
+          O Git é um sistema de controle de versão distribuído que usaremos para
+          gerenciar nosso código. Siga as instruções para instalá-lo:
+        </p>
+
+        <div class="installation-guides">
+          <!-- Windows -->
+          <details class="os-details">
+            <summary class="os-summary">
+              <i class="fab fa-windows"></i> Windows
+            </summary>
+            <div class="os-content">
+              <ol class="installation-steps">
+                <li>
+                  Visite o site oficial do
+                  <a href="https://git-scm.com/download/win" target="_blank"
+                    >Git para Windows</a
+                  >
+                </li>
+                <li>Baixe o instalador do Git</li>
+                <li>
+                  Execute o instalador e siga estas recomendações:
+                  <ul class="sub-list">
+                    <li>
+                      Use Git from the Windows Command Prompt (opção padrão)
+                    </li>
+                    <li>Use OpenSSL para HTTPS (opção padrão)</li>
+                    <li>
+                      Checkout Windows-style, commit Unix-style line endings
+                      (opção padrão)
+                    </li>
+                    <li>Use MinTTY (opção padrão)</li>
+                    <li>Habilite o cache de credenciais</li>
+                  </ul>
+                </li>
+                <li>Conclua a instalação seguindo as demais instruções</li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- macOS -->
+          <details class="os-details">
+            <summary class="os-summary">
+              <i class="fab fa-apple"></i> macOS
+            </summary>
+            <div class="os-content">
+              <h5>Opção 1: Instalar com Homebrew (Recomendado)</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Execute o seguinte comando:
+                  <div class="code-block">
+                    <pre><code class="language-bash">brew install git</code></pre>
+                  </div>
+                </li>
+              </ol>
+
+              <h5 class="mt-3">Opção 2: Baixar o Instalador</h5>
+              <ol class="installation-steps">
+                <li>
+                  Visite
+                  <a href="https://git-scm.com/download/mac" target="_blank"
+                    >git-scm.com</a
+                  >
+                </li>
+                <li>Baixe e execute o instalador do macOS</li>
+                <li>Siga as instruções na tela para concluir a instalação</li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- Linux -->
+          <details class="os-details">
+            <summary class="os-summary">
+              <i class="fab fa-linux"></i> Linux
+            </summary>
+            <div class="os-content">
+              <h5>Ubuntu, Debian e distribuições baseadas:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Atualize os pacotes:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo apt update</code></pre>
+                  </div>
+                </li>
+                <li>
+                  Instale o Git:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo apt install git</code></pre>
+                  </div>
+                </li>
+              </ol>
+
+              <h5 class="mt-3">Fedora:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Instale o Git:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo dnf install git</code></pre>
+                  </div>
+                </li>
+              </ol>
+
+              <h5 class="mt-3">Arch Linux:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Instale o Git:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo pacman -S git</code></pre>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+    <!-- FIM DA SEÇÃO MODIFICADA -->
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-check-circle"></i> Verificação de Instalações
+        </h4>
+      </div>
+      <div class="card-body">
+        <p class="mb-3">
+          Após instalar o Node.js e o Git, verifique se eles foram instalados
+          corretamente executando os seguintes comandos no terminal:
+        </p>
+        <div class="code-header">Terminal / Prompt de Comando</div>
+        <pre><code class="language-bash"># Verificar versão do Node.js
 node -v
 
 # Verificar versão do npm
 npm -v
 
 # Verificar versão do git
-git -v
-                </code></pre>
-      </div>
-    </div>
-  </section>
+git --version</code></pre>
 
-  <section class="mb-6">
-    <h2 class="text-2xl font-semibold mb-4">2. Console do Navegador</h2>
-
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold text-lg mb-2">Abrindo DevTools</h3>
-      <p class="mb-2">Atalhos para abrir as ferramentas de desenvolvedor:</p>
-      <ul class="list-disc list-inside">
-        <li>Windows/Linux: <code>F12</code> ou <code>Ctrl+Shift+I</code></li>
-        <li>Mac: <code>Cmd+Option+I</code></li>
-      </ul>
-    </div>
-
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold text-lg mb-2">Abas Principais do DevTools</h3>
-      <div class="space-y-4">
-        <div>
-          <h4 class="font-semibold mb-2">1. Elements (Elementos)</h4>
-          <p class="text-gray-700">
-            Permite inspecionar e editar o HTML e CSS da página em tempo real. 
-            Ideal para entender a estrutura do documento e fazer ajustes rápidos de estilo.
-            Você pode:
-            <ul class="list-disc list-inside text-gray-600">
-              <li>Navegar pela árvore DOM</li>
-              <li>Editar elementos HTML</li>
-              <li>Modificar estilos CSS instantaneamente</li>
-              <li>Analisar layout e responsividade</li>
-            </ul>
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-semibold mb-2">2. Console</h4>
-          <p class="text-gray-700">
-            Principal ferramenta para debugging e execução de JavaScript. 
-            Permite:
-            <ul class="list-disc list-inside text-gray-600">
-              <li>Executar código JavaScript interativamente</li>
-              <li>Ver logs e mensagens de erro</li>
-              <li>Depurar aplicações web</li>
-              <li>Testar expressões e funções rapidamente</li>
-            </ul>
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-semibold mb-2">3. Sources</h4>
-          <p class="text-gray-700">
-            Ambiente de depuração avançado para JavaScript. 
-            Funcionalidades principais:
-            <ul class="list-disc list-inside text-gray-600">
-              <li>Definir breakpoints</li>
-              <li>Inspecionar código-fonte</li>
-              <li>Depuração passo a passo</li>
-              <li>Visualizar escopo de variáveis</li>
-            </ul>
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-semibold mb-2">4. Network</h4>
-          <p class="text-gray-700">
-            Monitora todas as solicitações de rede feitas pela página.
-            Permite:
-            <ul class="list-disc list-inside text-gray-600">
-              <li>Analisar tempos de carregamento</li>
-              <li>Verificar requisições HTTP/HTTPS</li>
-              <li>Inspecionar cabeçalhos e conteúdo de solicitações</li>
-              <li>Diagnosticar problemas de performance</li>
-            </ul>
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-semibold mb-2">5. Application</h4>
-          <p class="text-gray-700">
-            Gerencia dados armazenados localmente na aplicação.
-            Recursos incluem:
-            <ul class="list-disc list-inside text-gray-600">
-              <li>Visualizar localStorage e sessionStorage</li>
-              <li>Gerenciar cookies</li>
-              <li>Inspecionar Web SQL e IndexedDB</li>
-              <li>Verificar service workers</li>
-            </ul>
+        <div class="success-box mt-3">
+          <h5><i class="fas fa-check-circle"></i> Verificação bem-sucedida</h5>
+          <p>
+            Se você visualizar as versões instaladas (por exemplo, v16.14.0,
+            8.3.1, 2.35.1), então você configurou seu ambiente corretamente e
+            está pronto para começar!
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="mb-6">
-    <h2 class="text-2xl font-semibold mb-4">3. Primeiro "Hello, World!"</h2>
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-terminal"></i> Console do Navegador
+    </h3>
 
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold text-lg mb-2">No Console</h3>
-      <div class="code-block">
-        <pre><code>
-console.log("Hello, World!");
-                </code></pre>
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fas fa-keyboard"></i> Abrindo DevTools</h4>
+      </div>
+      <div class="card-body">
+        <p class="mb-3">Atalhos para abrir as ferramentas de desenvolvedor:</p>
+        <div class="shortcut-grid">
+          <div class="shortcut-item">
+            <div class="shortcut-platform">Windows/Linux:</div>
+            <div class="shortcut-keys">
+              <kbd>F12</kbd> ou <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd>
+            </div>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-platform">Mac:</div>
+            <div class="shortcut-keys">
+              <kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>I</kbd>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold text-lg mb-2">HTML Básico</h3>
-      <div class="code-block">
-        <pre><code>
-&lt;!DOCTYPE html&gt;
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-tools"></i> Abas Principais do DevTools
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="devtools-tabs">
+          <div class="devtool-tab">
+            <h5><i class="fas fa-code"></i> Elements (Elementos)</h5>
+            <p>
+              Permite inspecionar e editar o HTML e CSS da página em tempo real.
+              Ideal para entender a estrutura do documento e fazer ajustes
+              rápidos de estilo.
+            </p>
+            <div class="tab-features">
+              <span class="tab-feature">Navegar pela árvore DOM</span>
+              <span class="tab-feature">Editar elementos HTML</span>
+              <span class="tab-feature">Modificar estilos CSS</span>
+              <span class="tab-feature">Analisar layout</span>
+            </div>
+          </div>
+
+          <div class="devtool-tab">
+            <h5><i class="fas fa-terminal"></i> Console</h5>
+            <p>Principal ferramenta para debugging e execução de JavaScript.</p>
+            <div class="tab-features">
+              <span class="tab-feature">Executar código JavaScript</span>
+              <span class="tab-feature">Ver logs e erros</span>
+              <span class="tab-feature">Depurar aplicações</span>
+              <span class="tab-feature">Testar expressões</span>
+            </div>
+          </div>
+
+          <div class="devtool-tab">
+            <h5><i class="fas fa-file-code"></i> Sources</h5>
+            <p>Ambiente de depuração avançado para JavaScript.</p>
+            <div class="tab-features">
+              <span class="tab-feature">Definir breakpoints</span>
+              <span class="tab-feature">Inspecionar código-fonte</span>
+              <span class="tab-feature">Depuração passo a passo</span>
+              <span class="tab-feature">Visualizar variáveis</span>
+            </div>
+          </div>
+
+          <div class="devtool-tab">
+            <h5><i class="fas fa-network-wired"></i> Network</h5>
+            <p>Monitora todas as solicitações de rede feitas pela página.</p>
+            <div class="tab-features">
+              <span class="tab-feature">Tempos de carregamento</span>
+              <span class="tab-feature">Requisições HTTP</span>
+              <span class="tab-feature">Cabeçalhos e conteúdo</span>
+              <span class="tab-feature">Diagnosticar performance</span>
+            </div>
+          </div>
+
+          <div class="devtool-tab">
+            <h5><i class="fas fa-database"></i> Application</h5>
+            <p>Gerencia dados armazenados localmente na aplicação.</p>
+            <div class="tab-features">
+              <span class="tab-feature">localStorage</span>
+              <span class="tab-feature">Cookies</span>
+              <span class="tab-feature">IndexedDB</span>
+              <span class="tab-feature">Service workers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> Primeiro "Hello, World!"
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fas fa-terminal"></i> No Console</h4>
+      </div>
+      <div class="card-body">
+        <div class="code-header">JavaScript</div>
+        <pre><code class="language-javascript">console.log("Hello, World!");</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fas fa-file-code"></i> HTML Básico</h4>
+      </div>
+      <div class="card-body">
+        <div class="code-header">HTML</div>
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;Meu Primeiro JavaScript&lt;/title&gt;
@@ -163,68 +493,699 @@ console.log("Hello, World!");
         console.log("Hello, World! do script interno");
     &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;
-                </code></pre>
+&lt;/html&gt;</code></pre>
       </div>
     </div>
 
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold text-lg mb-2">Arquivo Externo script.js</h3>
-      <div class="code-block">
-        <pre><code>
-console.log("Hello, World! do arquivo externo");
-alert("Bem-vindo ao JavaScript!");
-                </code></pre>
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-file-alt"></i> Arquivo Externo script.js
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="code-header">JavaScript</div>
+        <pre><code class="language-javascript">console.log("Hello, World! do arquivo externo");
+alert("Bem-vindo ao JavaScript!");</code></pre>
       </div>
     </div>
   </section>
 
-  <section class="mb-6">
-    <h2 class="text-2xl font-semibold mb-4">📚 Links e Recursos Auxiliares</h2>
-    <div class="bg-blue-100 border-l-4 border-blue-500 p-4">
-      <h3 class="font-bold mb-3">Links Úteis para Desenvolvedores</h3>
-      <ul class="list-disc list-inside space-y-2">
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-file-alt"></i> Organizando seu Código: HTML, CSS e
+      JavaScript
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-folder-tree"></i> Separação de Arquivos: O Padrão da
+          Indústria
+        </h4>
+      </div>
+      <div class="card-body">
+        <p>
+          É possível incluir JavaScript e CSS diretamente dentro do arquivo
+          HTML, mas o padrão de mercado é manter esses códigos em arquivos
+          separados. Vejamos as diferentes abordagens e por que a separação é
+          considerada a melhor prática:
+        </p>
+
+        <div class="comparison-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Aspecto</th>
+                <th>Código Interno (Embutido)</th>
+                <th>Arquivos Separados</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Organização</td>
+                <td>Todo o código em um único arquivo</td>
+                <td>Cada tecnologia tem seu próprio arquivo (HTML, CSS, JS)</td>
+              </tr>
+              <tr>
+                <td>Manutenção</td>
+                <td>Mais difícil de manter em projetos grandes</td>
+                <td>Facilita a manutenção e leitura do código</td>
+              </tr>
+              <tr>
+                <td>Cache do navegador</td>
+                <td>Não permite cache eficiente</td>
+                <td>
+                  Permite que o navegador armazene em cache arquivos
+                  separadamente
+                </td>
+              </tr>
+              <tr>
+                <td>Reutilização</td>
+                <td>Difícil reutilizar código entre páginas</td>
+                <td>Mesmo arquivo pode ser usado em múltiplas páginas</td>
+              </tr>
+              <tr>
+                <td>Colaboração</td>
+                <td>Dificulta trabalho em equipe</td>
+                <td>
+                  Permite que diferentes desenvolvedores trabalhem em partes
+                  específicas
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-link"></i> Como Vincular Arquivos Externos
+        </h4>
+      </div>
+      <div class="card-body">
+        <p>
+          Para criar uma estrutura de projeto organizada, você deve separar seu
+          código em arquivos distintos e vinculá-los ao HTML principal:
+        </p>
+
+        <div class="linking-examples">
+          <div class="example-section">
+            <h5>
+              <i class="fab fa-css3-alt"></i> Vinculando um arquivo CSS externo
+            </h5>
+            <div class="code-header">HTML (index.html)</div>
+            <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Meu Projeto&lt;/title&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Minha Página&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <div class="code-header">CSS (styles.css)</div>
+            <pre><code class="language-css">body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}</code></pre>
+          </div>
+
+          <div class="example-section">
+            <h5>
+              <i class="fab fa-js"></i> Vinculando um arquivo JavaScript externo
+            </h5>
+            <div class="code-header">HTML (index.html)</div>
+            <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Meu Projeto&lt;/title&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Minha Página&lt;/h1&gt;
+    
+    &lt;!-- Script no final do body para melhor performance --&gt;
+    &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <div class="code-header">JavaScript (script.js)</div>
+            <pre><code class="language-javascript">// Este código será executado quando a página carregar
+console.log("Página carregada!");
+
+// Função que pode ser chamada de qualquer lugar
+function saudacao() {
+    alert("Olá, bem-vindo à página!");
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-project-diagram"></i> Estrutura de Projeto
+          Recomendada
+        </h4>
+      </div>
+      <div class="card-body">
+        <p>
+          Uma estrutura de projeto organizada melhora significativamente a
+          manutenção e escalabilidade:
+        </p>
+
+        <div class="code-header">Estrutura de Diretórios</div>
+        <pre><code class="language-text">projeto/
+├── index.html
+├── assets/
+│   ├── css/
+│   │   └── styles.css
+│   ├── js/
+│   │   └── script.js
+│   └── images/
+│       └── logo.png
+└── pages/
+    ├── about.html
+    └── contact.html</code></pre>
+
+        <div class="info-box mt-4">
+          <h5>
+            <i class="fas fa-lightbulb"></i> Benefícios do Padrão de Mercado
+          </h5>
+          <ul>
+            <li>
+              <strong>Separação de Responsabilidades:</strong> Cada arquivo tem
+              um propósito específico, seguindo o princípio da "Separação de
+              Responsabilidades" (HTML = estrutura, CSS = apresentação, JS =
+              comportamento)
+            </li>
+            <li>
+              <strong>Performance:</strong> Arquivos separados podem ser
+              carregados em paralelo e armazenados em cache pelo navegador
+            </li>
+            <li>
+              <strong>Manutenção:</strong> Facilita encontrar e corrigir
+              problemas
+            </li>
+            <li>
+              <strong>Escalabilidade:</strong> Projeto pode crescer de forma
+              organizada
+            </li>
+            <li>
+              <strong>Colaboração:</strong> Equipes podem trabalhar
+              simultaneamente em diferentes partes do código
+            </li>
+            <li>
+              <strong>Reutilização:</strong> Os mesmos arquivos CSS e JS podem
+              ser compartilhados entre várias páginas HTML
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-link"></i> Links e Recursos Auxiliares
+    </h3>
+    <div class="card p-4 links-card">
+      <h4 class="mb-3">
+        <i class="fas fa-bookmark"></i> Links Úteis para Desenvolvedores
+      </h4>
+      <ul class="resources-list">
         <li>
-          <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript" 
-             class="text-blue-600 hover:underline" 
-             target="_blank">
-            MDN Web Docs - JavaScript
+          <a
+            href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript"
+            class="resource-link"
+            target="_blank"
+          >
+            <i class="fas fa-external-link-alt"></i>
+            <div>
+              <span class="resource-title">MDN Web Docs - JavaScript</span>
+              <span class="resource-desc">Documentação oficial e completa</span>
+            </div>
           </a>
-          <span class="text-gray-600 text-sm">(Documentação oficial e completa)</span>
         </li>
         <li>
-          <a href="https://www.w3schools.com/js/" 
-             class="text-blue-600 hover:underline" 
-             target="_blank">
-            W3Schools JavaScript Tutorial
+          <a
+            href="https://www.w3schools.com/js/"
+            class="resource-link"
+            target="_blank"
+          >
+            <i class="fas fa-external-link-alt"></i>
+            <div>
+              <span class="resource-title">W3Schools JavaScript Tutorial</span>
+              <span class="resource-desc">Tutoriais interativos</span>
+            </div>
           </a>
-          <span class="text-gray-600 text-sm">(Tutoriais interativos)</span>
         </li>
         <li>
-          <a href="https://developer.chrome.com/docs/devtools/" 
-             class="text-blue-600 hover:underline" 
-             target="_blank">
-            Chrome DevTools Official Guide
+          <a
+            href="https://developer.chrome.com/docs/devtools/"
+            class="resource-link"
+            target="_blank"
+          >
+            <i class="fas fa-external-link-alt"></i>
+            <div>
+              <span class="resource-title">Chrome DevTools Official Guide</span>
+              <span class="resource-desc"
+                >Guia completo das ferramentas de desenvolvedor</span
+              >
+            </div>
           </a>
-          <span class="text-gray-600 text-sm">(Guia completo das ferramentas de desenvolvedor)</span>
         </li>
         <li>
-          <a href="https://code.visualstudio.com/docs" 
-             class="text-blue-600 hover:underline" 
-             target="_blank">
-            Visual Studio Code - Documentação Oficial
+          <a
+            href="https://code.visualstudio.com/docs"
+            class="resource-link"
+            target="_blank"
+          >
+            <i class="fas fa-external-link-alt"></i>
+            <div>
+              <span class="resource-title"
+                >Visual Studio Code - Documentação Oficial</span
+              >
+              <span class="resource-desc">Guia e dicas para o editor</span>
+            </div>
           </a>
-          <span class="text-gray-600 text-sm">(Guia e dicas para o editor)</span>
         </li>
         <li>
-          <a href="https://github.com/getify/You-Dont-Know-JS" 
-             class="text-blue-600 hover:underline" 
-             target="_blank">
-            You Don't Know JS (Livro gratuito)
+          <a
+            href="https://github.com/getify/You-Dont-Know-JS"
+            class="resource-link"
+            target="_blank"
+          >
+            <i class="fas fa-external-link-alt"></i>
+            <div>
+              <span class="resource-title"
+                >You Don't Know JS (Livro gratuito)</span
+              >
+              <span class="resource-desc">Aprofundamento em JavaScript</span>
+            </div>
           </a>
-          <span class="text-gray-600 text-sm">(Aprofundamento em JavaScript)</span>
         </li>
       </ul>
     </div>
   </section>
+
+  <!-- Estilos CSS para toda a página, incluindo os details/summary -->
+  <style>
+    /* Estilos específicos para a página de ambientação */
+    .section-title.with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
+    }
+
+    .section-title.with-icon i {
+      color: var(--primary-color);
+    }
+
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background-color: var(--gray-100);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .card-header h4 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--secondary-color);
+    }
+
+    .card-header h4 i {
+      color: var(--primary-color);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .feature-list {
+      list-style-type: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+
+    .feature-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--gray-200);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: var(--success-color);
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+    }
+
+    .shortcut-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .shortcut-item {
+      background-color: var(--gray-100);
+      border-radius: var(--border-radius-sm);
+      padding: 1rem;
+    }
+
+    .shortcut-platform {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--secondary-color);
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 0.2rem 0.4rem;
+      font-size: 0.9rem;
+      font-family: var(--font-family-code);
+      color: var(--white);
+      background-color: var(--gray-700);
+      border-radius: 3px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+      margin: 0 0.2rem;
+    }
+
+    .devtools-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .devtool-tab {
+      background-color: var(--gray-100);
+      border-radius: var(--border-radius-sm);
+      padding: 1.25rem;
+      border-left: 3px solid var(--primary-color);
+    }
+
+    .devtool-tab h5 {
+      color: var(--primary-color);
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .devtool-tab p {
+      color: var(--gray-700);
+      margin-bottom: 1rem;
+    }
+
+    .tab-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tab-feature {
+      background-color: var(--white);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--gray-700);
+    }
+
+    .links-card {
+      border-left: 5px solid var(--info-color);
+    }
+
+    .resources-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .resources-list li {
+      margin-bottom: 0.75rem;
+    }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      background-color: var(--gray-100);
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition-base);
+    }
+
+    .resource-link:hover {
+      background-color: var(--gray-200);
+      transform: translateY(-2px);
+    }
+
+    .resource-link i {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+
+    .resource-link div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .resource-title {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .resource-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+
+    @media (max-width: 992px) {
+      .devtools-tabs {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .shortcut-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .editor-recommendation {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .editor-logo {
+        margin-bottom: 1rem;
+      }
+    }
+
+    /* Estilos para a recomendação do editor */
+    .editor-recommendation {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .editor-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+
+    /* Estilos para os elementos Details/Summary */
+    .installation-guides {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .os-details {
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+
+    .os-summary {
+      background-color: var(--gray-100);
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+
+    .os-summary:hover {
+      background-color: var(--gray-200);
+    }
+
+    .os-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* Ícones em cores específicas para cada sistema operacional */
+    .os-summary i.fa-windows {
+      color: #0078d6;
+    }
+
+    .os-summary i.fa-apple {
+      color: #999999;
+    }
+
+    .os-summary i.fa-linux {
+      color: #fcc624;
+    }
+
+    /* Adiciona um indicador de toggle */
+    .os-summary::after {
+      content: "+";
+      position: absolute;
+      right: 1.5rem;
+      font-size: 1.2rem;
+      color: var(--gray-600);
+    }
+
+    .os-details[open] .os-summary::after {
+      content: "-";
+    }
+
+    .os-details[open] .os-summary {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .os-details[open] .os-summary i {
+      color: var(--white);
+    }
+
+    .os-content {
+      padding: 1.25rem;
+      background-color: var(--gray-100);
+      border-bottom-left-radius: var(--border-radius-sm);
+      border-bottom-right-radius: var(--border-radius-sm);
+    }
+
+    /* Caixas de informação */
+    .info-box,
+    .success-box {
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      background-color: var(--info-color-light);
+      border-left: 4px solid var(--info-color);
+    }
+
+    .info-box h5,
+    .success-box h5 {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .success-box {
+      background-color: var(--success-color-light);
+      border-left: 4px solid var(--success-color);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background-color: var(--primary-color);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition-base);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-color-dark);
+      color: var(--white);
+    }
+
+    .btn-sm {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+
+    /* Responsividade adicional para dispositivos móveis */
+    @media (max-width: 576px) {
+      .card-body {
+        padding: 1rem;
+      }
+
+      .installation-steps {
+        padding-left: 1.2rem;
+      }
+
+      .os-summary {
+        padding: 0.75rem 1rem;
+      }
+
+      .os-content {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+
+  <!-- Pequeno script para abrir o primeiro details por padrão -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Seleciona o primeiro elemento details em cada grupo de instalação
+      const installGroups = document.querySelectorAll(".installation-guides");
+
+      installGroups.forEach((group) => {
+        const firstDetails = group.querySelector("details");
+        if (firstDetails) {
+          firstDetails.setAttribute("open", "");
+        }
+      });
+    });
+  </script>
 </article>

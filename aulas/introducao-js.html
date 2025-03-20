@@ -1,11 +1,14 @@
-<article>
-  <h2>Introdução ao JavaScript</h2>
+<article class="lesson-content">
+  <h2><i class="fab fa-js"></i> Introdução ao JavaScript</h2>
 
-  <p>
-    Nesta aula, vamos explorar os conceitos básicos de JavaScript através do
-    projeto TaskMaster - um aplicativo de gerenciamento de tarefas que
-    desenvolveremos ao longo do curso.
-  </p>
+  <!-- Bloco de Introdução -->
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, vamos explorar os conceitos básicos de JavaScript através do
+      projeto TaskMaster – um aplicativo de gerenciamento de tarefas que
+      desenvolveremos ao longo do curso.
+    </p>
+  </div>
 
   <blockquote>
     <p>
@@ -14,330 +17,704 @@
     </p>
   </blockquote>
 
-  <h3>Dica de Desenvolvimento</h3>
-  <p>
-    Para uma melhor experiência de desenvolvimento, considere instalar a
-    extensão: <strong>Microsoft Edge Tools for VS Code</strong>
-  </p>
+  <!-- Dica de Desenvolvimento -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h4 class="mb-0">
+        <i class="fas fa-lightbulb"></i> Dica de Desenvolvimento
+      </h4>
+    </div>
+    <div class="card-body">
+      <p>
+        Para uma melhor experiência de desenvolvimento, considere instalar a
+        extensão: <strong>Microsoft Edge Tools for VS Code</strong>.
+      </p>
+    </div>
+  </div>
 
-  <h3>1. Primeiros Passos com JavaScript</h3>
+  <!-- Seção 1: História e Evolução do JavaScript (Timeline) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-history"></i> 1. História e Evolução do JavaScript
+    </h3>
 
-  <img src="assets/images/html-css-js.png" alt="HTML, CSS e JavaScript" />
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="timeline">
+          <div class="timeline-item timeline-left">
+            <div class="timeline-content">
+              <div class="timeline-year">1995</div>
+              <p>
+                Criado por <strong>Brendan Eich</strong> na Netscape em apenas
+                10 dias.
+              </p>
+              <p>
+                Inicialmente chamado de <strong>Mocha</strong>, depois
+                <strong>LiveScript</strong> e finalmente
+                <strong>JavaScript</strong>.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item timeline-right">
+            <div class="timeline-content">
+              <div class="timeline-year">1997</div>
+              <p>
+                JavaScript é padronizado pela ECMA International como
+                <strong>ECMAScript</strong>.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item timeline-left">
+            <div class="timeline-content">
+              <div class="timeline-year">2009</div>
+              <p>
+                <strong>ES5</strong> introduz importantes adições como
+                JSON.parse e strict mode.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item timeline-right">
+            <div class="timeline-content">
+              <div class="timeline-year">2015</div>
+              <p>
+                <strong>ES6/ES2015</strong> traz let/const, arrow functions,
+                classes, promises e muito mais.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item timeline-left">
+            <div class="timeline-content">
+              <div class="timeline-year">2016-2024</div>
+              <p>Lançamentos anuais com novas funcionalidades.</p>
+              <p>
+                JavaScript se expande para servidores (Node.js), aplicações
+                móveis e desktop.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <h3>HTML, CSS e JavaScript: A Analogia do Corpo Humano</h3>
-  <p>Pense nas tecnologias web como partes de um corpo humano:</p>
-  <ul>
-    <li>
-      <strong>HTML (Esqueleto)</strong>: Assim como o esqueleto define a
-      estrutura básica do corpo humano, o HTML define a estrutura fundamental de
-      uma página web. Ele determina os elementos essenciais, como títulos,
-      parágrafos, imagens e links - os "ossos" do seu website.
-    </li>
-    <li>
-      <strong>CSS (Pele e Aparência)</strong>: Tal como a pele dá cor, textura e
-      forma ao corpo, o CSS é responsável pela aparência visual do site. Ele
-      controla cores, fontes, espaçamentos, layout e design - "vestindo" o
-      esqueleto HTML com estilo e elegância.
-    </li>
-    <li>
-      <strong>JavaScript (Músculos e Movimento)</strong>: Os músculos permitem
-      movimento e interação no corpo humano, assim como o JavaScript adiciona
-      interatividade e dinamismo a uma página web. Ele permite que os elementos
-      respondam a eventos, se movam, mudem e interajam com o usuário.
-    </li>
-  </ul>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          JavaScript evoluiu de uma linguagem simples para uma plataforma
+          completa de desenvolvimento:
+        </p>
+        <div class="concept-grid">
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-desktop"></i> Navegadores
+            </div>
+            <div class="concept-desc">
+              De pequenos scripts a aplicações web completas (SPAs).
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-server"></i> Servidores
+            </div>
+            <div class="concept-desc">
+              Node.js permitiu JavaScript no backend.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-mobile-alt"></i> Mobile
+            </div>
+            <div class="concept-desc">React Native, Ionic.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-laptop"></i> Desktop
+            </div>
+            <div class="concept-desc">Electron.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-microchip"></i> IoT
+            </div>
+            <div class="concept-desc">JavaScript em diversos dispositivos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <p>
-    Vamos começar com exemplos básicos de JavaScript. O primeiro passo é
-    entender como exibir mensagens no console:
-  </p>
+  <!-- Seção 2: JavaScript no Navegador -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-laptop-code"></i> 2. JavaScript no Navegador
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Os navegadores modernos executam JavaScript através de motores
+          altamente otimizados:
+        </p>
+        <ul class="feature-list">
+          <li>
+            <strong>V8</strong>: Desenvolvido pelo Google, usado no Chrome, Edge
+            e Node.js
+          </li>
+          <li><strong>SpiderMonkey</strong>: Usado no Firefox</li>
+          <li><strong>JavaScriptCore</strong>: Usado no Safari</li>
+        </ul>
+        <p>Características importantes incluem:</p>
+        <ul class="feature-list">
+          <li>APIs do navegador: DOM, Window, Fetch, localStorage</li>
+          <li>Runtime único (single-threaded) com event loop</li>
+          <li>Interação com HTML e CSS para manipulação da página</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-  <div class="code-header">Mensagens no Console</div>
-  <pre><code>// Mensagem de boas-vindas no console
-console.log("Bem-vindo ao TaskMaster!");
-console.log("Versão 0.1 - Introdução ao JavaScript");</code></pre>
+  <!-- Seção 3: Inclusão de JavaScript em HTML -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> 3. Inclusão de JavaScript em HTML
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Existem diferentes formas de incluir JavaScript em uma página:</p>
+        <div class="code-header">Script interno no HEAD ou BODY</div>
+        <pre><code>&lt;script&gt;
+  console.log("Script interno");
+&lt;/script&gt;</code></pre>
+        <div class="code-header">Script externo</div>
+        <pre><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></pre>
+        <div class="code-header">Com atributo defer</div>
+        <pre><code>&lt;script src="script.js" defer&gt;&lt;/script&gt;</code></pre>
+        <div class="code-header">Com atributo async</div>
+        <pre><code>&lt;script src="script.js" async&gt;&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>2. Comentários em JavaScript</h3>
+  <!-- Seção 4: Primeiros Passos com JavaScript -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-rocket"></i> 4. Primeiros Passos com JavaScript
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <img
+          src="assets/images/html-css-js.png"
+          alt="HTML, CSS e JavaScript"
+          class="centered-img"
+          style="max-width: 100%"
+        />
+      </div>
+    </div>
+  </section>
 
-  <p>
-    Comentários são fundamentais para documentar seu código. Em JavaScript,
-    existem dois tipos:
-  </p>
+  <!-- Seção 5: Analogia do Corpo Humano -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-heartbeat"></i> HTML, CSS e JavaScript: A Analogia do
+      Corpo Humano
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Pense nas tecnologias web como partes de um corpo humano:</p>
+        <div class="concept-grid">
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-user"></i> HTML (Esqueleto)
+            </div>
+            <div class="concept-desc">
+              Define a estrutura básica da página, assim como os ossos definem o
+              corpo.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-paint-brush"></i> CSS (Pele e Aparência)
+            </div>
+            <div class="concept-desc">
+              Responsável pela aparência visual, controlando cores, fontes e
+              layout.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-running"></i> JavaScript (Músculos)
+            </div>
+            <div class="concept-desc">
+              Adiciona interatividade e dinamismo, permitindo que os elementos
+              respondam a eventos.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="code-header">Tipos de Comentários</div>
-  <pre><code>// Este é um comentário de linha única
+  <!-- Seção 6: Console para Debugging -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-terminal"></i> 5. Console para Debugging
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>O console é uma ferramenta essencial para desenvolvimento:</p>
+        <div class="code-header">Métodos do Console</div>
+        <pre><code>
+// Métodos básicos
+console.log("Mensagem normal");
+console.info("Informação");
+console.warn("Aviso");
+console.error("Erro");
 
-/* 
-   Este é um comentário
-   de múltiplas linhas
-*/</code></pre>
+// Tabelas
+console.table([
+  {id: 1, tarefa: "Estudar JS"},
+  {id: 2, tarefa: "Praticar código"}
+]);
 
-  <h3>3. Case Sensitivity</h3>
+// Agrupamento
+console.group("Grupo de logs");
+console.log("Log 1");
+console.log("Log 2");
+console.groupEnd();
 
-  <p>
-    JavaScript é case-sensitive, o que significa que diferencia letras
-    maiúsculas e minúsculas:
-  </p>
+// Medição de tempo
+console.time("Timer");
+// código a ser medido
+console.timeEnd("Timer");
+        </code></pre>
+      </div>
+    </div>
+  </section>
 
-  <div class="code-header">Exemplo de Case Sensitivity</div>
-  <pre><code>// JavaScript é case-sensitive
+  <!-- Seção 7: Comentários e Case Sensitivity -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-comment-alt"></i> 6. Comentários e Case Sensitivity
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="code-header">Tipos de Comentários</div>
+        <pre><code>
+// Comentário de linha única
+
+/* Comentário
+   de múltiplas linhas */
+        </code></pre>
+        <p>
+          JavaScript é case-sensitive, ou seja, diferencia letras maiúsculas e
+          minúsculas.
+        </p>
+        <div class="code-header">Exemplo</div>
+        <pre><code>
 let nome = "TaskMaster";
 let Nome = "Outro nome";
 console.log(nome); // TaskMaster
-console.log(Nome); // Outro nome</code></pre>
+console.log(Nome); // Outro nome
+        </code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>4. Variáveis em JavaScript</h3>
-
-  <p>
-    Variáveis são utilizadas para armazenar dados que podem ser usados em seu
-    código:
-  </p>
-
-  <div class="code-header">Declaração de Variáveis</div>
-  <pre><code>// Exemplos básicos de variáveis
+  <!-- Seção 8: Variáveis -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-variable"></i> 7. Variáveis em JavaScript
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Variáveis são utilizadas para armazenar dados que podem ser usados em
+          seu código.
+        </p>
+        <div class="code-header">Declaração de Variáveis</div>
+        <pre><code>
+// Exemplos básicos de variáveis
 let appVersion = 0.1;
 let isActive = true;
+console.log("Versão:", appVersion);
+console.log("Aplicativo ativo:", isActive);
+        </code></pre>
+      </div>
+    </div>
+  </section>
 
-// Mostrando valores no console
-console.log("Versão do aplicativo:", appVersion);
-console.log("Aplicativo ativo:", isActive);</code></pre>
-
-  <h3>5. Trabalhando com Strings</h3>
-
-  <p>Existem diferentes formas de manipular strings em JavaScript:</p>
-
-  <div class="code-header">Concatenação Tradicional</div>
-  <pre><code>// Exemplo simples de concatenação de strings
+  <!-- Seção 9: Trabalhando com Strings -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-font"></i> 8. Trabalhando com Strings
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Existem diferentes formas de manipular strings em JavaScript:</p>
+        <div class="code-header">Concatenação Tradicional</div>
+        <pre><code>
+// Exemplo simples de concatenação
 let mensagem = "Olá! Bem-vindo ao " + nome;
-console.log(mensagem);</code></pre>
-
-  <div class="code-header">Template Strings (ES6+)</div>
-  <pre><code>// Exemplo de template string (forma moderna de concatenação)
+console.log(mensagem);
+        </code></pre>
+        <div class="code-header">Template Strings (ES6+)</div>
+        <pre><code>
+// Exemplo de template string
 let mensagemTemplate = `Aplicativo: ${nome} - Versão: ${appVersion}`;
-console.log(mensagemTemplate);</code></pre>
+console.log(mensagemTemplate);
+        </code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>6. Alertas no Navegador</h3>
-
-  <p>
-    Alertas são caixas de diálogo que podem ser usadas para interagir com o
-    usuário:
-  </p>
-
-  <div class="code-header">Exemplos de Alert</div>
-  <pre><code>// Exemplo de alert simples
+  <!-- Seção 10: Alertas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-bell"></i> 9. Alertas no Navegador
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Alertas são caixas de diálogo usadas para interagir com o usuário:
+        </p>
+        <div class="code-header">Exemplos de Alert</div>
+        <pre><code>
+// Exemplo de alert simples
 // alert("Bem-vindo ao TaskMaster!");
 
-// Exemplo de alert com concatenação de strings
+// Exemplo com concatenação
 let mensagemAlert = "Bem-vindo ao " + nome + "!";
-// alert(mensagemAlert);</code></pre>
+/* alert(mensagemAlert); */
+        </code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>Exercícios Práticos</h3>
-
-  <p>Para fixar o conteúdo, tente resolver os seguintes exercícios:</p>
-
-  <div class="desafio">
-    <h4>Exercício 1: Variáveis Pessoais</h4>
-    <p>
-      Crie duas variáveis com seu nome e idade. Use console.log para mostrar a
-      mensagem "Meu nome é [seu nome] e tenho [sua idade] anos."
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Exemplo de Resolução</div>
-      <pre><code>let meuNome = "João";
+  <!-- Seção 11: Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> Exercícios Práticos
+    </h3>
+    <div class="desafio">
+      <h4>Exercício 1: Variáveis Pessoais</h4>
+      <p>
+        Crie duas variáveis com seu nome e idade. Use console.log para mostrar a
+        mensagem "Meu nome é [seu nome] e tenho [sua idade] anos."
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>
+let meuNome = "João";
 let minhaIdade = 30;
 console.log(`Meu nome é ${meuNome} e tenho ${minhaIdade} anos.`);
-
-// Alternativa sem template string:
-console.log("Meu nome é " + meuNome + " e tenho " + minhaIdade + " anos.");</code></pre>
-    </details>
-  </div>
-
-  <div class="desafio">
-    <h4>Exercício 2: Representando uma Tarefa</h4>
-    <p>
-      Crie variáveis para representar uma tarefa: título da tarefa, descrição e
-      status de conclusão (true/false). Mostre essas informações no console.
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Exemplo de Resolução</div>
-      <pre><code>let tituloTarefa = "Estudar JavaScript";
+        </code></pre>
+      </details>
+    </div>
+    <div class="desafio">
+      <h4>Exercício 2: Representando uma Tarefa</h4>
+      <p>
+        Crie variáveis para representar uma tarefa: título, descrição e status
+        (true/false). Mostre essas informações no console.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>
+let tituloTarefa = "Estudar JavaScript";
 let descricaoTarefa = "Aprender os conceitos básicos de JavaScript";
 let tarefaConcluida = false;
-
-console.log("Tarefa:", tituloTarefa);
-console.log("Descrição:", descricaoTarefa);
-console.log("Concluída:", tarefaConcluida);
-
-// Usando template string:
 console.log(`Tarefa: ${tituloTarefa}
 Descrição: ${descricaoTarefa}
-Concluída: ${tarefaConcluida}`);</code></pre>
-    </details>
-  </div>
-
-  <div class="desafio">
-    <h4>Exercício 3: Console do Navegador</h4>
-    <p>
-      Use as ferramentas do navegador para abrir o console JavaScript. Tente
-      modificar o valor da variável 'nome' diretamente no console e confirme se
-      o valor foi alterado.
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Exemplo no Console do Navegador</div>
-      <pre><code>nome = "Outro nome";
-console.log(nome);</code></pre>
-    </details>
-  </div>
-
-  <div class="desafio">
-    <h4>Exercício 4: Trabalhando com Alert</h4>
-    <p>
-      Descomente a linha do alert() em seu código e recarregue a página. Depois,
-      modifique a mensagem do alert e teste novamente.
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>// Remova as barras de comentário (//) para ativar o alert
-alert("Bem-vindo ao TaskMaster!");
-
-// Modificando a mensagem:
-alert("Olá! Bem-vindo ao aplicativo TaskMaster!");</code></pre>
-    </details>
-  </div>
-
-  <div class="desafio">
-    <h4>Exercício 5: Debugging Básico</h4>
-    <p>Copie e cole o seguinte código e observe o resultado no console:</p>
-
-    <pre><code>let numero1 = 10;
-let numero2 = "5";
-console.log(numero1 + numero2);</code></pre>
-
-    <p>
-      O resultado é 105, pois o JavaScript está concatenando ao invés de somar.
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>let numero1 = 10;
-let numero2 = "5";
-console.log(numero1 + Number(numero2)); // ou parseInt(numero2)
-
-// Outra solução:
+Concluída: ${tarefaConcluida}`);
+        </code></pre>
+      </details>
+    </div>
+    <div class="desafio">
+      <h4>Exercício 3: Console do Navegador</h4>
+      <p>
+        Abra o console JavaScript do seu navegador e tente modificar o valor da
+        variável <code>nome</code> diretamente, confirmando a alteração.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo no Console</div>
+        <pre><code>
+nome = "Outro nome";
+console.log(nome);
+        </code></pre>
+      </details>
+    </div>
+    <div class="desafio">
+      <h4>Exercício 4: Trabalhando com Alert</h4>
+      <p>
+        Descomente a linha do alert() em seu código e recarregue a página. Em
+        seguida, modifique a mensagem do alert e teste novamente.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>
+// alert("Bem-vindo ao TaskMaster!");
+alert("Olá! Bem-vindo ao aplicativo TaskMaster!");
+        </code></pre>
+      </details>
+    </div>
+    <div class="desafio">
+      <h4>Exercício 5: Debugging Básico</h4>
+      <p>
+        Copie e cole o código abaixo e observe o resultado no console. Explique
+        por que o resultado é diferente do esperado.
+      </p>
+      <pre><code>
 let numero1 = 10;
-let numero2 = 5; // Modificar diretamente para um número
-console.log(numero1 + numero2);</code></pre>
-    </details>
-  </div>
-
-  <div class="desafio">
-    <h4>Exercício 6: Nome do Projeto</h4>
-    <p>
-      Crie uma variável para armazenar o nome do seu projeto e exiba-o no
-      console.
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>let nomeDoProjeto = "TaskMaster";
-console.log("Nome do projeto:", nomeDoProjeto);</code></pre>
-    </details>
-  </div>
-
-  <div class="desafio">
-    <h4>Exercício 7: Operações Matemáticas</h4>
-    <p>
-      Crie duas variáveis numéricas e exiba a soma, subtração, multiplicação e
-      divisão delas.
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>let valor1 = 20;
+let numero2 = "5";
+console.log(numero1 + numero2);
+      </code></pre>
+      <p>
+        O resultado é 105, pois o JavaScript está concatenando, em vez de somar.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>
+let numero1 = 10;
+let numero2 = "5";
+console.log(numero1 + Number(numero2));
+        </code></pre>
+      </details>
+    </div>
+    <div class="desafio">
+      <h4>Exercício 6: Nome do Projeto</h4>
+      <p>
+        Crie uma variável para armazenar o nome do seu projeto e exiba-a no
+        console.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>
+let nomeDoProjeto = "TaskMaster";
+console.log("Nome do projeto:", nomeDoProjeto);
+        </code></pre>
+      </details>
+    </div>
+    <div class="desafio">
+      <h4>Exercício 7: Operações Matemáticas</h4>
+      <p>
+        Crie duas variáveis numéricas e exiba a soma, subtração, multiplicação e
+        divisão delas.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>
+let valor1 = 20;
 let valor2 = 5;
-
-console.log("Soma:", valor1 + valor2); // 25
-console.log("Subtração:", valor1 - valor2); // 15
-console.log("Multiplicação:", valor1 * valor2); // 100
-console.log("Divisão:", valor1 / valor2); // 4</code></pre>
-    </details>
-  </div>
-
-  <div class="desafio">
-    <h4>Exercício 8: Template Strings Avançado</h4>
-    <p>
-      Crie uma mensagem de boas-vindas usando template string que inclua o nome
-      do usuário, nome do aplicativo e versão.
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>let nomeUsuario = "Maria";
+console.log("Soma:", valor1 + valor2);
+console.log("Subtração:", valor1 - valor2);
+console.log("Multiplicação:", valor1 * valor2);
+console.log("Divisão:", valor1 / valor2);
+        </code></pre>
+      </details>
+    </div>
+    <div class="desafio">
+      <h4>Exercício 8: Template Strings Avançado</h4>
+      <p>
+        Crie uma mensagem de boas-vindas usando template string que inclua o
+        nome do usuário, o nome do aplicativo e a versão.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>
+let nomeUsuario = "Maria";
 let nomeApp = "TaskMaster";
 let versaoApp = 1.0;
-
 let mensagemBoasVindas = `Olá ${nomeUsuario}! 
 Bem-vindo ao ${nomeApp} versão ${versaoApp}.
 Estamos felizes em ter você como usuário!`;
-
-console.log(mensagemBoasVindas);</code></pre>
-    </details>
-  </div>
-
-  <div class="desafio">
-    <h4>Exercício 9: Tipos de Dados</h4>
-    <p>
-      Use console.log com typeof para mostrar o tipo de cada uma das seguintes
-      variáveis: string, número, booleano e uma variável não inicializada.
-    </p>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>let textoExemplo = "JavaScript é incrível";
+console.log(mensagemBoasVindas);
+        </code></pre>
+      </details>
+    </div>
+    <div class="desafio">
+      <h4>Exercício 9: Tipos de Dados</h4>
+      <p>
+        Use console.log com typeof para mostrar o tipo de cada uma das seguintes
+        variáveis: string, número, booleano e uma variável não inicializada.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>
+let textoExemplo = "JavaScript é incrível";
 let numeroExemplo = 42;
 let verdadeiroFalso = true;
 let variavelNaoInicializada;
+console.log("Tipo de textoExemplo:", typeof textoExemplo);
+console.log("Tipo de numeroExemplo:", typeof numeroExemplo);
+console.log("Tipo de verdadeiroFalso:", typeof verdadeiroFalso);
+console.log("Tipo de variavelNaoInicializada:", typeof variavelNaoInicializada);
+        </code></pre>
+      </details>
+    </div>
+  </section>
 
-console.log("Tipo de textoExemplo:", typeof textoExemplo); // string
-console.log("Tipo de numeroExemplo:", typeof numeroExemplo); // number
-console.log("Tipo de verdadeiroFalso:", typeof verdadeiroFalso); // boolean
-console.log("Tipo de variavelNaoInicializada:", typeof variavelNaoInicializada); // undefined</code></pre>
-    </details>
-  </div>
+  <!-- Seção: Conclusão -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta aula, você aprendeu os conceitos fundamentais de JavaScript,
+          incluindo sua história, como ele funciona no navegador, diferentes
+          formas de inclusão e técnicas de debugging. Também vimos como declarar
+          variáveis, manipular strings e utilizar alertas para interagir com o
+          usuário.
+        </p>
+        <p>
+          Na próxima aula, vamos aprofundar esses conceitos e começar a
+          construir funcionalidades reais para o projeto TaskMaster.
+        </p>
+      </div>
+    </div>
+  </section>
 
-  <h3>Conclusão</h3>
-  <p>
-    Nesta aula, você aprendeu os conceitos fundamentais de JavaScript,
-    incluindo:
-  </p>
-  <ul>
-    <li>Como usar o console para debugging</li>
-    <li>Declaração de variáveis</li>
-    <li>Concatenação de strings e template strings</li>
-    <li>Operações básicas</li>
-    <li>Tipos de dados em JavaScript</li>
-  </ul>
-
-  <p>
-    Na próxima aula, vamos aprofundar esses conceitos e começar a construir
-    funcionalidades reais para o nosso aplicativo TaskMaster.
-  </p>
-
+  <!-- Estilos CSS Específicos para a Página -->
   <style>
-    /* Estilos específicos para esta aula */
+    /* Base */
+    :root {
+      --primary-color: #3498db;
+      --primary-color-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --info-color: #3498db;
+      --white: #fff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --border-radius: 0.5rem;
+      --border-radius-sm: 0.25rem;
+      --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --transition-base: all 0.2s ease-in-out;
+    }
+    .lesson-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .intro-box {
+      background-color: var(--gray-100);
+      padding: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
+    }
+    .section-title.with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
+    }
+    .section-title.with-icon i {
+      color: var(--primary-color);
+    }
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card-header {
+      background-color: var(--gray-100);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .card-header h4 {
+      margin: 0;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--secondary-color);
+    }
+    .card-body {
+      padding: 1.5rem;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .feature-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--gray-200);
+    }
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .concept-item {
+      background-color: var(--gray-100);
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--box-shadow);
+      text-align: center;
+    }
+    .concept-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    .concept-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    .numbered-steps {
+      list-style: decimal;
+      margin-left: 1.5rem;
+    }
+    .info-box {
+      background-color: var(--info-color-light, #cce5ff);
+      border-left: 4px solid var(--info-color, #3498db);
+      padding: 1rem;
+      margin-top: 1.5rem;
+      border-radius: var(--border-radius-sm);
+    }
+    .info-box h5 {
+      margin-top: 0;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    details {
+      margin-top: 10px;
+    }
+    summary {
+      cursor: pointer;
+      color: #2c7be5;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    summary:hover {
+      text-decoration: underline;
+    }
     .desafio {
       background-color: #f7f8e8;
       border-left: 4px solid #e2c94a;
@@ -345,20 +722,88 @@ console.log("Tipo de variavelNaoInicializada:", typeof variavelNaoInicializada);
       margin: 20px 0;
       border-radius: 4px;
     }
-
-    summary {
-      cursor: pointer;
-      color: #2c7be5;
+    .desafio h4 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+    .desafio details {
+      margin-top: 1rem;
+    }
+    .solution pre {
+      margin: 0;
+    }
+    /* Timeline */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+    .timeline::after {
+      content: "";
+      position: absolute;
+      width: 3px;
+      background-color: #3498db;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1.5px;
+    }
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+    }
+    .timeline-item::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border: 3px solid #3498db;
+      border-radius: 50%;
+      top: 15px;
+      z-index: 1;
+    }
+    .timeline-left {
+      left: 0;
+    }
+    .timeline-right {
+      left: 50%;
+    }
+    .timeline-left::after {
+      right: -13px;
+    }
+    .timeline-right::after {
+      left: -13px;
+    }
+    .timeline-content {
+      padding: 15px;
+      background-color: white;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .timeline-year {
       font-weight: bold;
-      margin-bottom: 10px;
+      color: #3498db;
     }
-
-    summary:hover {
-      text-decoration: underline;
-    }
-
-    details {
-      margin-top: 10px;
+    @media screen and (max-width: 600px) {
+      .timeline::after {
+        left: 31px;
+      }
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      .timeline-left::after,
+      .timeline-right::after {
+        left: 21px;
+      }
+      .timeline-right {
+        left: 0;
+      }
     }
   </style>
 </article>

@@ -1,124 +1,457 @@
-<article class="p-6 bg-white shadow-md rounded-lg">
-  <h1 class="text-3xl font-bold mb-6 border-b pb-3">
-    📚 Apostila de Desenvolvimento Web
-  </h1>
+<article class="principal-page">
+  <h2>📚 Apostila de Desenvolvimento Web</h2>
 
-  <section class="mb-6">
-    <h2 class="text-2xl font-semibold mb-4">🚀 Sobre a Apostila</h2>
-    <p class="text-gray-700 leading-relaxed">
-      Esta apostila online interativa foi projetada para estudantes com
-      conhecimentos básicos de HTML e CSS, oferecendo um caminho completo para
-      aprendizado em desenvolvimento web.
-    </p>
-  </section>
-
-  <section class="mb-6">
-    <h2 class="text-2xl font-semibold mb-4">📋 Conteúdo Principal</h2>
-    <div class="grid md:grid-cols-3 gap-4">
-      <div class="bg-gray-100 p-4 rounded">
-        <h3 class="font-bold mb-2 text-lg">Git e Controle de Versão</h3>
-        <ul class="list-disc list-inside text-gray-700">
-          <li>Comandos básicos</li>
-          <li>Branches e merges</li>
-          <li>Repositórios remotos</li>
-          <li>GitFlow</li>
-        </ul>
-      </div>
-      <div class="bg-gray-100 p-4 rounded">
-        <h3 class="font-bold mb-2 text-lg">JavaScript</h3>
-        <ul class="list-disc list-inside text-gray-700">
-          <li>Tipos de dados</li>
-          <li>Funções</li>
-          <li>Arrays e Objetos</li>
-          <li>Promessas</li>
-          <li>ES6+</li>
-        </ul>
-      </div>
-      <div class="bg-gray-100 p-4 rounded">
-        <h3 class="font-bold mb-2 text-lg">React</h3>
-        <ul class="list-disc list-inside text-gray-700">
-          <li>Componentes</li>
-          <li>Hooks</li>
-          <li>Gerenciamento de estado</li>
-          <li>Integração com APIs</li>
-        </ul>
+  <section class="hero-section mb-5">
+    <div class="card hero-card p-4">
+      <h3 class="text-primary mb-3">🚀 Bem-vindo à Apostila Interativa</h3>
+      <p class="lead-text">
+        Esta apostila online interativa foi projetada para estudantes com
+        conhecimentos básicos de HTML e CSS, oferecendo um caminho completo para
+        aprendizado em desenvolvimento web moderno.
+      </p>
+      <div class="mt-4">
+        <a
+          href="#"
+          onclick="loadContent('ambientacao')"
+          class="btn btn-primary"
+        >
+          <i class="fas fa-play-circle"></i> Começar Agora
+        </a>
+        <a
+          href="https://github.com/DanielLCintra/apostila-webdev"
+          target="_blank"
+          class="btn btn-secondary ml-2"
+        >
+          <i class="fab fa-github"></i> Ver no GitHub
+        </a>
       </div>
     </div>
   </section>
 
-  <section class="mb-6">
-    <h2 class="text-2xl font-semibold mb-4">🧩 Pré-requisitos</h2>
-    <p class="text-gray-700">
-      Esta apostila assume conhecimentos básicos de:
-      <span class="bg-gray-200 px-2 py-1 rounded mx-1 inline-block">HTML5</span>
-      <span class="bg-gray-200 px-2 py-1 rounded mx-1 inline-block">CSS3</span>
-      <span class="bg-gray-200 px-2 py-1 rounded mx-1 inline-block"
-        >Lógica de Programação</span
-      >
-    </p>
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-list-check"></i> Conteúdo Principal
+    </h3>
+    <div class="grid grid-cols-3">
+      <div class="card feature-card">
+        <div class="card-header">
+          <i class="fab fa-git-alt feature-icon"></i>
+          <h4>Git e Controle de Versão</h4>
+        </div>
+        <div class="card-body">
+          <ul class="feature-list">
+            <li>Comandos básicos</li>
+            <li>Branches e merges</li>
+            <li>Repositórios remotos</li>
+            <li>GitFlow</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a
+            href="#"
+            onclick="loadContent('git')"
+            class="btn btn-sm btn-outline"
+          >
+            Acessar <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="card feature-card">
+        <div class="card-header">
+          <i class="fab fa-js feature-icon"></i>
+          <h4>JavaScript</h4>
+        </div>
+        <div class="card-body">
+          <ul class="feature-list">
+            <li>Tipos de dados</li>
+            <li>Funções</li>
+            <li>Arrays e Objetos</li>
+            <li>Promessas</li>
+            <li>ES6+</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a
+            href="#"
+            onclick="loadContent('introducao-js')"
+            class="btn btn-sm btn-outline"
+          >
+            Acessar <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="card feature-card">
+        <div class="card-header">
+          <i class="fab fa-react feature-icon"></i>
+          <h4>React</h4>
+        </div>
+        <div class="card-body">
+          <ul class="feature-list">
+            <li>Componentes</li>
+            <li>Hooks</li>
+            <li>Gerenciamento de estado</li>
+            <li>Integração com APIs</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn btn-sm btn-outline">
+            Em breve <i class="fas fa-hourglass-half"></i>
+          </a>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2 class="text-2xl font-semibold mb-4">🚀 Como Começar</h2>
-    <div class="bg-gray-100 p-4 rounded mb-4">
-      <h3 class="font-bold mb-2">Clonar o Repositório:</h3>
-      <pre
-        class="bg-gray-200 p-2 rounded overflow-x-auto"
-      ><code class="text-sm">git clone https://github.com/DanielLCintra/apostila-webdev</code></pre>
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-puzzle-piece"></i> Pré-requisitos
+    </h3>
+    <div class="card p-4">
+      <p>Esta apostila assume conhecimentos básicos de:</p>
+      <div class="skills-container">
+        <span class="skill-tag">HTML5</span>
+        <span class="skill-tag">CSS3</span>
+        <span class="skill-tag">Lógica de Programação</span>
+      </div>
+      <div class="info-box mt-3">
+        <h4>Dica para iniciantes</h4>
+        <p>
+          Se você ainda não está familiarizado com HTML e CSS, recomendamos
+          estudar os fundamentos dessas tecnologias antes de prosseguir.
+          Consulte a seção de
+          <a href="#" onclick="loadContent('bibliografia')">Bibliografia</a>
+          para recursos recomendados.
+        </p>
+      </div>
     </div>
-    <div class="flex space-x-4">
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code-branch"></i> Como Começar
+    </h3>
+    <div class="card p-4">
+      <h4 class="mb-3">Clonar o Repositório:</h4>
+      <div class="code-header">Comando Git</div>
+      <pre><code class="language-bash">git clone https://github.com/DanielLCintra/apostila-webdev</code></pre>
+      <div class="mt-4">
+        <a
+          href="https://github.com/DanielLCintra/apostila-webdev"
+          target="_blank"
+          class="btn btn-primary"
+        >
+          <i class="fab fa-github"></i> Ver Repositório no GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-book"></i> Bibliografia Recomendada
+    </h3>
+    <div class="grid grid-cols-2">
+      <div class="card">
+        <div class="biblio-preview">
+          <img
+            src="assets/images/livro-js.jpg"
+            alt="JavaScript: O Guia Definitivo"
+            class="book-thumbnail"
+          />
+          <div>
+            <h4>JavaScript: O Guia Definitivo</h4>
+            <p class="text-muted">Editora: O'Reilly</p>
+            <a
+              href="#"
+              onclick="loadContent('bibliografia')"
+              class="btn btn-sm btn-outline mt-2"
+            >
+              Ver mais <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="biblio-preview">
+          <img
+            src="assets/images/livro-git.jpg"
+            alt="Aprendendo Git"
+            class="book-thumbnail"
+          />
+          <div>
+            <h4>Aprendendo Git</h4>
+            <p class="text-muted">Editora: Novatec</p>
+            <a
+              href="#"
+              onclick="loadContent('bibliografia')"
+              class="btn btn-sm btn-outline mt-2"
+            >
+              Ver mais <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-3">
       <a
-        href="https://github.com/DanielLCintra/apostila-webdev"
-        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-block"
+        href="#"
+        onclick="loadContent('bibliografia')"
+        class="btn btn-secondary"
       >
-        Ver Repositório no GitHub
+        Ver Bibliografia Completa <i class="fas fa-external-link-alt"></i>
       </a>
     </div>
   </section>
 
-  <br/>
-
-  <section class="mb-6">
-    <h2 class="text-2xl font-semibold mb-4">📖 Bibliografia Recomendada</h2>
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col">
-        <div class="flex items-center mb-4">
-          <img src="assets/images/livro-js.jpg" alt="JavaScript: O Guia Definitivo" class="w-32 h-auto mr-4 rounded-md shadow">
-          <div>
-            <h3 class="font-bold text-lg">JavaScript: O Guia Definitivo</h3>
-            <p class="text-gray-700">Editora: O'Reilly</p>
-          </div>
-        </div>
-        <div class="mt-auto">
-          <a href="https://www.amazon.com.br/JavaScript-Guia-Definitivo-David-Flanagan/dp/856583719X/ref=asc_df_856583719X/?tag=googleshopp00-20&linkCode=df0&hvadid=709883381752&hvpos=&hvnetw=g&hvrand=3086554597270450787&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1001773&hvtargid=pla-812161948788&psc=1&mcid=49fa51ecfa0b352ab8d7e2675bbf82dc&tag=googleshopp00-20&linkCode=df0&hvadid=709883381752&hvpos=&hvnetw=g&hvrand=3086554597270450787&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1001773&hvtargid=pla-812161948788&psc=1&language=pt_BR&gad_source=1
-" 
-             target="_blank" 
-             class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-block w-full text-center">
-            Comprar na Amazon
-          </a>
-        </div>
-      </div>
-
-      <section class="mb-6">
-        -----------------
-      </section>
-
-      <div class="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col">
-        <div class="flex items-center mb-4">
-          <img src="assets/images/livro-git.jpg" alt="Aprendendo Git" class="w-32 h-auto mr-4 rounded-md shadow">
-          <div>
-            <h3 class="font-bold text-lg">Aprendendo Git</h3>
-            <p class="text-gray-700">Editora: Novatec</p>
-          </div>
-        </div>
-        <div class="mt-auto">
-          <a href="https://www.amazon.com.br/Aprendendo-Git-pr%C3%A1tico-visual-fundamentos/dp/857522882X/ref=pd_vtp_strm_d_sccl_2_6/139-6407620-1222162?pd_rd_w=3Be80&content-id=amzn1.sym.aa143e42-108d-4304-9b53-605ce83d144a&pf_rd_p=aa143e42-108d-4304-9b53-605ce83d144a&pf_rd_r=SQDKZZMF54DT5Y3585MY&pd_rd_wg=qoEAw&pd_rd_r=b7ac00ad-8dbe-4004-9a7a-365aa4283140&pd_rd_i=857522882X&psc=1
-" 
-             target="_blank" 
-             class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-block w-full text-center">
-            Comprar na Amazon
-          </a>
-        </div>
-      </div>
-    </div>
+  <section class="author-note mt-5">
+    <blockquote class="message-box">
+      <p>
+        <i class="fas fa-quote-left"></i>
+        Este material foi desenvolvido com o objetivo de oferecer uma abordagem
+        prática e moderna para o aprendizado de desenvolvimento web. Espero que
+        esta apostila seja útil em sua jornada de aprendizado.
+        <i class="fas fa-quote-right"></i>
+      </p>
+      <footer>— Prof. Daniel Loureiro Cintra</footer>
+    </blockquote>
+  </section>
 </article>
+
+<style>
+  /* Estilos específicos para a página principal */
+  .principal-page h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .hero-section {
+    margin-top: 2rem;
+  }
+
+  .hero-card {
+    border-left: 5px solid var(--primary-color);
+    background-color: var(--white);
+  }
+
+  .lead-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--gray-700);
+  }
+
+  .section-title {
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--gray-200);
+    padding-bottom: 0.5rem;
+  }
+
+  .section-title.with-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-title.with-icon i {
+    color: var(--primary-color);
+  }
+
+  .feature-card {
+    border-top: 4px solid var(--primary-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-header {
+    padding: 1.25rem 1.25rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .card-body {
+    padding: 1.25rem;
+    flex-grow: 1;
+  }
+
+  .card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: var(--gray-100);
+    text-align: center;
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+
+  .feature-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--gray-200);
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .feature-list li:last-child {
+    border-bottom: none;
+  }
+
+  .feature-list li::before {
+    content: "✓";
+    color: var(--success-color);
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+  }
+
+  .skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .skill-tag {
+    background-color: var(--gray-200);
+    color: var(--gray-800);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-weight: 600;
+    transition: var(--transition-base);
+    text-decoration: none;
+  }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: 1px solid var(--primary-color);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--primary-color-dark);
+    color: var(--white);
+  }
+
+  .btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: 1px solid var(--secondary-color);
+  }
+
+  .btn-secondary:hover {
+    background-color: #1a252f;
+    color: var(--white);
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+
+  .btn-outline:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+  }
+
+  .ml-2 {
+    margin-left: 0.5rem;
+  }
+
+  .book-thumbnail {
+    width: 80px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--box-shadow);
+  }
+
+  .biblio-preview {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .message-box {
+    background-color: var(--gray-100);
+    border-left: 5px solid var(--secondary-color);
+    padding: 1.5rem;
+    font-style: italic;
+    margin: 2rem 0;
+  }
+
+  .message-box p {
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+
+  .message-box i.fa-quote-left {
+    margin-right: 0.5rem;
+    opacity: 0.5;
+  }
+
+  .message-box i.fa-quote-right {
+    margin-left: 0.5rem;
+    opacity: 0.5;
+  }
+
+  .message-box footer {
+    text-align: right;
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  @media (max-width: 992px) {
+    .grid-cols-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .feature-card {
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .grid-cols-3,
+    .grid-cols-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .biblio-preview {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .book-thumbnail {
+      margin-bottom: 1rem;
+    }
+  }
+</style>

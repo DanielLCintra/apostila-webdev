@@ -1,390 +1,604 @@
-<article>
-  <h2>Git</h2>
+<article class="lesson-content">
+  <h2><i class="fas fa-code-branch"></i> Git: Controle de Versão</h2>
 
-  <p>
-    Nesta aula, vamos aprender sobre o Git, um sistema de controle de versão
-    essencial para desenvolvedores web modernos.
-  </p>
-
-  <h3>1. História e Conceitos Básicos do Git</h3>
-
-  <h4>Origem e Criação</h4>
-  <ul>
-    <li>
-      Criado por Linus Torvalds em 2005 para o desenvolvimento do kernel Linux
-    </li>
-    <li>Sistema de controle de versão distribuído (DVCS)</li>
-    <li>Alternativa a sistemas centralizados como SVN e CVS</li>
-  </ul>
-
-  <h4>Conceitos Fundamentais</h4>
-  <ul>
-    <li>
-      <strong>Repositório:</strong> armazenamento de arquivos e histórico de
-      mudanças
-    </li>
-    <li>
-      <strong>Commit:</strong> snapshot do projeto em um momento específico
-    </li>
-    <li><strong>Branch:</strong> linha independente de desenvolvimento</li>
-    <li><strong>Merge:</strong> combinar alterações de diferentes branches</li>
-    <li><strong>Clone:</strong> cópia completa de um repositório</li>
-    <li><strong>Pull/Push:</strong> sincronização de mudanças</li>
-  </ul>
-
-  <h3>2. Fluxo Visual do Processo Git</h3>
-
-  <img
-    src="assets/images/processo-git.png"
-    alt="Processo de versionamento Git"
-    style="max-width: 100%; margin: 20px 0"
-  />
-
-  <p>A imagem acima ilustra um fluxo simplificado do versionamento com Git:</p>
-
-  <ol>
-    <li>
-      <strong>Daniel cria a versão inicial (v1)</strong> do documento e envia
-      para o servidor remoto via <code>git push</code>
-    </li>
-    <li>
-      <strong>Matheus baixa a versão v1</strong> do documento usando
-      <code>git pull</code>
-    </li>
-    <li>
-      <strong>Matheus modifica o documento</strong>, criando a versão v2, e
-      envia para o servidor via <code>git push</code>
-    </li>
-    <li>
-      <strong>Daniel atualiza seu repositório local</strong> com a versão v2
-      usando <code>git pull</code>
-    </li>
-  </ol>
-
-  <p>
-    O servidor Git (GitHub, GitLab ou Bitbucket) mantém o histórico completo de
-    todas as versões, permitindo rastrear a evolução do documento e quem fez
-    cada alteração.
-  </p>
-
-  <h4>Processo de Rollback em Caso de Falhas</h4>
-
-  <p>
-    Além do fluxo básico, é importante entender como reverter mudanças
-    problemáticas:
-  </p>
-
-  <ol>
-    <li>Uma versão v3 é criada e enviada ao servidor</li>
-    <li>A equipe detecta falhas nesta versão</li>
-    <li>
-      É executado um <code>git reset</code> para retornar à versão v2 estável
-    </li>
-    <li>A versão corrigida pode então ser desenvolvida a partir da v2</li>
-  </ol>
-
-  <div class="code-header">Voltar para versão anterior (rollback)</div>
-  <pre><code># Voltar para um commit específico
-git reset --hard a1b2c3d</code></pre>
-
-  <h3>3. Git Flow Simplificado: Organização de Branches em Projetos</h3>
-
-  <img
-    src="assets/images/git-flow-simplificado.png"
-    alt="Git Flow Simplificado"
-    style="max-width: 100%; margin: 20px 0"
-  />
-
-  <p>
-    A imagem acima ilustra o Git Flow simplificado, um modelo de fluxo de
-    trabalho estruturado para projetos Git. Este modelo estabelece uma
-    organização clara de branches e processos que facilitam o desenvolvimento
-    colaborativo e mantêm a integridade do código.
-  </p>
-
-  <p>Os principais componentes deste fluxo são:</p>
-
-  <ul>
-    <li>
-      <strong>Branch Main:</strong> É a branch principal que contém o código de
-      produção estável. Representa o que está atualmente em produção.
-    </li>
-    <li>
-      <strong>Branch Develop:</strong> É a branch de desenvolvimento onde novas
-      funcionalidades são integradas antes de irem para produção.
-    </li>
-    <li>
-      <strong>Feature Branches:</strong> São branches criados a partir da
-      develop para implementar novas funcionalidades.
-    </li>
-    <li>
-      <strong>Hotfix Branches:</strong> São branches criados para correções
-      rápidas ou urgentes que precisam ir direto para produção.
-    </li>
-  </ul>
-
-  <p>
-    Neste fluxo de trabalho, a branch main e a branch develop precisam sempre
-    ser mantidas sincronizadas, com exceção dos períodos em que novas
-    funcionalidades estão em desenvolvimento/homologação na branch develop e
-    ainda não foram integradas à main.
-  </p>
-
-  <p>O processo de trabalho segue estas regras importantes:</p>
-
-  <ol>
-    <li>
-      As feature branches são sempre criadas a partir da branch develop, nunca
-      da main.
-    </li>
-    <li>
-      Nunca fazemos merge direto das feature branches na main. O merge é feito
-      primeiro na develop.
-    </li>
-    <li>
-      Os merges são realizados via pull request, que idealmente é revisado por
-      outro desenvolvedor.
-    </li>
-    <li>
-      As hotfix branches são uma exceção: são criadas a partir da main para
-      correções urgentes que não podem seguir o fluxo padrão.
-    </li>
-    <li>
-      Após o merge de uma hotfix na main, também é necessário mergear essa mesma
-      hotfix na branch develop para manter a sincronização entre as duas
-      branches.
-    </li>
-    <li>
-      Todos os merges são feitos através de pull requests para garantir revisão
-      de código e manter a qualidade.
-    </li>
-  </ol>
-
-  <p>
-    Este fluxo organizado ajuda a reduzir conflitos, facilita a identificação de
-    problemas, e permite que equipes trabalhem simultaneamente em diferentes
-    funcionalidades sem interferir no trabalho umas das outras. Além disso,
-    garante que o código em produção seja sempre estável.
-  </p>
-
-  <p>
-    <strong>Referência:</strong> Para um estudo mais aprofundado sobre o
-    GitFlow, consulte o tutorial oficial da Atlassian:
-    <a
-      href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow"
-      target="_blank"
-      >https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow</a
-    >
-  </p>
-
-  <h3>4. Criar conta no GitHub</h3>
-  <p>
-    O primeiro passo para começar a trabalhar com Git é criar uma conta no
-    GitHub, uma plataforma de hospedagem de código que usa Git.
-  </p>
-  <ol>
-    <li>Acesse <a href="https://github.com" target="_blank">github.com</a></li>
-    <li>Clique em "Sign up" e siga o processo de criação de conta</li>
-    <li>Confirme seu e-mail</li>
-  </ol>
-
-  <h3>5. Adicionar chave SSH ou Configurar HTTPS</h3>
-  <p>
-    Existem duas maneiras principais de se conectar com repositórios Git
-    remotos: SSH e HTTPS.
-  </p>
-
-  <h4>Opção 1: Conexão via SSH (mais segura para uso frequente)</h4>
-  <p>
-    Chaves SSH permitem uma conexão segura entre seu computador e o GitHub sem
-    precisar digitar senha toda vez.
-  </p>
-
-  <div class="code-header">Gerar uma nova chave SSH</div>
-  <pre><code>ssh-keygen -t rsa -C "seu.email@exemplo.com"</code></pre>
-
-  <p>
-    Depois, adicione a chave pública gerada à sua conta GitHub através das
-    configurações de conta (Settings > SSH and GPG Keys).
-  </p>
-
-  <div class="code-header">Copiar a chave pública (no Linux/macOS)</div>
-  <pre><code>cat ~/.ssh/id_rsa.pub</code></pre>
-
-  <div class="code-header">
-    Copiar a chave pública (no Windows com Git Bash)
+  <!-- Bloco de Introdução -->
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, vamos aprender sobre o Git, um sistema de controle de versão
+      essencial para desenvolvedores web modernos. O Git permite que você
+      acompanhe as mudanças no código, trabalhe em equipe de forma eficiente e
+      mantenha um histórico completo do seu projeto.
+    </p>
   </div>
-  <pre><code>cat ~/.ssh/id_rsa.pub</code></pre>
 
-  <p>Finalmente, cole a chave copiada nas configurações SSH do GitHub.</p>
+  <!-- Seção: História e Conceitos Básicos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-history"></i> História e Conceitos Básicos do Git
+    </h3>
 
-  <h4>Opção 2: Conexão via HTTPS (mais simples para iniciantes)</h4>
-  <p>
-    A conexão HTTPS é mais fácil de configurar inicialmente. Você precisará
-    digitar seu nome de usuário e senha do GitHub cada vez que enviar alterações
-    para o repositório remoto.
-  </p>
+    <!-- Card: Origem e Criação -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fas fa-seedling"></i> Origem e Criação</h4>
+      </div>
+      <div class="card-body">
+        <ul class="feature-list">
+          <li>
+            Criado por Linus Torvalds em 2005 para o desenvolvimento do kernel
+            Linux
+          </li>
+          <li>Sistema de controle de versão distribuído (DVCS)</li>
+          <li>Alternativa a sistemas centralizados como SVN e CVS</li>
+        </ul>
+      </div>
+    </div>
 
-  <div class="code-header">Clonar repositório via HTTPS</div>
-  <pre><code>git clone https://github.com/usuario/repositorio.git</code></pre>
+    <!-- Card: Conceitos Fundamentais em Grid -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fas fa-book"></i> Conceitos Fundamentais</h4>
+      </div>
+      <div class="card-body">
+        <div class="concept-grid">
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-database"></i> Repositório
+            </div>
+            <div class="concept-desc">
+              Armazenamento de arquivos e histórico de mudanças.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title"><i class="fas fa-save"></i> Commit</div>
+            <div class="concept-desc">
+              Snapshot do projeto em um momento específico.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-code-branch"></i> Branch
+            </div>
+            <div class="concept-desc">
+              Linha independente de desenvolvimento.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-object-group"></i> Merge
+            </div>
+            <div class="concept-desc">
+              Combinar alterações de diferentes branches.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title"><i class="fas fa-copy"></i> Clone</div>
+            <div class="concept-desc">Cópia completa de um repositório.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-exchange-alt"></i> Pull/Push
+            </div>
+            <div class="concept-desc">
+              Sincronização de mudanças entre repositórios.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <p>
-    Alternativamente, você pode usar o GitHub Desktop, que oferece uma interface
-    gráfica amigável para gerenciar seus repositórios:
-  </p>
+  <!-- Seção: Fluxo Visual do Processo Git -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-project-diagram"></i> Fluxo Visual do Processo Git
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="img-container">
+          <img
+            src="assets/images/processo-git.png"
+            alt="Processo de versionamento Git"
+            class="centered-img"
+            style="max-width: 100%"
+          />
+        </div>
+        <p>
+          A imagem acima ilustra um fluxo simplificado do versionamento com Git:
+        </p>
+        <ol class="numbered-steps">
+          <li>
+            <strong>Daniel cria a versão inicial (v1)</strong> do documento e
+            envia para o servidor remoto via <code>git push</code>
+          </li>
+          <li>
+            <strong>Matheus baixa a versão v1</strong> do documento usando
+            <code>git pull</code>
+          </li>
+          <li>
+            <strong>Matheus modifica o documento</strong>, criando a versão v2,
+            e envia para o servidor via <code>git push</code>
+          </li>
+          <li>
+            <strong>Daniel atualiza seu repositório local</strong> com a versão
+            v2 usando <code>git pull</code>
+          </li>
+        </ol>
+        <div class="info-box mt-4">
+          <h5><i class="fas fa-info-circle"></i> Importante</h5>
+          <p>
+            O servidor Git (GitHub, GitLab ou Bitbucket) mantém o histórico
+            completo de todas as versões, permitindo rastrear a evolução do
+            projeto e identificar quem fez cada alteração.
+          </p>
+        </div>
+        <h5 class="mt-4"><i class="fas fa-undo"></i> Processo de Rollback</h5>
+        <p>Para reverter mudanças problemáticas:</p>
+        <ol class="numbered-steps">
+          <li>Uma versão v3 é criada e enviada ao servidor</li>
+          <li>A equipe detecta falhas nesta versão</li>
+          <li>
+            É executado um <code>git reset</code> para retornar à versão v2
+            estável
+          </li>
+          <li>A versão corrigida pode então ser desenvolvida a partir da v2</li>
+        </ol>
+        <div class="code-header">Comando de Rollback</div>
+        <pre><code class="language-bash">git reset --hard a1b2c3d</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <ol>
-    <li>
-      Baixe e instale o GitHub Desktop em
-      <a href="https://desktop.github.com/" target="_blank"
-        >desktop.github.com</a
-      >
-    </li>
-    <li>Faça login com sua conta GitHub</li>
-    <li>
-      Use a interface gráfica para clonar, commitar e sincronizar mudanças
-    </li>
-  </ol>
+  <!-- Seção: Git Flow Simplificado -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-stream"></i> Git Flow Simplificado: Organização de
+      Branches
+    </h3>
 
-  <h3>6. Criar repositório no GitHub</h3>
-  <p>Após criar sua conta, você pode criar um novo repositório:</p>
-  <ol>
-    <li>
-      Clique no botão "+" no canto superior direito e selecione "New repository"
-    </li>
-    <li>Dê um nome ao seu repositório</li>
-    <li>Adicione uma descrição (opcional)</li>
-    <li>Escolha se o repositório será público ou privado</li>
-    <li>
-      Selecione "Initialize this repository with a README" se desejar começar
-      com um arquivo README
-    </li>
-    <li>Clique em "Create repository"</li>
-  </ol>
+    <!-- Card: Visão Geral com Imagem -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="img-container">
+          <img
+            src="assets/images/git-flow-simplificado.png"
+            alt="Git Flow Simplificado"
+            class="centered-img"
+            style="max-width: 100%"
+          />
+        </div>
+        <p>
+          A imagem acima ilustra o Git Flow simplificado, um modelo de fluxo de
+          trabalho estruturado para projetos Git. Este modelo estabelece uma
+          organização clara de branches e processos que facilitam o
+          desenvolvimento colaborativo e mantêm a integridade do código.
+        </p>
+      </div>
+    </div>
 
-  <h3>7. Configuração Inicial do Git</h3>
+    <!-- Card: Componentes do Git Flow -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-book"></i> Componentes do Git Flow
+        </h4>
+      </div>
+      <div class="card-body">
+        <p>Os principais componentes deste fluxo são:</p>
+        <div class="concept-grid">
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-trophy"></i> Branch Main
+            </div>
+            <div class="concept-desc">
+              É a branch principal que contém o código de produção estável.
+              Representa o que está atualmente em produção.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-flask"></i> Branch Develop
+            </div>
+            <div class="concept-desc">
+              É a branch de desenvolvimento onde novas funcionalidades são
+              integradas antes de irem para produção.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-puzzle-piece"></i> Feature Branches
+            </div>
+            <div class="concept-desc">
+              São branches criadas a partir da develop para implementar novas
+              funcionalidades.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-ambulance"></i> Hotfix Branches
+            </div>
+            <div class="concept-desc">
+              São branches criadas para correções rápidas ou urgentes que
+              precisam ir direto para produção.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <p>
-    Antes de começar a usar Git, você precisa configurar seu nome de usuário e
-    e-mail:
-  </p>
+    <!-- Card: Sincronização e Regras -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-info-circle"></i> Sincronização e Regras do Git Flow
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="info-box">
+          <p>
+            É fundamental que as branches <strong>main</strong> e
+            <strong>develop</strong> sejam sempre mantidas sincronizadas – com
+            exceção dos períodos em que novas funcionalidades estão sendo
+            desenvolvidas na <strong>develop</strong> e ainda não integradas à
+            <strong>main</strong>.
+          </p>
+        </div>
+        <h5 class="mt-4">Regras Importantes</h5>
+        <ol>
+          <li>
+            As feature branches são sempre criadas a partir da branch develop,
+            nunca da main.
+          </li>
+          <li>
+            Nunca fazemos merge direto das feature branches na main; o merge
+            ocorre primeiro na develop.
+          </li>
+          <li>
+            Os merges são realizados via pull request, que idealmente é revisado
+            por outro desenvolvedor.
+          </li>
+          <li>
+            As hotfix branches são criadas a partir da main para correções
+            urgentes que não podem seguir o fluxo padrão.
+          </li>
+          <li>
+            Após o merge de uma hotfix na main, é necessário mergear essa hotfix
+            na branch develop para manter a sincronização.
+          </li>
+          <li>
+            Todos os merges são feitos através de pull requests para garantir
+            revisão de código e qualidade.
+          </li>
+        </ol>
+      </div>
+    </div>
 
-  <div class="code-header">Configurar nome de usuário</div>
-  <pre><code>git config --global user.name "Seu Nome"</code></pre>
+    <!-- Card: Benefícios e Referência -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="success-box">
+          <h5><i class="fas fa-check-circle"></i> Benefícios</h5>
+          <p>
+            Esse fluxo organizado ajuda a reduzir conflitos, facilita a
+            identificação de problemas e permite que equipes trabalhem
+            simultaneamente em diferentes funcionalidades sem interferir umas
+            nas outras. Além disso, garante que o código em produção seja sempre
+            estável.
+          </p>
+        </div>
+        <p class="mt-4">
+          <strong>Referência:</strong> Para um estudo mais aprofundado sobre o
+          GitFlow, consulte o tutorial oficial da Atlassian:
+          <a
+            href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow"
+            target="_blank"
+          >
+            https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
 
-  <div class="code-header">Configurar email</div>
-  <pre><code>git config --global user.email "seu.email@exemplo.com"</code></pre>
+  <!-- Seção: Começando com GitHub -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fab fa-github"></i> Começando com GitHub
+    </h3>
+    <!-- Card: Criar Conta no GitHub -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-user-plus"></i> Criar conta no GitHub
+        </h4>
+      </div>
+      <div class="card-body">
+        <p>
+          Crie sua conta no GitHub para hospedar seus repositórios e colaborar
+          com outros desenvolvedores.
+        </p>
+        <ol class="numbered-steps">
+          <li>
+            Acesse <a href="https://github.com" target="_blank">github.com</a>
+          </li>
+          <li>Clique em "Sign up" e siga o processo de criação de conta</li>
+          <li>Confirme seu e-mail</li>
+        </ol>
+      </div>
+    </div>
+    <!-- Card: Configurar Conexão Remota -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-key"></i> Adicionar chave SSH ou Configurar HTTPS
+        </h4>
+      </div>
+      <div class="card-body">
+        <details class="collapse-section" open>
+          <summary><i class="fas fa-lock"></i> Conexão via SSH</summary>
+          <p>
+            Chaves SSH oferecem uma conexão segura sem a necessidade de inserir
+            a senha a cada operação.
+          </p>
+          <div class="code-header">Gerar nova chave SSH</div>
+          <pre><code class="language-bash">ssh-keygen -t rsa -C "seu.email@exemplo.com"</code></pre>
 
-  <div class="code-header">Verificar configurações</div>
-  <pre><code>git config --list</code></pre>
+          <div class="code-header">Copiar chave (Linux/macOS)</div>
+          <pre><code class="language-bash">cat ~/.ssh/id_rsa.pub</code></pre>
+          <div class="code-header">Copiar chave (Windows - Git Bash)</div>
+          <pre><code class="language-bash">cat ~/.ssh/id_rsa.pub</code></pre>
 
-  <h3>8. Comandos Básicos do Git</h3>
+          <p>
+            Adicione a chave pública à sua conta em
+            <strong>Settings &gt; SSH and GPG Keys</strong>.
+          </p>
+        </details>
+        <details class="collapse-section">
+          <summary><i class="fas fa-globe"></i> Conexão via HTTPS</summary>
+          <p>
+            A conexão HTTPS é simples de configurar, mas requer autenticação a
+            cada push.
+          </p>
+          <div class="code-header">Clonar repositório via HTTPS</div>
+          <pre><code class="language-bash">git clone https://github.com/usuario/repositorio.git</code></pre>
+          <p>
+            Você também pode utilizar o GitHub Desktop para uma interface
+            gráfica.
+          </p>
+          <ol class="numbered-steps">
+            <li>
+              Baixe e instale o GitHub Desktop em
+              <a href="https://desktop.github.com/" target="_blank"
+                >desktop.github.com</a
+              >
+            </li>
+            <li>Faça login com sua conta GitHub</li>
+            <li>Utilize a interface para gerenciar seus repositórios</li>
+          </ol>
+        </details>
+      </div>
+    </div>
 
-  <h4>Iniciando um Repositório</h4>
+    <!-- Card: Criar Repositório no GitHub -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-plus-circle"></i> Criar repositório no GitHub
+        </h4>
+      </div>
+      <div class="card-body">
+        <p>Após criar sua conta, crie um novo repositório:</p>
+        <ol class="numbered-steps">
+          <li>Clique no botão "+" e selecione "New repository"</li>
+          <li>Dê um nome ao repositório</li>
+          <li>Adicione uma descrição (opcional)</li>
+          <li>Escolha se será público ou privado</li>
+          <li>
+            Selecione "Initialize this repository with um README" (se desejar)
+          </li>
+          <li>Clique em "Create repository"</li>
+        </ol>
+      </div>
+    </div>
+  </section>
 
-  <div class="code-header">Criar um novo repositório</div>
-  <pre><code>git init</code></pre>
+  <!-- Seção: Comandos e Operações do Git -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-terminal"></i> Comandos e Operações do Git
+    </h3>
 
-  <div class="code-header">Verificar status do repositório</div>
-  <pre><code>git status</code></pre>
+    <!-- Card: Configuração Inicial -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fas fa-cog"></i> Configuração Inicial</h4>
+      </div>
+      <div class="card-body">
+        <p>Configure seu nome de usuário e e-mail:</p>
+        <div class="code-header">Nome de usuário</div>
+        <pre><code class="language-bash">git config --global user.name "Seu Nome"</code></pre>
+        <div class="code-header">Email</div>
+        <pre><code class="language-bash">git config --global user.email "seu.email@exemplo.com"</code></pre>
+        <div class="code-header">Verificar configurações</div>
+        <pre><code class="language-bash">git config --list</code></pre>
+      </div>
+    </div>
 
-  <h4>Adicionando e Commitando Arquivos</h4>
+    <!-- Card: Iniciando um Repositório -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-play"></i> Iniciando um Repositório
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="code-header">Criar repositório</div>
+        <pre><code class="language-bash">git init</code></pre>
+        <div class="code-header">Verificar status</div>
+        <pre><code class="language-bash">git status</code></pre>
+      </div>
+    </div>
 
-  <div class="code-header">
-    Adicionar arquivo específico para área de staging
-  </div>
-  <pre><code>git add arquivo.txt</code></pre>
+    <!-- Card: Adicionar e Commitar Arquivos -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-plus"></i> Adicionar e Commitar Arquivos
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="code-header">Adicionar arquivo específico</div>
+        <pre><code class="language-bash">git add arquivo.txt</code></pre>
+        <div class="code-header">Adicionar todos os arquivos</div>
+        <pre><code class="language-bash">git add .</code></pre>
+        <div class="code-header">Realizar commit</div>
+        <pre><code class="language-bash">git commit -m "Mensagem descritiva do commit"</code></pre>
+        <div class="code-header">Verificar histórico</div>
+        <pre><code class="language-bash">git log</code></pre>
+      </div>
+    </div>
 
-  <div class="code-header">Adicionar todos os arquivos modificados</div>
-  <pre><code>git add .</code></pre>
+    <!-- Card: Trabalhando com Branches -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-code-branch"></i> Trabalhando com Branches
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="code-header">Listar branches</div>
+        <pre><code class="language-bash">git branch</code></pre>
+        <div class="code-header">Criar novo branch</div>
+        <pre><code class="language-bash">git branch nome-do-branch</code></pre>
+        <div class="code-header">Mudar para outro branch</div>
+        <pre><code class="language-bash">git checkout nome-do-branch</code></pre>
+        <div class="code-header">Criar e mudar para branch (atalho)</div>
+        <pre><code class="language-bash">git checkout -b nome-do-branch</code></pre>
+      </div>
+    </div>
 
-  <div class="code-header">Realizar commit das mudanças</div>
-  <pre><code>git commit -m "Mensagem descritiva do commit"</code></pre>
-
-  <div class="code-header">Verificar histórico de commits</div>
-  <pre><code>git log</code></pre>
-
-  <h4>Branches</h4>
-
-  <div class="code-header">Listar branches</div>
-  <pre><code>git branch</code></pre>
-
-  <div class="code-header">Criar novo branch</div>
-  <pre><code>git branch nome-do-branch</code></pre>
-
-  <div class="code-header">Mudar para outro branch</div>
-  <pre><code>git checkout nome-do-branch</code></pre>
-
-  <div class="code-header">Criar e mudar para novo branch (atalho)</div>
-  <pre><code>git checkout -b nome-do-branch</code></pre>
-
-  <h4>Merge e Resolução de Conflitos</h4>
-
-  <div class="code-header">Integrar mudanças de um branch para outro</div>
-  <pre><code>git merge nome-do-branch</code></pre>
-
-  <div class="code-header">
-    Caso haja conflitos, resolver manualmente e depois:
-  </div>
-  <pre><code>git add arquivo-com-conflito
+    <!-- Card: Merge e Resolução de Conflitos -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-object-group"></i> Merge e Resolução de Conflitos
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="code-header">Merge</div>
+        <pre><code class="language-bash">git merge nome-do-branch</code></pre>
+        <div class="code-header">Resolver conflitos e commit</div>
+        <pre><code class="language-bash">git add arquivo-com-conflito
 git commit -m "Resolução de conflitos"</code></pre>
+      </div>
+    </div>
 
-  <h3>9. Trabalhando com Repositórios Remotos</h3>
+    <!-- Card: Trabalhando com Repositórios Remotos -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0"><i class="fas fa-cloud"></i> Repositórios Remotos</h4>
+      </div>
+      <div class="card-body">
+        <div class="code-header">Clonar repositório (HTTPS)</div>
+        <pre><code class="language-bash">git clone https://github.com/usuario/repositorio.git</code></pre>
+        <div class="code-header">Clonar repositório (SSH)</div>
+        <pre><code class="language-bash">git clone git@github.com:usuario/repositorio.git</code></pre>
+        <div class="code-header">Adicionar repositório remoto</div>
+        <pre><code class="language-bash">git remote add origin https://github.com/usuario/repositorio.git</code></pre>
+        <div class="code-header">Push para repositório remoto</div>
+        <pre><code class="language-bash">git push origin nome-do-branch</code></pre>
+        <div class="code-header">Pull do repositório remoto</div>
+        <pre><code class="language-bash">git pull origin nome-do-branch</code></pre>
+        <div class="code-header">Listar remotos</div>
+        <pre><code class="language-bash">git remote -v</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <div class="code-header">Clonar repositório existente</div>
-  <pre><code>git clone https://github.com/usuario/repositorio.git</code></pre>
+  <!-- Seção: Fluxo de Trabalho Básico -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-sync-alt"></i> Fluxo de Trabalho Básico
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Um fluxo de trabalho típico com Git segue estes passos:</p>
+        <div class="workflow-steps">
+          <div class="workflow-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <div class="step-title">Verificar status</div>
+              <div class="step-code">git status</div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <div class="step-title">Atualizar repositório local</div>
+              <div class="step-code">git pull</div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <div class="step-title">Criar branch para nova feature</div>
+              <div class="step-code">
+                git checkout -b feature/nova-funcionalidade
+              </div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <div class="step-title">Fazer alterações nos arquivos</div>
+              <div class="step-code">Edição manual dos arquivos</div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <div class="step-title">Adicionar arquivos modificados</div>
+              <div class="step-code">git add .</div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">6</div>
+            <div class="step-content">
+              <div class="step-title">Commitar alterações</div>
+              <div class="step-code">
+                git commit -m "Implementa nova funcionalidade"
+              </div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">7</div>
+            <div class="step-content">
+              <div class="step-title">Push para o remoto</div>
+              <div class="step-code">
+                git push origin feature/nova-funcionalidade
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="code-header">Clonar repositório via SSH</div>
-  <pre><code>git clone git@github.com:usuario/repositorio.git</code></pre>
-
-  <div class="code-header">Adicionar repositório remoto</div>
-  <pre><code>git remote add origin https://github.com/usuario/repositorio.git</code></pre>
-
-  <div class="code-header">Enviar alterações para repositório remoto</div>
-  <pre><code>git push origin nome-do-branch</code></pre>
-
-  <div class="code-header">Obter atualizações do repositório remoto</div>
-  <pre><code>git pull origin nome-do-branch</code></pre>
-
-  <div class="code-header">Listar repositórios remotos configurados</div>
-  <pre><code>git remote -v</code></pre>
-
-  <h3>10. Fluxo de Trabalho Básico</h3>
-
-  <p>Um fluxo de trabalho típico com Git segue estes passos:</p>
-
-  <ol>
-    <li>Verificar status: <code>git status</code></li>
-    <li>Atualizar repositório local: <code>git pull</code></li>
-    <li>
-      Criar branch para nova feature:
-      <code>git checkout -b feature/nova-funcionalidade</code>
-    </li>
-    <li>
-      Fazer alterações nos arquivos (Edição manual dos arquivos do projeto)
-    </li>
-    <li>Adicionar arquivos modificados: <code>git add .</code></li>
-    <li>
-      Commitar alterações:
-      <code>git commit -m "Implementa nova funcionalidade"</code>
-    </li>
-    <li>
-      Enviar alterações para o repositório remoto:
-      <code>git push origin feature/nova-funcionalidade</code>
-    </li>
-  </ol>
-
-  <h3>11. Gitignore e Boas Práticas</h3>
-
-  <p>
-    O arquivo .gitignore permite especificar arquivos que o Git deve ignorar:
-  </p>
-
-  <div class="code-header">Criar arquivo .gitignore</div>
-  <pre><code>touch .gitignore</code></pre>
-
-  <div class="code-header">Exemplo de conteúdo para .gitignore</div>
-  <pre><code># Dependências
+  <!-- Seção: Gitignore e Boas Práticas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-ban"></i> Gitignore e Boas Práticas
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O arquivo <code>.gitignore</code> permite especificar quais arquivos o
+          Git deve ignorar:
+        </p>
+        <div class="code-header">Criar .gitignore</div>
+        <pre><code class="language-bash">touch .gitignore</code></pre>
+        <div class="code-header">Exemplo de .gitignore</div>
+        <pre><code class="language-text"># Dependências
 node_modules/
 package-lock.json
 
@@ -414,167 +628,198 @@ Thumbs.db
 .vscode/
 *.sublime-project
 *.sublime-workspace</code></pre>
+      </div>
+    </div>
+  </section>
 
-  <h3>12. Ferramentas e Plataformas</h3>
+  <!-- Seção: Ferramentas e Plataformas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-toolbox"></i> Ferramentas e Plataformas
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="platforms-grid">
+          <div class="platform-item">
+            <div class="platform-icon"><i class="fab fa-github"></i></div>
+            <div class="platform-title">GitHub</div>
+            <div class="platform-desc">Hospedagem e colaboração.</div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon"><i class="fab fa-gitlab"></i></div>
+            <div class="platform-title">GitLab</div>
+            <div class="platform-desc">Plataforma com CI/CD integrado.</div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon"><i class="fab fa-bitbucket"></i></div>
+            <div class="platform-title">Bitbucket</div>
+            <div class="platform-desc">Integração com produtos Atlassian.</div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon"><i class="fas fa-desktop"></i></div>
+            <div class="platform-title">Interfaces Gráficas</div>
+            <div class="platform-desc">
+              GitKraken, SourceTree, GitHub Desktop, VSCode Git.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <ul>
-    <li>
-      <strong>GitHub:</strong> hospedagem de repositórios, colaboração, issues,
-      pull requests
-    </li>
-    <li><strong>GitLab:</strong> alternativa ao GitHub com CI/CD integrado</li>
-    <li>
-      <strong>Bitbucket:</strong> opção com integração com produtos Atlassian
-    </li>
-    <li>
-      <strong>Interfaces gráficas:</strong> GitKraken, SourceTree, GitHub
-      Desktop, VSCode Git
-    </li>
-  </ul>
-
-  <p>Existem várias plataformas que hospedam repositórios Git, como:</p>
-
-  <ul>
-    <li>
-      <strong>GitHub</strong>: A mais popular, com grande comunidade e muitos
-      projetos open-source
-    </li>
-    <li><strong>GitLab</strong>: Oferece recursos de CI/CD integrados</li>
-    <li>
-      <strong>Bitbucket</strong>: Integra bem com outros produtos Atlassian como
-      Jira
-    </li>
-  </ul>
-
-  <h3>Exercício Prático: TaskMaster com Controle de Versão</h3>
-
-  <p>
-    <strong>Objetivo:</strong> Implementar controle de versão para o projeto
-    TaskMaster.
-  </p>
-
-  <h4>Instruções:</h4>
-
-  <ol>
-    <li>
-      Inicialize um repositório Git na pasta do projeto TaskMaster:
-      <pre><code>git init</code></pre>
-    </li>
-    <li>
-      Crie um arquivo .gitignore apropriado para projetos web (use o exemplo
-      acima)
-    </li>
-    <li>
-      Adicione os arquivos iniciais (HTML, CSS, JS) e faça o primeiro commit:
-      <pre><code>git add .
+  <!-- Seção: Exercício Prático -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-laptop-code"></i> Exercício Prático: TaskMaster
+    </h3>
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="mb-0">
+          <i class="fas fa-tasks"></i> TaskMaster com Controle de Versão
+        </h4>
+      </div>
+      <div class="card-body">
+        <p>
+          <strong>Objetivo:</strong> Implementar controle de versão para o
+          projeto TaskMaster.
+        </p>
+        <h5 class="mt-3 mb-2">Instruções:</h5>
+        <ol class="numbered-steps">
+          <li>
+            Inicialize um repositório Git na pasta do projeto TaskMaster:
+            <div class="code-block">
+              <pre><code class="language-bash">git init</code></pre>
+            </div>
+          </li>
+          <li>Crie um arquivo .gitignore apropriado (use o exemplo acima).</li>
+          <li>
+            Adicione os arquivos iniciais (HTML, CSS, JS) e faça o primeiro
+            commit:
+            <div class="code-block">
+              <pre><code class="language-bash">git add .
 git commit -m "Commit inicial: estrutura básica do TaskMaster"</code></pre>
-    </li>
-    <li>
-      Crie um branch de desenvolvimento chamado <code>dev</code>:
-      <pre><code>git checkout -b dev</code></pre>
-    </li>
-    <li>
-      No branch <code>dev</code>:
-      <ul>
-        <li>Adicione funcionalidade para criar novas tarefas</li>
-        <li>
-          Faça commit das alterações:
-          <pre><code>git add .
+            </div>
+          </li>
+          <li>
+            Crie um branch de desenvolvimento chamado <code>dev</code>:
+            <div class="code-block">
+              <pre><code class="language-bash">git checkout -b dev</code></pre>
+            </div>
+          </li>
+          <li>
+            No branch <code>dev</code>:
+            <ul>
+              <li>Adicione funcionalidade para criar novas tarefas</li>
+              <li>
+                Faça commit das alterações:
+                <div class="code-block">
+                  <pre><code class="language-bash">git add .
 git commit -m "Adiciona funcionalidade para criar novas tarefas"</code></pre>
-        </li>
-      </ul>
-    </li>
-    <li>
-      Crie um branch <code>feature/delete-task</code> a partir do
-      <code>dev</code>:
-      <pre><code>git checkout -b feature/delete-task</code></pre>
-    </li>
-    <li>
-      No branch <code>feature/delete-task</code>:
-      <ul>
-        <li>Implemente a funcionalidade para excluir tarefas</li>
-        <li>
-          Faça commit das alterações:
-          <pre><code>git add .
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li>
+            Crie um branch <code>feature/delete-task</code> a partir do
+            <code>dev</code>:
+            <div class="code-block">
+              <pre><code class="language-bash">git checkout -b feature/delete-task</code></pre>
+            </div>
+          </li>
+          <li>
+            No branch <code>feature/delete-task</code>:
+            <ul>
+              <li>Implemente a funcionalidade para excluir tarefas</li>
+              <li>
+                Faça commit das alterações:
+                <div class="code-block">
+                  <pre><code class="language-bash">git add .
 git commit -m "Implementa funcionalidade para excluir tarefas"</code></pre>
-        </li>
-      </ul>
-    </li>
-    <li>
-      Volte para o branch <code>dev</code> e faça merge do branch
-      <code>feature/delete-task</code>:
-      <pre><code>git checkout dev
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li>
+            Volte para o branch <code>dev</code> e faça merge do branch
+            <code>feature/delete-task</code>:
+            <div class="code-block">
+              <pre><code class="language-bash">git checkout dev
 git merge feature/delete-task</code></pre>
-    </li>
-    <li>
-      Crie um repositório no GitHub (Criar manualmente através do site do
-      GitHub)
-    </li>
-    <li>
-      Adicione o repositório remoto e envie todos os branches:
-      <pre><code>git remote add origin https://github.com/seu-usuario/taskmaster.git
+            </div>
+          </li>
+          <li>Crie um repositório no GitHub e conecte-o ao seu projeto.</li>
+          <li>
+            Adicione o repositório remoto e envie os branches:
+            <div class="code-block">
+              <pre><code class="language-bash">git remote add origin https://github.com/seu-usuario/taskmaster.git
 git push -u origin main
 git push -u origin dev
 git push -u origin feature/delete-task</code></pre>
-    </li>
-  </ol>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
 
-  <h3>Exercícios para os Alunos</h3>
-
-  <div class="desafio">
-    <h4>Exercício 1: Inicializar um repositório e criar o primeiro commit</h4>
-
-    <p>
-      <strong>Objetivo:</strong> Praticar a criação de um repositório Git e o
-      primeiro commit.
-    </p>
-
-    <p><strong>Instruções:</strong></p>
-    <ol>
-      <li>Crie uma pasta para o projeto TaskMaster no seu computador</li>
-      <li>Abra o terminal (ou prompt de comando) nesta pasta</li>
-      <li>Inicialize um repositório Git</li>
-      <li>Crie um arquivo README.md com uma breve descrição do projeto</li>
-      <li>Adicione o arquivo ao staging</li>
-      <li>Faça o commit com uma mensagem descritiva</li>
-    </ol>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>mkdir TaskMaster
+  <!-- Seção: Exercícios para os Alunos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> Exercícios para os Alunos
+    </h3>
+    <div class="exercise-card">
+      <h3>Exercício 1: Inicializar um repositório e criar o primeiro commit</h3>
+      <p>
+        <strong>Objetivo:</strong> Praticar a criação de um repositório Git e o
+        primeiro commit.
+      </p>
+      <ol>
+        <li>Crie uma pasta para o projeto TaskMaster</li>
+        <li>Abra o terminal nesta pasta</li>
+        <li>Inicialize um repositório Git</li>
+        <li>Crie um arquivo README.md com uma breve descrição do projeto</li>
+        <li>Adicione o arquivo ao staging</li>
+        <li>Faça o commit com uma mensagem descritiva</li>
+      </ol>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
+mkdir TaskMaster
 cd TaskMaster
 git init
 echo "# TaskMaster" > README.md
 echo "Um aplicativo de gerenciamento de tarefas desenvolvido para o curso de JavaScript." >> README.md
 git add README.md
-git commit -m "Adiciona arquivo README com descrição do projeto"</code></pre>
-    </details>
-  </div>
+git commit -m "Adiciona arquivo README com descrição do projeto"
+          </code></pre>
+        </div>
+      </details>
+    </div>
 
-  <div class="desafio">
-    <h4>Exercício 2: Trabalhar com branches</h4>
-
-    <p>
-      <strong>Objetivo:</strong> Praticar a criação e navegação entre branches.
-    </p>
-
-    <p><strong>Instruções:</strong></p>
-    <ol>
-      <li>Partindo do repositório criado no exercício 1</li>
-      <li>Crie um arquivo index.html com uma estrutura HTML básica</li>
-      <li>Adicione e commit este arquivo</li>
-      <li>Crie um novo branch chamado "feature/estilo"</li>
-      <li>Mude para este branch</li>
-      <li>Crie um arquivo style.css vazio</li>
-      <li>Adicione e commit este arquivo</li>
-      <li>Volte para o branch principal (main ou master)</li>
-    </ol>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>echo "<!DOCTYPE html>" > index.html
+    <div class="exercise-card">
+      <h3>Exercício 2: Trabalhar com branches</h3>
+      <p>
+        <strong>Objetivo:</strong> Praticar a criação e navegação entre
+        branches.
+      </p>
+      <ol>
+        <li>Partindo do repositório criado no exercício 1</li>
+        <li>
+          Crie um arquivo <code>index.html</code> com uma estrutura básica
+        </li>
+        <li>Adicione e commit o arquivo</li>
+        <li>Crie um novo branch chamado <code>feature/estilo</code></li>
+        <li>Mude para este branch</li>
+        <li>Crie um arquivo <code>style.css</code> vazio</li>
+        <li>Adicione e commit o arquivo</li>
+        <li>Volte para o branch principal</li>
+      </ol>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
+echo "<!DOCTYPE html>" > index.html
 echo "<html><head><title>TaskMaster</title></head><body><h1>TaskMaster</h1></body></html>" >> index.html
 git add index.html
 git commit -m "Adiciona estrutura HTML básica"
@@ -583,109 +828,370 @@ git checkout feature/estilo
 touch style.css
 git add style.css
 git commit -m "Adiciona arquivo CSS vazio"
-git checkout main</code></pre>
-    </details>
-  </div>
+git checkout main
+          </code></pre>
+        </div>
+      </details>
+    </div>
 
-  <div class="desafio">
-    <h4>Exercício 3: Merge de branches</h4>
-
-    <p>
-      <strong>Objetivo:</strong> Praticar a combinação de mudanças usando merge.
-    </p>
-
-    <p><strong>Instruções:</strong></p>
-    <ol>
-      <li>Partindo do estado final do exercício 2</li>
-      <li>
-        No branch "feature/estilo", adicione código CSS básico ao arquivo
-        style.css
-      </li>
-      <li>Adicione e commit esta alteração</li>
-      <li>Volte para o branch principal</li>
-      <li>Faça merge do branch "feature/estilo" para o branch principal</li>
-    </ol>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code>git checkout feature/estilo
+    <div class="exercise-card">
+      <h3>Exercício 3: Merge de branches</h3>
+      <p>
+        <strong>Objetivo:</strong> Praticar a combinação de mudanças usando
+        merge.
+      </p>
+      <ol>
+        <li>
+          No branch <code>feature/estilo</code>, adicione código CSS básico ao
+          <code>style.css</code>
+        </li>
+        <li>Adicione e commit as alterações</li>
+        <li>Volte para o branch principal</li>
+        <li>
+          Faça merge do branch <code>feature/estilo</code> para o principal
+        </li>
+      </ol>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
+git checkout feature/estilo
 echo "body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }" > style.css
 echo "h1 { color: #333; }" >> style.css
 git add style.css
 git commit -m "Adiciona estilos básicos"
 git checkout main
-git merge feature/estilo</code></pre>
-    </details>
-  </div>
+git merge feature/estilo
+          </code></pre>
+        </div>
+      </details>
+    </div>
 
-  <div class="desafio">
-    <h4>Exercício 4: Configurar um repositório remoto</h4>
-
-    <p>
-      <strong>Objetivo:</strong> Praticar a configuração e uso de um repositório
-      remoto.
-    </p>
-
-    <p><strong>Instruções:</strong></p>
-    <ol>
-      <li>Crie um novo repositório no GitHub (sem inicializar com README)</li>
-      <li>Conecte seu repositório local ao repositório remoto</li>
-      <li>Envie todos os seus commits para o repositório remoto</li>
-    </ol>
-
-    <details>
-      <summary>Ver solução</summary>
-      <div class="code-header">Solução</div>
-      <pre><code># Após criar o repositório no GitHub:
+    <div class="exercise-card">
+      <h3>Exercício 4: Configurar um repositório remoto</h3>
+      <p>
+        <strong>Objetivo:</strong> Configurar e utilizar um repositório remoto.
+      </p>
+      <ol>
+        <li>Crie um novo repositório no GitHub (sem inicializar com README)</li>
+        <li>Conecte seu repositório local ao remoto</li>
+        <li>Envie todos os commits para o repositório remoto</li>
+      </ol>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
+# Após criar o repositório no GitHub:
 git remote add origin https://github.com/seu-usuario/taskmaster.git
-git push -u origin main</code></pre>
-    </details>
-  </div>
+git push -u origin main
+          </code></pre>
+        </div>
+      </details>
+    </div>
+  </section>
 
-  <h3>Conclusão</h3>
+  <!-- Seção: Conclusão -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta aula, você aprendeu os fundamentos do Git e GitHub, incluindo a
+          configuração, o uso de branches, merges, e o fluxo de trabalho
+          colaborativo. Continue praticando para dominar essas ferramentas
+          essenciais no desenvolvimento web.
+        </p>
+      </div>
+    </div>
+  </section>
 
-  <p>Nesta aula, você aprendeu os fundamentos do Git e GitHub, incluindo:</p>
-
-  <ul>
-    <li>Configuração e inicialização de repositórios Git</li>
-    <li>Comandos básicos para controle de versão</li>
-    <li>Trabalho com branches para desenvolvimento paralelo</li>
-    <li>Sincronização com repositórios remotos (SSH e HTTPS)</li>
-    <li>Fluxo de trabalho profissional com Git</li>
-    <li>Visualização do processo Git com exemplos práticos</li>
-    <li>Implementação do Git Flow Simplificado para organização de projetos</li>
-  </ul>
-
-  <p>
-    O Git é uma ferramenta essencial no desenvolvimento web moderno, permitindo
-    colaboração eficiente e organização do seu código. Continue praticando para
-    dominar este sistema de controle de versão!
-  </p>
-
+  <!-- Estilos CSS Específicos -->
   <style>
-    /* Estilos específicos para esta aula */
-    .desafio {
-      background-color: #f7f8e8;
-      border-left: 4px solid #e2c94a;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 4px;
+    :root {
+      --primary-color: #3498db;
+      --primary-color-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --info-color: #3498db;
+      --white: #fff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --border-radius: 0.5rem;
+      --border-radius-sm: 0.25rem;
+      --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --transition-base: all 0.2s ease-in-out;
+    }
+    .lesson-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .intro-box {
+      background-color: var(--gray-100);
+      padding: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
+    }
+    .section-title.with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
+    }
+    .section-title.with-icon i {
+      color: var(--primary-color);
+    }
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card-header {
+      background-color: var(--gray-100);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .card-header h4 {
+      margin: 0;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--secondary-color);
+    }
+    .card-body {
+      padding: 1.5rem;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .feature-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--gray-200);
+    }
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .concept-item {
+      background-color: var(--gray-100);
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--box-shadow);
+      text-align: center;
+    }
+    .concept-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    .concept-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    .numbered-steps {
+      list-style: decimal;
+      margin-left: 1.5rem;
+    }
+    .info-box {
+      background-color: var(--info-color-light, #cce5ff);
+      border-left: 4px solid var(--info-color, #3498db);
+      padding: 1rem;
+      margin-top: 1.5rem;
+      border-radius: var(--border-radius-sm);
+    }
+    .info-box h5 {
+      margin-top: 0;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    summary {
+    .tab-container {
+      margin-top: 1rem;
+    }
+    .tab-navigation {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .tab-button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: var(--gray-100);
+      border-radius: var(--border-radius-sm);
       cursor: pointer;
-      color: #2c7be5;
+      transition: var(--transition-base);
+    }
+    .tab-button.active,
+    .tab-button:hover {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+    .tab-content {
+      display: none;
+    }
+    .exercise-card {
+      background-color: var(--gray-100);
+      border-left: 5px solid var(--accent-color);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: var(--border-radius-sm);
+    }
+    .exercise-card h3 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+    .exercise-card details {
+      margin-top: 1rem;
+    }
+    .solution pre {
+      margin: 0;
+    }
+    .workflow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .workflow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .step-number {
+      background-color: var(--primary-color);
+      color: var(--white);
       font-weight: bold;
-      margin-bottom: 10px;
+      border-radius: 50%;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-content {
+      flex: 1;
+    }
+    .step-title {
+      font-weight: 600;
+      color: var(--secondary-color);
+    }
+    .step-code {
+      font-family: var(--font-family-code, monospace);
+      background-color: var(--gray-100);
+      padding: 0.5rem;
+      border-radius: var(--border-radius-sm);
+      margin-top: 0.25rem;
+      font-size: 0.9rem;
+    }
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      text-align: center;
+    }
+    .platform-item {
+      background-color: var(--gray-100);
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--box-shadow);
+    }
+    .platform-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+    .platform-title {
+      font-weight: 600;
+      color: var(--secondary-color);
+      margin-bottom: 0.25rem;
+    }
+    .platform-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    @media (max-width: 576px) {
+      .card-body {
+        padding: 1rem;
+      }
     }
 
-    summary:hover {
-      text-decoration: underline;
+    /* Grid para os cards de conceitos */
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
     }
-
-    details {
-      margin-top: 10px;
+    .concept-item {
+      background-color: var(--gray-100);
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--box-shadow);
+      text-align: center;
+    }
+    .concept-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    .concept-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    /* Info Box */
+    .info-box {
+      background-color: var(--info-color-light, #cce5ff);
+      border-left: 4px solid var(--info-color, #3498db);
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: var(--border-radius-sm);
+    }
+    .info-box h5 {
+      margin-top: 0;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    /* Success Box */
+    .success-box {
+      background-color: var(--success-color-light, #d4edda);
+      border-left: 4px solid var(--success-color, #2ecc71);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: var(--border-radius-sm);
+    }
+    .success-box h5 {
+      margin-top: 0;
+      color: var(--success-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
   </style>
 </article>
