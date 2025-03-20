@@ -1,33 +1,67 @@
 <article class="lesson-container">
-    
-    <h2>Operadores</h2>
+  <h2><i class="fas fa-calculator"></i> Operadores</h2>
 
+  <!-- Introdução -->
+  <div class="intro-box mb-5">
     <p>
-    <p>Nesta aula, exploramos os diferentes tipos de operadores em JavaScript:</p>
-      <ul>
-        <li><strong>Operadores Aritméticos:</strong> Para cálculos matemáticos (+, -, *, /, %, **)</li>
-        <li><strong>Operadores de Incremento/Decremento:</strong> Para aumentar/diminuir valores (++, --)</li>
-        <li><strong>Operadores de Atribuição:</strong> Para atribuir valores (=, +=, -=, *=, /=, %=, **=)</li>
-        <li><strong>Operadores Relacionais:</strong> Para comparações (==, ===, !=, !==, >, <, >=, <=)</li>
-        <li><strong>Operadores Lógicos:</strong> Para condições lógicas (&&, ||, !)</li>
-        <li><strong>Operador Ternário:</strong> Para expressões condicionais concisas (? :)</li>
-        <li><strong>Operadores Modernos:</strong> Coalescência nula (??), Encadeamento opcional (?.)</li>
-        <li><strong>Operador Spread:</strong> Para expandir iteráveis (...)</li>
-        <li><strong>Operadores Bit a Bit:</strong> Para manipulação binária (&, |, ^, ~, <<, >>)</li>
-      </ul>
-  </p>
+      Nesta aula, exploramos os diferentes tipos de operadores em JavaScript,
+      fundamentais para realizar operações com valores e variáveis. Esses
+      operadores serão aplicados no desenvolvimento do projeto TaskMaster.
+    </p>
+    <ul>
+      <li>
+        <strong>Operadores Aritméticos:</strong> Para cálculos matemáticos (+,
+        -, *, /, %, **)
+      </li>
+      <li>
+        <strong>Operadores de Incremento/Decremento:</strong> Para
+        aumentar/diminuir valores (++, --)
+      </li>
+      <li>
+        <strong>Operadores de Atribuição:</strong> Para atribuir valores (=, +=,
+        -=, *=, /=, %=, **=)
+      </li>
+      <li>
+        <strong>Operadores Relacionais:</strong> Para comparações (==, ===, !=,
+        !==, >, <, >=, <=)
+      </li>
+      <li>
+        <strong>Operadores Lógicos:</strong> Para condições lógicas (&&, ||, !)
+      </li>
+      <li>
+        <strong>Operador Ternário:</strong> Para expressões condicionais
+        concisas (? :)
+      </li>
+      <li>
+        <strong>Operadores Modernos:</strong> Coalescência nula (??),
+        Encadeamento opcional (?.)
+      </li>
+      <li><strong>Operador Spread:</strong> Para expandir iteráveis (...)</li>
+      <li>
+        <strong>Operadores Bit a Bit:</strong> Para manipulação binária (&, |,
+        ^, ~, <<, >>)
+      </li>
+    </ul>
+  </div>
 
-  <br/>
-
-  <section class="lesson-intro">
-    <p>Os operadores são elementos fundamentais na programação JavaScript que permitem realizar operações com valores e variáveis. Nesta aula, vamos explorar os diversos tipos de operadores disponíveis em JavaScript e como utilizá-los no desenvolvimento do projeto TaskMaster.</p>
+  <section class="lesson-intro mb-5">
+    <p>
+      Os operadores são elementos essenciais na programação JavaScript que
+      permitem manipular valores e variáveis de diversas maneiras. Nesta aula,
+      veremos como cada grupo de operadores funciona e como aplicá-los no
+      contexto do TaskMaster.
+    </p>
   </section>
 
-  <section class="lesson-content">
+  <!-- Seção: Operadores Aritméticos -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operadores Aritméticos</h2>
-      <p>Usados para realizar operações matemáticas básicas entre valores numéricos.</p>
-      
+      <p>
+        Usados para realizar operações matemáticas básicas entre valores
+        numéricos.
+      </p>
+
       <div class="code-example">
         <pre><code>
 let a = 10;
@@ -62,7 +96,7 @@ let exponenciacao = a ** b; // 1000 (10³)
         </div>
         <div class="operator-item">
           <span class="operator">%</span>
-          <span class="description">Módulo (resto)</span>
+          <span class="description">Módulo</span>
         </div>
         <div class="operator-item">
           <span class="operator">**</span>
@@ -70,11 +104,14 @@ let exponenciacao = a ** b; // 1000 (10³)
         </div>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operadores de Incremento/Decremento -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operadores de Incremento e Decremento</h2>
       <p>Aumentam ou diminuem um valor em uma unidade.</p>
-      
+
       <div class="code-example">
         <pre><code>
 let contador = 0;
@@ -83,15 +120,15 @@ let contador = 0;
 let preIncremento = ++contador; // contador = 1, preIncremento = 1
 
 // Pós-incremento: retorna e depois incrementa
-contador = 0; // Resetando contador
+contador = 0;
 let posIncremento = contador++; // posIncremento = 0, contador = 1
 
 // Pré-decremento: decrementa e depois retorna
-contador = 2; // Definindo contador
+contador = 2;
 let preDecremento = --contador; // contador = 1, preDecremento = 1
 
 // Pós-decremento: retorna e depois decrementa
-contador = 2; // Resetando contador
+contador = 2;
 let posDecremento = contador--; // posDecremento = 2, contador = 1
         </code></pre>
       </div>
@@ -115,78 +152,86 @@ let posDecremento = contador--; // posDecremento = 2, contador = 1
         </div>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operadores de Atribuição -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operadores de Atribuição</h2>
-      <p>Atribuem valores a variáveis, combinando a atribuição com operações.</p>
-      
+      <p>
+        Atribuem valores a variáveis, combinando a atribuição com operações.
+      </p>
+
       <div class="code-example">
         <pre><code>
 let x = 10;
 
-x += 5;  // x = x + 5 -> 15
-x -= 3;  // x = x - 3 -> 12
-x *= 2;  // x = x * 2 -> 24
-x /= 4;  // x = x / 4 -> 6
-x %= 4;  // x = x % 4 -> 2
-x **= 3; // x = x ** 3 -> 8
+x += 5;  // x = 15
+x -= 3;  // x = 12
+x *= 2;  // x = 24
+x /= 4;  // x = 6
+x %= 4;  // x = 2
+x **= 3; // x = 8
         </code></pre>
       </div>
 
       <div class="operators-grid">
         <div class="operator-item">
           <span class="operator">=</span>
-          <span class="description">Atribuição básica</span>
+          <span class="description">Atribuição</span>
         </div>
         <div class="operator-item">
           <span class="operator">+=</span>
-          <span class="description">Atribuição de adição</span>
+          <span class="description">Adição</span>
         </div>
         <div class="operator-item">
           <span class="operator">-=</span>
-          <span class="description">Atribuição de subtração</span>
+          <span class="description">Subtração</span>
         </div>
         <div class="operator-item">
           <span class="operator">*=</span>
-          <span class="description">Atribuição de multiplicação</span>
+          <span class="description">Multiplicação</span>
         </div>
         <div class="operator-item">
           <span class="operator">/=</span>
-          <span class="description">Atribuição de divisão</span>
+          <span class="description">Divisão</span>
         </div>
         <div class="operator-item">
           <span class="operator">%=</span>
-          <span class="description">Atribuição de módulo</span>
+          <span class="description">Módulo</span>
         </div>
         <div class="operator-item">
           <span class="operator">**=</span>
-          <span class="description">Atribuição de exponenciação</span>
+          <span class="description">Exponenciação</span>
         </div>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operadores Relacionais -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operadores Relacionais (Comparação)</h2>
       <p>Comparam valores e retornam um valor booleano (true ou false).</p>
-      
+
       <div class="code-example">
         <pre><code>
 let a = 10;
 let b = 5;
 let c = "10";
 
-// Operadores de comparação tradicionais
-console.log(a > b);   // true
-console.log(a < b);   // false
-console.log(a >= b);  // true
-console.log(a <= b);  // false
+// Comparações
+console.log(a > b);    // true
+console.log(a < b);    // false
+console.log(a >= b);   // true
+console.log(a <= b);   // false
 
-// Operadores de igualdade
-console.log(a == b);   // false (valores diferentes)
-console.log(a == c);   // true (valores iguais, tipos diferentes)
-console.log(a === c);  // false (valores iguais, mas tipos diferentes)
-console.log(a != b);   // true (valores diferentes)
-console.log(a !== c);  // true (mesmo valor, mas tipos diferentes)
+// Igualdades
+console.log(a == b);   // false
+console.log(a == c);   // true
+console.log(a === c);  // false
+console.log(a != b);   // true
+console.log(a !== c);  // true
         </code></pre>
       </div>
 
@@ -203,77 +248,78 @@ console.log(a !== c);  // true (mesmo valor, mas tipos diferentes)
           <tbody>
             <tr>
               <td>==</td>
-              <td>Igual a (compara valor)</td>
+              <td>Igualdade (valor)</td>
               <td>10 == "10"</td>
               <td>true</td>
             </tr>
             <tr>
               <td>===</td>
-              <td>Estritamente igual (compara valor e tipo)</td>
+              <td>Igualdade estrita (valor e tipo)</td>
               <td>10 === "10"</td>
               <td>false</td>
             </tr>
             <tr>
               <td>!=</td>
-              <td>Diferente de (compara valor)</td>
+              <td>Diferente (valor)</td>
               <td>10 != "10"</td>
               <td>false</td>
             </tr>
             <tr>
               <td>!==</td>
-              <td>Estritamente diferente (compara valor e tipo)</td>
+              <td>Diferente estrito (valor e tipo)</td>
               <td>10 !== "10"</td>
               <td>true</td>
             </tr>
             <tr>
-              <td>></td>
+              <td>&gt;</td>
               <td>Maior que</td>
-              <td>10 > 5</td>
+              <td>10 &gt; 5</td>
               <td>true</td>
             </tr>
             <tr>
-              <td><</td>
+              <td>&lt;</td>
               <td>Menor que</td>
-              <td>10 < 5</td>
+              <td>10 &lt; 5</td>
               <td>false</td>
             </tr>
             <tr>
-              <td>>=</td>
-              <td>Maior ou igual a</td>
-              <td>10 >= 10</td>
+              <td>&gt;=</td>
+              <td>Maior ou igual</td>
+              <td>10 &gt;= 10</td>
               <td>true</td>
             </tr>
             <tr>
-              <td><=</td>
-              <td>Menor ou igual a</td>
-              <td>10 <= 5</td>
+              <td>&lt;=</td>
+              <td>Menor ou igual</td>
+              <td>10 &lt;= 5</td>
               <td>false</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operadores Lógicos -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operadores Lógicos</h2>
       <p>Combinam expressões booleanas e retornam um valor booleano.</p>
-      
+
       <div class="code-example">
         <pre><code>
 let verdadeiro = true;
 let falso = false;
 
-// AND lógico (&&): retorna true se ambos os operandos forem true
+// AND (&&)
 console.log(verdadeiro && verdadeiro); // true
 console.log(verdadeiro && falso);      // false
-console.log(falso && falso);           // false
 
-// OR lógico (||): retorna true se pelo menos um operando for true
-console.log(verdadeiro || verdadeiro); // true
+// OR (||)
 console.log(verdadeiro || falso);      // true
 console.log(falso || falso);           // false
 
-// NOT lógico (!): inverte o valor de verdade
+// NOT (!)
 console.log(!verdadeiro); // false
 console.log(!falso);      // true
         </code></pre>
@@ -371,23 +417,26 @@ console.log(!falso);      // true
         </div>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operador Ternário -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operador Ternário</h2>
       <p>Oferece uma forma concisa de escrever condicionais simples.</p>
-      
+
       <div class="code-example">
         <pre><code>
 let idade = 18;
 let status = idade >= 18 ? "Adulto" : "Menor de idade";
 console.log(status); // "Adulto"
 
-// Exemplo aninhado (não recomendado - difícil leitura)
+// Exemplo aninhado (não recomendado)
 let faixaEtaria = idade < 12 ? "Criança" 
                 : idade < 18 ? "Adolescente" 
                 : idade < 60 ? "Adulto" 
                 : "Idoso";
-console.log(faixaEtaria); // "Adulto"
+console.log(faixaEtaria);
         </code></pre>
       </div>
 
@@ -399,21 +448,31 @@ console.log(faixaEtaria); // "Adulto"
           <span class="syntax-operator">:</span>
           <span class="syntax-part">expressão se falso</span>
         </div>
-        <p>O operador ternário é muito útil para atribuições condicionais simples, mas deve ser evitado em casos complexos para manter a legibilidade do código.</p>
+        <p>
+          O operador ternário é muito útil para atribuições condicionais
+          simples, mas deve ser evitado em casos complexos para manter a
+          legibilidade do código.
+        </p>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operador de Coalescência Nula (??) -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operador de Coalescência Nula (??)</h2>
-      <p>Retorna o operando do lado direito quando o operando do lado esquerdo é null ou undefined.</p>
-      
+      <p>
+        Retorna o operando do lado direito quando o operando do lado esquerdo é
+        null ou undefined.
+      </p>
+
       <div class="code-example">
         <pre><code>
 let valor1 = null;
 let valor2 = undefined;
-let valor3 = 0;         // 0 é um valor válido, não null nem undefined
-let valor4 = "";        // String vazia é um valor válido
-let valor5 = false;     // false é um valor válido
+let valor3 = 0;
+let valor4 = "";
+let valor5 = false;
 
 let resultado1 = valor1 ?? "Valor padrão"; // "Valor padrão"
 let resultado2 = valor2 ?? "Valor padrão"; // "Valor padrão"
@@ -425,13 +484,17 @@ let resultado5 = valor5 ?? "Valor padrão"; // false
 
       <div class="info-box">
         <h4>Diferença entre ?? e ||</h4>
-        <p>Enquanto o operador || considera valores "falsy" como false, 0, "", NaN e null/undefined como merecedores de fallback, o operador ?? só aciona o fallback para null e undefined.</p>
+        <p>
+          Enquanto o operador || considera valores "falsy" (0, "", false, NaN)
+          para acionar o fallback, o operador ?? só utiliza o fallback para null
+          e undefined.
+        </p>
         <table>
           <thead>
             <tr>
               <th>Expressão</th>
-              <th>Resultado com ??</th>
-              <th>Resultado com ||</th>
+              <th>??</th>
+              <th>||</th>
             </tr>
           </thead>
           <tbody>
@@ -464,31 +527,28 @@ let resultado5 = valor5 ?? "Valor padrão"; // false
         </table>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operador de Encadeamento Opcional (?.) -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operador de Encadeamento Opcional (?.)</h2>
-      <p>Permite ler propriedades aninhadas de objetos sem gerar erro se algumas forem undefined ou null.</p>
-      
+      <p>
+        Permite acessar propriedades de objetos aninhados sem gerar erro caso
+        algum nível seja null ou undefined.
+      </p>
+
       <div class="code-example">
         <pre><code>
 let usuario = {
     nome: "João",
-    endereco: {
-        rua: "Av. Principal",
-        numero: 123
-    }
+    endereco: { rua: "Av. Principal", numero: 123 }
 };
 
-let usuarioSemEndereco = {
-    nome: "Maria"
-};
+let usuarioSemEndereco = { nome: "Maria" };
 
-// Com encadeamento opcional
 let ruaJoao = usuario?.endereco?.rua; // "Av. Principal"
-let ruaMaria = usuarioSemEndereco?.endereco?.rua; // undefined (sem erro)
-
-// Sem encadeamento opcional causaria erro:
-// let ruaMariaErro = usuarioSemEndereco.endereco.rua; // TypeError
+let ruaMaria = usuarioSemEndereco?.endereco?.rua; // undefined
         </code></pre>
       </div>
 
@@ -506,155 +566,125 @@ let ruaMaria = usuarioSemEndereco?.endereco?.rua; // undefined (sem erro)
             </div>
           </div>
         </div>
-        <p>O operador ?. verifica se cada nível existe antes de prosseguir, prevenindo erros de execução.</p>
+        <p>
+          O operador ?. verifica cada nível antes de acessar a propriedade,
+          prevenindo erros.
+        </p>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operador Spread (...) -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operador Spread (...)</h2>
-      <p>Permite expandir um iterável (array, objeto, string) em locais onde múltiplos elementos são esperados.</p>
-      
+      <p>
+        Permite expandir iteráveis (arrays, objetos, strings) em locais onde
+        múltiplos elementos são esperados.
+      </p>
+
       <div class="code-example">
         <pre><code>
-// Em arrays
+// Arrays
 let numeros1 = [1, 2, 3];
 let numeros2 = [4, 5, 6];
-let todoNumeros = [...numeros1, ...numeros2]; // [1, 2, 3, 4, 5, 6]
+let todoNumeros = [...numeros1, ...numeros2]; // [1,2,3,4,5,6]
 
-// Cópia de arrays (cópia superficial)
+// Clonagem superficial de array
 let original = [1, 2, 3];
 let copia = [...original];
-copia.push(4); // Não afeta o array original
+copia.push(4);
 
-// Em objetos
-let pessoa = {
-    nome: "Ana",
-    idade: 30
-};
-
-let pessoaComEndereco = {
-    ...pessoa, // Copia todas as propriedades de pessoa
-    endereco: "Rua das Flores, 123"
-};
-
-// Substituição de propriedades
-let configuracaoPadrao = {
-    tema: "claro",
-    fonte: "Arial",
-    tamanho: 12
-};
-
-let preferenciasUsuario = {
-    ...configuracaoPadrao,
-    tema: "escuro" // Substitui o tema
-};
+// Objetos
+let pessoa = { nome: "Ana", idade: 30 };
+let pessoaComEndereco = { ...pessoa, endereco: "Rua das Flores, 123" };
         </code></pre>
       </div>
 
       <div class="usecase-list">
-        <h4>Casos de uso comuns do operador spread:</h4>
+        <h4>Casos de Uso:</h4>
         <ul>
-          <li><strong>Concatenação de arrays:</strong> Unir múltiplos arrays de forma simples</li>
-          <li><strong>Clonagem superficial:</strong> Criar cópias de arrays ou objetos (apenas primeiro nível)</li>
-          <li><strong>Passar parâmetros:</strong> Expandir um array para passar elementos individuais como argumentos</li>
-          <li><strong>Mesclagem de objetos:</strong> Combinar propriedades de múltiplos objetos</li>
-          <li><strong>Conversão:</strong> Transformar strings e outros iteráveis em arrays</li>
+          <li><strong>Concatenação de arrays</strong></li>
+          <li><strong>Clonagem superficial</strong></li>
+          <li><strong>Passar parâmetros</strong></li>
+          <li><strong>Mesclagem de objetos</strong></li>
+          <li><strong>Conversão de iteráveis</strong></li>
         </ul>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Operadores Bit a Bit -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Operadores Bit a Bit</h2>
-      <p>Realizam operações em representações binárias dos valores.</p>
-      
+      <p>
+        Realizam operações sobre os bits dos números, úteis para manipulação
+        binária.
+      </p>
+
       <div class="code-example">
         <pre><code>
-let num1 = 5;  // 101 em binário
-let num2 = 3;  // 011 em binário
+let num1 = 5;  // 101
+let num2 = 3;  // 011
 
-console.log(num1 & num2);   // 1 (001 em binário) - AND
-console.log(num1 | num2);   // 7 (111 em binário) - OR
-console.log(num1 ^ num2);   // 6 (110 em binário) - XOR
-console.log(~num1);         // -6 (inverte todos os bits e soma 1) - NOT
-console.log(num1 << 1);     // 10 (1010 em binário) - Deslocamento à esquerda
-console.log(num1 >> 1);     // 2 (010 em binário) - Deslocamento à direita
+console.log(num1 & num2);   // 1 (AND)
+console.log(num1 | num2);   // 7 (OR)
+console.log(num1 ^ num2);   // 6 (XOR)
+console.log(~num1);         // -6 (NOT)
+console.log(num1 << 1);     // 10 (left shift)
+console.log(num1 >> 1);     // 2 (right shift)
         </code></pre>
       </div>
 
       <div class="bit-operations">
         <div class="bit-operation">
-          <h4>AND bit a bit (&)</h4>
+          <h4>AND (&)</h4>
           <div class="bits">
-            <div class="bit-row">
-              <span>5</span>
-              <span>1</span>
-              <span>0</span>
-              <span>1</span>
-            </div>
-            <div class="bit-row">
-              <span>3</span>
-              <span>0</span>
-              <span>1</span>
-              <span>1</span>
-            </div>
+            <div class="bit-row"><span>5</span><span>101</span></div>
+            <div class="bit-row"><span>3</span><span>011</span></div>
             <div class="bit-row result">
-              <span>resultado</span>
-              <span>0</span>
-              <span>0</span>
-              <span>1</span>
-              <span>= 1</span>
+              <span>resultado</span><span>001 = 1</span>
             </div>
           </div>
         </div>
         <div class="bit-operation">
-          <h4>OR bit a bit (|)</h4>
+          <h4>OR (|)</h4>
           <div class="bits">
-            <div class="bit-row">
-              <span>5</span>
-              <span>1</span>
-              <span>0</span>
-              <span>1</span>
-            </div>
-            <div class="bit-row">
-              <span>3</span>
-              <span>0</span>
-              <span>1</span>
-              <span>1</span>
-            </div>
+            <div class="bit-row"><span>5</span><span>101</span></div>
+            <div class="bit-row"><span>3</span><span>011</span></div>
             <div class="bit-row result">
-              <span>resultado</span>
-              <span>1</span>
-              <span>1</span>
-              <span>1</span>
-              <span>= 7</span>
+              <span>resultado</span><span>111 = 7</span>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
 
+  <!-- Seção: Exemplos Práticos no TaskMaster -->
+  <section class="mb-5">
     <div class="topic-card">
       <h2>Exemplos Práticos no TaskMaster</h2>
-      <p>Como os operadores são aplicados em situações reais do projeto.</p>
-      
+      <p>
+        Como os operadores podem ser aplicados em situações reais do projeto.
+      </p>
+
       <div class="practical-example">
-        <h4>Cálculo de estatísticas de tarefas</h4>
+        <h4>Cálculo de Estatísticas de Tarefas</h4>
         <div class="code-example">
           <pre><code>
 // Contando tarefas concluídas
 let totalTarefas = tarefas.length;
 let tarefasConcluidas = tarefas.filter(tarefa => tarefa.concluida).length;
 let percentualConcluido = (tarefasConcluidas / totalTarefas) * 100;
-
-console.log(`Total de tarefas: ${totalTarefas}`);
-console.log(`Tarefas concluídas: ${tarefasConcluidas}`);
-console.log(`Percentual concluído: ${percentualConcluido.toFixed(1)}%`);
+console.log(`Total: ${totalTarefas}, Concluídas: ${tarefasConcluidas}, Percentual: ${percentualConcluido.toFixed(1)}%`);
           </code></pre>
         </div>
       </div>
-      
+
       <div class="practical-example">
-        <h4>Verificação de tarefas atrasadas</h4>
+        <h4>Verificação de Tarefas Atrasadas</h4>
         <div class="code-example">
           <pre><code>
 let hoje = new Date();
@@ -663,54 +693,33 @@ let diasRestantes = Math.floor((dataLimite - hoje) / (1000 * 60 * 60 * 24));
 let status = diasRestantes < 0 ? "Atrasada" 
            : diasRestantes === 0 ? "Vence hoje" 
            : `${diasRestantes} dias restantes`;
-
-console.log(`Status da tarefa: ${status}`);
+console.log(`Status: ${status}`);
           </code></pre>
         </div>
       </div>
-      
+
       <div class="practical-example">
-        <h4>Mesclando dados de tarefas</h4>
+        <h4>Mesclando Dados de Tarefas</h4>
         <div class="code-example">
           <pre><code>
-let tarefaOriginal = {
-    id: 5,
-    titulo: "Implementar autenticação",
-    descricao: "Adicionar login e registro",
-    prioridade: 2
-};
-
-let atualizacoes = {
-    descricao: "Implementar login, registro e recuperação de senha",
-    responsavel: "Carlos",
-    prazo: "2025-07-15"
-};
-
-let tarefaAtualizada = {
-    ...tarefaOriginal,
-    ...atualizacoes,
-    ultimaAtualizacao: new Date()
-};
+let tarefaOriginal = { id: 5, titulo: "Implementar autenticação", descricao: "Adicionar login e registro", prioridade: 2 };
+let atualizacoes = { descricao: "Implementar login, registro e recuperação de senha", responsavel: "Carlos", prazo: "2025-07-15" };
+let tarefaAtualizada = { ...tarefaOriginal, ...atualizacoes, ultimaAtualizacao: new Date() };
           </code></pre>
         </div>
       </div>
-      
+
       <div class="practical-example">
-        <h4>Filtrando tarefas por critérios</h4>
+        <h4>Filtrando Tarefas por Critérios</h4>
         <div class="code-example">
           <pre><code>
 let filtrarTarefas = (tarefas, { concluida, prioridadeMinima } = {}) => {
-    return tarefas.filter(tarefa => {
-        // Se concluida é undefined, não filtra por esse critério
-        let passaConcluida = concluida === undefined || tarefa.concluida === concluida;
-
-        // Se prioridadeMinima é undefined, não filtra por esse critério
-        let passaPrioridade = prioridadeMinima === undefined || tarefa.prioridade >= prioridadeMinima;
-
-        return passaConcluida && passaPrioridade;
-    });
+  return tarefas.filter(tarefa => {
+    let passaConcluida = concluida === undefined || tarefa.concluida === concluida;
+    let passaPrioridade = prioridadeMinima === undefined || tarefa.prioridade >= prioridadeMinima;
+    return passaConcluida && passaPrioridade;
+  });
 };
-
 let tarefasImportantes = filtrarTarefas(tarefas, { prioridadeMinima: 3 });
 let tarefasPendentes = filtrarTarefas(tarefas, { concluida: false });
           </code></pre>
@@ -719,293 +728,284 @@ let tarefasPendentes = filtrarTarefas(tarefas, { concluida: false });
     </div>
   </section>
 
-  <section class="exercises">
-  <h2>Desafios para Praticar</h2>
-  <p>Coloque em prática o que você aprendeu resolvendo os seguintes desafios.</p>
+  <!-- Seção: Desafios para Praticar -->
+  <section class="exercises mb-5">
+    <h2>Desafios para Praticar</h2>
+    <p>
+      Coloque em prática o que você aprendeu resolvendo os seguintes desafios:
+    </p>
 
-  <div class="exercise-card">
-    <h3>Desafio 1: Cálculo de Preço</h3>
-    <p>Crie uma função para calcular o preço total de uma tarefa considerando o preço base e o número de horas necessárias para completá-la. Cada hora adicional custa 10% do preço base.</p>
-    
-    <details>
-      <summary>Ver solução</summary>
-      <div class="solution">
-        <pre><code>
+    <div class="exercise-card">
+      <h3>Desafio 1: Cálculo de Preço</h3>
+      <p>
+        Crie uma função para calcular o preço total de uma tarefa considerando o
+        preço base e o número de horas necessárias. Cada hora adicional custa
+        10% do preço base.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
 function calcularPrecoTotal(precoBase, horas) {
-    // Calcula o preço da hora adicional (10% do preço base)
     let precoHoraAdicional = precoBase * 0.1;
-    
-    // Calcula o preço total: preço base + (horas * preço hora adicional)
-    let precoTotal = precoBase + (horas * precoHoraAdicional);
-    
-    return precoTotal;
+    return precoBase + (horas * precoHoraAdicional);
 }
+console.log("Preço total:", calcularPrecoTotal(100, 5)); // 150
+          </code></pre>
+        </div>
+      </details>
+    </div>
 
-// Exemplos de uso:
-let preco1 = calcularPrecoTotal(100, 5); // 100 + (5 * 10) = 150
-console.log("Preço total para 5 horas:", preco1);
-
-let preco2 = calcularPrecoTotal(200, 3); // 200 + (3 * 20) = 260
-console.log("Preço total para 3 horas:", preco2);
-        </code></pre>
-      </div>
-    </details>
-  </div>
-
-  <div class="exercise-card">
-    <h3>Desafio 2: Verificação de Atraso</h3>
-    <p>Crie uma função que verifique se uma tarefa está atrasada, comparando a data de vencimento com a data atual. Utilize operadores de comparação.</p>
-    
-    <details>
-      <summary>Ver solução</summary>
-      <div class="solution">
-        <pre><code>
+    <div class="exercise-card">
+      <h3>Desafio 2: Verificação de Atraso</h3>
+      <p>
+        Crie uma função que verifique se uma tarefa está atrasada, comparando a
+        data de vencimento com a data atual.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
 function verificarAtraso(dataVencimento) {
-    // Cria um objeto Date para a data atual
     let hoje = new Date();
-    
-    // Converte a string de data em um objeto Date
     let dataLimite = new Date(dataVencimento);
-    
-    // Compara as datas - true se estiver atrasada, false caso contrário
     return hoje > dataLimite;
 }
+console.log("A tarefa está atrasada?", verificarAtraso("2023-01-01"));
+          </code></pre>
+        </div>
+      </details>
+    </div>
 
-// Exemplos de uso:
-let atrasada = verificarAtraso("2023-01-01");
-console.log("A tarefa está atrasada?", atrasada); // Provavelmente true
-
-let emDia = verificarAtraso("2026-01-01");
-console.log("A tarefa está atrasada?", emDia); // Provavelmente false
-        </code></pre>
-      </div>
-    </details>
-  </div>
-
-  <div class="exercise-card">
-    <h3>Desafio 3: Incremento de Prioridade</h3>
-    <p>Crie uma função para incrementar a prioridade de uma tarefa até um valor máximo de 5.</p>
-    
-    <details>
-      <summary>Ver solução</summary>
-      <div class="solution">
-        <pre><code>
+    <div class="exercise-card">
+      <h3>Desafio 3: Incremento de Prioridade</h3>
+      <p>
+        Crie uma função para incrementar a prioridade de uma tarefa até um valor
+        máximo de 5.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
 function aumentarPrioridade(prioridadeAtual) {
-    // Usando operador de pré-incremento
     let novaPrioridade = ++prioridadeAtual;
-    
-    // Usando operador ternário para limitar o valor máximo
-    novaPrioridade = novaPrioridade > 5 ? 5 : novaPrioridade;
-    
-    return novaPrioridade;
+    return novaPrioridade > 5 ? 5 : novaPrioridade;
 }
+console.log("Nova prioridade:", aumentarPrioridade(3));
+          </code></pre>
+        </div>
+      </details>
+    </div>
 
-// Exemplos de uso:
-let prioridade1 = 3;
-console.log("Prioridade original:", prioridade1);
-console.log("Nova prioridade:", aumentarPrioridade(prioridade1));
-
-let prioridade2 = 5;
-console.log("Prioridade original:", prioridade2);
-console.log("Nova prioridade:", aumentarPrioridade(prioridade2)); // Deve permanecer 5
-        </code></pre>
-      </div>
-    </details>
-  </div>
-
-  <div class="exercise-card">
-    <h3>Desafio 4: Status da Tarefa</h3>
-    <p>Crie uma função que retorne o status de uma tarefa baseado em sua conclusão, utilizando o operador ternário.</p>
-    
-    <details>
-      <summary>Ver solução</summary>
-      <div class="solution">
-        <pre><code>
+    <div class="exercise-card">
+      <h3>Desafio 4: Status da Tarefa</h3>
+      <p>
+        Crie uma função que retorne o status de uma tarefa baseado em sua
+        conclusão, utilizando o operador ternário.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
 function statusTarefa(concluida) {
-    // Usando operador ternário para determinar o status
     return concluida ? "Concluída" : "Pendente";
 }
+console.log("Status:", statusTarefa(true));
+          </code></pre>
+        </div>
+      </details>
+    </div>
 
-// Exemplos de uso:
-console.log("Status da tarefa 1:", statusTarefa(true));  // Concluída
-console.log("Status da tarefa 2:", statusTarefa(false)); // Pendente
-        </code></pre>
-      </div>
-    </details>
-  </div>
-
-  <div class="exercise-card">
-    <h3>Desafio 5: Tarefa Importante</h3>
-    <p>Crie uma função que retorne se uma tarefa é importante com base em sua prioridade e prazo. Uma tarefa é importante se tiver prioridade maior que 3 OU estiver a menos de 2 dias do prazo.</p>
-    
-    <details>
-      <summary>Ver solução</summary>
-      <div class="solution">
-        <pre><code>
+    <div class="exercise-card">
+      <h3>Desafio 5: Tarefa Importante</h3>
+      <p>
+        Crie uma função que retorne se uma tarefa é importante com base em sua
+        prioridade e prazo. A tarefa é importante se tiver prioridade maior que
+        3 OU estiver a menos de 2 dias do prazo.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="solution">
+          <pre><code>
 function tarefaImportante(prioridade, diasParaPrazo) {
-    // Usa operador lógico OR (||) para verificar as condições
     return prioridade > 3 || diasParaPrazo < 2;
 }
+console.log("Tarefa importante?", tarefaImportante(4, 5));
+          </code></pre>
+        </div>
+      </details>
+    </div>
+  </section>
 
-// Exemplos de uso:
-console.log("Tarefa com prioridade 4 e 5 dias para o prazo é importante?", 
-            tarefaImportante(4, 5)); // true, pela prioridade
+  <!-- Seção: Conclusão -->
+  <section class="mb-5 lesson-summary">
+    <div class="summary-box">
+      <h2>Conclusão</h2>
+      <p>
+        Nesta aula, exploramos os diferentes tipos de variáveis e dados em
+        JavaScript. Aprendemos sobre:
+      </p>
+      <ul>
+        <li>
+          Declaração de variáveis com <code>var</code>, <code>let</code> e
+          <code>const</code>
+        </li>
+        <li>
+          Tipos de dados primitivos (string, number, boolean, undefined, null,
+          symbol, BigInt)
+        </li>
+        <li>Verificação e conversão de tipos</li>
+        <li>
+          Operadores complexos, como o de coalescência nula, encadeamento
+          opcional, spread e bit a bit
+        </li>
+        <li>
+          Como aplicar esses conceitos na estrutura de dados do TaskMaster
+        </li>
+      </ul>
+      <p>
+        Esses fundamentos são essenciais para desenvolver aplicações robustas e
+        interativas em JavaScript.
+      </p>
+    </div>
+  </section>
 
-console.log("Tarefa com prioridade 2 e 1 dia para o prazo é importante?", 
-            tarefaImportante(2, 1)); // true, pelo prazo
+  <!-- Estilos CSS Específicos -->
+  <style>
+    /* Variáveis base */
+    :root {
+      --primary-color: #3498db;
+      --primary-color-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --info-color: #3498db;
+      --white: #fff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --border-radius: 0.5rem;
+      --border-radius-sm: 0.25rem;
+      --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --transition-base: all 0.2s ease-in-out;
+    }
 
-console.log("Tarefa com prioridade 2 e 5 dias para o prazo é importante?", 
-            tarefaImportante(2, 5)); // false, nem prioridade nem prazo
-        </code></pre>
-      </div>
-    </details>
-  </div>
-</section>
-
-    <style>
     .lesson-container {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 900px;
       margin: 0 auto;
       padding: 20px;
       color: #333;
     }
-    
-    .lesson-header {
-      margin-bottom: 30px;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 10px;
+
+    .intro-box {
+      background-color: var(--gray-100);
+      padding: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
     }
-    
-    .lesson-header h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      color: #2c3e50;
-    }
-    
-    .lesson-info {
+
+    .section-title.with-icon {
       display: flex;
-      gap: 20px;
-      font-size: 1em;
-      color: #7f8c8d;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
     }
-    
-    .lesson-number, .lesson-module {
-      background-color: #ecf0f1;
-      padding: 5px 10px;
-      border-radius: 4px;
+
+    .section-title.with-icon i {
+      color: var(--primary-color);
     }
-    
-    .lesson-intro {
-      font-size: 1.1em;
-      line-height: 1.6;
-      margin-bottom: 30px;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border-left: 4px solid #3498db;
-      border-radius: 0 4px 4px 0;
-    }
-    
+
     .topic-card {
-      background-color: white;
+      background-color: #fff;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
       margin-bottom: 30px;
       padding: 20px;
-      border-top: 5px solid #3498db;
+      border-top: 5px solid var(--primary-color);
     }
-    
-    .topic-card h2 {
-      color: #2c3e50;
-      margin-top: 0;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 10px;
-    }
-    
+
     .code-example {
-      background-color: #f8f9fa;
+      background-color: var(--gray-100);
       border-radius: 4px;
       padding: 15px;
       margin: 15px 0;
       overflow-x: auto;
     }
-    
+
     .code-example pre {
       margin: 0;
     }
-    
-    .code-example code {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 0.9em;
-      line-height: 1.4;
-    }
-    
+
     .operators-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 15px;
       margin-top: 20px;
     }
-    
+
     .operator-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 10px;
-      background-color: #f8f9fa;
+      background-color: var(--gray-100);
       border-radius: 4px;
       border: 1px solid #eee;
     }
-    
+
     .operator {
       font-size: 1.5em;
       font-weight: bold;
       margin-bottom: 5px;
-      color: #e74c3c;
+      color: var(--accent-color);
     }
-    
+
     .description {
       font-size: 0.85em;
       text-align: center;
     }
-    
-    .comparison-table table, .logic-tables table {
+
+    .comparison-table table,
+    .logic-tables table {
       width: 100%;
       border-collapse: collapse;
       margin: 15px 0;
     }
-    
-    .comparison-table th, .comparison-table td,
-    .logic-tables th, .logic-tables td {
+
+    .comparison-table th,
+    .comparison-table td,
+    .logic-tables th,
+    .logic-tables td {
       border: 1px solid #ddd;
       padding: 8px;
       text-align: left;
     }
-    
-    .comparison-table th, .logic-tables th {
+
+    .comparison-table th,
+    .logic-tables th {
       background-color: #f2f2f2;
       font-weight: 600;
     }
-    
-    .comparison-table tr:nth-child(even),
-    .logic-tables tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    
+
     .logic-tables {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
       margin-top: 20px;
     }
-    
+
     .syntax-explanation {
-      background-color: #f8f9fa;
+      background-color: var(--gray-100);
       padding: 15px;
       border-radius: 4px;
       margin-top: 20px;
     }
-    
+
     .syntax-diagram {
       display: flex;
       align-items: center;
@@ -1014,197 +1014,197 @@ console.log("Tarefa com prioridade 2 e 5 dias para o prazo é importante?",
       margin-bottom: 15px;
       flex-wrap: wrap;
     }
-    
+
     .syntax-part {
-      background-color: #3498db;
+      background-color: var(--primary-color);
       color: white;
       padding: 5px 10px;
       border-radius: 4px;
     }
-    
+
     .syntax-operator {
       font-size: 1.5em;
       font-weight: bold;
-      color: #e74c3c;
+      color: var(--accent-color);
     }
-    
+
     .info-box {
-      background-color: #f8f9fa;
-      border-left: 4px solid #2ecc71;
-      padding: 15px;
-      margin-top: 20px;
-      border-radius: 0 4px 4px 0;
+      background-color: var(--info-color-light, #cce5ff);
+      border-left: 4px solid var(--info-color, #3498db);
+      padding: 1rem;
+      margin-top: 1.5rem;
+      border-radius: var(--border-radius-sm);
     }
-    
+
     .info-box h4 {
       margin-top: 0;
-      color: #2ecc71;
+      color: var(--info-color);
     }
-    
+
     .visual-explanation {
       margin-top: 20px;
       padding: 15px;
-      background-color: #f8f9fa;
+      background-color: var(--gray-100);
       border-radius: 4px;
     }
-    
+
     .diagram {
-      margin-bottom: 15px;
       display: flex;
       justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    
-    .object, .property, .subproperty {
+
+    .object,
+    .property,
+    .subproperty {
       padding: 10px;
-      border: 1px solid #3498db;
+      border: 1px solid var(--primary-color);
       border-radius: 4px;
       background-color: #ecf0f1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      text-align: center;
+      min-width: 100px;
     }
-    
+
     .arrow {
-      margin: 5px 0;
-      color: #e74c3c;
-      font-weight: bold;
+      font-size: 1.5em;
+      color: var(--accent-color);
+      margin: 5px;
     }
-    
+
     .usecase-list {
       margin-top: 20px;
     }
-    
+
     .usecase-list ul {
       padding-left: 20px;
     }
-    
+
     .usecase-list li {
       margin-bottom: 10px;
     }
-    
+
     .bit-operations {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
       margin-top: 20px;
     }
-    
+
     .bit-operation h4 {
       margin-top: 0;
-      color: #3498db;
+      color: var(--primary-color);
     }
-    
+
     .bits {
       border: 1px solid #ddd;
       border-radius: 4px;
       overflow: hidden;
     }
-    
+
     .bit-row {
       display: flex;
       border-bottom: 1px solid #ddd;
     }
-    
+
     .bit-row:last-child {
       border-bottom: none;
     }
-    
+
     .bit-row span {
       padding: 5px 10px;
       border-right: 1px solid #ddd;
       flex: 1;
       text-align: center;
     }
-    
+
     .bit-row span:last-child {
       border-right: none;
     }
-    
+
     .bit-row.result {
       background-color: #f2f2f2;
       font-weight: bold;
     }
-    
+
     .practical-example {
       margin-bottom: 20px;
     }
-    
+
     .practical-example h4 {
       border-bottom: 1px solid #eee;
       padding-bottom: 5px;
-      color: #3498db;
+      color: var(--primary-color);
     }
-    
-    .exercises {
-      margin-top: 40px;
-    }
-    
+
     .exercise-card {
-      background-color: white;
+      background-color: #fff;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
       margin-bottom: 20px;
       padding: 20px;
-      border-left: 5px solid #2ecc71;
+      border-left: 5px solid var(--success-color);
     }
-    
+
     .exercise-card h3 {
       margin-top: 0;
-      color: #2c3e50;
+      color: var(--secondary-color);
     }
-    
+
     details {
       margin-top: 15px;
     }
-    
+
     summary {
       cursor: pointer;
       padding: 10px;
       background-color: #f2f2f2;
       border-radius: 4px;
-      color: #2c3e50;
+      color: var(--secondary-color);
       font-weight: 600;
     }
-    
+
     summary:hover {
       background-color: #e9e9e9;
     }
-    
+
     .solution {
       margin-top: 10px;
       padding: 15px;
-      background-color: #f8f9fa;
+      background-color: var(--gray-100);
       border-radius: 4px;
-      border-left: 3px solid #2ecc71;
+      border-left: 3px solid var(--success-color);
     }
-    
+
     .lesson-summary {
       margin-top: 40px;
     }
-    
+
     .summary-box {
       background-color: #f9f9f9;
       border-radius: 8px;
       padding: 20px;
       border-left: 5px solid #9b59b6;
     }
-    
+
     .summary-box ul {
       padding-left: 20px;
     }
-    
+
     .summary-box li {
       margin-bottom: 5px;
     }
-    
+
     @media (max-width: 768px) {
-      .operators-grid, .logic-tables, .bit-operations {
+      .operators-grid,
+      .logic-tables,
+      .bit-operations {
         grid-template-columns: 1fr;
       }
-      
-      .comparison-table, .logic-tables {
+      .comparison-table,
+      .logic-tables {
         overflow-x: auto;
       }
     }
   </style>
-    </article>
+</article>

@@ -71,6 +71,7 @@
       </div>
     </div>
 
+    <!-- INÍCIO DA SEÇÃO MODIFICADA: Instalação do Node.js com details/summary -->
     <div class="card mb-4">
       <div class="card-header">
         <h4 class="mb-0">
@@ -84,113 +85,123 @@
           instalá-lo em seu sistema:
         </p>
 
-        <div class="installation-tabs">
-          <div class="tab-nav">
-            <button class="tab-btn" data-tab="node-windows">
+        <div class="installation-guides">
+          <!-- Windows -->
+          <details class="os-details">
+            <summary class="os-summary">
               <i class="fab fa-windows"></i> Windows
-            </button>
-            <button class="tab-btn" data-tab="node-mac">
+            </summary>
+            <div class="os-content">
+              <ol class="installation-steps">
+                <li>
+                  Visite o site oficial do
+                  <a href="https://nodejs.org/" target="_blank">Node.js</a>
+                </li>
+                <li>
+                  Baixe a versão LTS (Long Term Support) recomendada para a
+                  maioria dos usuários
+                </li>
+                <li>
+                  Execute o instalador baixado e siga as instruções na tela
+                </li>
+                <li>
+                  Por padrão, o instalador adicionará o Node.js ao PATH do
+                  sistema
+                </li>
+                <li>
+                  Após a instalação, reinicie o computador para garantir que as
+                  mudanças entrem em vigor
+                </li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- macOS -->
+          <details class="os-details">
+            <summary class="os-summary">
               <i class="fab fa-apple"></i> macOS
-            </button>
-            <button class="tab-btn" data-tab="node-linux">
+            </summary>
+            <div class="os-content">
+              <h5>Opção 1: Instalação direta</h5>
+              <ol class="installation-steps">
+                <li>
+                  Visite o site oficial do
+                  <a href="https://nodejs.org/" target="_blank">Node.js</a>
+                </li>
+                <li>Baixe a versão LTS (Long Term Support) para macOS</li>
+                <li>
+                  Execute o pacote .pkg baixado e siga as instruções na tela
+                </li>
+              </ol>
+
+              <h5 class="mt-3">
+                Opção 2: Usando Homebrew (recomendado se você já tem o Homebrew)
+              </h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Execute o seguinte comando para instalar o Node.js:
+                  <div class="code-block">
+                    <pre><code class="language-bash">brew install node</code></pre>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- Linux -->
+          <details class="os-details">
+            <summary class="os-summary">
               <i class="fab fa-linux"></i> Linux
-            </button>
-          </div>
-
-          <div id="node-windows" class="tab-content active">
-            <ol class="installation-steps">
-              <li>
-                Visite o site oficial do
-                <a href="https://nodejs.org/" target="_blank">Node.js</a>
-              </li>
-              <li>
-                Baixe a versão LTS (Long Term Support) recomendada para a
-                maioria dos usuários
-              </li>
-              <li>Execute o instalador baixado e siga as instruções na tela</li>
-              <li>
-                Por padrão, o instalador adicionará o Node.js ao PATH do sistema
-              </li>
-              <li>
-                Após a instalação, reinicie o computador para garantir que as
-                mudanças entrem em vigor
-              </li>
-            </ol>
-          </div>
-
-          <div id="node-mac" class="tab-content">
-            <h5>Opção 1: Instalação direta</h5>
-            <ol class="installation-steps">
-              <li>
-                Visite o site oficial do
-                <a href="https://nodejs.org/" target="_blank">Node.js</a>
-              </li>
-              <li>Baixe a versão LTS (Long Term Support) para macOS</li>
-              <li>
-                Execute o pacote .pkg baixado e siga as instruções na tela
-              </li>
-            </ol>
-
-            <h5 class="mt-3">
-              Opção 2: Usando Homebrew (recomendado se você já tem o Homebrew)
-            </h5>
-            <ol class="installation-steps">
-              <li>Abra o Terminal</li>
-              <li>
-                Execute o seguinte comando para instalar o Node.js:
-                <div class="code-block">
-                  <pre><code class="language-bash">brew install node</code></pre>
-                </div>
-              </li>
-            </ol>
-          </div>
-
-          <div id="node-linux" class="tab-content">
-            <h5>Ubuntu, Debian e distribuições baseadas:</h5>
-            <ol class="installation-steps">
-              <li>Abra o Terminal</li>
-              <li>
-                Atualize o índice do pacote e instale as dependências:
-                <div class="code-block">
-                  <pre><code class="language-bash">sudo apt update
+            </summary>
+            <div class="os-content">
+              <h5>Ubuntu, Debian e distribuições baseadas:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Atualize o índice do pacote e instale as dependências:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo apt update
 sudo apt install -y curl</code></pre>
-                </div>
-              </li>
-              <li>
-                Adicione o PPA NodeSource (para versão LTS):
-                <div class="code-block">
-                  <pre><code class="language-bash">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</code></pre>
-                </div>
-              </li>
-              <li>
-                Instale o Node.js:
-                <div class="code-block">
-                  <pre><code class="language-bash">sudo apt install -y nodejs</code></pre>
-                </div>
-              </li>
-            </ol>
+                  </div>
+                </li>
+                <li>
+                  Adicione o PPA NodeSource (para versão LTS):
+                  <div class="code-block">
+                    <pre><code class="language-bash">curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -</code></pre>
+                  </div>
+                </li>
+                <li>
+                  Instale o Node.js:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo apt install -y nodejs</code></pre>
+                  </div>
+                </li>
+              </ol>
 
-            <h5 class="mt-3">Fedora, CentOS e RHEL:</h5>
-            <ol class="installation-steps">
-              <li>Abra o Terminal</li>
-              <li>
-                Adicione o repositório NodeSource:
-                <div class="code-block">
-                  <pre><code class="language-bash">curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -</code></pre>
-                </div>
-              </li>
-              <li>
-                Instale o Node.js:
-                <div class="code-block">
-                  <pre><code class="language-bash">sudo yum install -y nodejs</code></pre>
-                </div>
-              </li>
-            </ol>
-          </div>
+              <h5 class="mt-3">Fedora, CentOS e RHEL:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Adicione o repositório NodeSource:
+                  <div class="code-block">
+                    <pre><code class="language-bash">curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -</code></pre>
+                  </div>
+                </li>
+                <li>
+                  Instale o Node.js:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo yum install -y nodejs</code></pre>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </details>
         </div>
       </div>
     </div>
 
+    <!-- Instalação do Git com details/summary -->
     <div class="card mb-4">
       <div class="card-header">
         <h4 class="mb-0"><i class="fab fa-git-alt"></i> Instalação do Git</h4>
@@ -201,115 +212,122 @@ sudo apt install -y curl</code></pre>
           gerenciar nosso código. Siga as instruções para instalá-lo:
         </p>
 
-        <div class="installation-tabs">
-          <div class="tab-nav">
-            <button class="tab-btn" data-tab="git-windows">
+        <div class="installation-guides">
+          <!-- Windows -->
+          <details class="os-details">
+            <summary class="os-summary">
               <i class="fab fa-windows"></i> Windows
-            </button>
-            <button class="tab-btn" data-tab="git-mac">
+            </summary>
+            <div class="os-content">
+              <ol class="installation-steps">
+                <li>
+                  Visite o site oficial do
+                  <a href="https://git-scm.com/download/win" target="_blank"
+                    >Git para Windows</a
+                  >
+                </li>
+                <li>Baixe o instalador do Git</li>
+                <li>
+                  Execute o instalador e siga estas recomendações:
+                  <ul class="sub-list">
+                    <li>
+                      Use Git from the Windows Command Prompt (opção padrão)
+                    </li>
+                    <li>Use OpenSSL para HTTPS (opção padrão)</li>
+                    <li>
+                      Checkout Windows-style, commit Unix-style line endings
+                      (opção padrão)
+                    </li>
+                    <li>Use MinTTY (opção padrão)</li>
+                    <li>Habilite o cache de credenciais</li>
+                  </ul>
+                </li>
+                <li>Conclua a instalação seguindo as demais instruções</li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- macOS -->
+          <details class="os-details">
+            <summary class="os-summary">
               <i class="fab fa-apple"></i> macOS
-            </button>
-            <button class="tab-btn" data-tab="git-linux">
+            </summary>
+            <div class="os-content">
+              <h5>Opção 1: Instalar com Homebrew (Recomendado)</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Execute o seguinte comando:
+                  <div class="code-block">
+                    <pre><code class="language-bash">brew install git</code></pre>
+                  </div>
+                </li>
+              </ol>
+
+              <h5 class="mt-3">Opção 2: Baixar o Instalador</h5>
+              <ol class="installation-steps">
+                <li>
+                  Visite
+                  <a href="https://git-scm.com/download/mac" target="_blank"
+                    >git-scm.com</a
+                  >
+                </li>
+                <li>Baixe e execute o instalador do macOS</li>
+                <li>Siga as instruções na tela para concluir a instalação</li>
+              </ol>
+            </div>
+          </details>
+
+          <!-- Linux -->
+          <details class="os-details">
+            <summary class="os-summary">
               <i class="fab fa-linux"></i> Linux
-            </button>
-          </div>
+            </summary>
+            <div class="os-content">
+              <h5>Ubuntu, Debian e distribuições baseadas:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Atualize os pacotes:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo apt update</code></pre>
+                  </div>
+                </li>
+                <li>
+                  Instale o Git:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo apt install git</code></pre>
+                  </div>
+                </li>
+              </ol>
 
-          <div id="git-windows" class="tab-content active">
-            <ol class="installation-steps">
-              <li>
-                Visite o site oficial do
-                <a href="https://git-scm.com/download/win" target="_blank"
-                  >Git para Windows</a
-                >
-              </li>
-              <li>Baixe o instalador do Git</li>
-              <li>
-                Execute o instalador e siga estas recomendações:
-                <ul class="sub-list">
-                  <li>
-                    Use Git from the Windows Command Prompt (opção padrão)
-                  </li>
-                  <li>Use OpenSSL para HTTPS (opção padrão)</li>
-                  <li>
-                    Checkout Windows-style, commit Unix-style line endings
-                    (opção padrão)
-                  </li>
-                  <li>Use MinTTY (opção padrão)</li>
-                  <li>Habilite o cache de credenciais</li>
-                </ul>
-              </li>
-              <li>Conclua a instalação seguindo as demais instruções</li>
-            </ol>
-          </div>
+              <h5 class="mt-3">Fedora:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Instale o Git:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo dnf install git</code></pre>
+                  </div>
+                </li>
+              </ol>
 
-          <div id="git-mac" class="tab-content">
-            <h5>Opção 1: Instalar com Homebrew (Recomendado)</h5>
-            <ol class="installation-steps">
-              <li>Abra o Terminal</li>
-              <li>
-                Execute o seguinte comando:
-                <div class="code-block">
-                  <pre><code class="language-bash">brew install git</code></pre>
-                </div>
-              </li>
-            </ol>
-
-            <h5 class="mt-3">Opção 2: Baixar o Instalador</h5>
-            <ol class="installation-steps">
-              <li>
-                Visite
-                <a href="https://git-scm.com/download/mac" target="_blank"
-                  >git-scm.com</a
-                >
-              </li>
-              <li>Baixe e execute o instalador do macOS</li>
-              <li>Siga as instruções na tela para concluir a instalação</li>
-            </ol>
-          </div>
-
-          <div id="git-linux" class="tab-content">
-            <h5>Ubuntu, Debian e distribuições baseadas:</h5>
-            <ol class="installation-steps">
-              <li>Abra o Terminal</li>
-              <li>
-                Atualize os pacotes:
-                <div class="code-block">
-                  <pre><code class="language-bash">sudo apt update</code></pre>
-                </div>
-              </li>
-              <li>
-                Instale o Git:
-                <div class="code-block">
-                  <pre><code class="language-bash">sudo apt install git</code></pre>
-                </div>
-              </li>
-            </ol>
-
-            <h5 class="mt-3">Fedora:</h5>
-            <ol class="installation-steps">
-              <li>Abra o Terminal</li>
-              <li>
-                Instale o Git:
-                <div class="code-block">
-                  <pre><code class="language-bash">sudo dnf install git</code></pre>
-                </div>
-              </li>
-            </ol>
-
-            <h5 class="mt-3">Arch Linux:</h5>
-            <ol class="installation-steps">
-              <li>Abra o Terminal</li>
-              <li>
-                Instale o Git:
-                <div class="code-block">
-                  <pre><code class="language-bash">sudo pacman -S git</code></pre>
-                </div>
-              </li>
-            </ol>
-          </div>
+              <h5 class="mt-3">Arch Linux:</h5>
+              <ol class="installation-steps">
+                <li>Abra o Terminal</li>
+                <li>
+                  Instale o Git:
+                  <div class="code-block">
+                    <pre><code class="language-bash">sudo pacman -S git</code></pre>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </details>
         </div>
       </div>
     </div>
+    <!-- FIM DA SEÇÃO MODIFICADA -->
 
     <div class="card mb-4">
       <div class="card-header">
@@ -342,9 +360,6 @@ git --version</code></pre>
         </div>
       </div>
     </div>
-
-    <!-- Link para o script externo -->
-    <script src="assets/js/tabs.js"></script>
   </section>
 
   <section class="mb-5">
@@ -784,365 +799,393 @@ function saudacao() {
       </ul>
     </div>
   </section>
-</article>
 
-<style>
-  /* Estilos específicos para a página de ambientação */
-  .section-title.with-icon {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--secondary-color);
-    border-bottom: 2px solid var(--gray-200);
-    padding-bottom: 0.5rem;
-  }
-
-  .section-title.with-icon i {
-    color: var(--primary-color);
-  }
-
-  .card {
-    background-color: var(--white);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-  }
-
-  .card-header {
-    background-color: var(--gray-100);
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--gray-200);
-  }
-
-  .card-header h4 {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--secondary-color);
-  }
-
-  .card-header h4 i {
-    color: var(--primary-color);
-  }
-
-  .card-body {
-    padding: 1.5rem;
-  }
-
-  .feature-list {
-    list-style-type: none;
-    padding-left: 0;
-    margin-bottom: 0;
-  }
-
-  .feature-list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px dashed var(--gray-200);
-    position: relative;
-    padding-left: 1.5rem;
-  }
-
-  .feature-list li:last-child {
-    border-bottom: none;
-  }
-
-  .feature-list li::before {
-    content: "✓";
-    color: var(--success-color);
-    position: absolute;
-    left: 0;
-    top: 0.5rem;
-  }
-
-  .shortcut-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-
-  .shortcut-item {
-    background-color: var(--gray-100);
-    border-radius: var(--border-radius-sm);
-    padding: 1rem;
-  }
-
-  .shortcut-platform {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--secondary-color);
-  }
-
-  kbd {
-    display: inline-block;
-    padding: 0.2rem 0.4rem;
-    font-size: 0.9rem;
-    font-family: var(--font-family-code);
-    color: var(--white);
-    background-color: var(--gray-700);
-    border-radius: 3px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    margin: 0 0.2rem;
-  }
-
-  .devtools-tabs {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .devtool-tab {
-    background-color: var(--gray-100);
-    border-radius: var(--border-radius-sm);
-    padding: 1.25rem;
-    border-left: 3px solid var(--primary-color);
-  }
-
-  .devtool-tab h5 {
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .devtool-tab p {
-    color: var(--gray-700);
-    margin-bottom: 1rem;
-  }
-
-  .tab-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tab-feature {
-    background-color: var(--white);
-    padding: 0.35rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    color: var(--gray-700);
-  }
-
-  .links-card {
-    border-left: 5px solid var(--info-color);
-  }
-
-  .resources-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .resources-list li {
-    margin-bottom: 0.75rem;
-  }
-
-  .resource-link {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: var(--border-radius-sm);
-    background-color: var(--gray-100);
-    text-decoration: none;
-    color: inherit;
-    transition: var(--transition-base);
-  }
-
-  .resource-link:hover {
-    background-color: var(--gray-200);
-    transform: translateY(-2px);
-  }
-
-  .resource-link i {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-  }
-
-  .resource-link div {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .resource-title {
-    font-weight: 600;
-    color: var(--primary-color);
-  }
-
-  .resource-desc {
-    font-size: 0.9rem;
-    color: var(--gray-600);
-  }
-
-  @media (max-width: 992px) {
-    .devtools-tabs {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .shortcut-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .editor-recommendation {
-      flex-direction: column;
+  <!-- Estilos CSS para toda a página, incluindo os details/summary -->
+  <style>
+    /* Estilos específicos para a página de ambientação */
+    .section-title.with-icon {
+      display: flex;
       align-items: center;
-      text-align: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
     }
 
-    .editor-logo {
+    .section-title.with-icon i {
+      color: var(--primary-color);
+    }
+
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background-color: var(--gray-100);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .card-header h4 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--secondary-color);
+    }
+
+    .card-header h4 i {
+      color: var(--primary-color);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .feature-list {
+      list-style-type: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+
+    .feature-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--gray-200);
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: var(--success-color);
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+    }
+
+    .shortcut-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .shortcut-item {
+      background-color: var(--gray-100);
+      border-radius: var(--border-radius-sm);
+      padding: 1rem;
+    }
+
+    .shortcut-platform {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--secondary-color);
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 0.2rem 0.4rem;
+      font-size: 0.9rem;
+      font-family: var(--font-family-code);
+      color: var(--white);
+      background-color: var(--gray-700);
+      border-radius: 3px;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+      margin: 0 0.2rem;
+    }
+
+    .devtools-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .devtool-tab {
+      background-color: var(--gray-100);
+      border-radius: var(--border-radius-sm);
+      padding: 1.25rem;
+      border-left: 3px solid var(--primary-color);
+    }
+
+    .devtool-tab h5 {
+      color: var(--primary-color);
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .devtool-tab p {
+      color: var(--gray-700);
       margin-bottom: 1rem;
     }
 
-    .tab-nav {
+    .tab-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tab-feature {
+      background-color: var(--white);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--gray-700);
+    }
+
+    .links-card {
+      border-left: 5px solid var(--info-color);
+    }
+
+    .resources-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .resources-list li {
+      margin-bottom: 0.75rem;
+    }
+
+    .resource-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      background-color: var(--gray-100);
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition-base);
+    }
+
+    .resource-link:hover {
+      background-color: var(--gray-200);
+      transform: translateY(-2px);
+    }
+
+    .resource-link i {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+
+    .resource-link div {
+      display: flex;
       flex-direction: column;
     }
 
-    .tab-btn {
-      width: 100%;
-      margin-bottom: 0.5rem;
+    .resource-title {
+      font-weight: 600;
+      color: var(--primary-color);
     }
-  }
 
-  /* Estilos para a recomendação do editor */
-  .editor-recommendation {
-    display: flex;
-    gap: 1.5rem;
-  }
+    .resource-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
 
-  .editor-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-  }
+    @media (max-width: 992px) {
+      .devtools-tabs {
+        grid-template-columns: 1fr;
+      }
+    }
 
-  /* Estilos para abas de instalação */
-  .installation-tabs {
-    margin-top: 1rem;
-  }
+    @media (max-width: 768px) {
+      .shortcut-grid {
+        grid-template-columns: 1fr;
+      }
 
-  .tab-nav {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
+      .editor-recommendation {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
 
-  .tab-btn {
-    padding: 0.75rem 1.25rem;
-    border: none;
-    background-color: var(--gray-200);
-    border-radius: var(--border-radius-sm);
-    cursor: pointer;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: var(--transition-base);
-  }
+      .editor-logo {
+        margin-bottom: 1rem;
+      }
+    }
 
-  .tab-btn:hover {
-    background-color: var(--gray-300);
-  }
+    /* Estilos para a recomendação do editor */
+    .editor-recommendation {
+      display: flex;
+      gap: 1.5rem;
+    }
 
-  .tab-btn.active {
-    background-color: var(--primary-color);
-    color: var(--white);
-  }
+    .editor-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
 
-  .tab-content {
-    display: none;
-    padding: 1rem;
-    background-color: var(--gray-100);
-    border-radius: var(--border-radius-sm);
-  }
+    /* Estilos para os elementos Details/Summary */
+    .installation-guides {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-  .tab-content.active {
-    display: block;
-  }
+    .os-details {
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
 
-  .installation-steps {
-    padding-left: 1.5rem;
-  }
+    .os-summary {
+      background-color: var(--gray-100);
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
 
-  .installation-steps > li {
-    margin-bottom: 1rem;
-  }
+    .os-summary:hover {
+      background-color: var(--gray-200);
+    }
 
-  .sub-list {
-    margin-top: 0.5rem;
-    margin-left: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
+    .os-summary::-webkit-details-marker {
+      display: none;
+    }
 
-  .code-block {
-    margin: 0.75rem 0;
-  }
+    /* Ícones em cores específicas para cada sistema operacional */
+    .os-summary i.fa-windows {
+      color: #0078d6;
+    }
 
-  /* Caixas de informação */
-  .info-box,
-  .success-box {
-    padding: 1rem;
-    border-radius: var(--border-radius-sm);
-    background-color: var(--info-color-light);
-    border-left: 4px solid var(--info-color);
-  }
+    .os-summary i.fa-apple {
+      color: #999999;
+    }
 
-  .info-box h5,
-  .success-box h5 {
-    margin-top: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+    .os-summary i.fa-linux {
+      color: #fcc624;
+    }
 
-  .success-box {
-    background-color: var(--success-color-light);
-    border-left: 4px solid var(--success-color);
-  }
+    /* Adiciona um indicador de toggle */
+    .os-summary::after {
+      content: "+";
+      position: absolute;
+      right: 1.5rem;
+      font-size: 1.2rem;
+      color: var(--gray-600);
+    }
 
-  .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: var(--primary-color);
-    color: var(--white);
-    text-decoration: none;
-    border-radius: var(--border-radius-sm);
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: var(--transition-base);
-  }
+    .os-details[open] .os-summary::after {
+      content: "-";
+    }
 
-  .btn:hover {
-    background-color: var(--primary-color-dark);
-    color: var(--white);
-  }
+    .os-details[open] .os-summary {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
 
-  .btn-sm {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.85rem;
-  }
+    .os-details[open] .os-summary i {
+      color: var(--white);
+    }
 
-  .btn-primary {
-    background-color: var(--primary-color);
-    color: var(--white);
-  }
+    .os-content {
+      padding: 1.25rem;
+      background-color: var(--gray-100);
+      border-bottom-left-radius: var(--border-radius-sm);
+      border-bottom-right-radius: var(--border-radius-sm);
+    }
 
-  /* Tabs visibility */
-  .tab-content {
-    display: none;
-  }
+    /* Caixas de informação */
+    .info-box,
+    .success-box {
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      background-color: var(--info-color-light);
+      border-left: 4px solid var(--info-color);
+    }
 
-  .tab-content.active {
-    display: block;
-  }
+    .info-box h5,
+    .success-box h5 {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-  /* Ensure active tab button is visually distinct */
-  .tab-btn.active {
-    background-color: var(--primary-color);
-    color: var(--white);
-  }
-</style>
+    .success-box {
+      background-color: var(--success-color-light);
+      border-left: 4px solid var(--success-color);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background-color: var(--primary-color);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition-base);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-color-dark);
+      color: var(--white);
+    }
+
+    .btn-sm {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+
+    /* Responsividade adicional para dispositivos móveis */
+    @media (max-width: 576px) {
+      .card-body {
+        padding: 1rem;
+      }
+
+      .installation-steps {
+        padding-left: 1.2rem;
+      }
+
+      .os-summary {
+        padding: 0.75rem 1rem;
+      }
+
+      .os-content {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+
+  <!-- Pequeno script para abrir o primeiro details por padrão -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Seleciona o primeiro elemento details em cada grupo de instalação
+      const installGroups = document.querySelectorAll(".installation-guides");
+
+      installGroups.forEach((group) => {
+        const firstDetails = group.querySelector("details");
+        if (firstDetails) {
+          firstDetails.setAttribute("open", "");
+        }
+      });
+    });
+  </script>
+</article>
