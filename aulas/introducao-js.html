@@ -20,7 +20,127 @@
     extensão: <strong>Microsoft Edge Tools for VS Code</strong>
   </p>
 
-  <h3>1. Primeiros Passos com JavaScript</h3>
+  <h3>1. História e Evolução do JavaScript</h3>
+
+  <div class="timeline">
+    <div class="timeline-item timeline-left">
+      <div class="timeline-content">
+        <div class="timeline-year">1995</div>
+        <p>
+          Criado por <strong>Brendan Eich</strong> na Netscape em apenas 10
+          dias.
+        </p>
+        <p>
+          Inicialmente chamado de <strong>Mocha</strong>, depois
+          <strong>LiveScript</strong>, e finalmente <strong>JavaScript</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="timeline-item timeline-right">
+      <div class="timeline-content">
+        <div class="timeline-year">1997</div>
+        <p>
+          JavaScript é padronizado pela ECMA International como
+          <strong>ECMAScript</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="timeline-item timeline-left">
+      <div class="timeline-content">
+        <div class="timeline-year">2009</div>
+        <p>
+          <strong>ES5</strong> introduz importantes adições como JSON.parse e
+          strict mode.
+        </p>
+      </div>
+    </div>
+
+    <div class="timeline-item timeline-right">
+      <div class="timeline-content">
+        <div class="timeline-year">2015</div>
+        <p>
+          <strong>ES6/ES2015</strong> traz let/const, arrow functions, classes,
+          promises e muito mais.
+        </p>
+      </div>
+    </div>
+
+    <div class="timeline-item timeline-left">
+      <div class="timeline-content">
+        <div class="timeline-year">2016-2024</div>
+        <p>Lançamentos anuais com novas funcionalidades.</p>
+        <p>
+          JavaScript se expande para servidores (Node.js), aplicações móveis e
+          desktop.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    JavaScript evoluiu de uma linguagem simples para uma plataforma completa de
+    desenvolvimento:
+  </p>
+  <ul>
+    <li>
+      <strong>Navegadores</strong>: De pequenos scripts a aplicações web
+      completas (SPAs)
+    </li>
+    <li><strong>Servidores</strong>: Node.js permitiu JavaScript no backend</li>
+    <li><strong>Mobile</strong>: React Native, Ionic</li>
+    <li><strong>Desktop</strong>: Electron</li>
+    <li>
+      <strong>IoT e dispositivos</strong>: JavaScript em diversos dispositivos
+    </li>
+  </ul>
+
+  <h3>2. JavaScript no Navegador</h3>
+
+  <p>
+    Os navegadores modernos executam JavaScript através de motores altamente
+    otimizados:
+  </p>
+  <ul>
+    <li>
+      <strong>V8</strong>: Desenvolvido pelo Google, usado no Chrome, Edge e
+      Node.js
+    </li>
+    <li><strong>SpiderMonkey</strong>: Usado no Firefox</li>
+    <li><strong>JavaScriptCore</strong>: Usado no Safari</li>
+  </ul>
+
+  <p>Características importantes incluem:</p>
+  <ul>
+    <li>APIs do navegador: DOM, Window, Fetch, localStorage</li>
+    <li>Runtime único (single-threaded) com event loop</li>
+    <li>Interação com HTML e CSS para manipulação da página</li>
+  </ul>
+
+  <h3>3. Inclusão de JavaScript em HTML</h3>
+
+  <p>Existem diferentes formas de incluir JavaScript em uma página:</p>
+
+  <div class="code-header">Script interno no HEAD ou BODY</div>
+  <pre><code>&lt;script&gt;
+  console.log("Script interno");
+&lt;/script&gt;</code></pre>
+
+  <div class="code-header">Script externo</div>
+  <pre><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></pre>
+
+  <div class="code-header">
+    Com atributo defer (carrega em paralelo, executa após o parsing do HTML)
+  </div>
+  <pre><code>&lt;script src="script.js" defer&gt;&lt;/script&gt;</code></pre>
+
+  <div class="code-header">
+    Com atributo async (carrega e executa de forma assíncrona)
+  </div>
+  <pre><code>&lt;script src="script.js" async&gt;&lt;/script&gt;</code></pre>
+
+  <h3>4. Primeiros Passos com JavaScript</h3>
 
   <img src="assets/images/html-css-js.png" alt="HTML, CSS e JavaScript" />
 
@@ -57,7 +177,35 @@
 console.log("Bem-vindo ao TaskMaster!");
 console.log("Versão 0.1 - Introdução ao JavaScript");</code></pre>
 
-  <h3>2. Comentários em JavaScript</h3>
+  <h3>5. Console para Debugging</h3>
+
+  <p>O console é uma ferramenta essencial para desenvolvimento:</p>
+
+  <div class="code-header">Métodos do Console</div>
+  <pre><code>// Métodos básicos
+console.log("Mensagem normal");
+console.info("Informação");
+console.warn("Aviso");
+console.error("Erro");
+
+// Tabelas
+console.table([
+  {id: 1, tarefa: "Estudar JS"},
+  {id: 2, tarefa: "Praticar código"}
+]);
+
+// Agrupamento
+console.group("Grupo de logs");
+console.log("Log 1");
+console.log("Log 2");
+console.groupEnd();
+
+// Medição de tempo
+console.time("Timer");
+// código a ser medido
+console.timeEnd("Timer");</code></pre>
+
+  <h3>6. Comentários em JavaScript</h3>
 
   <p>
     Comentários são fundamentais para documentar seu código. Em JavaScript,
@@ -72,7 +220,7 @@ console.log("Versão 0.1 - Introdução ao JavaScript");</code></pre>
    de múltiplas linhas
 */</code></pre>
 
-  <h3>3. Case Sensitivity</h3>
+  <h3>7. Case Sensitivity</h3>
 
   <p>
     JavaScript é case-sensitive, o que significa que diferencia letras
@@ -86,7 +234,7 @@ let Nome = "Outro nome";
 console.log(nome); // TaskMaster
 console.log(Nome); // Outro nome</code></pre>
 
-  <h3>4. Variáveis em JavaScript</h3>
+  <h3>8. Variáveis em JavaScript</h3>
 
   <p>
     Variáveis são utilizadas para armazenar dados que podem ser usados em seu
@@ -102,7 +250,7 @@ let isActive = true;
 console.log("Versão do aplicativo:", appVersion);
 console.log("Aplicativo ativo:", isActive);</code></pre>
 
-  <h3>5. Trabalhando com Strings</h3>
+  <h3>9. Trabalhando com Strings</h3>
 
   <p>Existem diferentes formas de manipular strings em JavaScript:</p>
 
@@ -116,7 +264,7 @@ console.log(mensagem);</code></pre>
 let mensagemTemplate = `Aplicativo: ${nome} - Versão: ${appVersion}`;
 console.log(mensagemTemplate);</code></pre>
 
-  <h3>6. Alertas no Navegador</h3>
+  <h3>10. Alertas no Navegador</h3>
 
   <p>
     Alertas são caixas de diálogo que podem ser usadas para interagir com o
@@ -324,6 +472,9 @@ console.log("Tipo de variavelNaoInicializada:", typeof variavelNaoInicializada);
     incluindo:
   </p>
   <ul>
+    <li>História e evolução do JavaScript</li>
+    <li>Como funciona o JavaScript no navegador</li>
+    <li>Formas de incluir JavaScript em páginas HTML</li>
     <li>Como usar o console para debugging</li>
     <li>Declaração de variáveis</li>
     <li>Concatenação de strings e template strings</li>
@@ -359,6 +510,93 @@ console.log("Tipo de variavelNaoInicializada:", typeof variavelNaoInicializada);
 
     details {
       margin-top: 10px;
+    }
+
+    /* Estilos para a timeline */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+
+    .timeline::after {
+      content: "";
+      position: absolute;
+      width: 3px;
+      background-color: #3498db;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1.5px;
+    }
+
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+    }
+
+    .timeline-item::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border: 3px solid #3498db;
+      border-radius: 50%;
+      top: 15px;
+      z-index: 1;
+    }
+
+    .timeline-left {
+      left: 0;
+    }
+
+    .timeline-right {
+      left: 50%;
+    }
+
+    .timeline-left::after {
+      right: -13px;
+    }
+
+    .timeline-right::after {
+      left: -13px;
+    }
+
+    .timeline-content {
+      padding: 15px;
+      background-color: white;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .timeline-year {
+      font-weight: bold;
+      color: #3498db;
+    }
+
+    @media screen and (max-width: 600px) {
+      .timeline::after {
+        left: 31px;
+      }
+
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+
+      .timeline-left::after,
+      .timeline-right::after {
+        left: 21px;
+      }
+
+      .timeline-right {
+        left: 0;
+      }
     }
   </style>
 </article>
