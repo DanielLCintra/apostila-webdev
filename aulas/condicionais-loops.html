@@ -1,0 +1,484 @@
+<article class="lesson-content">
+  <!-- TÍTULO DA AULA -->
+  <h2>
+    <i class="fab fa-js"></i> Fundamentos do JavaScript II – Controle de Fluxo
+    (Condicionais e Loops)
+  </h2>
+
+  <!-- INTRODUÇÃO -->
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, focaremos em estruturas fundamentais de controle de fluxo em
+      JavaScript, incluindo condicionais (if/else e switch) e loops (for, while,
+      do/while), que permitem executar blocos de código de forma seletiva ou
+      repetitiva. Ao final, haverá exercícios práticos para consolidar o
+      aprendizado.
+    </p>
+  </div>
+
+  <blockquote>
+    <p>
+      "O progresso é impossível sem mudança; e aqueles que não mudam as suas
+      mentes não podem mudar nada." – George Bernard Shaw
+    </p>
+  </blockquote>
+
+  <!-- 1. ESTRUTURAS CONDICIONAIS (IF/ELSE) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code-branch"></i> 1. Estruturas Condicionais (if / else)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          As estruturas condicionais permitem que o programa execute diferentes
+          blocos de código de acordo com condições específicas.
+        </p>
+        <div class="code-header">Exemplo simples de if</div>
+        <pre><code>let tarefaConcluida = true;
+
+if (tarefaConcluida) {
+  console.log("A tarefa está concluída!");
+}</code></pre>
+        <div class="code-header">Exemplo if / else</div>
+        <pre><code>let prioridade = 2; // 1: baixa, 2: média, 3: alta
+
+if (prioridade === 3) {
+  console.log("Prioridade Alta");
+} else {
+  console.log("Prioridade não é alta");
+}</code></pre>
+        <div class="code-header">Exemplo if / else if / else</div>
+        <pre><code>if (prioridade === 1) {
+  console.log("Prioridade Baixa");
+} else if (prioridade === 2) {
+  console.log("Prioridade Média");
+} else if (prioridade === 3) {
+  console.log("Prioridade Alta");
+} else {
+  console.log("Prioridade desconhecida");
+}</code></pre>
+        <p>
+          Também é possível aninhar condicionais dentro de outras, embora seja
+          recomendável manter o código claro para facilitar a manutenção.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. SWITCH CASE -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-toggle-on"></i> 2. Switch Case
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          A estrutura <code>switch</code> é útil quando há muitas comparações
+          sobre uma mesma variável.
+        </p>
+        <div class="code-header">Exemplo de switch</div>
+        <pre><code>let diaSemana = new Date().getDay(); // 0: Domingo, 1: Segunda, etc.
+
+switch (diaSemana) {
+  case 0:
+    console.log("Domingo");
+    break;
+  case 1:
+    console.log("Segunda-feira");
+    break;
+  // ...
+  default:
+    console.log("Dia inválido");
+    break;
+}</code></pre>
+        <p>
+          O uso de <strong>break</strong> é essencial para evitar que a execução
+          "pule" para o próximo caso. Em alguns cenários, porém, aproveita-se a
+          ausência de break para agrupar comportamentos semelhantes (conhecido
+          como <em>fall-through</em>).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. LOOPS (FOR, WHILE, DO/WHILE) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-sync-alt"></i> 3. Loops (for, while, do/while)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Loops (estruturas de repetição) permitem executar um bloco de código
+          múltiplas vezes, de acordo com uma condição ou até esgotar um conjunto
+          de dados.
+        </p>
+
+        <h4>for</h4>
+        <pre><code>for (let i = 0; i < 5; i++) {
+  console.log("Contagem:", i);
+}</code></pre>
+        <p>
+          No loop <code>for</code>, temos três partes entre parênteses:
+          inicialização (<code>let i = 0</code>), condição (<code>i &lt; 5</code
+          >) e incremento (<code>i++</code>).
+        </p>
+
+        <h4>while</h4>
+        <pre><code>let contador = 0;
+while (contador < 5) {
+  console.log("Contagem:", contador);
+  contador++;
+}</code></pre>
+        <p>
+          O <code>while</code> executa o bloco enquanto a condição (no caso,
+          <code>contador &lt; 5</code>) for verdadeira.
+        </p>
+
+        <h4>do/while</h4>
+        <pre><code>let numero = 5;
+do {
+  console.log("Número é:", numero);
+  numero--;
+} while (numero > 0);</code></pre>
+        <p>
+          Ao contrário do <code>while</code>, o <code>do/while</code> executa o
+          bloco ao menos uma vez antes de verificar a condição.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. EXERCÍCIOS PRÁTICOS -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 4. Exercícios Práticos
+    </h3>
+
+    <!-- EXERCICIO 1 -->
+    <div class="desafio">
+      <h4>Exercício 1: Condicional de Acesso</h4>
+      <p>
+        Crie uma variável <code>nivelAcesso</code> (1, 2 ou 3). Se o acesso for
+        3, exiba "Acesso Total"; se for 2, exiba "Acesso Parcial"; senão, exiba
+        "Acesso Negado".
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let nivelAcesso = 2;
+
+if (nivelAcesso === 3) {
+  console.log("Acesso Total");
+} else if (nivelAcesso === 2) {
+  console.log("Acesso Parcial");
+} else {
+  console.log("Acesso Negado");
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 2 -->
+    <div class="desafio">
+      <h4>Exercício 2: Avaliação de Notas</h4>
+      <p>
+        Crie uma variável <code>nota</code>. Use o <code>switch</code> para
+        avaliar:
+      </p>
+      <ul>
+        <li>Se 10, exiba "Nota Máxima".</li>
+        <li>Se 8 ou 9, exiba "Muito Bom".</li>
+        <li>Se 6 ou 7, exiba "Bom".</li>
+        <li>Se 5, exiba "Regular".</li>
+        <li>Caso contrário, exiba "Nota insuficiente".</li>
+      </ul>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let nota = 8;
+switch (nota) {
+  case 10:
+    console.log("Nota Máxima");
+    break;
+  case 9:
+  case 8:
+    console.log("Muito Bom");
+    break;
+  case 7:
+  case 6:
+    console.log("Bom");
+    break;
+  case 5:
+    console.log("Regular");
+    break;
+  default:
+    console.log("Nota insuficiente");
+    break;
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 3 -->
+    <div class="desafio">
+      <h4>Exercício 3: Listando Números Pares</h4>
+      <p>
+        Use um <code>for</code> para exibir apenas os números pares de 1 a 10 no
+        console.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>for (let i = 1; i <= 10; i++) {
+  if (i % 2 === 0) {
+    console.log("Par:", i);
+  }
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 4 -->
+    <div class="desafio">
+      <h4>Exercício 4: Soma com while</h4>
+      <p>
+        Usando um <code>while</code>, some todos os números de 1 a 5 e exiba o
+        resultado.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let soma = 0;
+let contador = 1;
+while (contador <= 5) {
+  soma += contador;
+  contador++;
+}
+console.log("Soma total:", soma); // 15</code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 5 -->
+    <div class="desafio">
+      <h4>Exercício 5: do/while de Contagem Regressiva</h4>
+      <p>
+        Crie uma contagem regressiva usando <code>do/while</code> que inicie em
+        3 e vá até 1, exibindo "FIM!" ao término.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let n = 3;
+do {
+  console.log(n);
+  n--;
+} while (n > 0);
+console.log("FIM!");</code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 6 -->
+    <div class="desafio">
+      <h4>Exercício 6: Calculadora Simples</h4>
+      <p>
+        Peça ao usuário dois valores (<code>prompt()</code> ou atribuições
+        diretas) e um operador (+, -, *, /). Use <code>switch</code> para
+        realizar a operação e exibir o resultado.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let valor1 = 10; // ou prompt("Digite o primeiro valor");
+let valor2 = 2;  // ou prompt("Digite o segundo valor");
+let operador = "*"; // ou prompt("Digite o operador (+, -, *, /)");
+
+switch (operador) {
+  case "+":
+    console.log(valor1 + valor2);
+    break;
+  case "-":
+    console.log(valor1 - valor2);
+    break;
+  case "*":
+    console.log(valor1 * valor2);
+    break;
+  case "/":
+    console.log(valor1 / valor2);
+    break;
+  default:
+    console.log("Operador inválido");
+}</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- 5. CONCLUSÃO -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 5. Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta aula, vimos como o fluxo de um programa é controlado por
+          condicionais (<code>if/else</code>, <code>switch</code>) e loops
+          (<code>for</code>, <code>while</code>, <code>do/while</code>). Dominar
+          esses conceitos é fundamental para criar lógicas que reflitam as
+          regras de negócio do seu aplicativo e manipulem dados de forma
+          estruturada.
+        </p>
+        <p>
+          A seguir, aprofundaremos ainda mais os recursos de JavaScript,
+          preparando o terreno para a criação de aplicações completas e
+          interativas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTILOS CSS (PODE SER INLINE OU EM ARQUIVO SEPARADO) -->
+  <style>
+    /* ----------------------------------
+       BASE E VARIÁVEIS
+    ---------------------------------- */
+    :root {
+      --primary-color: #3498db;
+      --primary-color-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --info-color: #3498db;
+      --white: #fff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --border-radius: 0.5rem;
+      --border-radius-sm: 0.25rem;
+      --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --transition-base: all 0.2s ease-in-out;
+      --font-family-sans: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-family-sans);
+      margin: 0;
+      padding: 0;
+    }
+
+    .lesson-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      color: var(--secondary-color);
+    }
+
+    h2,
+    h3,
+    h4,
+    p,
+    ul,
+    li {
+      margin: 0 0 1rem;
+    }
+
+    /* ----------------------------------
+       SEÇÕES E CARDS
+    ---------------------------------- */
+    .mb-5 {
+      margin-bottom: 3rem !important;
+    }
+
+    .card {
+      background-color: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .intro-box {
+      background-color: var(--gray-100);
+      padding: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title.with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color-dark);
+    }
+
+    /* ----------------------------------
+       LISTAS E BLOCOS DE CÓDIGO
+    ---------------------------------- */
+    .feature-list,
+    .usecase-list ul {
+      list-style-type: disc;
+      margin-left: 2rem;
+    }
+
+    code {
+      font-family: "Source Code Pro", monospace;
+    }
+
+    .centered-img {
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* ----------------------------------
+       EXERCÍCIOS
+    ---------------------------------- */
+    .desafio {
+      background-color: var(--gray-100);
+      padding: 1rem;
+      border-left: 5px solid var(--accent-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
+    }
+
+    .desafio h4 {
+      margin-top: 0;
+    }
+
+    .desafio details {
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    .desafio details[open] summary::before {
+      content: "▼ ";
+    }
+
+    .desafio summary::before {
+      content: "► ";
+    }
+
+    /* ----------------------------------
+       FINAL
+    ---------------------------------- */
+    .card-header {
+      background-color: var(--gray-200);
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+      border-top-left-radius: var(--border-radius);
+      border-top-right-radius: var(--border-radius);
+    }
+
+    .card-header h4 {
+      margin: 0;
+    }
+
+    .lesson-content p {
+      line-height: 1.6;
+    }
+  </style>
+</article>

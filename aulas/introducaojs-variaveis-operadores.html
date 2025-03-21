@@ -1,0 +1,1013 @@
+<article class="lesson-content">
+  <!-- TÍTULO DA AULA -->
+  <h2>
+    <i class="fab fa-js"></i> Fundamentos do JavaScript I – Introdução,
+    Variáveis e Operadores
+  </h2>
+
+  <!-- INTRODUÇÃO -->
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, exploraremos os conceitos básicos de JavaScript, abordando
+      tipos primitivos, variáveis e operadores – desde os aritméticos até os
+      lógicos e de comparação. Além disso, veremos exemplos práticos para
+      demonstrar como aplicar cada um desses recursos na linguagem.
+    </p>
+  </div>
+
+  <blockquote>
+    <p>
+      "Com grandes poderes vem grandes responsabilidades." - Tio Ben (Stan
+      Lee/Marvel Comics)
+    </p>
+  </blockquote>
+
+  <!-- Seção 1: História e Evolução do JavaScript (Timeline) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-history"></i> 1. História e Evolução do JavaScript
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="timeline">
+          <div class="timeline-item timeline-left">
+            <div class="timeline-content">
+              <div class="timeline-year">1995</div>
+              <p>
+                Criado por <strong>Brendan Eich</strong> na Netscape em apenas
+                10 dias.
+              </p>
+              <p>
+                Inicialmente chamado de <strong>Mocha</strong>, depois
+                <strong>LiveScript</strong> e finalmente
+                <strong>JavaScript</strong>.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item timeline-right">
+            <div class="timeline-content">
+              <div class="timeline-year">1997</div>
+              <p>
+                JavaScript é padronizado pela ECMA International como
+                <strong>ECMAScript</strong>.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item timeline-left">
+            <div class="timeline-content">
+              <div class="timeline-year">2009</div>
+              <p>
+                <strong>ES5</strong> introduz importantes adições como
+                JSON.parse e strict mode.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item timeline-right">
+            <div class="timeline-content">
+              <div class="timeline-year">2015</div>
+              <p>
+                <strong>ES6/ES2015</strong> traz let/const, arrow functions,
+                classes, promises e muito mais.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item timeline-left">
+            <div class="timeline-content">
+              <div class="timeline-year">2016-2024</div>
+              <p>Lançamentos anuais com novas funcionalidades.</p>
+              <p>
+                JavaScript se expande para servidores (Node.js), aplicações
+                móveis e desktop.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          JavaScript evoluiu de uma linguagem simples para uma plataforma
+          completa de desenvolvimento:
+        </p>
+        <div class="concept-grid">
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-desktop"></i> Navegadores
+            </div>
+            <div class="concept-desc">
+              De pequenos scripts a aplicações web completas (SPAs).
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-server"></i> Servidores
+            </div>
+            <div class="concept-desc">
+              Node.js permitiu JavaScript no backend.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-mobile-alt"></i> Mobile
+            </div>
+            <div class="concept-desc">React Native, Ionic.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-laptop"></i> Desktop
+            </div>
+            <div class="concept-desc">Electron.</div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-microchip"></i> IoT
+            </div>
+            <div class="concept-desc">JavaScript em diversos dispositivos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 2: JavaScript no Navegador -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-laptop-code"></i> 2. JavaScript no Navegador
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Os navegadores modernos executam JavaScript através de motores
+          altamente otimizados:
+        </p>
+        <ul class="feature-list">
+          <li>
+            <strong>V8</strong>: Desenvolvido pelo Google, usado no Chrome, Edge
+            e Node.js
+          </li>
+          <li><strong>SpiderMonkey</strong>: Usado no Firefox</li>
+          <li><strong>JavaScriptCore</strong>: Usado no Safari</li>
+        </ul>
+        <p>Características importantes incluem:</p>
+        <ul class="feature-list">
+          <li>APIs do navegador: DOM, Window, Fetch, localStorage</li>
+          <li>Runtime único (single-threaded) com event loop</li>
+          <li>Interação com HTML e CSS para manipulação da página</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 3: Formas de Incluir JavaScript no HTML -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> 3. Formas de Incluir JavaScript no HTML
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Existem diversas maneiras de inserir JavaScript em um documento HTML:
+        </p>
+        <div class="code-header">Script interno</div>
+        <pre><code>&lt;script&gt;
+  console.log("Script interno");
+&lt;/script&gt;</code></pre>
+        <div class="code-header">Script externo</div>
+        <pre><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></pre>
+        <div class="code-header">Com atributo defer</div>
+        <pre><code>&lt;script src="script.js" defer&gt;&lt;/script&gt;</code></pre>
+        <div class="code-header">Com atributo async</div>
+        <pre><code>&lt;script src="script.js" async&gt;&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 4: Primeiros Passos com JavaScript -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-rocket"></i> 4. Primeiros Passos com JavaScript
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <img
+          src="assets/images/html-css-js.png"
+          alt="HTML, CSS e JavaScript"
+          class="centered-img"
+          style="max-width: 100%"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 5: Analogia do Corpo Humano -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-heartbeat"></i> 5. HTML, CSS e JavaScript: A Analogia do
+      Corpo Humano
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Pense nas tecnologias web como partes de um corpo humano:</p>
+        <div class="concept-grid">
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-user"></i> HTML (Esqueleto)
+            </div>
+            <div class="concept-desc">
+              Define a estrutura básica da página, assim como os ossos definem o
+              corpo.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-paint-brush"></i> CSS (Pele e Aparência)
+            </div>
+            <div class="concept-desc">
+              Responsável pela aparência visual, controlando cores, fontes e
+              layout.
+            </div>
+          </div>
+          <div class="concept-item">
+            <div class="concept-title">
+              <i class="fas fa-running"></i> JavaScript (Músculos)
+            </div>
+            <div class="concept-desc">
+              Adiciona interatividade e dinamismo, permitindo que os elementos
+              respondam a eventos.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 6: Console para Debugging -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-terminal"></i> 6. Console para Debugging
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O console do navegador (F12 em muitos navegadores) é fundamental para
+          registro de mensagens e depuração:
+        </p>
+        <div class="code-header">Exemplos de uso do console</div>
+        <pre><code>// Métodos básicos
+console.log("Mensagem normal");
+console.info("Informação");
+console.warn("Aviso");
+console.error("Erro");
+
+// Tabelas
+console.table([
+  { id: 1, tarefa: "Estudar JS" },
+  { id: 2, tarefa: "Praticar código" }
+]);
+
+// Agrupamento
+console.group("Grupo de logs");
+console.log("Log 1");
+console.log("Log 2");
+console.groupEnd();
+
+// Medição de tempo
+console.time("Timer");
+// ...algum processamento...
+console.timeEnd("Timer");
+        </code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 7: Comentários e Case Sensitivity -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-comment-alt"></i> 7. Comentários e Case Sensitivity
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="code-header">Comentários</div>
+        <pre><code>// Comentário de linha única
+
+/* Comentário
+   de múltiplas linhas */
+        </code></pre>
+        <p>
+          JavaScript diferencia maiúsculas de minúsculas, portanto
+          <code>nome</code> e <code>Nome</code> são variáveis distintas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 8: Variáveis em JavaScript -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-variable"></i> 8. Variáveis em JavaScript
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Existem três principais formas de declarar variáveis em JavaScript:
+          <code>var</code>, <code>let</code> e <code>const</code>. Nas versões
+          modernas de JavaScript, <code>let</code> e <code>const</code> são
+          preferíveis.
+        </p>
+
+        <div class="code-header">Exemplos de Declaração</div>
+        <pre><code>// Com var (escopo de função)
+var antigo = "Forma antiga de declarar variáveis";
+
+// Com let (escopo de bloco, pode ser reatribuída)
+let userName = "Maria";
+userName = "João"; // permitido
+
+// Com const (escopo de bloco, não pode ser reatribuída)
+const API_URL = "https://api.example.com";
+// API_URL = "..."; // Erro
+        </code></pre>
+
+        <p>
+          <strong>Escopo</strong>: <code>var</code> ignora o escopo de bloco
+          (exceto em funções), enquanto <code>let</code> e <code>const</code>{"
+          "} respeitam o escopo de bloco.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 9: Tipos de Dados Primitivos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-database"></i> 9. Tipos de Dados Primitivos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>JavaScript possui os seguintes tipos de dados primitivos:</p>
+        <ul>
+          <li><code>string</code> (textos)</li>
+          <li><code>number</code> (números)</li>
+          <li><code>boolean</code> (verdadeiro ou falso)</li>
+          <li><code>undefined</code> (valor não atribuído)</li>
+          <li><code>null</code> (valor nulo intencional)</li>
+          <li><code>symbol</code> (identificador único - ES6)</li>
+          <li><code>bigint</code> (inteiros muito grandes - ES2020)</li>
+        </ul>
+
+        <div class="code-header">Exemplos de Declaração</div>
+        <pre><code>let texto = "Olá";
+let numero = 42;
+let isCompleted = false;
+let semValor;
+let nulo = null;
+let uniqueId = Symbol("id");
+let bigNumero = 999999999999999999999999n;
+        </code></pre>
+
+        <p>O operador <code>typeof</code> é usado para verificar o tipo:</p>
+        <pre><code>console.log(typeof texto); // "string"
+console.log(typeof numero); // "number"
+console.log(typeof isCompleted); // "boolean"
+console.log(typeof semValor); // "undefined"
+console.log(typeof nulo); // "object" (bug conhecido do JS)
+console.log(typeof uniqueId); // "symbol"
+console.log(typeof bigNumero); // "bigint"
+        </code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 10: Tipos de Dados Complexos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-layer-group"></i> 10. Tipos de Dados Complexos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Object (Objetos)</h4>
+        <p>
+          Conjunto de pares chave-valor que podem conter atributos e métodos.
+        </p>
+        <pre><code>let task = {
+  id: 1,
+  title: "Aprender JavaScript",
+  completed: false,
+  assignee: {
+    name: "João",
+    email: "joao@example.com"
+  },
+  toggleComplete() {
+    this.completed = !this.completed;
+  }
+};
+        </code></pre>
+
+        <h4>Array (Vetores)</h4>
+        <pre><code>let tasks = [
+  { id: 1, title: "Tarefa 1", completed: false },
+  { id: 2, title: "Tarefa 2", completed: true }
+];
+        </code></pre>
+
+        <h4>Date (Datas)</h4>
+        <pre><code>let hoje = new Date();
+let dataFutura = new Date("2025-12-31");</code></pre>
+
+        <h4>RegExp (Expressões Regulares)</h4>
+        <pre><code>let pattern = /^[a-z]+$/i;
+console.log(pattern.test("JavaScript")); // true</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 11: Conversão de Tipos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-exchange-alt"></i> 11. Conversão de Tipos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>É possível converter dados manual ou implicitamente:</p>
+        <h4>Para String</h4>
+        <pre><code>String(42); // "42"
+42 + "";  // "42"
+        </code></pre>
+        <h4>Para Number</h4>
+        <pre><code>Number("42"); // 42
+parseInt("42.9");  // 42
+parseFloat("42.9"); // 42.9
+        </code></pre>
+        <h4>Para Boolean</h4>
+        <pre><code>Boolean("texto"); // true
+Boolean("");       // false
+        </code></pre>
+        <p>
+          <strong>Falsy</strong>: <code>""</code>, <code>0</code>,
+          <code>null</code>, <code>undefined</code>, <code>NaN</code> e
+          <code>false</code> são considerados valores false ao converter para
+          boolean.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 12: Operadores em JavaScript -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-calculator"></i> 12. Operadores em JavaScript
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Operadores Aritméticos</h4>
+        <p>(+, -, *, /, %, **)</p>
+        <pre><code>let a = 10;
+let b = 3;
+console.log(a + b); // 13
+console.log(a - b); // 7
+console.log(a * b); // 30
+console.log(a / b); // 3.333...
+console.log(a % b); // 1
+console.log(a ** b); // 1000
+        </code></pre>
+        <p>
+          Esses operadores são usados para realizar cálculos matemáticos
+          básicos. O símbolo <code>%</code> (módulo) retorna o resto da divisão
+          de dois números, e <code>**</code> representa exponenciação.
+        </p>
+
+        <h4>Operadores de Incremento/Decremento</h4>
+        <p>(++, --)</p>
+        <pre><code>let contador = 0;
+console.log(++contador); // 1 (pré-incremento)
+console.log(contador++); // 1 (pós-incremento, agora contador = 2)
+        </code></pre>
+        <p>
+          Pré-incremento (<code>++x</code>): incrementa antes de retornar o
+          valor. Pós-incremento (<code>x++</code>): retorna o valor antigo e
+          depois incrementa. O mesmo vale para decremento (<code>--</code>).
+        </p>
+
+        <h4>Operadores de Atribuição</h4>
+        <p>(=, +=, -=, *=, /=, %=, **=)</p>
+        <pre><code>let x = 10;
+x += 5; // x = 15
+x -= 3; // x = 12
+x *= 2; // x = 24
+x /= 4; // x = 6
+x %= 2; // x = 0
+x **= 3; // x = 0 (0 elevado a 3)
+        </code></pre>
+        <p>
+          Esses operadores simplificam a forma como atribuímos valores a
+          variáveis, combinando atribuição com a operação.
+        </p>
+
+        <h4>Operadores de Comparação</h4>
+        <p>(==, ===, !=, !==, >, <, >=, <=)</p>
+        <pre><code>console.log(10 == "10");   // true (compara valor somente)
+console.log(10 === "10");  // false (compara valor e tipo)
+console.log(5 != "5");     // false (valor é igual)
+console.log(5 !== "5");    // true (valor igual, mas tipo diferente)
+        </code></pre>
+        <p>
+          A diferença fundamental entre <code>==</code> e <code>===</code> (e
+          entre <code>!=</code> e <code>!==</code>) é que a versão com
+          <strong>três</strong> sinais de igual (ou exclamação) verifica tanto o
+          valor quanto o tipo, enquanto as versões com <strong>dois</strong>{"
+          "} sinais realizam coerção de tipo antes de comparar.
+        </p>
+
+        <h4>Operadores Lógicos</h4>
+        <p>(&&, ||, !)</p>
+        <pre><code>console.log(true && false);  // false (AND)
+console.log(true || false);  // true  (OR)
+console.log(!true);          // false (NOT)
+        </code></pre>
+        <p>
+          - <code>&amp;&amp;</code> (AND): retorna true apenas se ambas as
+          condições forem true.
+          <br />
+          - <code>||</code> (OR): retorna true se pelo menos uma das condições
+          for true.
+          <br />
+          - <code>!</code> (NOT): inverte o valor booleano.
+        </p>
+
+        <h4>Operador Ternário</h4>
+        <pre><code>let idade = 18;
+let status = idade >= 18 ? "Maior de idade" : "Menor de idade";
+        </code></pre>
+        <p>
+          O operador ternário permite expressar condicionais simples em uma
+          linha, retornando um valor caso a condição seja verdadeira e outro
+          caso seja falsa.
+        </p>
+
+        <h4>Coalescência Nula (??)</h4>
+        <pre><code>let valor = null;
+let resultado = valor ?? "Valor padrão"; // "Valor padrão"
+        </code></pre>
+        <p>
+          Retorna o operando da direita apenas se o da esquerda for{" "}
+          <code>null</code> ou <code>undefined</code>. É diferente de
+          <code>||</code>, que trataria qualquer valor "falsy" (como 0 ou "")
+          como falso.
+        </p>
+
+        <h4>Encadeamento Opcional (?.)</h4>
+        <pre><code>let usuario = { nome: "Ana" };
+console.log(usuario?.endereco?.rua); // undefined
+        </code></pre>
+        <p>
+          Permite acessar propriedades aninhadas sem causar erros se algum nível
+          for <code>null</code> ou <code>undefined</code>.
+        </p>
+
+        <h4>Operador Spread (...)</h4>
+        <pre><code>let arr1 = [1,2];
+let arr2 = [3,4];
+let combinado = [...arr1, ...arr2]; // [1,2,3,4]
+        </code></pre>
+        <p>
+          Expande iteráveis (arrays, objetos) em locais onde múltiplos elementos
+          são esperados, útil para <strong>clonar</strong> ou
+          <strong>mesclar</strong> dados.
+        </p>
+
+        <h4>Operadores Bit a Bit</h4>
+        <pre><code>let num1 = 5; // 101 em binário
+let num2 = 3; // 011
+
+console.log(num1 & num2);  // 1 (AND)
+console.log(num1 | num2);  // 7 (OR)
+console.log(num1 ^ num2);  // 6 (XOR)
+console.log(~num1);        // -6 (NOT)
+console.log(num1 << 1);    // 10 (Left Shift)
+console.log(num1 >> 1);    // 2  (Right Shift)
+        </code></pre>
+        <p>
+          Operam no nível de bits, úteis em casos mais específicos como
+          manipulação de máscaras e operações de alto desempenho em números
+          inteiros.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 13: Exercícios Práticos (6 a 8 exercícios mesclados) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 13. Exercícios Práticos
+    </h3>
+
+    <!-- EXERCICIO 1 -->
+    <div class="desafio">
+      <h4>Exercício 1: Variáveis Pessoais</h4>
+      <p>
+        Crie duas variáveis (nome e idade). Exiba a frase: "Meu nome é [nome] e
+        tenho [idade] anos." no console.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let meuNome = "João";
+let minhaIdade = 30;
+console.log(`Meu nome é ${meuNome} e tenho ${minhaIdade} anos.`);
+        </code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 2 -->
+    <div class="desafio">
+      <h4>Exercício 2: Operações com Variáveis</h4>
+      <p>
+        Crie duas variáveis numéricas (<code>valor1</code> e
+        <code>valor2</code>) e exiba soma, subtração, multiplicação e divisão.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let valor1 = 20;
+let valor2 = 5;
+console.log("Soma:", valor1 + valor2);
+console.log("Subtração:", valor1 - valor2);
+console.log("Multiplicação:", valor1 * valor2);
+console.log("Divisão:", valor1 / valor2);
+        </code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 3 -->
+    <div class="desafio">
+      <h4>Exercício 3: Representando uma Tarefa</h4>
+      <p>
+        Crie variáveis para representar uma tarefa (título, descrição e status
+        booleano). Mostre essas informações no console.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let tituloTarefa = "Estudar JavaScript";
+let descricaoTarefa = "Aprender os conceitos básicos de JS";
+let tarefaConcluida = false;
+console.log(`Tarefa: ${tituloTarefa}
+Descrição: ${descricaoTarefa}
+Concluída: ${tarefaConcluida}`);
+        </code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 4 -->
+    <div class="desafio">
+      <h4>Exercício 4: Debugging no Console</h4>
+      <p>
+        Copie o trecho abaixo e observe o resultado no console. Por que o
+        resultado é "105" ao invés de 15?
+      </p>
+      <pre><code>let numero1 = 10;
+let numero2 = "5";
+console.log(numero1 + numero2);</code></pre>
+      <p>
+        Explique a razão no comentário do próprio código. Em seguida,
+        modifique-o para realizar a soma corretamente.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>// JS está concatenando a string "5" em vez de somar
+let numero1 = 10;
+let numero2 = "5";
+console.log(numero1 + Number(numero2)); // 15
+        </code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 5 -->
+    <div class="desafio">
+      <h4>Exercício 5: Template String</h4>
+      <p>
+        Crie uma variável <code>versaoApp</code> (número) e exiba a mensagem:
+        "Bem-vindo ao aplicativo [nome] versão [versaoApp]" usando
+        <strong>template strings</strong>.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let nomeApp = "TaskMaster";
+let versaoApp = 1.0;
+let mensagemBoasVindas = `Bem-vindo ao aplicativo ${nomeApp} versão ${versaoApp}!`;
+console.log(mensagemBoasVindas);
+        </code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 6 -->
+    <div class="desafio">
+      <h4>Exercício 6: Operadores de Comparação</h4>
+      <p>
+        Peça ao usuário dois valores (pode usar
+        <code>prompt()</code> ou atribuições diretas) e compare usando
+        <code>==</code>, <code>===</code> e <code>&gt;</code>. Mostre no console
+        o resultado de cada comparação.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let a = 10; // ou prompt("Digite o valor de A:");
+let b = "10"; // ou prompt("Digite o valor de B:");
+
+console.log("a == b:", a == b);   // true
+console.log("a === b:", a === b); // false
+console.log("a > b:", a > b);     // false
+        </code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 7 -->
+    <div class="desafio">
+      <h4>Exercício 7: Incremento de Prioridade</h4>
+      <p>
+        Crie uma variável <code>prioridade</code> (valor inicial 3) e use
+        operadores de incremento e atribuição para aumentar até 5. Exiba no
+        console cada passo.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let prioridade = 3;
+console.log("Prioridade inicial:", prioridade);
+
+prioridade++;
+console.log("Após 1º incremento:", prioridade);
+
+prioridade++;
+console.log("Após 2º incremento:", prioridade);
+
+// Garante que não passe de 5
+if(prioridade > 5) {
+  prioridade = 5;
+}
+console.log("Valor máximo 5:", prioridade);
+        </code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- Seção 14: Conclusão -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 14. Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Nesta aula unificada, você aprendeu:</p>
+        <ul>
+          <li>Como o JavaScript surgiu e evoluiu</li>
+          <li>Como ele se integra ao HTML/CSS e ao navegador</li>
+          <li>
+            Como declarar variáveis (<code>var</code>, <code>let</code>,
+            <code>const</code>)
+          </li>
+          <li>Tipos de dados primitivos e complexos</li>
+          <li>Formas de conversão de tipos</li>
+          <li>Uso do console para debugging</li>
+          <li>Principais operadores (aritméticos, lógicos, etc.)</li>
+        </ul>
+        <p>
+          Com esses fundamentos, você estará pronto para aprofundar ainda mais
+          no desenvolvimento de aplicações ricas e interativas em JavaScript.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTILOS CSS (PODE SER INLINE OU EM ARQUIVO SEPARADO) -->
+  <style>
+    /* Base */
+    :root {
+      --primary-color: #3498db;
+      --primary-color-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --info-color: #3498db;
+      --white: #fff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --border-radius: 0.5rem;
+      --border-radius-sm: 0.25rem;
+      --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --transition-base: all 0.2s ease-in-out;
+    }
+    .lesson-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .intro-box {
+      background-color: var(--gray-100);
+      padding: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
+    }
+    .section-title.with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
+    }
+    .section-title.with-icon i {
+      color: var(--primary-color);
+    }
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card-header {
+      background-color: var(--gray-100);
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .card-header h4 {
+      margin: 0;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--secondary-color);
+    }
+    .card-body {
+      padding: 1.5rem;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .feature-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--gray-200);
+    }
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .concept-item {
+      background-color: var(--gray-100);
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--box-shadow);
+      text-align: center;
+    }
+    .concept-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    .concept-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+    .numbered-steps {
+      list-style: decimal;
+      margin-left: 1.5rem;
+    }
+    .info-box {
+      background-color: var(--info-color-light, #cce5ff);
+      border-left: 4px solid var(--info-color, #3498db);
+      padding: 1rem;
+      margin-top: 1.5rem;
+      border-radius: var(--border-radius-sm);
+    }
+    .info-box h5 {
+      margin-top: 0;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    details {
+      margin-top: 10px;
+    }
+    summary {
+      cursor: pointer;
+      color: #2c7be5;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    summary:hover {
+      text-decoration: underline;
+    }
+    .desafio {
+      background-color: #f7f8e8;
+      border-left: 4px solid #e2c94a;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .desafio h4 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+    .desafio details {
+      margin-top: 1rem;
+    }
+    .solution pre {
+      margin: 0;
+    }
+    /* Timeline */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+    .timeline::after {
+      content: "";
+      position: absolute;
+      width: 3px;
+      background-color: #3498db;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1.5px;
+    }
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+    }
+    .timeline-item::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border: 3px solid #3498db;
+      border-radius: 50%;
+      top: 15px;
+      z-index: 1;
+    }
+    .timeline-left {
+      left: 0;
+    }
+    .timeline-right {
+      left: 50%;
+    }
+    .timeline-left::after {
+      right: -13px;
+    }
+    .timeline-right::after {
+      left: -13px;
+    }
+    .timeline-content {
+      padding: 15px;
+      background-color: white;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .timeline-year {
+      font-weight: bold;
+      color: #3498db;
+    }
+    @media screen and (max-width: 600px) {
+      .timeline::after {
+        left: 31px;
+      }
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      .timeline-left::after,
+      .timeline-right::after {
+        left: 21px;
+      }
+      .timeline-right {
+        left: 0;
+      }
+    }
+  </style>
+</article>
