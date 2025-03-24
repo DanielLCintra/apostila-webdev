@@ -705,25 +705,39 @@ console.log(mensagemBoasVindas);
       </details>
     </div>
 
-    <!-- EXERCICIO 6 -->
+    <!-- EXERCÍCIO 6 -->
     <div class="desafio">
       <h4>Exercício 6: Operadores de Comparação</h4>
       <p>
-        Peça ao usuário dois valores (pode usar
-        <code>prompt()</code> ou atribuições diretas) e compare usando
-        <code>==</code>, <code>===</code> e <code>&gt;</code>. Mostre no console
-        o resultado de cada comparação.
+        Peça ao usuário dois valores (pode usar <code>prompt()</code> ou
+        atribuições diretas) e compare usando <code>==</code>,
+        <code>===</code> e <code>&gt;</code>. Mostre no console o resultado de
+        cada comparação.
       </p>
       <details>
         <summary>Ver solução</summary>
         <div class="code-header">Exemplo de Resolução</div>
-        <pre><code>let a = 10; // ou prompt("Digite o valor de A:");
-let b = "10"; // ou prompt("Digite o valor de B:");
+        <pre><code>
+// Atribuição direta
+let a = 10;       // exemplo: 10
+let b = "10";     // exemplo: "10"
 
+console.log("Atribuição direta:");
 console.log("a == b:", a == b);   // true
 console.log("a === b:", a === b); // false
 console.log("a > b:", a > b);     // false
-        </code></pre>
+
+// Na atribuição via prompt o valores sempre serão strings, logo,
+// para ter o mesmo efeito do exemplo anterior, precisamos converter
+// o primeiro valor para número, explicitamente.
+
+let c = Number(prompt("Digite o valor de A:"));  // exemplo: 10
+let d = prompt("Digite o valor de B:");  // exemplo: 10
+
+console.log("Atribuição via prompt:");
+console.log("c == d:", c == d);   // true se os valores forem iguais
+console.log("c === d:", c === d); // false (comparação de número (c) com string (d))
+console.log("c > d:", c > d);     // false se forem iguais ou conforme os valores</code></pre>
       </details>
     </div>
 
