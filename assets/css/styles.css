@@ -238,7 +238,7 @@ blockquote {
 /* Código */
 code {
   font-family: var(--font-family-code);
-  background-color: var(--gray-200);
+  background-color: var(--gray-400);
   padding: 0.2rem 0.4rem;
   border-radius: var(--border-radius-sm);
   font-size: 0.875em;

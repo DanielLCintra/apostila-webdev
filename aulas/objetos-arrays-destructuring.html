@@ -1,0 +1,630 @@
+<article class="lesson-content">
+  <!-- TÍTULO DA AULA -->
+  <h2>
+    <i class="fas fa-layer-group"></i> Aula 7: Estruturas de Dados II – Arrays,
+    Objetos e Destructuring
+  </h2>
+
+  <!-- INTRODUÇÃO -->
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, vamos aprofundar o estudo de estruturas de dados em
+      JavaScript. Você aprenderá a criar e manipular arrays e objetos, utilizar
+      os principais métodos nativos para iterar, transformar e buscar dados, e
+      utilizar a desestruturação para extrair informações de forma simples e
+      elegante.
+    </p>
+  </div>
+
+  <blockquote>
+    <p>
+      "A organização dos dados é o primeiro passo para resolver problemas
+      complexos." - Anônimo
+    </p>
+  </blockquote>
+
+  <!-- Seção 1: Arrays -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-list"></i> 1. Arrays
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Arrays são listas ordenadas de elementos. Veremos diferentes formas de
+          criar arrays, acessar e modificar seus elementos, além dos principais
+          métodos para iteração e transformação.
+        </p>
+
+        <!-- Criação de Arrays -->
+        <div class="code-header">Criação de Arrays</div>
+        <pre><code>// Array literal (forma mais comum)
+const tarefas = [
+  "Estudar JavaScript",
+  "Criar projeto TaskMaster",
+  "Preparar apresentação",
+  "Revisar código"
+];
+console.log("Array de tarefas:", tarefas);
+
+// Usando o construtor Array
+const categorias = new Array("Trabalho", "Estudo", "Pessoal", "Projetos");
+console.log("Array de categorias:", categorias);
+
+// Array.of (ES6)
+const prioridades = Array.of("Baixa", "Média", "Alta");
+console.log("Array de prioridades:", prioridades);
+
+// Array.from (ES6) - cria array a partir de uma string
+const letras = Array.from("TaskMaster");
+console.log("Array de letras:", letras);
+</code></pre>
+
+        <!-- Acesso e Modificação -->
+        <div class="code-header">Acesso e Modificação</div>
+        <pre><code>// Acesso por índice
+console.log("Primeira tarefa:", tarefas[0]);
+console.log("Última tarefa:", tarefas[tarefas.length - 1]);
+
+// Modificando um elemento
+tarefas[2] = "Preparar apresentação sobre Arrays";
+console.log("Após modificação:", tarefas);
+
+// Métodos para adicionar e remover elementos
+tarefas.push("Testar aplicação");    // Adiciona no final
+console.log("Após push:", tarefas);
+
+const removido = tarefas.pop();         // Remove o último
+console.log("Removido com pop:", removido);
+console.log("Após pop:", tarefas);
+
+tarefas.unshift("Planejar sprint");      // Adiciona no início
+console.log("Após unshift:", tarefas);
+
+const removidoInicio = tarefas.shift();  // Remove o primeiro
+console.log("Removido com shift:", removidoInicio);
+console.log("Após shift:", tarefas);
+</code></pre>
+
+        <!-- Métodos de Iteração e Transformação -->
+        <div class="code-header">Iteração e Transformação</div>
+        <pre><code>
+// forEach: Executa uma função para cada elemento
+tarefas.forEach((t, i) => {
+  console.log(`${i + 1}. ${t}`);
+});
+
+// map: Cria um novo array transformando cada elemento
+const tarefasEmMaiusculo = tarefas.map(t => t.toUpperCase());
+console.log("Tarefas em maiúsculas:", tarefasEmMaiusculo);
+
+// filter: Retorna um array com os elementos que passam no teste
+const tarefasComA = tarefas.filter(t => t.toLowerCase().includes("a"));
+console.log("Tarefas que contêm 'a':", tarefasComA);
+
+// find: Retorna o primeiro elemento que atende à condição
+const tarefaEncontrada = tarefas.find(t => t.includes("sprint"));
+console.log("Tarefa encontrada:", tarefaEncontrada);
+
+// reduce: Reduz o array a um único valor (ex: soma dos comprimentos)
+const somaComprimentos = tarefas.reduce((total, t) => total + t.length, 0);
+console.log("Soma dos comprimentos:", somaComprimentos);
+
+// some: Verifica se algum elemento satisfaz a condição
+const existeTarefaCurta = tarefas.some(t => t.length < 10);
+console.log("Existe tarefa com menos de 10 caracteres?", existeTarefaCurta);
+
+// every: Verifica se todos os elementos satisfazem a condição
+const todasTarefasLongas = tarefas.every(t => t.length > 5);
+console.log("Todas as tarefas têm mais de 5 caracteres?", todasTarefasLongas);
+
+// sort: Ordena o array (alfabeticamente por padrão)
+const tarefasOrdenadas = [...tarefas].sort();
+console.log("Tarefas ordenadas:", tarefasOrdenadas);
+
+// reverse: Inverte a ordem dos elementos
+const tarefasInvertidas = [...tarefas].reverse();
+console.log("Tarefas invertidas:", tarefasInvertidas);
+
+// flat: Achata um array de arrays
+const arrayAninhado = [["Tarefa 1", "Tarefa 2"], ["Tarefa 3", "Tarefa 4"]];
+const arrayAchatado = arrayAninhado.flat();
+console.log("Array achatado:", arrayAchatado);
+
+// flatMap: Aplica um mapeamento e achata o resultado
+const frases = ["JavaScript é incrível", "Arrays facilitam o trabalho"];
+const palavras = frases.flatMap(frase => frase.split(" "));
+console.log("Palavras extraídas com flatMap:", palavras);
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 2: Objetos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-object-group"></i> 2. Objetos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Objetos armazenam pares chave-valor e são fundamentais para agrupar
+          dados e funcionalidades. Veremos como criar objetos, acessar e
+          modificar suas propriedades, e iterar sobre eles.
+        </p>
+
+        <!-- Criação e Acesso -->
+        <div class="code-header">Criação e Acesso</div>
+        <pre><code>// Criação de objeto usando sintaxe literal
+const tarefa = {
+  id: 1,
+  titulo: "Aprender sobre objetos",
+  descricao: "Estudar propriedades e métodos",
+  concluida: false,
+  prioridade: "alta",
+  dataCriacao: new Date()
+};
+console.log("Objeto tarefa:", tarefa);
+console.log("Título (ponto):", tarefa.titulo);
+console.log("Prioridade (colchetes):", tarefa["prioridade"]);
+
+// Objeto com nomes especiais (acessados com colchetes)
+const tarefaEspecial = {
+  "nome da tarefa": "Tarefa com espaço",
+  "data-criacao": "2025-01-01"
+};
+console.log("Nome especial:", tarefaEspecial["nome da tarefa"]);
+</code></pre>
+
+        <!-- Métodos e Objetos Aninhados -->
+        <div class="code-header">Métodos e Objetos Aninhados</div>
+        <pre><code>const projetoTaskMaster = {
+  nome: "TaskMaster",
+  version: "1.0",
+  autor: "Curso JavaScript",
+  tarefas: [],
+  adicionarTarefa(titulo, prioridade = "média") {
+    const novaTarefa = {
+      id: this.tarefas.length + 1,
+      titulo,
+      prioridade,
+      concluida: false,
+      criada: new Date()
+    };
+    this.tarefas.push(novaTarefa);
+    console.log(`Tarefa "${titulo}" adicionada.`);
+    return novaTarefa;
+  },
+  listarTarefas() {
+    console.log(`Projeto ${this.nome} - Lista de Tarefas:`);
+    this.tarefas.forEach(t => console.log(`- ${t.id}: ${t.titulo} (${t.prioridade})`));
+  }
+};
+
+projetoTaskMaster.adicionarTarefa("Estudar Objetos", "alta");
+projetoTaskMaster.adicionarTarefa("Criar interface");
+projetoTaskMaster.listarTarefas();
+</code></pre>
+
+        <!-- Iteração em Objetos -->
+        <div class="code-header">Iteração em Objetos</div>
+        <pre><code>
+// Iterando com for...in
+console.log("Propriedades do objeto tarefa:");
+for (let prop in tarefa) {
+  console.log(`${prop}: ${tarefa[prop]}`);
+}
+
+// Object.keys e Object.values
+console.log("Chaves:", Object.keys(tarefa));
+console.log("Valores:", Object.values(tarefa));
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 3: Destructuring (Desestruturação de Arrays e Objetos) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code-branch"></i> 3. Destructuring (Arrays e Objetos)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Destructuring é uma técnica que permite extrair valores de arrays e
+          objetos e atribuí-los a variáveis de forma concisa, tornando o código
+          mais legível e organizado.
+        </p>
+
+        <!-- Destructuring de Arrays -->
+        <div class="code-header">Desestruturação de Arrays</div>
+        <pre><code>const prioridades = ["baixa", "média", "alta"];
+// Extraindo valores com destructuring
+const [baixa, media, alta] = prioridades;
+console.log("Baixa:", baixa);
+console.log("Média:", media);
+console.log("Alta:", alta);
+
+// Uso do rest pattern para capturar o restante dos elementos
+const [primeiraCat, ...outrasCats] = ["Trabalho", "Estudo", "Pessoal", "Saúde"];
+console.log("Categoria principal:", primeiraCat);
+console.log("Outras categorias:", outrasCats);
+</code></pre>
+
+        <!-- Destructuring de Objetos -->
+        <div class="code-header">Desestruturação de Objetos</div>
+        <pre><code>const tarefaObj = {
+  id: 1,
+  titulo: "Aprender desestruturação",
+  descricao: "Estudar sintaxe e aplicações",
+  prioridade: "alta",
+  concluida: false
+};
+
+// Extraindo propriedades com renomeação e valores padrão
+const { titulo: nomeTarefa, prioridade, concluida, categoria = "Geral" } = tarefaObj;
+console.log("Nome da tarefa:", nomeTarefa);
+console.log("Prioridade:", prioridade);
+console.log("Concluída:", concluida);
+console.log("Categoria (padrão):", categoria);
+
+// Desestruturação de objetos aninhados
+const projeto = {
+  nome: "TaskMaster",
+  desenvolvedor: {
+    nome: "Maria Silva",
+    email: "maria@exemplo.com"
+  },
+  prazos: {
+    inicio: new Date(2025, 0, 15),
+    fim: new Date(2025, 5, 30)
+  }
+};
+
+const {
+  nome: nomeProjeto,
+  desenvolvedor: { nome: devNome, email },
+  prazos: { inicio, fim }
+} = projeto;
+console.log("Projeto:", nomeProjeto);
+console.log("Desenvolvedor:", devNome);
+console.log("Email:", email);
+console.log("Início:", inicio.toLocaleDateString());
+console.log("Fim:", fim.toLocaleDateString());
+
+// Desestruturação em parâmetros de função
+function exibirDetalhes({ titulo, prioridade, concluida }) {
+  console.log(`Tarefa: ${titulo}`);
+  console.log(`Prioridade: ${prioridade}`);
+  console.log(`Status: ${concluida ? "Concluída" : "Pendente"}`);
+}
+exibirDetalhes(tarefaObj);
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 4: Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 4. Exercícios Práticos
+    </h3>
+
+    <!-- Exercício 1: Listar Tarefas -->
+    <div class="desafio">
+      <h4>Exercício 1: Listar Tarefas</h4>
+      <p>
+        Crie um array de tarefas e utilize um loop (for ou for...of) para
+        imprimir cada tarefa.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>const tarefas = [
+  "Estudar JavaScript",
+  "Criar projeto TaskMaster",
+  "Revisar código"
+];
+
+for (let tarefa of tarefas) {
+  console.log(tarefa);
+}
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 2: Encontrar Tarefas Duplicadas -->
+    <div class="desafio">
+      <h4>Exercício 2: Encontrar Tarefas Duplicadas</h4>
+      <p>
+        Crie uma função que receba um array de objetos de tarefas e retorne um
+        array com os títulos duplicados.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function encontrarDuplicatas(tarefas) {
+  const contagem = {};
+  const duplicatas = [];
+  
+  tarefas.forEach(tarefa => {
+    const { titulo } = tarefa;
+    contagem[titulo] = (contagem[titulo] || 0) + 1;
+  });
+  
+  for (const titulo in contagem) {
+    if (contagem[titulo] > 1) {
+      duplicatas.push(titulo);
+    }
+  }
+  
+  return duplicatas;
+}
+
+const listaTarefas = [
+  { id: 1, titulo: "Estudar JavaScript" },
+  { id: 2, titulo: "Revisar código" },
+  { id: 3, titulo: "Estudar JavaScript" },
+  { id: 4, titulo: "Criar projeto" }
+];
+
+console.log("Tarefas duplicadas:", encontrarDuplicatas(listaTarefas));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 3: Calculadora de Operações Básicas -->
+    <div class="desafio">
+      <h4>Exercício 3: Calculadora de Operações Básicas</h4>
+      <p>
+        Crie um objeto "calculadora" com métodos para soma, subtração,
+        multiplicação e divisão.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>const calculadora = {
+  soma(a, b) {
+    return a + b;
+  },
+  subtracao(a, b) {
+    return a - b;
+  },
+  multiplicacao(a, b) {
+    return a * b;
+  },
+  divisao(a, b) {
+    if (b === 0) return "Erro: Divisão por zero";
+    return a / b;
+  }
+};
+
+console.log("Soma:", calculadora.soma(10, 5));
+console.log("Subtração:", calculadora.subtracao(10, 5));
+console.log("Multiplicação:", calculadora.multiplicacao(10, 5));
+console.log("Divisão:", calculadora.divisao(10, 5));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 4: Extrair Informações de uma Tarefa -->
+    <div class="desafio">
+      <h4>Exercício 4: Extrair Informações de uma Tarefa</h4>
+      <p>
+        Crie uma função <code>extrairInfoTarefa</code> que receba um objeto de
+        tarefa e use desestruturação para retornar um objeto com apenas o
+        título, a prioridade e o status.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function extrairInfoTarefa(tarefa) {
+  const { titulo, prioridade, concluida } = tarefa;
+  return { titulo, prioridade, concluida };
+}
+
+const tarefaExemplo = {
+  id: 1,
+  titulo: "Estudar JavaScript",
+  descricao: "Aprender desestruturação",
+  prioridade: "alta",
+  concluida: false,
+  dataCriacao: new Date()
+};
+
+console.log("Informações extraídas:", extrairInfoTarefa(tarefaExemplo));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 5: Extrair Primeiras Tarefas -->
+    <div class="desafio">
+      <h4>Exercício 5: Extrair Primeiras Tarefas</h4>
+      <p>
+        Crie uma função que receba um array de tarefas e use desestruturação
+        para retornar um objeto contendo a primeira tarefa e um array com as
+        demais.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function extrairTarefas(tarefas) {
+  const [primeira, ...resto] = tarefas;
+  return { primeira, resto };
+}
+
+const lista = [
+  "Estudar JavaScript",
+  "Revisar código",
+  "Criar projeto TaskMaster"
+];
+
+console.log("Tarefas extraídas:", extrairTarefas(lista));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 6: Formatar Usuário com Destructuring -->
+    <div class="desafio">
+      <h4>Exercício 6: Formatar Usuário</h4>
+      <p>
+        Crie uma função <code>formatarUsuario</code> que receba um array com
+        dados do usuário na ordem [nome, email, idade, cidade] e use
+        desestruturação para retornar um objeto formatado.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function formatarUsuario(dados) {
+  const [nome, email, idade = "Não informada", cidade = "Não informada"] = dados;
+  return { nome, email, idade, cidade, resumo: `${nome}, ${idade} anos, mora em ${cidade}` };
+}
+
+const usuario1 = ["Maria Silva", "maria@email.com", 28, "São Paulo"];
+const usuario2 = ["João Santos", "joao@email.com"];
+
+console.log("Usuário 1:", formatarUsuario(usuario1));
+console.log("Usuário 2:", formatarUsuario(usuario2));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 7: Agrupar Tarefas por Status -->
+    <div class="desafio">
+      <h4>Exercício 7: Agrupar Tarefas por Status</h4>
+      <p>
+        Crie uma função <code>agruparPorStatus</code> que receba um array de
+        tarefas (cada uma com a propriedade "concluida") e retorne um objeto com
+        as tarefas agrupadas em "concluidas" e "pendentes".
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function agruparPorStatus(tarefas) {
+  return tarefas.reduce((grupos, { concluida, ...resto }) => {
+    const chave = concluida ? "concluidas" : "pendentes";
+    if (!grupos[chave]) grupos[chave] = [];
+    grupos[chave].push({ concluida, ...resto });
+    return grupos;
+  }, { concluidas: [], pendentes: [] });
+}
+
+const tarefasStatus = [
+  { id: 1, titulo: "Estudar JavaScript", concluida: true },
+  { id: 2, titulo: "Criar projeto TaskMaster", concluida: false },
+  { id: 3, titulo: "Revisar código", concluida: false }
+];
+
+console.log("Tarefas agrupadas:", agruparPorStatus(tarefasStatus));
+</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- CONCLUSÃO -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 5. Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta aula, você aprofundou seus conhecimentos sobre arrays e objetos,
+          explorando os principais métodos de manipulação e iteração, e aprendeu
+          a utilizar a desestruturação para extrair dados de forma concisa.
+          Esses conceitos são essenciais para organizar e transformar
+          informações, preparando você para desenvolver aplicações dinâmicas no
+          TaskMaster.
+        </p>
+        <p>
+          Pratique os exercícios para consolidar o entendimento e fique atento
+          aos detalhes de cada método, pois eles serão a base para operações
+          mais avançadas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTILOS CSS -->
+  <style>
+    /* Base */
+    :root {
+      --primary-color: #3498db;
+      --primary-color-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --info-color: #3498db;
+      --white: #fff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --border-radius: 0.5rem;
+      --border-radius-sm: 0.25rem;
+      --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --transition-base: all 0.2s ease-in-out;
+    }
+    .lesson-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      font-family: Arial, sans-serif;
+    }
+    .intro-box {
+      background-color: var(--gray-100);
+      padding: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
+    }
+    .section-title.with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
+    }
+    .section-title.with-icon i {
+      color: var(--primary-color);
+    }
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card-body {
+      padding: 1.5rem;
+    }
+    code {
+      font-family: monospace;
+    }
+
+    details {
+      margin-top: 10px;
+    }
+    summary {
+      cursor: pointer;
+      color: var(--primary-color-dark);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    summary:hover {
+      text-decoration: underline;
+    }
+    .desafio {
+      background-color: #f7f8e8;
+      border-left: 4px solid #e2c94a;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .desafio h4 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+  </style>
+</article>

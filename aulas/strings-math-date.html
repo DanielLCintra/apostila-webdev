@@ -1,0 +1,635 @@
+<article class="lesson-content">
+  <!-- TÍTULO DA AULA -->
+  <h2>
+    <i class="fas fa-database"></i> Estruturas de Dados I – Strings, Math e Date
+  </h2>
+
+  <!-- INTRODUÇÃO -->
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, vamos explorar as estruturas de dados iniciais em JavaScript:
+      a manipulação de strings, as funções matemáticas e o tratamento de datas
+      com o objeto Date. Você aprenderá a buscar, cortar, juntar e transformar
+      strings, utilizar funções do objeto Math para cálculos e arredondamentos,
+      além de criar e manipular datas para exibir informações de forma amigável.
+    </p>
+  </div>
+
+  <blockquote>
+    <p>
+      "Manipular dados é transformar informações em conhecimento." - Anônimo
+    </p>
+  </blockquote>
+
+  <!-- Seção 1: Manipulação de Strings -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-font"></i> 1. Manipulação de Strings
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta seção, veremos como trabalhar com strings. Aprenderemos a obter
+          o comprimento, acessar caracteres individuais e concatenar strings,
+          utilizando tanto a forma tradicional quanto as template strings
+          (ES6+).
+        </p>
+
+        <!-- Exemplo: Criação e Acesso -->
+        <div class="code-header">Exemplo: Criação e Acesso</div>
+        <pre><code>// Criação de strings
+let titulo = "Aprender JavaScript";
+let descricao = 'Estudar manipulação de strings';
+
+console.log("Título:", titulo);
+console.log("Descrição:", descricao);
+
+// Comprimento da string
+console.log("Comprimento do título:", titulo.length);
+
+// Acesso a caracteres individuais
+console.log("Primeiro caractere:", titulo[0]);
+console.log("Último caractere:", titulo[titulo.length - 1]);
+console.log("Caractere na posição 8:", titulo.charAt(8));
+</code></pre>
+
+        <!-- Exemplo: Concatenação e Template Strings -->
+        <div class="code-header">Exemplo: Concatenação e Template Strings</div>
+        <pre><code>// Concatenação tradicional
+let categoria = "Estudo";
+let infoCompleta = "Categoria: " + categoria + " - " + titulo;
+console.log("Concatenação tradicional:", infoCompleta);
+
+// Template strings (ES6+)
+let dataCriacao = "01/06/2025";
+let resumo = `Tarefa: ${titulo} (${categoria})
+Criada em: ${dataCriacao}
+Descrição: ${descricao}`;
+console.log("Template string:");
+console.log(resumo);
+</code></pre>
+
+        <!-- Exemplo: Métodos Básicos de Busca -->
+        <div class="code-header">Exemplo: Métodos Básicos para Busca</div>
+        <pre><code>// Métodos para busca em strings
+console.log("Posição de 'JavaScript':", titulo.indexOf("JavaScript"));
+console.log("'JavaScript' está presente?", titulo.includes("JavaScript"));
+console.log("Começa com 'Aprender'?", titulo.startsWith("Aprender"));
+console.log("Termina com 'Script'?", titulo.endsWith("Script"));
+</code></pre>
+
+        <!-- Exemplo: Truncar Texto -->
+        <div class="code-header">Exemplo: Truncar Descrições</div>
+        <pre><code>
+// Função que trunca uma string se ela for maior que um tamanho máximo
+function truncarDescricao(texto, maxLength = 30) {
+  if (texto.length <= maxLength) {
+    return texto;
+  }
+  return texto.substring(0, maxLength) + "...";
+}
+
+let descricaoLonga = "Este é um exemplo de uma descrição muito longa que precisará ser truncada para exibição.";
+console.log("Descrição truncada:", truncarDescricao(descricaoLonga));
+console.log("Descrição truncada (20 caracteres):", truncarDescricao(descricaoLonga, 20));
+</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Na parte avançada, exploramos métodos como <code>slice</code>,
+          <code>substring</code>, <code>split</code> e <code>join</code>.
+        </p>
+
+        <!-- Exemplo: Slice e Substring -->
+        <div class="code-header">Exemplo: Slice e Substring</div>
+        <pre><code>let texto = "JavaScript é incrível!";
+console.log("Original:", texto);
+console.log("slice(0, 10):", texto.slice(0, 10));      // "JavaScript"
+console.log("substring(0, 10):", texto.substring(0, 10)); // "JavaScript"
+</code></pre>
+
+        <!-- Exemplo: Split e Join -->
+        <div class="code-header">Exemplo: Split e Join</div>
+        <pre><code>let tags = "javascript,programação,web,frontend";
+let arrayTags = tags.split(",");
+console.log("Array de tags:", arrayTags);
+
+let listaTarefas = ["Estudar JS", "Criar TaskMaster", "Testar aplicação"];
+let textoTarefas = listaTarefas.join(" | ");
+console.log("Lista de tarefas formatada:", textoTarefas);
+</code></pre>
+
+        <!-- Exemplo: Buscar e Substituir -->
+        <div class="code-header">Exemplo: Buscar e Substituir</div>
+        <pre><code>
+// Função para destacar um termo em um texto
+function destacarTermo(texto, termo) {
+  if (!termo) return texto;
+  const regex = new RegExp(termo, 'gi');
+  return texto.replace(regex, `**$&**`);
+}
+
+let busca = destacarTermo("JavaScript é uma linguagem incrível. Amo javascript!", "javascript");
+console.log("Resultado com destaque:", busca);
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 2: Uso do Objeto Math -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-calculator"></i> 2. Uso do Objeto Math
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O objeto Math fornece constantes e métodos para operações matemáticas.
+          Você aprenderá a utilizar constantes, métodos de arredondamento e a
+          gerar números aleatórios.
+        </p>
+
+        <!-- Exemplo: Constantes e Cálculo de Área -->
+        <div class="code-header">Exemplo: Constantes e Cálculo de Área</div>
+        <pre><code>// Exibindo constantes
+console.log("Math.PI:", Math.PI);
+console.log("Math.E:", Math.E);
+
+// Cálculo da área de um círculo
+const raio = 5;
+const areaCirculo = Math.PI * Math.pow(raio, 2);
+console.log(`Área de um círculo com raio ${raio}: ${areaCirculo}`);
+</code></pre>
+
+        <!-- Exemplo: Métodos de Arredondamento -->
+        <div class="code-header">Exemplo: Arredondamento</div>
+        <pre><code>
+const numero = 9.7;
+console.log("Math.round(9.7):", Math.round(numero));
+console.log("Math.floor(9.7):", Math.floor(numero));
+console.log("Math.ceil(9.7):", Math.ceil(numero));
+console.log("Math.trunc(9.7):", Math.trunc(numero));
+
+const pi = Math.PI;
+console.log("Pi com 2 casas decimais:", pi.toFixed(2));
+</code></pre>
+
+        <!-- Exemplo: Números Aleatórios -->
+        <div class="code-header">Exemplo: Números Aleatórios</div>
+        <pre><code>
+// Função para gerar número aleatório entre min e max
+function numeroAleatorioEntre(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+console.log("Número aleatório entre 1 e 10:", numeroAleatorioEntre(1, 10));
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 3: Manipulação de Datas com o Objeto Date -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-calendar-alt"></i> 3. Manipulação de Datas (Date)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O objeto Date permite criar, manipular e formatar datas. Você
+          aprenderá a criar datas a partir de diferentes fontes (timestamp,
+          string, componentes), extrair componentes (dia, mês, ano) e realizar
+          cálculos, como adicionar dias e calcular a diferença entre datas.
+        </p>
+
+        <!-- Exemplo: Criação de Datas -->
+        <div class="code-header">Exemplo: Criação de Datas</div>
+        <pre><code>
+// Data atual
+const hoje = new Date();
+console.log("Data atual:", hoje.toString());
+
+// Data a partir de string ISO
+const dataISO = new Date("2025-06-15T10:30:00");
+console.log("Data a partir de string ISO:", dataISO);
+
+// Data a partir de componentes (mês: 0 a 11)
+const dataComponentes = new Date(2025, 5, 15, 10, 30, 0);
+console.log("Data a partir de componentes:", dataComponentes);
+</code></pre>
+
+        <!-- Exemplo: Obtenção e Formatação -->
+        <div class="code-header">
+          Exemplo: Obtenção de Componentes e Formatação
+        </div>
+        <pre><code>
+// Função para formatar data no formato "DD/MM/AAAA"
+function formatarData(data) {
+  const dia = data.getDate().toString().padStart(2, '0');
+  const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+  const ano = data.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
+console.log("Data formatada:", formatarData(hoje));
+</code></pre>
+
+        <!-- Exemplo: Modificação de Datas -->
+        <div class="code-header">Exemplo: Adicionar Dias a uma Data</div>
+        <pre><code>
+// Função para adicionar dias a uma data
+function adicionarDias(data, dias) {
+  const novaData = new Date(data);
+  novaData.setDate(data.getDate() + dias);
+  return novaData;
+}
+
+const amanha = adicionarDias(hoje, 1);
+console.log("Amanhã:", formatarData(amanha));
+</code></pre>
+
+        <!-- Exemplo: Diferença entre Datas -->
+        <div class="code-header">Exemplo: Diferença entre Datas</div>
+        <pre><code>
+// Diferença entre duas datas (em milissegundos) e conversão para dias
+const dataInicial = new Date(2025, 0, 1);
+const dataFinal = new Date(2025, 11, 31);
+const diferencaMs = dataFinal - dataInicial;
+const diferencaDias = Math.ceil(diferencaMs / (1000 * 60 * 60 * 24));
+console.log("Diferença em dias:", diferencaDias);
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 4: Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 4. Exercícios Práticos
+    </h3>
+
+    <!-- Exercícios sobre Date -->
+    <div class="desafio">
+      <h4>Exercício 1: Exibir Data Atual</h4>
+      <p>Crie uma função que exiba a data atual no formato "DD/MM/AAAA".</p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function exibirDataAtual() {
+  const hoje = new Date();
+  const dia = hoje.getDate().toString().padStart(2, '0');
+  const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');
+  const ano = hoje.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
+console.log("Data atual:", exibirDataAtual());
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Dias até o Natal</h4>
+      <p>
+        Crie uma função que calcule quantos dias faltam para o Natal deste ano.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function diasAteNatal() {
+  const hoje = new Date();
+  let natal = new Date(hoje.getFullYear(), 11, 25);
+  
+  if (hoje > natal) {
+    natal.setFullYear(natal.getFullYear() + 1);
+  }
+  
+  const diferencaMs = natal - hoje;
+  const diferencaDias = Math.ceil(diferencaMs / (1000 * 60 * 60 * 24));
+  return diferencaDias;
+}
+
+console.log("Dias até o Natal:", diasAteNatal());
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Verificar Ano Bissexto</h4>
+      <p>Crie uma função que determine se um ano informado é bissexto.</p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function verificarAnoBissexto(ano) {
+  if ((ano % 4 === 0 && ano % 100 !== 0) || (ano % 400 === 0)) {
+    return true;
+  }
+  return false;
+}
+
+console.log("2024 é bissexto?", verificarAnoBissexto(2024));
+console.log("2023 é bissexto?", verificarAnoBissexto(2023));
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 4: Diferença em Dias Entre Datas</h4>
+      <p>Crie uma função que calcule a diferença em dias entre duas datas.</p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function calcularDiferencaDias(data1, data2) {
+  data1 = new Date(data1);
+  data2 = new Date(data2);
+  data1.setHours(0, 0, 0, 0);
+  data2.setHours(0, 0, 0, 0);
+  const diferencaMs = Math.abs(data2 - data1);
+  const diferencaDias = Math.round(diferencaMs / (1000 * 60 * 60 * 24));
+  return diferencaDias;
+}
+
+console.log("Diferença em dias:", calcularDiferencaDias("2025-01-01", "2025-01-15"));
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 5: Formatar Data por Extenso</h4>
+      <p>
+        Crie uma função que formate uma data no padrão "Dia da semana, DD de Mês
+        de AAAA".
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function formatarDataExtenso(data) {
+  if (typeof data === 'string') {
+    data = new Date(data);
+  }
+  
+  const diasSemana = [
+    'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira',
+    'Quinta-feira', 'Sexta-feira', 'Sábado'
+  ];
+  const meses = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+  
+  const diaSemana = diasSemana[data.getDay()];
+  const dia = data.getDate();
+  const mes = meses[data.getMonth()];
+  const ano = data.getFullYear();
+  
+  return `${diaSemana}, ${dia} de ${mes} de ${ano}`;
+}
+
+const dataExemplo = new Date(2025, 5, 15);
+console.log("Data por extenso:", formatarDataExtenso(dataExemplo));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercícios sobre Strings -->
+    <div class="desafio">
+      <h4>Exercício 6: Contar Vogais em uma String</h4>
+      <p>Crie uma função que conte quantas vogais existem em uma string.</p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function contarVogais(texto) {
+  let contador = 0;
+  const vogais = "aeiouAEIOU";
+  for (let i = 0; i < texto.length; i++) {
+    if (vogais.indexOf(texto[i]) !== -1) {
+      contador++;
+    }
+  }
+  return contador;
+}
+
+console.log("Vogais em 'JavaScript':", contarVogais("JavaScript"));
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 7: Capitalizar Palavras</h4>
+      <p>
+        Crie uma função que transforme a primeira letra de cada palavra em
+        maiúscula.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function capitalizarPalavras(texto) {
+  const palavras = texto.split(" ");
+  for (let i = 0; i < palavras.length; i++) {
+    if (palavras[i].length > 0) {
+      palavras[i] = palavras[i][0].toUpperCase() + palavras[i].slice(1);
+    }
+  }
+  return palavras.join(" ");
+}
+
+console.log("Texto capitalizado:", capitalizarPalavras("olá mundo, como vai você?"));
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 8: Extrair Hashtags</h4>
+      <p>
+        Crie uma função que extraia todas as hashtags de um texto (retorne
+        apenas as palavras sem o símbolo #).
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function extrairHashtags(texto) {
+  const regex = /#(\w+)/g;
+  const hashtags = [];
+  let match;
+  while ((match = regex.exec(texto)) !== null) {
+    hashtags.push(match[1]);
+  }
+  return hashtags;
+}
+
+console.log("Hashtags extraídas:", extrairHashtags("Estudar #javascript e #react para o projeto #taskmaster"));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercícios sobre Math -->
+    <div class="desafio">
+      <h4>Exercício 9: Encontrar Maior e Menor Número</h4>
+      <p>
+        Crie uma função que receba um array de números e retorne um objeto com o
+        maior e o menor número, sem utilizar o operador spread.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function encontrarMaiorEMenor(numeros) {
+  if (numeros.length === 0) return { maior: null, menor: null };
+  let maior = numeros[0];
+  let menor = numeros[0];
+  for (let i = 1; i < numeros.length; i++) {
+    if (numeros[i] > maior) maior = numeros[i];
+    if (numeros[i] < menor) menor = numeros[i];
+  }
+  return { maior, menor };
+}
+
+console.log("Maior e menor:", encontrarMaiorEMenor([15, 7, 23, 42, 8, 19, 3]));
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 10: Gerar Número Aleatório</h4>
+      <p>Crie uma função que gere um número aleatório entre 1 e 100.</p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function gerarNumeroAleatorio() {
+  return Math.floor(Math.random() * 100) + 1;
+}
+
+console.log("Número aleatório entre 1 e 100:", gerarNumeroAleatorio());
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 11: Arredondar Número</h4>
+      <p>
+        Crie uma função que arredonde um número para um número específico de
+        casas decimais.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function arredondarNumero(numero, casasDecimais = 2) {
+  return Number(numero.toFixed(casasDecimais));
+}
+
+console.log("3.14159 arredondado para 2 casas:", arredondarNumero(3.14159, 2));
+console.log("3.14159 arredondado para 4 casas:", arredondarNumero(3.14159, 4));
+</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- CONCLUSÃO -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 5. Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta aula, exploramos como manipular strings, realizar operações
+          matemáticas e trabalhar com datas utilizando os objetos Math e Date do
+          JavaScript. Esses conhecimentos são fundamentais para o processamento
+          de dados e para a criação de interfaces dinâmicas no TaskMaster.
+        </p>
+        <p>
+          Os exercícios práticos permitiram aplicar os conceitos de busca, corte
+          e formatação de textos, cálculos matemáticos (arredondamento, geração
+          de números aleatórios e identificação de extremos) e manipulação de
+          datas (formatação, cálculos e comparações). Continue praticando para
+          consolidar esses fundamentos, que serão essenciais para o
+          desenvolvimento de aplicações mais avançadas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTILOS CSS -->
+  <style>
+    /* Base */
+    :root {
+      --primary-color: #3498db;
+      --primary-color-dark: #2980b9;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+      --success-color: #2ecc71;
+      --info-color: #3498db;
+      --white: #fff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --border-radius: 0.5rem;
+      --border-radius-sm: 0.25rem;
+      --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --transition-base: all 0.2s ease-in-out;
+    }
+    .lesson-content {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      font-family: Arial, sans-serif;
+    }
+    .intro-box {
+      background-color: var(--gray-100);
+      padding: 1.5rem;
+      border-left: 5px solid var(--primary-color);
+      border-radius: var(--border-radius-sm);
+      margin-bottom: 1.5rem;
+    }
+    .section-title.with-icon {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary-color);
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 0.5rem;
+    }
+    .section-title.with-icon i {
+      color: var(--primary-color);
+    }
+    .card {
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .card-body {
+      padding: 1.5rem;
+    }
+    code {
+      font-family: monospace;
+    }
+    details {
+      margin-top: 10px;
+    }
+    summary {
+      cursor: pointer;
+      color: var(--primary-color-dark);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    summary:hover {
+      text-decoration: underline;
+    }
+    .desafio {
+      background-color: #f7f8e8;
+      border-left: 4px solid #e2c94a;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .desafio h4 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+  </style>
+</article>

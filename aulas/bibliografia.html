@@ -200,21 +200,36 @@
         <ul class="resource-list">
           <li>
             <a href="https://www.youtube.com/@DevFastOficial" target="_blank">
-              <strong>DevFast</strong>
+              <img
+                src="assets/images/devfast-logo.png.jpeg"
+                alt="Logo DevFast"
+                class="channel-logo"
+              />
+              <div>
+                <strong>DevFast</strong>
+                <p>
+                  Canal focado em desenvolvimento web com tutoriais práticos,
+                  dicas e técnicas para aprimorar suas habilidades de
+                  programação.
+                </p>
+              </div>
             </a>
-            <p>
-              Canal focado em desenvolvimento web com tutoriais práticos, dicas
-              e técnicas para aprimorar suas habilidades de programação.
-            </p>
           </li>
           <li>
             <a href="https://www.youtube.com/@code-crux" target="_blank">
-              <strong>Code Crux</strong>
+              <img
+                src="assets/images/codecrux-logo.png"
+                alt="Logo Code Crux"
+                class="channel-logo"
+              />
+              <div>
+                <strong>Code Crux</strong>
+                <p>
+                  Canal com conteúdo de alta qualidade sobre desenvolvimento de
+                  software, programação web e tecnologias modernas.
+                </p>
+              </div>
             </a>
-            <p>
-              Canal com conteúdo de alta qualidade sobre desenvolvimento de
-              software, programação web e tecnologias modernas.
-            </p>
           </li>
         </ul>
       </div>
@@ -356,5 +371,25 @@
       height: 160px;
       margin-bottom: 0.5rem;
     }
+  }
+
+  .resource-list li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .channel-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+
+  /* Opcional: ajuste o espaçamento entre os itens da lista */
+  .resource-list li {
+    margin-bottom: 20px;
   }
 </style>

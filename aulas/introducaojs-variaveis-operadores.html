@@ -134,29 +134,53 @@
 
   <!-- Seção 2: JavaScript no Navegador -->
   <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-laptop-code"></i> 2. JavaScript no Navegador
+    <h3 class="section-title text-center mb-4">
+      <i class="fas fa-laptop-code"></i> JavaScript no Navegador
     </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>
-          Os navegadores modernos executam JavaScript através de motores
-          altamente otimizados:
-        </p>
-        <ul class="feature-list">
-          <li>
-            <strong>V8</strong>: Desenvolvido pelo Google, usado no Chrome, Edge
-            e Node.js
-          </li>
-          <li><strong>SpiderMonkey</strong>: Usado no Firefox</li>
-          <li><strong>JavaScriptCore</strong>: Usado no Safari</li>
-        </ul>
-        <p>Características importantes incluem:</p>
-        <ul class="feature-list">
-          <li>APIs do navegador: DOM, Window, Fetch, localStorage</li>
-          <li>Runtime único (single-threaded) com event loop</li>
-          <li>Interação com HTML e CSS para manipulação da página</li>
-        </ul>
+    <div class="row">
+      <!-- Card de Motores JavaScript -->
+      <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Motores JavaScript</h5>
+            <p class="card-text">
+              Os navegadores modernos executam JavaScript através de motores
+              altamente otimizados:
+            </p>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <strong>V8</strong>: Desenvolvido pelo Google, usado no Chrome,
+                Edge e Node.js
+              </li>
+              <li class="list-group-item">
+                <strong>SpiderMonkey</strong>: Usado no Firefox
+              </li>
+              <li class="list-group-item">
+                <strong>JavaScriptCore</strong>: Usado no Safari
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Card de Características -->
+      <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Características</h5>
+            <p class="card-text">Características importantes incluem:</p>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                APIs do navegador: DOM, Window, Fetch, localStorage
+              </li>
+              <li class="list-group-item">
+                Runtime único (single-threaded) com event loop
+              </li>
+              <li class="list-group-item">
+                Interação com HTML e CSS para manipulação da página
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -359,24 +383,84 @@ const API_URL = "https://api.example.com";
         </ul>
 
         <div class="code-header">Exemplos de Declaração</div>
-        <pre><code>let texto = "Olá";
-let numero = 42;
-let isCompleted = false;
-let semValor;
-let nulo = null;
-let uniqueId = Symbol("id");
-let bigNumero = 999999999999999999999999n;
-        </code></pre>
+        <pre><code>let texto = "Olá";                
+// String: sequência de caracteres.
 
-        <p>O operador <code>typeof</code> é usado para verificar o tipo:</p>
-        <pre><code>console.log(typeof texto); // "string"
-console.log(typeof numero); // "number"
-console.log(typeof isCompleted); // "boolean"
-console.log(typeof semValor); // "undefined"
-console.log(typeof nulo); // "object" (bug conhecido do JS)
-console.log(typeof uniqueId); // "symbol"
-console.log(typeof bigNumero); // "bigint"
-        </code></pre>
+let numero = 42;                  
+// Number: valores numéricos.
+
+let isCompleted = false;          
+// Boolean: verdadeiro ou falso.
+
+let semValor;                     
+// Undefined: variável declarada sem valor.
+
+let nulo = null;                  
+// Null: ausência intencional de valor.               
+// (typeof null retorna "object", comportamento histórico do JS)
+
+let uniqueId = Symbol("id");      
+// Symbol: cria um identificador único.
+
+let bigNumero = 999999999999999999999999n; 
+// BigInt: para inteiros muito grandes.</code></pre>
+        <div class="code-header">
+          Verificação de Tipos com <code class="typeof">typeof</code>
+        </div>
+        <p class="explanation">
+          Cada <code>console.log</code> exibe o valor da variável seguido do seu
+          tipo:
+        </p>
+
+        <ul>
+          <li>
+            <strong>texto</strong>:<br />
+            <code>console.log(texto, typeof texto);</code><br />
+            <em>Saída:</em> "Olá" "string" &mdash; 'texto' é uma string.
+          </li>
+          <li>
+            <strong>numero</strong>:<br />
+            <code>console.log(numero, typeof numero);</code><br />
+            <em>Saída:</em> 42 "number" &mdash; 'numero' é um número.
+          </li>
+          <li>
+            <strong>isCompleted</strong>:<br />
+            <code>console.log(isCompleted, typeof isCompleted);</code><br />
+            <em>Saída:</em> false "boolean" &mdash; 'isCompleted' é um booleano.
+          </li>
+          <li>
+            <strong>semValor</strong>:<br />
+            <code>console.log(semValor, typeof semValor);</code><br />
+            <em>Saída:</em> undefined "undefined" &mdash; 'semValor' não foi
+            atribuído.
+          </li>
+          <li>
+            <strong>nulo</strong>:<br />
+            <code>console.log(nulo, typeof nulo);</code><br />
+            <em>Saída:</em> null "object" &mdash; 'nulo' é null, mas o
+            <code>typeof</code> retorna "object".
+          </li>
+          <li>
+            <strong>uniqueId</strong>:<br />
+            <code>console.log(uniqueId, typeof uniqueId);</code><br />
+            <em>Saída:</em> Symbol(id) "symbol" &mdash; 'uniqueId' é um símbolo
+            único.
+          </li>
+          <li>
+            <strong>bigNumero</strong>:<br />
+            <code>console.log(bigNumero, typeof bigNumero);</code><br />
+            <em>Saída:</em> 999999999999999999999999n "bigint" &mdash;
+            'bigNumero' é um BigInt.
+          </li>
+        </ul>
+
+        <p class="explanation">
+          Essas declarações e verificações são úteis para compreender como o
+          JavaScript interpreta os diferentes tipos de dados. Note, por exemplo,
+          que embora <code>null</code> represente a ausência de valor, o
+          operador <code>typeof</code> retorna "object", um comportamento
+          histórico da linguagem.
+        </p>
       </div>
     </div>
   </section>
@@ -386,13 +470,67 @@ console.log(typeof bigNumero); // "bigint"
     <h3 class="section-title with-icon">
       <i class="fas fa-layer-group"></i> 10. Tipos de Dados Complexos
     </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <h4>Object (Objetos)</h4>
-        <p>
-          Conjunto de pares chave-valor que podem conter atributos e métodos.
-        </p>
-        <pre><code>let task = {
+    <p>
+      Nesta seção, vamos explorar como os dados complexos são estruturados e
+      utilizados em JavaScript. Através de exemplos práticos e de um diagrama
+      ilustrativo, você entenderá como objetos, arrays, datas e expressões
+      regulares podem ser combinados para resolver problemas reais e organizar
+      informações de forma eficiente.
+    </p>
+
+    <!-- Sub-seção: Visualizando Estruturas com Arrays de Objetos -->
+    <section class="mb-5">
+      <h3 class="section-title with-icon">
+        <i class="fas fa-images"></i> Visualizando Estruturas: Array de Objetos
+      </h3>
+      <div class="card mb-4">
+        <div class="card-body">
+          <p>
+            Imagine que você tem uma caixa capaz de armazenar diversos itens,
+            onde cada item tem suas próprias características. Em JavaScript,
+            essa caixa é um <strong>array</strong>, e cada item é um
+            <strong>objeto</strong> com suas propriedades e métodos. O diagrama
+            abaixo ilustra essa organização:
+          </p>
+          <figure>
+            <img
+              src="assets/images/array-objetos.png"
+              alt="Diagrama de um array de objetos"
+              style="max-width: 100%"
+            />
+            <figcaption>
+              <strong>Array:</strong> Delimitado por <code>[</code> e
+              <code>]</code>, indexando objetos a partir do índice 0.<br />
+              <strong>Objeto:</strong> Estruturado entre <code>{</code> e
+              <code>}</code>, contendo pares chave-valor (por exemplo,
+              <code>id: 1</code>).
+            </figcaption>
+          </figure>
+          <p>
+            Esta visualização reforça como cada objeto dentro do array mantém
+            sua estrutura interna, contribuindo para uma organização clara e
+            intuitiva dos dados.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sub-seção: Exemplos Práticos -->
+    <section class="mb-5">
+      <h3 class="section-title with-icon">
+        <i class="fas fa-code"></i> Exemplos Práticos de Dados Complexos
+      </h3>
+      <div class="card mb-4">
+        <div class="card-body">
+          <!-- Exemplo: Objetos -->
+          <h4>Objetos (Object)</h4>
+          <p>
+            Os objetos são coleções de pares chave-valor que representam
+            entidades com atributos e comportamentos. No exemplo abaixo, um
+            objeto <code>task</code> define uma tarefa com propriedades e um
+            método para alternar seu estado:
+          </p>
+          <pre><code>let task = {
   id: 1,
   title: "Aprender JavaScript",
   completed: false,
@@ -403,25 +541,44 @@ console.log(typeof bigNumero); // "bigint"
   toggleComplete() {
     this.completed = !this.completed;
   }
-};
-        </code></pre>
+};</code></pre>
 
-        <h4>Array (Vetores)</h4>
-        <pre><code>let tasks = [
+          <!-- Exemplo: Arrays -->
+          <h4>Vetores (Arrays)</h4>
+          <p>
+            Arrays são listas que armazenam múltiplos itens, como várias
+            tarefas. Cada elemento do array pode ser um objeto, permitindo a
+            manipulação organizada de conjuntos de dados:
+          </p>
+          <pre><code>let tasks = [
   { id: 1, title: "Tarefa 1", completed: false },
   { id: 2, title: "Tarefa 2", completed: true }
-];
-        </code></pre>
+];</code></pre>
 
-        <h4>Date (Datas)</h4>
-        <pre><code>let hoje = new Date();
-let dataFutura = new Date("2025-12-31");</code></pre>
+          <!-- Exemplo: Datas -->
+          <h4>Datas (Date)</h4>
+          <p>
+            O objeto <code>Date</code> facilita a manipulação de datas e
+            horários, permitindo criar instâncias que representam o momento
+            atual ou datas futuras para agendamentos e eventos:
+          </p>
+          <pre><code>let hoje = new Date();
+let dataFutura = new Date("03-26-2025");</code></pre>
 
-        <h4>RegExp (Expressões Regulares)</h4>
-        <pre><code>let pattern = /^[a-z]+$/i;
-console.log(pattern.test("JavaScript")); // true</code></pre>
+          <!-- Exemplo: Expressões Regulares -->
+          <h4>Expressões Regulares (RegExp)</h4>
+          <p>
+            Expressões regulares são utilizadas para validar e extrair padrões
+            em strings. No exemplo a seguir, uma expressão regular verifica se
+            um número de telefone brasileiro está no formato correto, seja com
+            prefixo de 4 ou 5 dígitos:
+          </p>
+          <pre><code>let pattern = /^\+55\(\d{2}\)\d{4,5}\-\d{4}$/;
+console.log(pattern.test("+55(11)92299-0899")); // true
+console.log(pattern.test("+55(11)2299-0899"));  // true</code></pre>
+        </div>
       </div>
-    </div>
+    </section>
   </section>
 
   <!-- Seção 11: Conversão de Tipos -->
@@ -576,23 +733,6 @@ let combinado = [...arr1, ...arr2]; // [1,2,3,4]
           Expande iteráveis (arrays, objetos) em locais onde múltiplos elementos
           são esperados, útil para <strong>clonar</strong> ou
           <strong>mesclar</strong> dados.
-        </p>
-
-        <h4>Operadores Bit a Bit</h4>
-        <pre><code>let num1 = 5; // 101 em binário
-let num2 = 3; // 011
-
-console.log(num1 & num2);  // 1 (AND)
-console.log(num1 | num2);  // 7 (OR)
-console.log(num1 ^ num2);  // 6 (XOR)
-console.log(~num1);        // -6 (NOT)
-console.log(num1 << 1);    // 10 (Left Shift)
-console.log(num1 >> 1);    // 2  (Right Shift)
-        </code></pre>
-        <p>
-          Operam no nível de bits, úteis em casos mais específicos como
-          manipulação de máscaras e operações de alto desempenho em números
-          inteiros.
         </p>
       </div>
     </div>
@@ -1022,6 +1162,10 @@ console.log("Valor máximo 5:", prioridade);
       .timeline-right {
         left: 0;
       }
+    }
+
+    code.typeof {
+      background-color: #000;
     }
   </style>
 </article>
