@@ -287,9 +287,16 @@ console.log("FIM!");</code></pre>
       <details>
         <summary>Ver solução</summary>
         <div class="code-header">Exemplo de Resolução</div>
-        <pre><code>let valor1 = 10; // ou prompt("Digite o primeiro valor");
-let valor2 = 2;  // ou prompt("Digite o segundo valor");
-let operador = "*"; // ou prompt("Digite o operador (+, -, *, /)");
+        <pre><code>let valor1 = 10; // fazendo a associação direta
+let valor2 = 2;  // fazendo a associação direta
+let operador = "*"; // fazendo a associação direta
+
+//Ou peça para o usuário digitar os valores utilizando o prompt
+//Só que nesse caso você precisa converter o retorno do prompt dos valores 1 e 2 para Number.
+
+let valor1 = Number(prompt("Digite o primeiro valor"));
+let valor2 = Number(prompt("Digite o segundo valor"));
+let operador = prompt("Digite o operador (+, -, *, /)");
 
 switch (operador) {
   case "+":
