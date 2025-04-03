@@ -20,6 +20,51 @@
     </p>
   </blockquote>
 
+  <!-- EXPLICAÇÃO BÁSICA SOBRE FUNÇÕES -->
+    <section class="mb-5">
+<div class="card mb-4">
+  <div class="card-body">
+    <h4>O que é uma Função em JavaScript?</h4>
+    <p>
+      Em JavaScript, uma função é um bloco de código que pode ser definido uma vez e executado sempre que necessário. Ela é usada para <strong>organizar, reutilizar e estruturar</strong> o código de maneira eficiente.
+    </p>
+    <p>
+      Podemos pensar em uma função como uma “máquina” que recebe dados de entrada (os parâmetros), realiza alguma operação, e pode (ou não) devolver um resultado (retorno).
+    </p>
+    <p>
+      A estrutura básica de uma função declarada é:
+    </p>
+
+    <img
+      src="assets/images/function.png"
+      alt="Estrutura de uma função em JavaScript"
+      class="img-fluid rounded shadow my-3"
+      style="max-width: 100%; height: auto"
+    />
+
+    <p>
+      <strong>Explicando a imagem:</strong>
+      <ul>
+        <li><strong>Palavra-chave <code>function</code></strong>: Indica que estamos criando uma função.</li>
+        <li><strong>Nome da função</strong>: Deve ser descritivo e sem espaços (ex: <code>calcularMedia</code>).</li>
+        <li><strong>Parênteses <code>()</code></strong>: Usados para listar os parâmetros que a função pode receber.</li>
+        <li><strong>Parâmetros</strong>: São os dados de entrada que a função pode usar internamente.</li>
+        <li><strong>Chaves <code>{ }</code></strong>: Delimitam o corpo da função, ou seja, o bloco de código que será executado quando a função for chamada.</li>
+      </ul>
+    </p>
+
+    <p>
+      Exemplo simples de função:
+    </p>
+    <pre><code>function saudacao(nome) {
+  return `Olá, ${nome}!`;
+}
+
+console.log(saudacao("Lucas")); // Saída: Olá, Lucas!
+</code></pre>
+  </div>
+</div>
+</section>
   <!-- Seção 1: Declaração e Chamada de Funções -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
@@ -27,34 +72,89 @@
     </h3>
     <div class="card mb-4">
       <div class="card-body">
+        <h4>Hoisting (Elevação)</h4>
+
         <p>
-          Nesta seção, mostramos como declarar funções usando a sintaxe
-          tradicional e por expressão.
+          Nesta seção, vamos entender como declarar e chamar funções no
+          JavaScript, e o que acontece "nos bastidores" quando o código é
+          executado.
         </p>
-        <h4>Hoisting</h4>
-        <p>
-          <strong>Hoisting</strong> é um comportamento do JavaScript onde as
-          declarações de funções e variáveis são elevadas para o início do seu
-          contexto de execução. Isso permite que funções declaradas (usando a
-          sintaxe <code>function</code>) sejam chamadas mesmo antes de sua
-          definição no código.
+
+        <p class="mt-4">
+          <strong>Visualização do conceito:</strong>
+          A imagem abaixo representa o comportamento de hoisting com uma
+          analogia de hotel:
         </p>
+        <img
+          src="assets/images/hoisting.png"
+          alt="Ilustração didática de hoisting em JavaScript com analogia de hotel"
+          class="img-fluid rounded shadow mt-3"
+          style="max-width: 100%; height: auto"
+        />
+
+        <br />
+
         <p>
-          <em>Exemplo:</em> Funções declaradas podem ser invocadas antes de sua
-          definição, pois são "elevadas" (hoisted).
+          Imagine um hotel com vários andares. Ao chegar, o recepcionista já
+          sabe que você tem reserva (mesmo que não saiba todos os detalhes
+          ainda). No JavaScript, algo parecido acontece com algumas declarações:
+          o mecanismo de <strong>hoisting</strong> “eleva” certas informações
+          para o topo do código, como se o JavaScript estivesse dizendo “Ah,
+          isso vai ser usado depois, então já vou reservar um espaço aqui”.
         </p>
+
+        <p>Existem dois tipos principais de hoisting:</p>
+        <ul>
+          <li>
+            <strong>Funções declaradas</strong> (usando <code>function</code>):
+            são elevadas por completo — nome e corpo da função. Você pode
+            chamá-las mesmo antes de escrevê-las no código.
+          </li>
+          <li>
+            <strong>Expressões de função</strong> (funções dentro de variáveis):
+            o nome da variável pode até ser hoisted, mas seu valor (a função)
+            ainda não existe no momento. Tentar usá-la antes da definição causa
+            erro.
+          </li>
+        </ul>
+
+        <h5>Analogia com a vida real:</h5>
         <p>
-          Por outro lado, funções atribuídas a variáveis (expressões de função)
-          não são elevadas. Se você tentar chamá-las antes de sua definição,
-          ocorrerá um erro.
+          Declarar uma função com <code>function</code> é como reservar um
+          quarto de hotel com antecedência — quando você chega, o quarto está
+          pronto e disponível.<br />
+          Já declarar uma função como expressão (<code
+            >const despedir = function() {...}</code
+          >) é como tentar usar um quarto sem ter feito reserva — vai dar erro
+          até você passar pela recepção e fazer o check-in.
         </p>
+
+        <h4>Hoisting de Variáveis: var vs. let/const</h4>
         <p>
-          Além disso, variáveis declaradas com <code>var</code> são elevadas e
-          inicializadas com <code>undefined</code>, enquanto variáveis
-          declaradas com <code>let</code> ou <code>const</code> também são
-          elevadas, mas não são inicializadas, resultando em um período
-          conhecido como "zona morta" (temporal dead zone), durante o qual o
-          acesso à variável gera erro.
+          As variáveis também são “elevadas”, mas com uma diferença importante:
+        </p>
+        <ul>
+          <li>
+            <code>var</code>: o nome da variável é elevado e ela é
+            automaticamente inicializada com <code>undefined</code>. Ou seja,
+            você pode usá-la antes da linha onde foi definida, mas vai receber
+            <code>undefined</code>.
+          </li>
+          <li>
+            <code>let</code> e <code>const</code>: também são elevadas, mas não
+            inicializadas. Isso cria a <strong>temporal dead zone</strong> (zona
+            morta), que é o intervalo entre o início do escopo e a linha onde a
+            variável é definida. Tentar acessá-la nesse período gera erro.
+          </li>
+        </ul>
+
+        <h5>Analogia com a vida real:</h5>
+        <p>
+          Usar <code>var</code> é como chegar a um quarto de hotel improvisado —
+          ele existe, mas está vazio (undefined).<br />
+          Já com <code>let</code> e <code>const</code>, você não pode nem abrir
+          a porta até que ele esteja oficialmente liberado. Se tentar forçar
+          entrada antes da hora, o sistema de segurança dispara (erro).
         </p>
 
         <div class="code-header">
@@ -75,12 +175,13 @@ console.log(mensagem); // Saída: Olá, Maria! Bem-vindo ao TaskMaster.
           Exemplo: Expressão de Função (Não Sofre Hoisting)
         </div>
         <pre><code>
-// A função aqui é atribuída a uma variável e NÃO sofre hoisting.
+// Vai gerar erro: Cannot access 'despedir' before initialization
+console.log(despedir("João"));
+
 const despedir = function(nome) {
   // Retorna mensagem de despedida
   return `Até logo, ${nome}! Volte sempre ao TaskMaster.`;
 };
-console.log(despedir("João"));
 </code></pre>
 
         <div class="code-header">Exemplo: Hoisting em Funções Declaradas</div>
@@ -245,13 +346,25 @@ console.log("Data formatada:", formatarData(new Date()));
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Funções anônimas são comumente usadas como callbacks. Arrow functions
-          oferecem uma sintaxe mais concisa e não criam seu próprio contexto
-          para <code>this</code>, herdando o escopo do ambiente onde foram
-          definidas. Além disso, as IIFE (Immediately Invoked Function
-          Expression) são funções que se auto-invocam para criar um escopo
-          isolado.
-        </p>
+  Funções anônimas são comumente usadas como callbacks. Arrow functions
+  oferecem uma sintaxe mais concisa e não criam seu próprio contexto
+  para <code>this</code>, herdando o escopo do ambiente onde foram
+  definidas. Além disso, as IIFE (Immediately Invoked Function
+  Expression) são funções que se auto-invocam para criar um escopo
+  isolado.
+</p>
+
+<p>
+  <strong>Diferença principal entre arrow functions e funções tradicionais:</strong>
+  Arrow functions <strong>não criam seu próprio contexto de <code>this</code></strong>. Em vez disso, elas herdam o valor de <code>this</code> do escopo onde foram definidas.
+  Já funções tradicionais criam um novo contexto de <code>this</code> ao serem invocadas. Essa diferença é fundamental ao trabalhar com objetos, eventos ou métodos que dependem de contexto.
+</p>
+
+<div class="alert alert-info" style="background-color:#e8f4fc; border-left:4px solid #3498db; padding:1rem; border-radius:4px; margin:1rem 0;">
+  <strong><i class="fas fa-info-circle"></i> Dica Importante:</strong><br>
+  Evite usar arrow functions como métodos de objetos ou como funções construtoras (<code>new</code>), pois o <code>this</code> pode não se comportar como o esperado.
+</div>
+
 
         <div class="code-header">Exemplo: Arrow Function para Subtração</div>
         <pre><code>
@@ -311,23 +424,33 @@ contador.incrementarArrow();
     </div>
   </section>
 
-  <!-- Seção 6: Escopo, Hoisting e Closure -->
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-lock"></i> 6. Escopo, Hoisting e Closure
-    </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>
-          Compreender o escopo é essencial para evitar conflitos entre
-          variáveis. O hoisting eleva as declarações de funções e variáveis
-          (apenas as declarações, não as inicializações) para o início do
-          escopo. Já as closures permitem que funções mantenham acesso ao
-          ambiente em que foram criadas, mesmo após sua execução ter terminado.
-        </p>
+<!-- Seção 6: Escopo e Closure -->
+<section class="mb-5">
+  <h3 class="section-title with-icon">
+    <i class="fas fa-lock"></i> 6. Escopo e Closure
+  </h3>
+  <div class="card mb-4">
+    <div class="card-body">
+      <p>
+        Compreender o <strong>escopo</strong> é essencial para garantir que variáveis não entrem em conflito e para saber onde e quando elas estão disponíveis no código.
+        O escopo define o “alcance” de uma variável dentro de uma função ou bloco.
+      </p>
 
-        <div class="code-header">Exemplo: Uso de Closure</div>
-        <pre><code>
+      <p>
+        No JavaScript, temos três principais tipos de escopo:
+      </p>
+      <ul>
+        <li><strong>Escopo Global</strong>: Variáveis acessíveis de qualquer parte do código.</li>
+        <li><strong>Escopo de Função</strong>: Variáveis acessíveis apenas dentro da função onde foram declaradas.</li>
+        <li><strong>Escopo de Bloco</strong>: Criado por estruturas como <code>if</code>, <code>for</code> e <code>while</code>, válido apenas com <code>let</code> ou <code>const</code>.</li>
+      </ul>
+
+      <p>
+        Já o conceito de <strong>closure</strong> permite que uma função “lembre” do escopo onde ela foi criada, mesmo que seja executada em outro contexto. Isso é muito poderoso para criar funções com dados privados ou personalizados.
+      </p>
+
+      <div class="code-header">Exemplo: Uso de Closure</div>
+      <pre><code>
 // Função que cria um contador privado utilizando closure
 function criarContador() {
   let contador = 0; // Variável privada
@@ -341,13 +464,19 @@ function criarContador() {
     }
   };
 }
+
 const meuContador = criarContador();
 console.log("Contador:", meuContador.incrementar()); // 1
 console.log("Contador:", meuContador.incrementar()); // 2
 </code></pre>
-      </div>
+
+      <p>
+        <strong>Explicação:</strong> Mesmo após a execução da função <code>criarContador</code>, as funções internas <code>incrementar</code> e <code>valor</code> ainda têm acesso à variável <code>contador</code>. Isso acontece graças ao closure — a função "lembra" do ambiente em que foi criada.
+      </p>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- Seção 7: Funções de Ordem Superior -->
   <section class="mb-5">

@@ -1,0 +1,239 @@
+<article class="lesson-content">
+  <h2>
+    <i class="fas fa-plug"></i> Integração com APIs e Comunicação Assíncrona
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, vamos aprender como integrar o JavaScript com serviços
+      externos usando APIs RESTful. Também veremos como lidar com a comunicação
+      assíncrona usando Fetch API, Promises e Async/Await, além de praticar
+      essas técnicas consumindo dados reais de uma API criada com o
+      <a href="https://mockapi.io/" target="_blank">MockAPI</a>.
+    </p>
+  </div>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-server"></i> 1. O que é uma API RESTful?
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          API (Application Programming Interface) é um conjunto de regras que
+          permite que diferentes sistemas se comuniquem entre si. As APIs
+          RESTful seguem o padrão REST e utilizam requisições HTTP como
+          <code>GET</code>, <code>POST</code>, <code>PUT</code> e
+          <code>DELETE</code> para interagir com dados.
+        </p>
+
+        <h4>Exemplo prático: MockAPI</h4>
+        <p>
+          Para esta aula, criamos uma API de produtos utilizando o serviço
+          gratuito <a href="https://mockapi.io/">MockAPI</a>. O endpoint base da
+          nossa API é:
+        </p>
+        <pre><code>https://66429d3a3d66a67b3437cdb2.mockapi.io/products</code></pre>
+
+        <p>Essa API possui os seguintes endpoints:</p>
+        <ul>
+          <li><code>GET /products</code> – Lista todos os produtos</li>
+          <li><code>GET /products/:id</code> – Detalha um produto</li>
+          <li><code>POST /products</code> – Cria um novo produto</li>
+          <li>
+            <code>PUT /products/:id</code> – Atualiza um produto existente
+          </li>
+          <li><code>DELETE /products/:id</code> – Exclui um produto</li>
+        </ul>
+
+        <h4>Estrutura de um produto:</h4>
+        <pre><code>{
+  "createdAt": "2025-04-03T01:40:43.570Z",
+  "name": "Mouse",
+  "price": 49,
+  "image": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/78.jpg",
+  "seller": "seller 1",
+  "id": "1"
+}</code></pre>
+
+        <p>
+          Com essa estrutura, podemos montar um CRUD completo de produtos usando
+          JavaScript e Fetch API, e exibir essas informações diretamente em uma
+          página HTML.
+        </p>
+
+        <h4>Exemplo de exibição com HTML:</h4>
+        <pre><code>&lt;ul id="lista-produtos"&gt;&lt;/ul&gt;
+
+&lt;script&gt;
+async function listarProdutos() {
+  const res = await fetch('https://66429d3a3d66a67b3437cdb2.mockapi.io/products');
+  const produtos = await res.json();
+  const ul = document.getElementById("lista-produtos");
+  ul.innerHTML = "";
+
+  produtos.forEach(p => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      &lt;img src="${p.image}" width="50"&gt;
+      &lt;strong&gt;${p.name}&lt;/strong&gt; - R$ ${p.price} &lt;em&gt;(${p.seller})&lt;/em&gt;
+    `;
+    ul.appendChild(li);
+  });
+}
+
+listarProdutos();
+&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-random"></i> 2. Comunicação Assíncrona com JavaScript
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Como JavaScript é uma linguagem assíncrona e single-threaded,
+          precisamos de mecanismos para lidar com operações que levam tempo,
+          como chamadas a APIs. As abordagens mais modernas são:
+        </p>
+
+        <h4>Promises</h4>
+        <pre><code>fetch('https://66429d3a3d66a67b3437cdb2.mockapi.io/products')
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(err => console.error('Erro:', err));</code></pre>
+
+        <h4>Async/Await</h4>
+        <pre><code>async function carregarProdutos() {
+  try {
+    const res = await fetch('https://66429d3a3d66a67b3437cdb2.mockapi.io/products');
+    const produtos = await res.json();
+    console.log(produtos);
+  } catch (err) {
+    console.error('Erro ao carregar:', err);
+  }
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> 3. Exercícios Práticos com API
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Exibir Produtos Visualmente</h4>
+      <p>
+        Utilize o endpoint <code>GET /products</code> para listar os produtos
+        com imagem, nome e preço.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code>&lt;ul id="produtos"&gt;&lt;/ul&gt;
+&lt;script&gt;
+async function carregar() {
+  const res = await fetch('https://66429d3a3d66a67b3437cdb2.mockapi.io/products');
+  const dados = await res.json();
+  const ul = document.getElementById("produtos");
+  ul.innerHTML = "";
+
+  dados.forEach(p => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      &lt;img src="${p.image}" width="80"&gt; 
+      &lt;strong&gt;${p.name}&lt;/strong&gt; - R$${p.price} &lt;small&gt;(${p.seller})&lt;/small&gt;
+    `;
+    ul.appendChild(li);
+  });
+}
+carregar();
+&lt;/script&gt;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Formulário para Criar Produto</h4>
+      <p>
+        Crie um formulário com campos para nome, preço e imagem. Ao enviar, use
+        <code>POST</code> para salvar na API.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code>&lt;form id="form"&gt;
+  &lt;input id="nome" placeholder="Nome" /&gt;
+  &lt;input id="preco" type="number" placeholder="Preço" /&gt;
+  &lt;input id="imagem" placeholder="URL da Imagem" /&gt;
+  &lt;button&gt;Criar&lt;/button&gt;
+&lt;/form&gt;
+&lt;script&gt;
+document.getElementById('form').onsubmit = async (e) =&gt; {
+  e.preventDefault();
+  const produto = {
+    name: nome.value,
+    price: parseFloat(preco.value),
+    image: imagem.value,
+    seller: "Usuário"
+  };
+  await fetch('https://66429d3a3d66a67b3437cdb2.mockapi.io/products', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(produto)
+  });
+  alert("Produto criado!");
+};
+&lt;/script&gt;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Botões para Excluir Produto</h4>
+      <p>
+        Liste os produtos com um botão "Excluir" ao lado, usando
+        <code>DELETE /products/:id</code>.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code>// Parte do carregamento de produtos:
+dados.forEach(p => {
+  const li = document.createElement("li");
+  const btn = document.createElement("button");
+  btn.textContent = "Excluir";
+  btn.onclick = async () =&gt; {
+    await fetch(`https://66429d3a3d66a67b3437cdb2.mockapi.io/products/${p.id}`, {
+      method: 'DELETE'
+    });
+    li.remove();
+  };
+  li.innerHTML = `${p.name} - R$${p.price} `;
+  li.appendChild(btn);
+  ul.appendChild(li);
+});</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 4. Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Nesta aula, você aprendeu a:</p>
+        <ul>
+          <li>Entender o que é uma API RESTful</li>
+          <li>Usar Fetch API com Promises e Async/Await</li>
+          <li>Consumir dados da internet e exibi-los no DOM com HTML</li>
+          <li>Realizar operações de GET, POST e DELETE com API externa</li>
+        </ul>
+        <p>
+          Continue explorando outras APIs públicas e criando interfaces
+          interativas com HTML, CSS e JavaScript!
+        </p>
+      </div>
+    </div>
+  </section>
+</article>

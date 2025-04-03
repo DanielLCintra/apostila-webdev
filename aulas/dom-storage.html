@@ -1,0 +1,322 @@
+<article class="lesson-content">
+  <h2><i class="fas fa-bezier-curve"></i> Manipulação de DOM e Storage</h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, vamos nos aprofundar na manipulação do DOM e nos recursos de
+      armazenamento local disponíveis no navegador: <code>localStorage</code> e
+      <code>sessionStorage</code>. Combinando essas ferramentas, você será capaz
+      de criar interfaces dinâmicas, reativas e com dados persistentes,
+      essenciais para qualquer aplicação moderna em JavaScript puro.
+    </p>
+  </div>
+
+  <blockquote>
+    <p>
+      "A programação não é apenas sobre escrever código. É sobre criar
+      experiências dinâmicas."
+    </p>
+  </blockquote>
+
+  <!-- Seção 1: Manipulação Avançada do DOM -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> 1. Manipulação Avançada do DOM
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O DOM (Document Object Model) é a interface que permite ao JavaScript
+          interagir com o HTML e o CSS da página. Ele representa o documento
+          como uma árvore de objetos, onde cada elemento HTML é um nó que pode
+          ser acessado e manipulado pelo JavaScript.
+        </p>
+
+        <h4>Exemplo visual da árvore DOM:</h4>
+        <pre><code>document
+├── html
+│   ├── head
+│   └── body
+│       ├── h1
+│       └── div
+│           └── p</code></pre>
+
+        <h4>Seletores de Elementos</h4>
+        <p>Você pode selecionar elementos HTML usando diferentes métodos:</p>
+        <ul>
+          <li>
+            <code>getElementById('id')</code> – seleciona um elemento por ID
+          </li>
+          <li>
+            <code>getElementsByClassName('classe')</code> – retorna uma coleção
+            de elementos
+          </li>
+          <li>
+            <code>getElementsByTagName('tag')</code> – retorna todos os
+            elementos da tag
+          </li>
+          <li>
+            <code>querySelector('seletor')</code> – retorna o primeiro elemento
+            que corresponde
+          </li>
+          <li>
+            <code>querySelectorAll('seletor')</code> – retorna todos os
+            elementos que correspondem
+          </li>
+        </ul>
+
+        <h4>Manipulação de Conteúdo</h4>
+        <pre><code>const titulo = document.querySelector('h1');
+titulo.textContent = 'Novo Título'; // Altera o texto interno
+
+const div = document.querySelector('#container');
+div.innerHTML = '<p>Novo parágrafo com <strong>HTML</strong></p>';</code></pre>
+
+        <h4>Manipulação de Atributos e Estilos</h4>
+        <pre><code>const imagem = document.querySelector('img');
+imagem.setAttribute('src', 'imagem2.png');
+imagem.alt = 'Descrição nova';
+
+const caixa = document.querySelector('.box');
+caixa.style.backgroundColor = 'lightgreen';
+caixa.style.border = '2px solid black';</code></pre>
+
+        <h4>Manipulação de Classes</h4>
+        <pre><code>caixa.classList.add('ativa');
+caixa.classList.toggle('oculta');
+caixa.classList.remove('oculta');</code></pre>
+
+        <h4>Criação, Inserção e Remoção de Elementos</h4>
+        <pre><code>const novoItem = document.createElement('li');
+novoItem.textContent = 'Novo item';
+document.querySelector('ul').appendChild(novoItem);
+
+// Remover
+novoItem.remove();</code></pre>
+
+        <h4>Eventos e Interações</h4>
+        <pre><code>const botao = document.getElementById('meuBotao');
+botao.addEventListener('click', () => {
+  alert('Você clicou no botão!');
+});</code></pre>
+
+        <p>
+          Outros eventos comuns: <code>change</code>, <code>submit</code>,
+          <code>keydown</code>, <code>mousemove</code>.
+        </p>
+
+        <h4>Exemplo prático com HTML + JavaScript:</h4>
+        <pre><code>&lt;button id="meuBotao"&gt;Clique Aqui&lt;/button&gt;
+&lt;script&gt;
+  document.getElementById("meuBotao").addEventListener("click", function () {
+    alert("Você clicou!");
+  });
+&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 2: Armazenamento com localStorage -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-save"></i> 2. Armazenamento com localStorage
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O <code>localStorage</code> permite armazenar dados no navegador, que
+          permanecem mesmo após o usuário fechar a aba ou o navegador.
+        </p>
+
+        <h4>Comandos básicos</h4>
+        <pre><code>localStorage.setItem('nome', 'João');
+let nome = localStorage.getItem('nome');
+localStorage.removeItem('nome');
+localStorage.clear();</code></pre>
+
+        <h4>Armazenando Objetos</h4>
+        <pre><code>const usuario = { nome: 'Lucas', idade: 25 };
+localStorage.setItem('usuario', JSON.stringify(usuario));
+
+const recuperado = JSON.parse(localStorage.getItem('usuario'));
+console.log(recuperado.nome);</code></pre>
+
+        <p>
+          <strong>Importante:</strong> Sempre use <code>JSON.stringify</code> ao
+          salvar objetos ou arrays, e <code>JSON.parse</code> para recuperá-los.
+        </p>
+
+        <h4>Cuidados</h4>
+        <ul>
+          <li>Não armazene senhas ou dados sensíveis</li>
+          <li>Verifique se o navegador suporta <code>localStorage</code></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 3: Armazenamento com sessionStorage -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-clock"></i> 3. Armazenamento Temporário com
+      sessionStorage
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O <code>sessionStorage</code> armazena dados somente durante a sessão
+          da aba. Ao fechar a aba, os dados são perdidos.
+        </p>
+
+        <h4>Exemplo prático:</h4>
+        <pre><code>sessionStorage.setItem('visita', '1');
+const visita = sessionStorage.getItem('visita');
+sessionStorage.removeItem('visita');</code></pre>
+
+        <p>
+          Útil para: formulários, rascunhos temporários, navegação entre páginas
+          da mesma sessão.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 4: Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 4. Exercícios Práticos
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Lista de Tarefas Interativa</h4>
+      <p>
+        Crie um formulário com campo de texto e botão. Quando o usuário clicar,
+        a tarefa deve ser adicionada em uma lista. Cada tarefa deve ter botão de
+        remoção.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code>&lt;form id="formTarefa"&gt;
+  &lt;input id="tarefa" placeholder="Digite uma tarefa" /&gt;
+  &lt;button&gt;Adicionar&lt;/button&gt;
+&lt;/form&gt;
+&lt;ul id="lista"&gt;&lt;/ul&gt;
+&lt;script&gt;
+formTarefa.onsubmit = (e) =&gt; {
+  e.preventDefault();
+  const li = document.createElement("li");
+  li.textContent = tarefa.value;
+  const btn = document.createElement("button");
+  btn.textContent = "Excluir";
+  btn.onclick = () =&gt; li.remove();
+  li.appendChild(btn);
+  lista.appendChild(li);
+  tarefa.value = "";
+};
+&lt;/script&gt;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Contador Persistente</h4>
+      <p>Conte quantas vezes a página foi acessada.</p>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code>let visitas = parseInt(localStorage.getItem("visitas")) || 0;
+visitas++;
+localStorage.setItem("visitas", visitas);
+document.body.innerHTML += `<p>Visitas: ${visitas}</p>`;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Tema Claro e Escuro</h4>
+      <p>
+        Permita alternar entre tema claro e escuro e salve a preferência no
+        <code>localStorage</code>.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code>&lt;button id="tema"&gt;Alterar Tema&lt;/button&gt;
+&lt;script&gt;
+if (localStorage.getItem("tema") === "escuro") {
+  document.body.classList.add("escuro");
+}
+
+document.getElementById("tema").onclick = () =&gt; {
+  document.body.classList.toggle("escuro");
+  const temaAtual = document.body.classList.contains("escuro") ? "escuro" : "claro";
+  localStorage.setItem("tema", temaAtual);
+};
+&lt;/script&gt;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 4: Formulário Temporário com sessionStorage</h4>
+      <p>
+        Salve o conteúdo de um campo enquanto o usuário digita, mesmo que ele
+        recarregue a página.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code>&lt;input id="nome" placeholder="Seu nome" /&gt;
+&lt;script&gt;
+const campo = document.getElementById("nome");
+campo.value = sessionStorage.getItem("nome") || "";
+campo.oninput = () =&gt; {
+  sessionStorage.setItem("nome", campo.value);
+};
+&lt;/script&gt;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 5: Preferências do Usuário</h4>
+      <p>
+        Permita que o usuário selecione fonte, idioma e cor e salve isso no
+        localStorage.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code>&lt;select id="idioma"&gt;
+  &lt;option value="pt"&gt;Português&lt;/option&gt;
+  &lt;option value="en"&gt;Inglês&lt;/option&gt;
+&lt;/select&gt;
+&lt;script&gt;
+const idioma = document.getElementById("idioma");
+idioma.value = localStorage.getItem("idioma") || "pt";
+idioma.onchange = () =&gt; {
+  localStorage.setItem("idioma", idioma.value);
+};
+&lt;/script&gt;</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- Seção 5: Conclusão -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 5. Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Nesta aula, você aprendeu a:</p>
+        <ul>
+          <li>Selecionar e modificar elementos HTML com JavaScript</li>
+          <li>Manipular atributos, classes e estilos</li>
+          <li>Responder a eventos e criar interações visuais</li>
+          <li>
+            Salvar dados com <code>localStorage</code> e
+            <code>sessionStorage</code>
+          </li>
+        </ul>
+        <p>
+          Esses conceitos são a base para interfaces ricas em interatividade.
+          Continue praticando e experimente criar um pequeno sistema de tarefas
+          com persistência!
+        </p>
+      </div>
+    </div>
+  </section>
+</article>
