@@ -62,34 +62,111 @@ console.log("Array de letras:", letras);
 
         <!-- Acesso e Modificação -->
         <div class="code-header">Acesso e Modificação</div>
+
         <pre><code>// Acesso por índice
 console.log("Primeira tarefa:", tarefas[0]);
 console.log("Última tarefa:", tarefas[tarefas.length - 1]);
+</code></pre>
 
-// Modificando um elemento
+        <blockquote>
+          <p>
+            <strong>Acesso por índice</strong> permite recuperar elementos
+            individuais do array utilizando a posição deles. O índice do
+            primeiro elemento é <code>0</code> e o último é
+            <code>length - 1</code>.
+          </p>
+        </blockquote>
+
+        <pre><code>// Modificando um elemento
 tarefas[2] = "Preparar apresentação sobre Arrays";
 console.log("Após modificação:", tarefas);
+</code></pre>
 
-// Métodos para adicionar e remover elementos
+        <blockquote>
+          <p>
+            <strong>Modificação direta</strong> de um elemento é feita
+            atribuindo um novo valor a uma posição específica do array, usando o
+            índice correspondente.
+          </p>
+        </blockquote>
+
+        <pre><code>// Métodos para adicionar e remover elementos
+
 tarefas.push("Testar aplicação");    // Adiciona no final
 console.log("Após push:", tarefas);
+</code></pre>
 
-const removido = tarefas.pop();         // Remove o último
+        <blockquote>
+          <p>
+            <strong>push</strong> adiciona um novo elemento no
+            <strong>final</strong> do array, aumentando seu comprimento em 1.
+          </p>
+        </blockquote>
+
+        <pre><code>const removido = tarefas.pop();         // Remove o último
 console.log("Removido com pop:", removido);
 console.log("Após pop:", tarefas);
+</code></pre>
 
-tarefas.unshift("Planejar sprint");      // Adiciona no início
+        <blockquote>
+          <p>
+            <strong>pop</strong> remove o <strong>último elemento</strong> do
+            array e o retorna. É útil para trabalhar com estruturas de pilha
+            (LIFO).
+          </p>
+        </blockquote>
+
+        <pre><code>tarefas.unshift("Planejar sprint");      // Adiciona no início
 console.log("Após unshift:", tarefas);
+</code></pre>
 
-const removidoInicio = tarefas.shift();  // Remove o primeiro
+        <blockquote>
+          <p>
+            <strong>unshift</strong> adiciona um novo elemento no
+            <strong>início</strong> do array, deslocando os outros elementos
+            para frente.
+          </p>
+        </blockquote>
+
+        <pre><code>const removidoInicio = tarefas.shift();  // Remove o primeiro
 console.log("Removido com shift:", removidoInicio);
 console.log("Após shift:", tarefas);
+</code></pre>
 
-const removidoIndiceEspecífico = tarefas.splice(1,1);  
+        <blockquote>
+          <p>
+            <strong>shift</strong> remove o
+            <strong>primeiro elemento</strong> do array e o retorna. Depois da
+            remoção, os índices dos demais elementos são atualizados.
+          </p>
+        </blockquote>
+
+        <pre><code>const removidoIndiceEspecífico = tarefas.splice(1,1);  
 // Remove 1 elemento a partir do índice 1
 console.log("Removido com splice:", removidoIndiceEspecífico);
-console.log("Após após splice:", tarefas);
+console.log("Após splice (remoção):", tarefas);
+
+// Adicionando elementos com splice
+tarefas.splice(2, 0, "Nova tarefa inserida");
+// A partir do índice 2, remove 0 elementos e insere "Nova tarefa inserida"
+console.log("Após splice (adição):", tarefas);
+
+// Substituindo elementos com splice
+tarefas.splice(1, 1, "Tarefa substituída");
+// A partir do índice 1, remove 1 elemento e insere "Tarefa substituída" no lugar
+console.log("Após splice (substituição):", tarefas);
 </code></pre>
+
+<blockquote>
+  <p>
+    <strong>splice</strong> permite <strong>remover</strong>, <strong>adicionar</strong> ou <strong>substituir</strong> elementos em posições específicas do array:
+    <ul>
+      <li><strong>Remoção:</strong> Informar o índice e o número de elementos a serem removidos.</li>
+      <li><strong>Adição:</strong> Informar o índice, <code>0</code> como quantidade removida e depois os elementos a adicionar.</li>
+      <li><strong>Substituição:</strong> Informar o índice, o número de elementos a remover e novos elementos que ocuparão o lugar.</li>
+    </ul>
+  </p>
+</blockquote>
 
         <!-- Métodos de Iteração e Transformação -->
         <div class="code-header">Iteração e Transformação</div>
