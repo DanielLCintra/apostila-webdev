@@ -84,32 +84,108 @@ console.log("Após unshift:", tarefas);
 const removidoInicio = tarefas.shift();  // Remove o primeiro
 console.log("Removido com shift:", removidoInicio);
 console.log("Após shift:", tarefas);
+
+const removidoIndiceEspecífico = tarefas.splice(1,1);  
+// Remove 1 elemento a partir do índice 1
+console.log("Removido com splice:", removidoIndiceEspecífico);
+console.log("Após após splice:", tarefas);
 </code></pre>
 
         <!-- Métodos de Iteração e Transformação -->
         <div class="code-header">Iteração e Transformação</div>
-        <pre><code>
-// forEach: Executa uma função para cada elemento
+        <pre><code>// forEach: Executa uma função para cada elemento
 tarefas.forEach((t, i) => {
   console.log(`${i + 1}. ${t}`);
 });
+</code></pre>
 
-// map: Cria um novo array transformando cada elemento
+        <blockquote>
+          <p>
+            <strong>forEach</strong> executa uma função para cada elemento do
+            array. Ele é útil para iterações onde você quer apenas realizar
+            ações, mas <strong>não retorna um novo array</strong>.
+          </p>
+        </blockquote>
+
+        <pre><code>// map: Cria um novo array transformando cada elemento
 const tarefasEmMaiusculo = tarefas.map(t => t.toUpperCase());
 console.log("Tarefas em maiúsculas:", tarefasEmMaiusculo);
+</code></pre>
 
-// filter: Retorna um array com os elementos que passam no teste
+        <blockquote>
+          <p>
+            <strong>map</strong> percorre o array e
+            <strong>retorna um novo array</strong> com o resultado da
+            transformação aplicada a cada elemento. O array original não é
+            alterado.
+          </p>
+        </blockquote>
+
+        <pre><code>// filter: Retorna um array com os elementos que passam no teste
 const tarefasComA = tarefas.filter(t => t.toLowerCase().includes("a"));
 console.log("Tarefas que contêm 'a':", tarefasComA);
+</code></pre>
 
-// find: Retorna o primeiro elemento que atende à condição
+        <blockquote>
+          <p>
+            <strong>filter</strong> cria um novo array contendo apenas os
+            elementos que <strong>passam no teste</strong> especificado na
+            função de callback.
+          </p>
+        </blockquote>
+
+        <pre><code>// find: Retorna o primeiro elemento que atende à condição
 const tarefaEncontrada = tarefas.find(t => t.includes("sprint"));
 console.log("Tarefa encontrada:", tarefaEncontrada);
+</code></pre>
 
-// reduce: Reduz o array a um único valor (ex: soma dos comprimentos)
+        <blockquote>
+          <p>
+            <strong>find</strong> retorna o
+            <strong>primeiro elemento</strong> do array que satisfaz a condição
+            especificada. Se nenhum elemento atender, retorna
+            <code>undefined</code>.
+          </p>
+        </blockquote>
+
+        <pre><code>// findIndex: Retorna o índice do primeiro elemento que atende à condição
+const indiceEncontrado = tarefas.findIndex(t => t.includes("sprint"));
+console.log("Índice encontrado:", indiceEncontrado);
+</code></pre>
+
+        <blockquote>
+          <p>
+            <strong>findIndex</strong> retorna o <strong>índice</strong> do
+            primeiro elemento que satisfaz a condição. Se nenhum elemento
+            atender, retorna <code>-1</code>.
+          </p>
+        </blockquote>
+
+        <pre><code>// reduce: Reduz o array a um único valor (ex: soma dos comprimentos)
 const somaComprimentos = tarefas.reduce((total, t) => total + t.length, 0);
 console.log("Soma dos comprimentos:", somaComprimentos);
+</code></pre>
 
+        <blockquote>
+          <p>
+            <strong
+              >Por que usamos 0 como valor inicial no
+              <code>reduce</code>?</strong
+            ><br />
+            O <code>0</code> é o valor inicial do acumulador. Sem ele, o
+            primeiro elemento do array seria usado como valor inicial, o que
+            poderia causar erros se o array contiver strings ou outros tipos
+            diferentes de número. Usar <code>0</code> garante que começamos a
+            soma corretamente como um número.
+          </p>
+        </blockquote>
+        <p>
+          Esses são os principais métodos de interação com arrays, mas também
+          existem outros:
+        </p>
+
+        <div class="code-header">Outros métodos de interação com arrays</div>
+        <pre><code>
 // some: Verifica se algum elemento satisfaz a condição
 const existeTarefaCurta = tarefas.some(t => t.length < 10);
 console.log("Existe tarefa com menos de 10 caracteres?", existeTarefaCurta);

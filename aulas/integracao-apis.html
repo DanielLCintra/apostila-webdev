@@ -1,3 +1,4 @@
+<!-- ==================== Aula 9 ==================== -->
 <article class="lesson-content">
   <h2>
     <i class="fas fa-plug"></i> Integração com APIs e Comunicação Assíncrona
@@ -116,6 +117,56 @@ listarProdutos();
     console.error('Erro ao carregar:', err);
   }
 }</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloco adicional: Consumo de API pública do GitHub -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fab fa-github"></i> Exemplo Prático — Consumindo a API do GitHub
+      no Frontend
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Veja como buscar informações de um usuário do GitHub usando
+          <code>fetch</code> e exibir nome, avatar e repositórios no DOM:
+        </p>
+        <pre><code>&lt;input type="text" id="input-usuario" placeholder="Digite o usuário" /&gt;
+&lt;button id="btn-buscar"&gt;Buscar&lt;/button&gt;
+&lt;div id="info-usuario"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+document.getElementById("btn-buscar").onclick = function () {
+  const username = document.getElementById("input-usuario").value.trim();
+  const info = document.getElementById("info-usuario");
+  if (!username) {
+    info.innerHTML = "&lt;span style='color:red'&gt;Digite um usuário!&lt;/span&gt;";
+    return;
+  }
+  info.innerHTML = "Carregando...";
+  fetch(`https://api.github.com/users/${username}`)
+    .then(res =&gt; {
+      if (!res.ok) throw new Error("Usuário não encontrado");
+      return res.json();
+    })
+    .then(data =&gt; {
+      info.innerHTML = `
+        &lt;p&gt;&lt;strong&gt;Nome:&lt;/strong&gt; ${data.name || "(sem nome)"}&lt;/p&gt;
+        &lt;img src="${data.avatar_url}" width="100" /&gt;
+        &lt;p&gt;&lt;strong&gt;Repositórios públicos:&lt;/strong&gt; ${data.public_repos}&lt;/p&gt;
+      `;
+    })
+    .catch(() =&gt; {
+      info.innerHTML = "&lt;span style='color:red'&gt;Usuário não encontrado!&lt;/span&gt;";
+    });
+};
+&lt;/script&gt;</code></pre>
+        <p>
+          <b>Dica:</b> Tente adaptar para usar <code>async/await</code> e
+          adicione mensagem de erro para casos em que o usuário não exista.
+        </p>
       </div>
     </div>
   </section>

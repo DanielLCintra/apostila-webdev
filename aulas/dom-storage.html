@@ -1,3 +1,4 @@
+<!-- ==================== Aula 8 ==================== -->
 <article class="lesson-content">
   <h2><i class="fas fa-bezier-curve"></i> Manipulação de DOM e Storage</h2>
 
@@ -176,6 +177,66 @@ sessionStorage.removeItem('visita');</code></pre>
         <p>
           Útil para: formulários, rascunhos temporários, navegação entre páginas
           da mesma sessão.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloco adicional: Exemplo Integrado de Lista de Tarefas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-puzzle-piece"></i> Exemplo Integrado — Mini Lista de
+      Tarefas com DOM e localStorage
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Veja como juntar seletores, eventos, criação de elementos e
+          persistência dos dados com <code>localStorage</code> em um
+          mini-projeto prático!
+        </p>
+        <pre><code>&lt;form id="form-tarefa"&gt;
+  &lt;input type="text" id="input-tarefa" placeholder="Digite a tarefa" required /&gt;
+  &lt;button&gt;Adicionar&lt;/button&gt;
+&lt;/form&gt;
+&lt;button id="btn-limpar"&gt;Limpar tarefas&lt;/button&gt;
+&lt;ul id="lista-tarefas"&gt;&lt;/ul&gt;
+
+&lt;script&gt;
+// Array para tarefas
+let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+
+// Função para renderizar lista
+function renderizarTarefas() {
+  const lista = document.getElementById("lista-tarefas");
+  lista.innerHTML = "";
+  tarefas.forEach((t, i) =&gt; {
+    const li = document.createElement("li");
+    li.textContent = t;
+    lista.appendChild(li);
+  });
+}
+
+renderizarTarefas();
+
+document.getElementById("form-tarefa").onsubmit = function (e) {
+  e.preventDefault();
+  const input = document.getElementById("input-tarefa");
+  tarefas.push(input.value);
+  localStorage.setItem("tarefas", JSON.stringify(tarefas));
+  input.value = "";
+  renderizarTarefas();
+};
+
+document.getElementById("btn-limpar").onclick = function () {
+  tarefas = [];
+  localStorage.removeItem("tarefas");
+  renderizarTarefas();
+};
+&lt;/script&gt;</code></pre>
+        <p>
+          <b>Dica:</b> Experimente adaptar este código e incrementar com botões
+          para remover tarefas individualmente!
         </p>
       </div>
     </div>
