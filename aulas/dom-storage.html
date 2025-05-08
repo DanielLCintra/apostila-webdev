@@ -75,15 +75,15 @@ div.innerHTML = '<p>Novo parágrafo com <strong>HTML</strong></p>';</code></pre>
 
         <h4>Manipulação de Atributos e Estilos</h4>
         <pre><code>const imagem = document.querySelector('img');
-imagem.setAttribute('src', 'imagem2.png');
-imagem.alt = 'Descrição nova';
+imagem.setAttribute('src', 'images/avatar.jpg');
+imagem.alt = 'Avatar de Usuário';
 
 const caixa = document.querySelector('.box');
 caixa.style.backgroundColor = 'lightgreen';
-caixa.style.border = '2px solid black';</code></pre>
+caixa.style.border = '10px solid black';</code></pre>
 
         <h4>Manipulação de Classes</h4>
-        <pre><code>caixa.classList.add('ativa');
+        <pre><code>caixa.classList.add('oculta');
 caixa.classList.toggle('oculta');
 caixa.classList.remove('oculta');</code></pre>
 
@@ -91,8 +91,6 @@ caixa.classList.remove('oculta');</code></pre>
         <pre><code>const novoItem = document.createElement('li');
 novoItem.textContent = 'Novo item';
 document.querySelector('ul').appendChild(novoItem);
-
-// Remover
 novoItem.remove();</code></pre>
 
         <h4>Eventos e Interações</h4>
@@ -100,6 +98,39 @@ novoItem.remove();</code></pre>
 botao.addEventListener('click', () => {
   alert('Você clicou no botão!');
 });</code></pre>
+
+        <h4>Exemplo prático: Mostrar/Ocultar div</h4>
+        <pre><code>&lt;div class="box" id="caixa"&gt;&lt;/div&gt;
+&lt;button id="meuBotao"&gt;Mostrar / Ocultar&lt;/button&gt;
+
+&lt;script&gt;
+const caixa = document.getElementById("caixa");
+const botao = document.getElementById("meuBotao");
+
+botao.addEventListener("click", () => {
+  caixa.classList.toggle("oculta");
+});
+&lt;/script&gt;</code></pre>
+
+        <h4>CSS:</h4>
+        <pre><code>.box {
+  width: 100px;
+  height: 100px;
+  background-color: #136297;
+  border: 10px solid black;
+}
+
+.oculta {
+  display: none;
+}</code></pre>
+
+        <p>
+          Esse exemplo demonstra como usar JavaScript para manipular classes CSS
+          e alternar a visibilidade de um elemento com interatividade.
+        </p>
+      </div>
+    </div>
+  </section>
 
         <p>
           Outros eventos comuns: <code>change</code>, <code>submit</code>,
