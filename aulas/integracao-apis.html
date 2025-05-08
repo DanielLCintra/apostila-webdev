@@ -166,34 +166,138 @@ meta:
 collection:
   - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products
     name: Listar Produtos
+    meta:
+      id: req_1e85bb6e4acc4b2fb2608c41b8ca60b8
+      created: 1746664595470
+      modified: 1746664616654
+      isPrivate: false
+      sortKey: -1746664595470
     method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.1
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
   - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products/3
     name: Buscar um produto
+    meta:
+      id: req_2b7bc9e730c34809aff900cd29deea3b
+      created: 1746664618523
+      modified: 1746665074700
+      isPrivate: false
+      sortKey: -1746664618523
     method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/8.6.1
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
   - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products
     name: Criar Produto
+    meta:
+      id: req_7c2a8f0804124e65a3b50500f750e684
+      created: 1746664663838
+      modified: 1746664822319
+      isPrivate: false
+      sortKey: -1746664663838
     method: POST
     body:
       mimeType: application/json
       text: >-
         {
-          "createdAt": "2025-04-03T01:40:43.570Z",
-          "name": "Monitor",
-          "price": 499,
-          "image": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/78.jpg",
-          "seller": "seller 99"
+        	"createdAt": "2025-04-03T01:40:43.570Z",
+        	"name": "Monitor",
+        	"price": 499,
+        	"image": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/78.jpg",
+        	"seller": "seller 99"
         }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/8.6.1
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
   - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products/3
     name: Atualizar produto
+    meta:
+      id: req_39d45a27dd3e45588b15d2d788b4e982
+      created: 1746664864877
+      modified: 1746665049230
+      isPrivate: false
+      sortKey: -1746664864877
     method: PUT
     body:
       mimeType: application/json
-      text: {
-        "price": 10000
-      }
+      text: |-
+        {
+        	"price": 10000
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
   - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products/4
     name: Excluir um produto
+    meta:
+      id: req_c101481c2fa74036a5cfc74f9d348b1e
+      created: 1746665007526
+      modified: 1746665030953
+      isPrivate: false
+      sortKey: -1746665007526
     method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/11.1.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1718805805927
+    modified: 1718805805927
+environments:
+  name: Base Environment
+  meta:
+    id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1718805805917
+    modified: 1718805805917
+    isPrivate: false
+
 </code></pre>
         </details>
 
