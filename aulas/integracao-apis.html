@@ -18,6 +18,7 @@
     <h3 class="section-title with-icon">
       <i class="fas fa-server"></i> 1. O que é uma API RESTful?
     </h3>
+    <img src="assets/images/api-restful.png" alt="API RESTful" class="img-fluid mb-4" />
     <div class="card mb-4">
       <div class="card-body">
         <p>
@@ -35,6 +36,8 @@
           nossa API é:
         </p>
         <pre><code>https://66429d3a3d66a67b3437cdb2.mockapi.io/products</code></pre>
+
+        <img src="assets/images/diagrama_api.jpg" alt="MockAPI" class="img-fluid mb-4" />
 
         <p>Essa API possui os seguintes endpoints:</p>
         <ul>
@@ -57,7 +60,7 @@
   "id": "1"
 }</code></pre>
 
-        <p>
+       p>
           Com essa estrutura, podemos montar um CRUD completo de produtos usando
           JavaScript e Fetch API, e exibir essas informações diretamente em uma
           página HTML.
@@ -89,7 +92,7 @@ listarProdutos();
     </div>
   </section>
 
-  <section class="mb-5">
+   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-random"></i> 2. Comunicação Assíncrona com JavaScript
     </h3>
@@ -121,7 +124,89 @@ listarProdutos();
     </div>
   </section>
 
-  <!-- Bloco adicional: Consumo de API pública do GitHub -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-vials"></i> 2. Ferramentas para Testes de API
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Antes de integrar APIs no frontend, é comum testarmos as requisições
+          usando softwares dedicados. As duas ferramentas mais populares para
+          isso são:
+        </p>
+        <ul>
+          <li>
+            <a href="https://www.postman.com/" target="_blank">Postman</a> –
+            Interface completa para testar requisições HTTP, salvar coleções de
+            testes e gerar documentação.
+          </li>
+          <li>
+            <a href="https://insomnia.rest/" target="_blank">Insomnia</a> –
+            Alternativa leve e intuitiva, ideal para organizar requisições e
+            ambientes.
+          </li>
+        </ul>
+
+        <h4>Importar Template no Insomnia</h4>
+        <p>
+          Você pode usar o arquivo abaixo para testar a API de produtos no
+          Insomnia. Basta importar o conteúdo no app como uma nova
+          workspace/coleção:
+        </p>
+
+        <details>
+          <summary>Clique para ver o template do Insomnia</summary>
+          <pre><code>type: collection.insomnia.rest/5.0
+name: Scratch Pad
+meta:
+  id: wrk_scratchpad
+  created: 1713209972530
+  modified: 1713209972530
+collection:
+  - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products
+    name: Listar Produtos
+    method: GET
+  - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products/3
+    name: Buscar um produto
+    method: GET
+  - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products
+    name: Criar Produto
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+          "createdAt": "2025-04-03T01:40:43.570Z",
+          "name": "Monitor",
+          "price": 499,
+          "image": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/78.jpg",
+          "seller": "seller 99"
+        }
+  - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products/3
+    name: Atualizar produto
+    method: PUT
+    body:
+      mimeType: application/json
+      text: {
+        "price": 10000
+      }
+  - url: https://66429d3a3d66a67b3437cdb2.mockapi.io/products/4
+    name: Excluir um produto
+    method: DELETE
+</code></pre>
+        </details>
+
+        <p>
+          Ao testar requisições em ferramentas como Postman ou Insomnia, é
+          possível identificar erros, validar respostas e garantir que sua API
+          esteja funcionando corretamente antes de integrar com o frontend.
+        </p>
+      </div>
+    </div>
+  </section>
+
+   <!-- Bloco adicional: Consumo de API pública do GitHub -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fab fa-github"></i> Exemplo Prático — Consumindo a API do GitHub
@@ -171,7 +256,7 @@ document.getElementById("btn-buscar").onclick = function () {
     </div>
   </section>
 
-  <section class="mb-5">
+<section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-code"></i> 3. Exercícios Práticos com API
     </h3>
@@ -287,4 +372,6 @@ dados.forEach(p => {
       </div>
     </div>
   </section>
+</article>
+
 </article>
