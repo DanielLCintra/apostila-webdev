@@ -55,10 +55,32 @@
     </div>
   </section>
 
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-exchange-alt"></i> 3. Código com e sem JSX
-    </h3>
+    <section class="mb-5">
+      <h3 class="section-title with-icon">
+        <i class="fas fa-toolbox"></i> 3. Node.js e npm
+      </h3>
+      <div class="card mb-4">
+        <div class="card-body">
+          <p>Node.js é um ambiente de execução JavaScript fora do navegador.</p>
+          <p>Já o npm é o gerenciador de pacotes que acompanha o Node e facilita a instalação de bibliotecas.</p>
+          <p>Com eles configuramos projetos rapidamente e organizamos dependências como o React.</p>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-body">
+          <p>Também é possível utilizar React sem essas ferramentas, incluindo os scripts via CDN em uma página HTML:</p>
+          <div class="code-header">Exemplo sem Node</div>
+          <pre><code class="language-html">&lt;script src="https://unpkg.com/react@18/umd/react.development.js"&gt;&lt;/script&gt;
+&lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"&gt;&lt;/script&gt;</code></pre>
+          <p>Esse método funciona para testes rápidos, mas torna o processo de desenvolvimento mais trabalhoso. Usar o Node com npm é muito mais prático e eficiente.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-5">
+      <h3 class="section-title with-icon">
+        <i class="fas fa-exchange-alt"></i> 4. Código com e sem JSX
+      </h3>
     <div class="card mb-4">
       <div class="card-body">
         <p>Veja a diferença entre declarar um componente utilizando JSX e o mesmo resultado sem essa sintaxe:</p>
@@ -77,7 +99,7 @@
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-laptop-code"></i> 4. Configuração do Projeto
+        <i class="fas fa-laptop-code"></i> 5. Configuração do Projeto
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -103,35 +125,40 @@ npm run dev</code></pre>
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-puzzle-piece"></i> 5. Criando um Componente
+        <i class="fas fa-puzzle-piece"></i> 6. Criando um Componente
     </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>No React, componentes são funções que retornam elementos JSX.</p>
-        <pre><code class="language-jsx">function Hello() {
+      <div class="card mb-4">
+        <div class="card-body">
+          <p>Componentes são funções que definem um pedaço da interface. Cada componente retorna elementos JSX que o React exibe na tela.</p>
+          <p>Dentro da pasta <code>pages</code> (ou <code>app</code>), crie o arquivo <code>index.js</code> com o seguinte conteúdo:</p>
+          <pre><code class="language-jsx">function Hello() {
   return &lt;h1&gt;Hello World&lt;/h1&gt;;
-}</code></pre>
-        <p>Salve este componente em <code>pages/index.js</code> (ou <code>app/page.js</code>) para visualizá-lo no navegador.</p>
+}
+
+export default Hello;</code></pre>
+          <p>O <code>export default</code> permite que o componente seja importado em outras partes do projeto.</p>
+        </div>
       </div>
-    </div>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>Um componente pode receber <strong>props</strong> para tornar sua renderização dinâmica:</p>
-        <pre><code class="language-jsx">function Hello(props) {
+      <div class="card mb-4">
+        <div class="card-body">
+          <p>Podemos tornar o componente reutilizável por meio das <strong>props</strong>, que são valores recebidos pela função:</p>
+          <pre><code class="language-jsx">function Hello(props) {
   return &lt;h1&gt;Olá, {props.nome}!&lt;/h1&gt;;
 }</code></pre>
+          <p>Para utilizar, escrevemos <code>&lt;Hello nome="Maria" /&gt;</code> e veremos "Olá, Maria!" no navegador.</p>
+        </div>
       </div>
-    </div>
   </section>
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-check-circle"></i> 6. Resumo
+        <i class="fas fa-check-circle"></i> 7. Resumo
     </h3>
     <div class="card mb-4">
       <div class="card-body">
         <ul>
           <li>Criamos um projeto com <code>create-next-app@latest</code>.</li>
+          <li>Vimos como Node.js e npm facilitam a instalação de dependências.</li>
           <li>Exploramos a estrutura de pastas e iniciamos o servidor com <code>npm run dev</code>.</li>
           <li>Construímos componentes funcionais simples e utilizamos props.</li>
         </ul>
@@ -141,7 +168,7 @@ npm run dev</code></pre>
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 7. Exercícios
+        <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios
     </h3>
     <div class="desafio">
       <h4>Exercício 1: Criar o Projeto</h4>
