@@ -75,6 +75,37 @@
           <p>Esse método funciona para testes rápidos, mas torna o processo de desenvolvimento mais trabalhoso. Usar o Node com npm é muito mais prático e eficiente.</p>
         </div>
       </div>
+      <div class="card mb-4">
+        <div class="card-body">
+          <p>Também é possível usar módulos ES de um CDN e criar um componente
+          sem instalar nada:</p>
+          <div class="code-header">Exemplo com <code>import</code></div>
+          <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;title&gt;React sem Build&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="root"&gt;&lt;/div&gt;
+  &lt;script type="module"&gt;
+    import React from 'https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js';
+    import ReactDOM from 'https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js';
+
+    function App() {
+      return React.createElement('h1', null, 'Hello sem build');
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      React.createElement(App)
+    );
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <p>Nesse cenário continuamos sem JSX, por isso utilizamos
+          <code>React.createElement</code>.</p>
+        </div>
+      </div>
     </section>
 
     <section class="mb-5">
