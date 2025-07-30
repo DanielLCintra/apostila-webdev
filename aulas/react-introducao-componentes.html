@@ -1,0 +1,112 @@
+<!-- ==================== Aula React ==================== -->
+<article class="lesson-content">
+  <h2><i class="fab fa-react"></i> Aula 1: Introdução ao React – Setup e Primeiros Componentes</h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      React é uma biblioteca JavaScript para construir interfaces de usuário. Nesta aula iniciaremos um projeto com <strong>Next.js</strong> e criaremos nossos primeiros componentes.
+    </p>
+    <ul>
+      <li>Configurar o ambiente com <code>npx create-next-app@latest</code></li>
+      <li>Entender a estrutura de pastas padrão de um projeto React</li>
+      <li>Criar os primeiros componentes funcionais utilizando JSX</li>
+      <li>Explorar os arquivos gerados pelo setup</li>
+      <li>Criação de um componente “Hello World” e visualização no navegador</li>
+    </ul>
+  </div>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-laptop-code"></i> 1. Configuração do Projeto
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Certifique-se de ter o Node.js instalado. Crie o projeto usando Next.js:</p>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">npx create-next-app@latest meu-app</code></pre>
+        <p>Depois entre na pasta e inicie o servidor de desenvolvimento:</p>
+        <pre><code class="language-bash">cd meu-app
+npm run dev</code></pre>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Principais pastas criadas:</p>
+        <ul>
+          <li><code>pages/</code> ou <code>app/</code> – páginas da aplicação</li>
+          <li><code>public/</code> – arquivos estáticos</li>
+          <li><code>styles/</code> – arquivos de estilo</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-puzzle-piece"></i> 2. Criando um Componente
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>No React, componentes são funções que retornam elementos JSX.</p>
+        <pre><code class="language-jsx">function Hello() {
+  return &lt;h1&gt;Hello World&lt;/h1&gt;;
+}</code></pre>
+        <p>Salve este componente em <code>pages/index.js</code> (ou <code>app/page.js</code>) para visualizá-lo no navegador.</p>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Um componente pode receber <strong>props</strong> para tornar sua renderização dinâmica:</p>
+        <pre><code class="language-jsx">function Hello(props) {
+  return &lt;h1&gt;Olá, {props.nome}!&lt;/h1&gt;;
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 3. Resumo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li>Criamos um projeto com <code>create-next-app@latest</code>.</li>
+          <li>Exploramos a estrutura de pastas e iniciamos o servidor com <code>npm run dev</code>.</li>
+          <li>Construímos componentes funcionais simples e utilizamos props.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 4. Exercícios
+    </h3>
+    <div class="desafio">
+      <h4>Exercício 1: Criar o Projeto</h4>
+      <p><strong>Objetivo:</strong> Instalar o projeto e rodar o servidor.</p>
+      <ol>
+        <li>Execute <code>npx create-next-app@latest meu-app</code>.</li>
+        <li>Entre na pasta e rode <code>npm run dev</code>.</li>
+        <li>Acesse <code>http://localhost:3000</code> no navegador.</li>
+      </ol>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Componente Hello World</h4>
+      <p><strong>Objetivo:</strong> Criar um componente que mostre "Hello World".</p>
+      <ol>
+        <li>Abra <code>pages/index.js</code> (ou <code>app/page.js</code>).</li>
+        <li>Substitua o conteúdo pelo componente <code>Hello</code> mostrado acima.</li>
+        <li>Salve e observe a mensagem no navegador.</li>
+      </ol>
+      <details>
+        <summary>Ver solução</summary>
+        <pre><code class="language-jsx">export default function Home() {
+  return &lt;h1&gt;Hello World&lt;/h1&gt;;
+}</code></pre>
+      </details>
+    </div>
+  </section>
+</article>

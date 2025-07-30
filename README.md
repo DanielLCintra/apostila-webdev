@@ -38,7 +38,7 @@ A apostila cobre os seguintes tópicos principais:
 - ES6+ e recursos modernos
 
 ### React (Seção em Desenvolvimento)
-- Introdução ao React
+- Introdução ao React – Setup e Primeiros Componentes
 - Componentes e props
 - Estado e ciclo de vida
 - Hooks
