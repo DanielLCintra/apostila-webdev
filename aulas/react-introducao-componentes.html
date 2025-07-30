@@ -121,61 +121,40 @@ ReactDOM.render(
   </section>
 
   <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-exchange-alt"></i> 4. Código com e sem JSX
-    </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>
-          Veja a diferença entre declarar um componente utilizando JSX e o mesmo
-          resultado sem essa sintaxe:
-        </p>
-        <div class="code-header">Com JSX</div>
-        <pre><code class="language-jsx">function Hello() {
-  return &lt;h1&gt;Hello World&lt;/h1&gt;;
-}</code></pre>
-        <div class="code-header">Sem JSX</div>
-        <pre><code class="language-js">function Hello() {
-  return React.createElement('h1', null, 'Hello World');
-}</code></pre>
-        <p>
-          Escrever com JSX torna o código mais simples de ler e escrever,
-          aproximando-se do HTML tradicional.
-        </p>
-      </div>
-    </div>
-  </section>
+  <h3 class="section-title with-icon">
+    <i class="fas fa-laptop-code"></i> 5. Configuração do Projeto
+  </h3>
 
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-laptop-code"></i> 5. Configuração do Projeto
-    </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>
-          Certifique-se de ter o Node.js instalado. Crie o projeto usando
-          Next.js:
-        </p>
-        <div class="code-header">Terminal</div>
-        <pre><code class="language-bash">npx create-next-app@latest meu-app</code></pre>
-        <p>Depois entre na pasta e inicie o servidor de desenvolvimento:</p>
-        <pre><code class="language-bash">cd meu-app
+  <!-- Setup do Projeto -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <p>
+        Para iniciar um projeto com React usando Next.js, siga os passos abaixo. 
+        Certifique-se de ter o <strong>Node.js</strong> e o <strong>npm</strong> instalados em sua máquina.
+      </p>
+      <div class="code-header">Terminal</div>
+      <pre><code class="language-bash">npx create-next-app@latest meu-app</code></pre>
+
+      <p>Ao rodar esse comando, algumas perguntas serão feitas. Responda da seguinte forma:</p>
+
+      <div class="code-header">Perguntas e Respostas</div>
+      <ul>
+        <li><strong>Would you like to use TypeScript? →</strong> <code>No</code></li>
+        <li><strong>Would you like to use ESLint? →</strong> <code>Yes</code></li>
+        <li><strong>Would you like to use Tailwind CSS? →</strong> <code>No</code></li>
+        <li><strong>Would you like to use `src/` directory? →</strong> <code>No</code></li>
+        <li><strong>Would you like to use App Router? (recommended) →</strong> <code>Yes</code></li>
+        <li><strong>Would you like to customize the default import alias? →</strong> <code>No</code></li>
+      </ul>
+
+      <p>Depois da instalação, entre na pasta do projeto e inicie o servidor de desenvolvimento:</p>
+      <pre><code class="language-bash">cd meu-app
 npm run dev</code></pre>
-      </div>
+      <p>
+        Acesse o navegador no endereço <code>http://localhost:3000</code> para ver a aplicação funcionando.
+      </p>
     </div>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>Principais pastas criadas:</p>
-        <ul>
-          <li>
-            <code>pages/</code> ou <code>app/</code> – páginas da aplicação
-          </li>
-          <li><code>public/</code> – arquivos estáticos</li>
-          <li><code>styles/</code> – arquivos de estilo</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+  </div>
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
@@ -361,38 +340,85 @@ export default App;</code></pre>
   </section>
 
   <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios
-    </h3>
-    <div class="desafio">
-      <h4>Exercício 1: Criar o Projeto</h4>
-      <p><strong>Objetivo:</strong> Instalar o projeto e rodar o servidor.</p>
-      <ol>
-        <li>Execute <code>npx create-next-app@latest meu-app</code>.</li>
-        <li>Entre na pasta e rode <code>npm run dev</code>.</li>
-        <li>Acesse <code>http://localhost:3000</code> no navegador.</li>
-      </ol>
-    </div>
+  <h3 class="section-title with-icon">
+    <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios
+  </h3>
 
-    <div class="desafio">
-      <h4>Exercício 2: Componente Hello World</h4>
-      <p>
-        <strong>Objetivo:</strong> Criar um componente que mostre "Hello World".
-      </p>
-      <ol>
-        <li>Abra <code>pages/index.js</code> (ou <code>app/page.js</code>).</li>
-        <li>
-          Substitua o conteúdo pelo componente <code>Hello</code> mostrado
-          acima.
-        </li>
-        <li>Salve e observe a mensagem no navegador.</li>
-      </ol>
-      <details>
-        <summary>Ver solução</summary>
-        <pre><code class="language-jsx">export default function Home() {
-  return &lt;h1&gt;Hello World&lt;/h1&gt;;
+  <!-- Exercício 1 -->
+  <div class="desafio">
+    <h4>Exercício 1: Criar o Projeto</h4>
+    <p><strong>Objetivo:</strong> Instalar o projeto Next.js e rodar o servidor de desenvolvimento.</p>
+    <ol>
+      <li>No terminal, execute <code>npx create-next-app@latest meu-app</code>.</li>
+      <li>Responda às perguntas conforme indicado na seção anterior.</li>
+      <li>Entre na pasta criada com <code>cd meu-app</code>.</li>
+      <li>Inicie o servidor com <code>npm run dev</code>.</li>
+      <li>Acesse <code>http://localhost:3000</code> no navegador e confirme que a aplicação está rodando.</li>
+    </ol>
+  </div>
+
+  <!-- Exercício 2 -->
+  <div class="desafio">
+    <h4>Exercício 2: Componente Hello World</h4>
+    <p><strong>Objetivo:</strong> Criar um componente simples que exibe "Hello World".</p>
+    <ol>
+      <li>Abra o arquivo <code>app/page.js</code> (ou <code>pages/index.js</code>).</li>
+      <li>Altere o conteúdo para exibir a mensagem "Hello World".</li>
+      <li>Salve o arquivo e observe a alteração no navegador.</li>
+    </ol>
+    <details>
+      <summary>Ver solução</summary>
+      <p><strong>Opção A – Direto no arquivo da página:</strong></p>
+      <pre><code class="language-jsx">export default function Home() {
+  return <h1>Hello World</h1>;
 }</code></pre>
-      </details>
-    </div>
-  </section>
+      <p><strong>Opção B – Criando e importando um componente:</strong></p>
+      <p>Arquivo <code>Hello.js</code>:</p>
+      <pre><code class="language-jsx">function Hello() {
+  return <h1>Hello World</h1>;
+}
+export default Hello;</code></pre>
+      <p>Arquivo <code>page.js</code>:</p>
+      <pre><code class="language-jsx">import Hello from './Hello';
+
+export default function Home() {
+  return <Hello />;
+}</code></pre>
+    </details>
+  </div>
+
+  <!-- Exercício 3 -->
+  <div class="desafio">
+  <h4>Exercício 3: Componente com props</h4>
+  <p><strong>Objetivo:</strong> Criar um componente que exiba uma saudação personalizada com base em uma prop.</p>
+  <ol>
+    <li>Crie um novo arquivo chamado <code>Hello.js</code>.</li>
+    <li>Crie um componente que receba uma <code>prop</code> chamada <code>nome</code> e mostre: <code>Olá, &#123;nome&#125;!</code>.</li>
+    <li>No arquivo <code>page.js</code>, importe e utilize o componente passando diferentes nomes.</li>
+    <li>Visualize no navegador a saudação personalizada para cada nome.</li>
+  </ol>
+  <details>
+    <summary>Ver solução</summary>
+    <p><strong>Arquivo <code>Hello.js</code>:</strong></p>
+    <pre><code class="language-jsx">function Hello(&#123; nome &#125;) &#123;
+  return &lt;h1&gt;Olá, &#123;nome&#125;!&lt;/h1&gt;;
+&#125;
+export default Hello;</code></pre>
+
+    <p><strong>Arquivo <code>page.js</code>:</strong></p>
+    <pre><code class="language-jsx">import Hello from './Hello';
+
+export default function Home() &#123;
+  return (
+    &lt;div&gt;
+      &lt;Hello nome="Maria" /&gt;
+      &lt;Hello nome="João" /&gt;
+    &lt;/div&gt;
+  );
+&#125;</code></pre>
+  </details>
+</div>
+
+</section>
+
 </article>
