@@ -181,40 +181,158 @@ npm run dev</code></pre>
     <h3 class="section-title with-icon">
       <i class="fas fa-puzzle-piece"></i> 6. Criando um Componente
     </h3>
+
+    <!-- Introdução ao conceito -->
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Componentes são funções que definem um pedaço da interface. Cada
-          componente retorna elementos JSX que o React exibe na tela.
+          Um <strong>componente</strong> é um bloco de código que representa uma
+          parte da interface (UI) da sua aplicação. Em React, componentes são
+          geralmente funções que retornam um conteúdo JSX (semelhante ao HTML),
+          e podem ser reutilizados em várias partes do seu projeto.
         </p>
         <p>
-          Dentro da pasta <code>pages</code> (ou <code>app</code>), crie o
-          arquivo <code>index.js</code> com o seguinte conteúdo:
+          Por exemplo, podemos criar um componente chamado
+          <code>Hello</code> que exibe uma mensagem na tela.
         </p>
+      </div>
+    </div>
+
+    <!-- Passo a passo para criar um projeto -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 1: Criando o projeto React</h4>
+        <p>
+          Se ainda não criou um projeto React, abra o terminal e execute o
+          seguinte comando:
+        </p>
+        <pre><code class="language-bash">npx create-next-app@latest meu-app</code></pre>
+        <p>Depois, entre na pasta do projeto:</p>
+        <pre><code class="language-bash">cd meu-app</code></pre>
+      </div>
+    </div>
+
+    <!-- Criando o componente com valor fixo -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 2: Criando um componente simples com valor fixo</h4>
+        <p>
+          Agora, dentro da pasta <code>src</code>, crie um novo arquivo chamado
+          <code>Hello.js</code>. Esse será o nosso primeiro componente.
+        </p>
+        <p>Adicione o seguinte código no arquivo <code>Hello.js</code>:</p>
         <pre><code class="language-jsx">function Hello() {
   return &lt;h1&gt;Hello World&lt;/h1&gt;;
 }
 
 export default Hello;</code></pre>
         <p>
-          O <code>export default</code> permite que o componente seja importado
-          em outras partes do projeto.
+          Esse código cria uma função chamada <code>Hello</code> que retorna um
+          título com o texto "Hello World". A linha
+          <code>export default</code> serve para permitir que esse componente
+          seja usado em outros arquivos.
         </p>
       </div>
     </div>
+
+    <!-- Como importar e usar o componente na página -->
     <div class="card mb-4">
       <div class="card-body">
+        <h4>Passo 3: Usando o componente na aplicação</h4>
         <p>
-          Podemos tornar o componente reutilizável por meio das
-          <strong>props</strong>, que são valores recebidos pela função:
+          No arquivo <code>src/App.js</code>, substitua o conteúdo da função
+          <code>App</code> para usar o componente <code>Hello</code>:
         </p>
+        <pre><code class="language-jsx">import Hello from './Hello';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Hello /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+        <p>
+          Com isso, ao iniciar sua aplicação, o conteúdo do componente
+          <code>Hello</code> será exibido na tela.
+        </p>
+      </div>
+    </div>
+
+    <!-- Agora com props -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 4: Tornando o componente dinâmico com props</h4>
+        <p>
+          Podemos melhorar nosso componente para que ele receba um nome como
+          parâmetro. Esses parâmetros são chamados de <strong>props</strong> em
+          React.
+        </p>
+        <p>Atualize o conteúdo do <code>Hello.js</code> para:</p>
         <pre><code class="language-jsx">function Hello(props) {
   return &lt;h1&gt;Olá, {props.nome}!&lt;/h1&gt;;
-}</code></pre>
+}
+
+export default Hello;</code></pre>
         <p>
-          Para utilizar, escrevemos <code>&lt;Hello nome="Maria" /&gt;</code> e
-          veremos "Olá, Maria!" no navegador.
+          Agora o componente espera receber uma prop chamada <code>nome</code>,
+          e a utiliza para montar a frase.
         </p>
+      </div>
+    </div>
+
+    <!-- Chamando o componente com props -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 5: Enviando props para o componente</h4>
+        <p>
+          No arquivo <code>App.js</code>, envie um nome para o componente usando
+          o seguinte código:
+        </p>
+        <pre><code class="language-jsx">import Hello from './Hello';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Hello nome="Maria" /&gt;
+      &lt;Hello nome="João" /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+        <p>Agora você verá na tela:</p>
+        <ul>
+          <li>Olá, Maria!</li>
+          <li>Olá, João!</li>
+        </ul>
+        <p>
+          Cada vez que você usar o componente <code>&lt;Hello /&gt;</code> com
+          um nome diferente, ele exibirá uma mensagem personalizada.
+        </p>
+      </div>
+    </div>
+
+    <!-- Conclusão -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Resumo</h4>
+        <ul>
+          <li>Componentes são funções que retornam JSX.</li>
+          <li>
+            Você pode reutilizar um componente em várias partes da aplicação.
+          </li>
+          <li>
+            As <strong>props</strong> permitem deixar os componentes dinâmicos.
+          </li>
+          <li>
+            Você pode criar componentes em arquivos separados e importá-los onde
+            quiser.
+          </li>
+        </ul>
+        <p>Essa estrutura modular é uma das principais forças do React!</p>
       </div>
     </div>
   </section>
