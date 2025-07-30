@@ -1,0 +1,426 @@
+<!-- ==================== Aula React ==================== -->
+<article class="lesson-content">
+
+
+  <div class="intro-box mb-5">
+
+    <img 
+      src="assets/images/react-next-intro.png" 
+      alt="React e Next.js"
+      style="max-width: 100%;
+             max-height: 100%;
+             object-fit: contain;"
+    >
+    <br>
+    <p>
+      Nesta aula iniciaremos um projeto com <strong>Next.js</strong> e criaremos
+      nossos primeiros componentes.
+    </p>
+    <ul>
+      <li>⚙️ Configurar o ambiente com <code>npx create-next-app@latest</code></li>
+      <li>📁 Entender a estrutura de pastas padrão de um projeto React</li>
+      <li>🧩 Criar os primeiros componentes funcionais utilizando JSX</li>
+      <li>🔍 Explorar os arquivos gerados pelo setup</li>
+      <li>👀 Criação de um componente “Hello World” e visualização no navegador</li>
+    </ul>
+  </div>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fab fa-react"></i> 1. O que é o React?
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          React é uma biblioteca JavaScript para construir interfaces de usuário, criada por
+          <strong>Jordan Walke</strong> no Facebook em 2011. O projeto foi aberto ao público em
+          2013 e rapidamente ganhou popularidade por sua abordagem baseada em
+          componentes e atualização eficiente da tela.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> 2. O que é JSX?
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          JSX é uma extensão de sintaxe do JavaScript criada pela equipe do
+          React para descrever a interface de maneira declarativa. Ele permite
+          escrever marcação semelhante a HTML dentro do código JavaScript e é
+          transformado para chamadas <code>React.createElement</code> por
+          ferramentas como o Babel.
+        </p>
+        <p>
+          Utilizar JSX torna o código mais legível e expressivo, pois a lógica e
+          a estrutura visual ficam no mesmo arquivo. Embora não seja
+          obrigatório, é largamente adotado na comunidade React pela
+          praticidade.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-toolbox"></i> 3. Node.js e npm
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Node.js é um ambiente de execução JavaScript fora do navegador.</p>
+        <p>
+          Já o npm é o gerenciador de pacotes que acompanha o Node e facilita a
+          instalação de bibliotecas.
+        </p>
+        <p>
+          Com eles configuramos projetos rapidamente e organizamos dependências
+          como o React.
+        </p>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Também é possível utilizar React sem essas ferramentas, incluindo os
+          scripts via CDN em uma página HTML:
+        </p>
+        <div class="code-header">Exemplo com <code>import</code></div>
+        <br />
+        <p><b>index.html</b></p>
+        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;title&gt;React sem Build&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="root"&gt;&lt;/div&gt;
+  &lt;script src="https://unpkg.com/react@18/umd/react.development.js"&gt;&lt;/script&gt;
+&lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"&gt;&lt;/script&gt;
+  &lt;script src="script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <br />
+        <p><b>script.js</b></p>
+        <pre><code class="language-js">function App() {
+  return React.createElement('h1', null, 'Hello World sem build');
+}
+
+ReactDOM.render(
+  React.createElement(App),
+  document.getElementById('root')
+);
+</code></pre>
+        <p>
+          Nesse cenário continuamos sem JSX, por isso utilizamos
+          <code>React.createElement</code>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+  <h3 class="section-title with-icon">
+    <i class="fas fa-laptop-code"></i> 5. Configuração do Projeto
+  </h3>
+
+  <!-- Setup do Projeto -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <p>
+        Para iniciar um projeto com React usando Next.js, siga os passos abaixo. 
+        Certifique-se de ter o <strong>Node.js</strong> e o <strong>npm</strong> instalados em sua máquina.
+      </p>
+      <div class="code-header">Terminal</div>
+      <pre><code class="language-bash">npx create-next-app@latest meu-app</code></pre>
+
+      <p>Ao rodar esse comando, algumas perguntas serão feitas. Responda da seguinte forma:</p>
+
+      <div class="code-header">Perguntas e Respostas</div>
+      <ul>
+        <li><strong>Would you like to use TypeScript? →</strong> <code>No</code></li>
+        <li><strong>Would you like to use ESLint? →</strong> <code>Yes</code></li>
+        <li><strong>Would you like to use Tailwind CSS? →</strong> <code>No</code></li>
+        <li><strong>Would you like to use `src/` directory? →</strong> <code>No</code></li>
+        <li><strong>Would you like to use App Router? (recommended) →</strong> <code>Yes</code></li>
+        <li><strong>Would you like to customize the default import alias? →</strong> <code>No</code></li>
+      </ul>
+
+      <p>Depois da instalação, entre na pasta do projeto e inicie o servidor de desenvolvimento:</p>
+      <pre><code class="language-bash">cd meu-app
+npm run dev</code></pre>
+      <p>
+        Acesse o navegador no endereço <code>http://localhost:3000</code> para ver a aplicação funcionando.
+      </p>
+    </div>
+  </div>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-puzzle-piece"></i> 6. Criando um Componente
+    </h3>
+
+    <!-- Introdução ao conceito -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Um <strong>componente</strong> é um bloco de código que representa uma
+          parte da interface (UI) da sua aplicação. Em React, componentes são
+          geralmente funções que retornam um conteúdo JSX (semelhante ao HTML),
+          e podem ser reutilizados em várias partes do seu projeto.
+        </p>
+        <p>
+          Por exemplo, podemos criar um componente chamado
+          <code>Hello</code> que exibe uma mensagem na tela.
+        </p>
+      </div>
+    </div>
+
+    <!-- Passo a passo para criar um projeto -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 1: Criando o projeto React</h4>
+        <p>
+          Se ainda não criou um projeto React, abra o terminal e execute o
+          seguinte comando:
+        </p>
+        <pre><code class="language-bash">npx create-next-app@latest meu-app</code></pre>
+        <p>Depois, entre na pasta do projeto:</p>
+        <pre><code class="language-bash">cd meu-app</code></pre>
+      </div>
+    </div>
+
+    <!-- Criando o componente com valor fixo -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 2: Criando um componente simples com valor fixo</h4>
+        <p>
+          Agora, dentro da pasta <code>src</code>, crie um novo arquivo chamado
+          <code>Hello.js</code>. Esse será o nosso primeiro componente.
+        </p>
+        <p>Adicione o seguinte código no arquivo <code>Hello.js</code>:</p>
+        <pre><code class="language-jsx">function Hello() {
+  return &lt;h1&gt;Hello World&lt;/h1&gt;;
+}
+
+export default Hello;</code></pre>
+        <p>
+          Esse código cria uma função chamada <code>Hello</code> que retorna um
+          título com o texto "Hello World". A linha
+          <code>export default</code> serve para permitir que esse componente
+          seja usado em outros arquivos.
+        </p>
+      </div>
+    </div>
+
+    <!-- Como importar e usar o componente na página -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 3: Usando o componente na aplicação</h4>
+        <p>
+          No arquivo <code>src/App.js</code>, substitua o conteúdo da função
+          <code>App</code> para usar o componente <code>Hello</code>:
+        </p>
+        <pre><code class="language-jsx">import Hello from './Hello';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Hello /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+        <p>
+          Com isso, ao iniciar sua aplicação, o conteúdo do componente
+          <code>Hello</code> será exibido na tela.
+        </p>
+      </div>
+    </div>
+
+    <!-- Agora com props -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 4: Tornando o componente dinâmico com props</h4>
+        <p>
+          Podemos melhorar nosso componente para que ele receba um nome como
+          parâmetro. Esses parâmetros são chamados de <strong>props</strong> em
+          React.
+        </p>
+        <p>Atualize o conteúdo do <code>Hello.js</code> para:</p>
+        <pre><code class="language-jsx">function Hello(props) {
+  return &lt;h1&gt;Olá, {props.nome}!&lt;/h1&gt;;
+}
+
+export default Hello;</code></pre>
+        <p>
+          Agora o componente espera receber uma prop chamada <code>nome</code>,
+          e a utiliza para montar a frase.
+        </p>
+      </div>
+    </div>
+
+    <!-- Chamando o componente com props -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Passo 5: Enviando props para o componente</h4>
+        <p>
+          No arquivo <code>App.js</code>, envie um nome para o componente usando
+          o seguinte código:
+        </p>
+        <pre><code class="language-jsx">import Hello from './Hello';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Hello nome="Maria" /&gt;
+      &lt;Hello nome="João" /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+        <p>Agora você verá na tela:</p>
+        <ul>
+          <li>Olá, Maria!</li>
+          <li>Olá, João!</li>
+        </ul>
+        <p>
+          Cada vez que você usar o componente <code>&lt;Hello /&gt;</code> com
+          um nome diferente, ele exibirá uma mensagem personalizada.
+        </p>
+      </div>
+    </div>
+
+    <!-- Conclusão -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Resumo</h4>
+        <ul>
+          <li>Componentes são funções que retornam JSX.</li>
+          <li>
+            Você pode reutilizar um componente em várias partes da aplicação.
+          </li>
+          <li>
+            As <strong>props</strong> permitem deixar os componentes dinâmicos.
+          </li>
+          <li>
+            Você pode criar componentes em arquivos separados e importá-los onde
+            quiser.
+          </li>
+        </ul>
+        <p>Essa estrutura modular é uma das principais forças do React!</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 7. Resumo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li>Criamos um projeto com <code>create-next-app@latest</code>.</li>
+          <li>
+            Vimos como Node.js e npm facilitam a instalação de dependências.
+          </li>
+          <li>
+            Exploramos a estrutura de pastas e iniciamos o servidor com
+            <code>npm run dev</code>.
+          </li>
+          <li>
+            Construímos componentes funcionais simples e utilizamos props.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+  <h3 class="section-title with-icon">
+    <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios
+  </h3>
+
+  <!-- Exercício 1 -->
+  <div class="desafio">
+    <h4>Exercício 1: Criar o Projeto</h4>
+    <p><strong>Objetivo:</strong> Instalar o projeto Next.js e rodar o servidor de desenvolvimento.</p>
+    <ol>
+      <li>No terminal, execute <code>npx create-next-app@latest meu-app</code>.</li>
+      <li>Responda às perguntas conforme indicado na seção anterior.</li>
+      <li>Entre na pasta criada com <code>cd meu-app</code>.</li>
+      <li>Inicie o servidor com <code>npm run dev</code>.</li>
+      <li>Acesse <code>http://localhost:3000</code> no navegador e confirme que a aplicação está rodando.</li>
+    </ol>
+  </div>
+
+  <!-- Exercício 2 -->
+  <div class="desafio">
+    <h4>Exercício 2: Componente Hello World</h4>
+    <p><strong>Objetivo:</strong> Criar um componente simples que exibe "Hello World".</p>
+    <ol>
+      <li>Abra o arquivo <code>app/page.js</code> (ou <code>pages/index.js</code>).</li>
+      <li>Altere o conteúdo para exibir a mensagem "Hello World".</li>
+      <li>Salve o arquivo e observe a alteração no navegador.</li>
+    </ol>
+    <details>
+      <summary>Ver solução</summary>
+      <p><strong>Opção A – Direto no arquivo da página:</strong></p>
+      <pre><code class="language-jsx">export default function Home() {
+  return <h1>Hello World</h1>;
+}</code></pre>
+      <p><strong>Opção B – Criando e importando um componente:</strong></p>
+      <p>Arquivo <code>Hello.js</code>:</p>
+      <pre><code class="language-jsx">function Hello() {
+  return <h1>Hello World</h1>;
+}
+export default Hello;</code></pre>
+      <p>Arquivo <code>page.js</code>:</p>
+      <pre><code class="language-jsx">import Hello from './Hello';
+
+export default function Home() {
+  return <Hello />;
+}</code></pre>
+    </details>
+  </div>
+
+  <!-- Exercício 3 -->
+  <div class="desafio">
+  <h4>Exercício 3: Componente com props</h4>
+  <p><strong>Objetivo:</strong> Criar um componente que exiba uma saudação personalizada com base em uma prop.</p>
+  <ol>
+    <li>Crie um novo arquivo chamado <code>Hello.js</code>.</li>
+    <li>Crie um componente que receba uma <code>prop</code> chamada <code>nome</code> e mostre: <code>Olá, &#123;nome&#125;!</code>.</li>
+    <li>No arquivo <code>page.js</code>, importe e utilize o componente passando diferentes nomes.</li>
+    <li>Visualize no navegador a saudação personalizada para cada nome.</li>
+  </ol>
+  <details>
+    <summary>Ver solução</summary>
+    <p><strong>Arquivo <code>Hello.js</code>:</strong></p>
+    <pre><code class="language-jsx">function Hello(&#123; nome &#125;) &#123;
+  return &lt;h1&gt;Olá, &#123;nome&#125;!&lt;/h1&gt;;
+&#125;
+export default Hello;</code></pre>
+
+    <p><strong>Arquivo <code>page.js</code>:</strong></p>
+    <pre><code class="language-jsx">import Hello from './Hello';
+
+export default function Home() &#123;
+  return (
+    &lt;div&gt;
+      &lt;Hello nome="Maria" /&gt;
+      &lt;Hello nome="João" /&gt;
+    &lt;/div&gt;
+  );
+&#125;</code></pre>
+  </details>
+</div>
+
+</section>
+
+</article>
