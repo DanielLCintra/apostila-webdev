@@ -221,12 +221,12 @@ export default Hello;</code></pre>
       <div class="card-body">
         <h4>Passo 3: Usando o componente na aplicação</h4>
         <p>
-          No arquivo <code>src/App.js</code>, substitua o conteúdo da função
-          <code>App</code> para usar o componente <code>Hello</code>:
+          No arquivo <code>src/pages/index.js</code>, substitua o conteúdo da função
+          <code>Home()</code> para usar o componente <code>Hello</code>:
         </p>
-        <pre><code class="language-jsx">import Hello from './Hello';
+        <pre><code class="language-jsx">import Hello from '../Hello';
 
-function App() {
+function Home() {
   return (
     &lt;div&gt;
       &lt;Hello /&gt;
@@ -269,12 +269,12 @@ export default Hello;</code></pre>
       <div class="card-body">
         <h4>Passo 5: Enviando props para o componente</h4>
         <p>
-          No arquivo <code>App.js</code>, envie um nome para o componente usando
+          No arquivo <code>src/pages/index.js</code>, envie um nome para o componente usando
           o seguinte código:
         </p>
-        <pre><code class="language-jsx">import Hello from './Hello';
+        <pre><code class="language-jsx">import Hello from '../Hello';
 
-function App() {
+function Home() {
   return (
     &lt;div&gt;
       &lt;Hello nome="Maria" /&gt;
@@ -283,7 +283,7 @@ function App() {
   );
 }
 
-export default App;</code></pre>
+export default Home;</code></pre>
         <p>Agora você verá na tela:</p>
         <ul>
           <li>Olá, Maria!</li>
