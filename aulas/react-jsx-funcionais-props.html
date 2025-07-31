@@ -1,0 +1,207 @@
+<!-- ==================== Aula React 2 ==================== -->
+<article class="lesson-content">
+  <h2>
+    <i class="fab fa-react"></i> React – JSX Avançado, Componentes e Props
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula daremos continuidade ao estudo de React iniciado anteriormente.
+      Vamos explorar com mais profundidade a sintaxe do JSX, criar componentes
+      funcionais reutilizáveis e aprender como transmitir dados entre eles por
+      meio das <strong>props</strong>.
+    </p>
+    <ul>
+      <li>✅ Sintaxe avançada do JSX</li>
+      <li>✅ Componentes funcionais com arrow functions</li>
+      <li>✅ Desestruturação e valores padrão de props</li>
+      <li>✅ Composição e uso de <code>children</code></li>
+      <li>✅ Renderização de listas</li>
+    </ul>
+  </div>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> 1. Sintaxe Avançada do JSX
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O JSX permite inserir expressões JavaScript dentro de chaves <code>{}</code> e agrupar elementos com <code>&lt;React.Fragment&gt;</code> ou <code>&lt;&gt;</code>.
+        </p>
+        <pre><code class="language-jsx">const nome = 'Ana';
+function Hello() {
+  return (
+    &lt;&gt;
+      &lt;h1&gt;Olá, {nome}!&lt;/h1&gt;
+      {nome === 'Ana' && &lt;p&gt;Que bom ver você aqui!&lt;/p&gt;}
+    &lt;/&gt;
+  );
+}</code></pre>
+        <p>
+          Comentários em JSX ficam entre <code>{/* */}</code> e é comum usar o operador <code>&amp;&amp;</code> ou o ternário para renderização condicional.
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-puzzle-piece"></i> 2. Componentes Funcionais com Arrow Functions
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Podemos declarar componentes como funções tradicionais ou como <em>arrow functions</em>. Essa sintaxe costuma ser mais concisa e facilita a desestruturação de props.
+        </p>
+        <pre><code class="language-jsx">const Botao = ({ texto }) =&gt; &lt;button&gt;{texto}&lt;/button&gt;;
+
+export default function App() {
+  return (
+    &lt;div&gt;
+      &lt;Botao texto="Salvar" /&gt;
+      &lt;Botao texto="Cancelar" /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+        <p>
+          Reutilizando o componente <code>Botao</code> com textos diferentes, mantemos o c&oacute;digo organizado e f&aacute;cil de manter.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-paper-plane"></i> 3. Passando Dados com Props
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          As <strong>props</strong> são parâmetros recebidos pelos componentes. Podemos desestruturá-las na assinatura e definir valores padrão.
+        </p>
+        <pre><code class="language-jsx">function Saudacao({ nome = 'Visitante' }) {
+  return &lt;h2&gt;Olá, {nome}!&lt;/h2&gt;;
+}
+
+export default function App() {
+  return (
+    &lt;&gt;
+      &lt;Saudacao nome="Maria" /&gt;
+      &lt;Saudacao /&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+        <p>
+          Quando nenhuma prop é enviada, é utilizado o valor padrão <code>Visitante</code>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-layer-group"></i> 4. Composição com <code>children</code>
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Componentes podem envolver outros elementos usando a prop especial <code>children</code>. Dessa forma criamos blocos reutilizáveis de layout.
+        </p>
+        <pre><code class="language-jsx">function Card({ children }) {
+  return &lt;div className="card"&gt;{children}&lt;/div&gt;;
+}
+
+export default function App() {
+  return (
+    &lt;Card&gt;
+      &lt;h2&gt;Título&lt;/h2&gt;
+      &lt;p&gt;Conteúdo enviado como children.&lt;/p&gt;
+    &lt;/Card&gt;
+  );
+}</code></pre>
+        <p>
+          Utilizando <code>children</code> é possível compor telas complexas de forma
+          simples e modular.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-list"></i> 5. Renderizando Listas
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Para criar vários elementos a partir de um array, utilize o método <code>map()</code>.
+        </p>
+        <pre><code class="language-jsx">const itens = ['React', 'Vue', 'Angular'];
+export default function App() {
+  return (
+    &lt;ul&gt;
+      {itens.map(framework => (
+        &lt;li key={framework}&gt;{framework}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 6. Exercícios
+    </h3>
+
+    <!-- Exercício 1 -->
+    <div class="desafio">
+      <h4>Exercício 1: Card Componente</h4>
+      <p>
+        <strong>Objetivo:</strong> criar um componente reutilizável que utilize a
+        prop <code>children</code>.
+      </p>
+      <ol>
+        <li>Implemente o componente <code>Card</code> como mostrado na aula.</li>
+        <li>
+          Use-o no <code>App</code> para envolver um título e um parágrafo de
+          sua escolha.
+        </li>
+        <li>Confira o resultado no navegador.</li>
+      </ol>
+    </div>
+
+    <!-- Exercício 2 -->
+    <div class="desafio">
+      <h4>Exercício 2: Lista de Itens</h4>
+      <p>
+        <strong>Objetivo:</strong> renderizar uma lista de elementos a partir de
+        um array.
+      </p>
+      <ol>
+        <li>Crie um array com três ou mais strings.</li>
+        <li>Utilize <code>map()</code> para gerar os elementos <code>li</code>.</li>
+        <li>Não esqueça de definir uma <code>key</code> única para cada item.</li>
+      </ol>
+    </div>
+
+    <!-- Exercício 3 -->
+    <div class="desafio">
+      <h4>Exercício 3: Saudação com Props</h4>
+      <p>
+        <strong>Objetivo:</strong> praticar o uso de props criando várias
+        saudações personalizadas.
+      </p>
+      <ol>
+        <li>Reaproveite o componente <code>Saudacao</code> apresentado.</li>
+        <li>Renderize-o enviando nomes diferentes como prop.</li>
+        <li>Verifique que cada instância exibe a mensagem correta.</li>
+      </ol>
+    </div>
+  </section>
+
+</article>
