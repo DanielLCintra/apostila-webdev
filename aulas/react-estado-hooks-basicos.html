@@ -1,0 +1,134 @@
+<!-- ==================== Aula React 3 ==================== -->
+<article class="lesson-content">
+  <h2>
+    <i class="fab fa-react"></i> React – Estado e Hooks Básicos
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula veremos como gerenciar dados internos dos componentes com
+      <strong>useState</strong> e como executar efeitos colaterais utilizando
+      <strong>useEffect</strong>.
+    </p>
+    <ul>
+      <li>✅ Conceito de estado no React</li>
+      <li>✅ Atualização de valores com <code>useState</code></li>
+      <li>✅ Efeitos e ciclo de vida com <code>useEffect</code></li>
+    </ul>
+  </div>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-database"></i> 1. O que é Estado?
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Estado é o conjunto de dados que representa a situação atual de um
+          componente. Quando o estado muda, o React renderiza novamente o
+          componente exibindo os novos valores.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-toggle-on"></i> 2. Gerenciando dados com <code>useState</code>
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O hook <code>useState</code> retorna um valor de estado e uma função para
+          atualizá-lo. Sempre que chamamos essa função, o componente é
+          re-renderizado.
+        </p>
+        <pre><code class="language-jsx">import { useState } from 'react';
+
+export default function Contador() {
+  const [valor, setValor] = useState(0);
+
+  function incrementar() {
+    setValor(valor + 1);
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Valor: {valor}&lt;/p&gt;
+      &lt;button onClick={incrementar}&gt;Adicionar&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-sync"></i> 3. Efeitos com <code>useEffect</code>
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O hook <code>useEffect</code> permite executar código em resposta a
+          mudanças de estado ou props. É ideal para buscar dados em APIs ou
+          sincronizar o componente com APIs externas.
+        </p>
+        <pre><code class="language-jsx">import { useState, useEffect } from 'react';
+
+export default function Relogio() {
+  const [hora, setHora] = useState(new Date());
+
+  useEffect(() =&gt; {
+    const id = setInterval(() =&gt; setHora(new Date()), 1000);
+    return () =&gt; clearInterval(id);
+  }, []);
+
+  return &lt;p&gt;{hora.toLocaleTimeString()}&lt;/p&gt;;
+}
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 4. Resumo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li><code>useState</code> controla dados mutáveis do componente.</li>
+          <li><code>useEffect</code> executa efeitos colaterais e permite
+            sincronizar o componente com o exterior.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 5. Exercícios
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Contador</h4>
+      <p><strong>Objetivo:</strong> criar um contador que aumente o valor ao clicar em um botão.</p>
+      <ol>
+        <li>Implemente o componente <code>Contador</code> mostrado acima.</li>
+        <li>Adicione um segundo botão para diminuir o valor.</li>
+        <li>Exiba o valor atual na tela.</li>
+      </ol>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Relógio</h4>
+      <p><strong>Objetivo:</strong> exibir a hora atualizada a cada segundo.</p>
+      <ol>
+        <li>Use o componente <code>Relogio</code> mostrado anteriormente.</li>
+        <li>Altere o formato da hora utilizando <code>toLocaleTimeString</code>.</li>
+      </ol>
+    </div>
+  </section>
+</article>

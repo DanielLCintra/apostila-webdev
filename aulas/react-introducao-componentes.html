@@ -146,6 +146,7 @@ ReactDOM.render(
         <li><strong>Would you like to use Tailwind CSS? →</strong> <code>No</code></li>
         <li><strong>Would you like to use `src/` directory? →</strong> <code>No</code></li>
         <li><strong>Would you like to use App Router? (recommended) →</strong> <code>Yes</code></li>
+        <li><strong>Would you like to use Turbopack for the development server? →</strong> <code>No</code></li>
         <li><strong>Would you like to customize the default import alias? →</strong> <code>No</code></li>
       </ul>
 
@@ -158,10 +159,29 @@ npm run dev</code></pre>
     </div>
   </div>
 
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-puzzle-piece"></i> 6. Criando um Componente
-    </h3>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h4>Arquivos importantes e scripts npm</h4>
+      <p>Após a criação do projeto, observe alguns arquivos gerados automaticamente:</p>
+      <ul>
+        <li><strong>package.json</strong> – registra dependências e scripts como <code>dev</code>, <code>build</code> e <code>start</code>.</li>
+        <li><strong>.gitignore</strong> – lista arquivos e pastas que não devem ser enviados ao Git.</li>
+      </ul>
+      <p>Os scripts mais utilizados são:</p>
+      <ul>
+        <li><code>npm run dev</code> – inicia o servidor de desenvolvimento com recarregamento automático.</li>
+        <li><code>npm run build</code> – cria uma versão otimizada para produção.</li>
+        <li><code>npm run start</code> – executa a aplicação após o <code>build</code>.</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section class="mb-5">
+  <h3 class="section-title with-icon">
+    <i class="fas fa-puzzle-piece"></i> 6. Criando um Componente
+  </h3>
 
     <!-- Introdução ao conceito -->
     <div class="card mb-4">

@@ -17,6 +17,7 @@
       <li>✅ Desestruturação e valores padrão de props</li>
       <li>✅ Composição e uso de <code>children</code></li>
       <li>✅ Renderização de listas</li>
+      <li>✅ Hierarquia de componentes e boas práticas</li>
     </ul>
   </div>
 
@@ -155,7 +156,39 @@ export default function App() {
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 6. Exercícios
+      <i class="fas fa-sitemap"></i> 6. Hierarquia de Componentes
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Em React, os componentes se organizam em uma <strong>árvore</strong>. Componentes "pais" podem renderizar componentes "filhos" e transmitir dados através das <strong>props</strong>.
+        </p>
+        <pre><code class="language-jsx">function Header() {
+  return &lt;h1&gt;Meu App&lt;/h1&gt;;
+}
+
+function Layout({ children }) {
+  return &lt;div className="layout"&gt;{children}&lt;/div&gt;;
+}
+
+export default function App() {
+  return (
+    &lt;Layout&gt;
+      &lt;Header /&gt;
+      &lt;p&gt;Conteúdo principal&lt;/p&gt;
+    &lt;/Layout&gt;
+  );
+}</code></pre>
+        <p>
+          Manter uma hierarquia clara facilita a manutenção e ajuda a evitar o <em>props drilling</em>, quando muitas props precisam atravessar vários níveis da árvore.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 7. Exercícios
     </h3>
 
     <!-- Exercício 1 -->

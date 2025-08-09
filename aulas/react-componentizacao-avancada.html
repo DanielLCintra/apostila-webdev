@@ -1,0 +1,142 @@
+<!-- ==================== Aula React 4 ==================== -->
+<article class="lesson-content">
+  <h2>
+    <i class="fab fa-react"></i> React – Componentização Avançada e Composição
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Neste encontro vamos aprofundar as técnicas de componentização,
+      explorando diferentes formas de compor interfaces e evitar problemas
+      comuns como o <em>props drilling</em>.
+    </p>
+    <ul>
+      <li>✅ Técnicas de composição e reutilização</li>
+      <li>✅ Uso avançado do <code>children</code></li>
+      <li>✅ Introdução ao problema do <em>props drilling</em></li>
+      <li>✅ Boas práticas de organização de componentes</li>
+    </ul>
+  </div>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-layer-group"></i> 1. Técnicas de Composição
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Componentes menores podem ser combinados para formar estruturas mais
+          complexas. Essa abordagem facilita o reuso e a leitura do código.
+        </p>
+        <pre><code class="language-jsx">function Toolbar() {
+  return (
+    &lt;div className="toolbar"&gt;
+      &lt;Botao texto="Salvar" /&gt;
+      &lt;Botao texto="Cancelar" /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-box-open"></i> 2. Uso do <code>children</code>
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          A prop especial <code>children</code> permite que um componente envolva
+          elementos arbitrários, tornando-o altamente reutilizável.
+        </p>
+        <pre><code class="language-jsx">function Painel({ children }) {
+  return &lt;section className="painel"&gt;{children}&lt;/section&gt;;
+}
+
+export default function App() {
+  return (
+    &lt;Painel&gt;
+      &lt;h2&gt;Título&lt;/h2&gt;
+      &lt;p&gt;Conteúdo do painel&lt;/p&gt;
+    &lt;/Painel&gt;
+  );
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-share"></i> 3. Props Drilling
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          O <em>props drilling</em> ocorre quando uma prop precisa ser passada por
+          muitos níveis de componentes apenas para alcançar um componente mais
+          interno. Isso torna o código difícil de manter.
+        </p>
+        <p>
+          Uma alternativa é utilizar o <code>Context API</code> ou bibliotecas de
+          gerenciamento de estado, que veremos em aulas futuras.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-double"></i> 4. Boas Práticas
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li>Mantenha os componentes pequenos e com uma responsabilidade clara.</li>
+          <li>Organize os arquivos em pastas que reflitam a estrutura da aplicação.</li>
+          <li>Prefira composição em vez de herança.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 5. Resumo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li>Componentes podem ser combinados para formar interfaces complexas.</li>
+          <li><code>children</code> torna componentes mais flexíveis.</li>
+          <li>Evite o <em>props drilling</em> para manter o código limpo.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 6. Exercícios
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Painel Reutilizável</h4>
+      <p><strong>Objetivo:</strong> criar um componente <code>Painel</code> que utilize <code>children</code>.</p>
+      <ol>
+        <li>Implemente o componente <code>Painel</code> mostrado acima.</li>
+        <li>Utilize-o para envolver diferentes blocos de conteúdo.</li>
+      </ol>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Evitando Props Drilling</h4>
+      <p><strong>Objetivo:</strong> perceber o problema de passar props em cadeia.</p>
+      <ol>
+        <li>Crie três componentes aninhados.</li>
+        <li>Passe uma prop do primeiro até o último componente.</li>
+        <li>Reflita sobre como o Context API pode simplificar esse processo.</li>
+      </ol>
+    </div>
+  </section>
+</article>
