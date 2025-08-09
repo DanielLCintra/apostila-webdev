@@ -1,8 +1,6 @@
-<!-- ==================== Aula React 3 ==================== -->
+<!-- ==================== Aula React 3 (versão expandida) ==================== -->
 <article class="lesson-content">
-  <h2>
-    <i class="fab fa-react"></i> React – Estado e Hooks Básicos
-  </h2>
+  <h2><i class="fab fa-react"></i> React – Estado e Hooks Básicos</h2>
 
   <div class="intro-box mb-5">
     <p>
@@ -12,11 +10,25 @@
     </p>
     <ul>
       <li>✅ Conceito de estado no React</li>
-      <li>✅ Atualização de valores com <code>useState</code></li>
-      <li>✅ Efeitos e ciclo de vida com <code>useEffect</code></li>
+      <li>✅ Regras dos Hooks e boas práticas</li>
+      <li>
+        ✅ Atualização de valores com <code>useState</code> (inclui atualização
+        funcional)
+      </li>
+      <li>
+        ✅ Efeitos e ciclo de vida com <code>useEffect</code> (dependências e
+        limpeza)
+      </li>
+      <li>
+        ✅ Padrões comuns: inputs controlados, timers, fetch e <em>cleanup</em>
+      </li>
+      <li>
+        ✅ Testes rápidos (quiz) e exercícios com <strong>solução</strong>
+      </li>
     </ul>
   </div>
 
+  <!-- 1. O que é Estado -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-database"></i> 1. O que é Estado?
@@ -24,24 +36,81 @@
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Estado é o conjunto de dados que representa a situação atual de um
-          componente. Quando o estado muda, o React renderiza novamente o
-          componente exibindo os novos valores.
+          <strong>Estado</strong> é o conjunto de dados que representa a
+          situação atual de um componente. Quando o estado muda, o React
+          <em>re-renderiza</em> o componente exibindo os novos valores.
         </p>
+        <ul>
+          <li>
+            Estado vive <strong>dentro</strong> do componente (não é global).
+          </li>
+          <li>
+            O React compara a nova árvore de JSX e atualiza a tela de forma
+            eficiente.
+          </li>
+          <li>Estados diferentes ⇒ renderizações diferentes.</li>
+        </ul>
+        <div class="alert alert-info mt-3">
+          <strong>Dica mental:</strong> pense no JSX como uma função do estado:
+          <code>UI = f(estado)</code>.
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- 2. Regras dos Hooks -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-toggle-on"></i> 2. Gerenciando dados com <code>useState</code>
+      <i class="fas fa-ruler"></i> 2. Regras dos Hooks
     </h3>
     <div class="card mb-4">
       <div class="card-body">
+        <ul>
+          <li>
+            Chame Hooks <strong>apenas no nível superior</strong> do componente
+            (nunca dentro de <code>if</code>, <code>for</code> ou funções
+            comuns).
+          </li>
+          <li>
+            Chame Hooks <strong>apenas</strong> dentro de componentes de função
+            ou de <em>custom hooks</em>.
+          </li>
+          <li>
+            A ordem das chamadas de Hooks <strong>não pode mudar</strong> entre
+            renderizações.
+          </li>
+        </ul>
+        <pre><code class="language-jsx">// ✅ Correto
+export default function Exemplo() {
+  const [x, setX] = useState(0);
+  // ...
+  return &lt;div /&gt;;
+}
+
+// ❌ Errado (hook dentro de condicional)
+export default function Erro() {
+  if (Math.random() &gt; 0.5) {
+    const [x, setX] = useState(0); // NÃO FAÇA ISSO
+  }
+  return &lt;div /&gt;;
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. useState (básico e avançado) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-toggle-on"></i> 3. Gerenciando dados com
+      <code>useState</code>
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
         <p>
-          O hook <code>useState</code> retorna um valor de estado e uma função para
-          atualizá-lo. Sempre que chamamos essa função, o componente é
-          re-renderizado.
+          O hook <code>useState</code> retorna um valor de estado e uma função
+          para atualizá-lo. Sempre que a função de atualização é chamada, o
+          componente é re-renderizado.
         </p>
         <pre><code class="language-jsx">import { useState } from 'react';
 
@@ -49,7 +118,7 @@ export default function Contador() {
   const [valor, setValor] = useState(0);
 
   function incrementar() {
-    setValor(valor + 1);
+    setValor(valor + 1); // atualização baseada no valor atual
   }
 
   return (
@@ -58,23 +127,289 @@ export default function Contador() {
       &lt;button onClick={incrementar}&gt;Adicionar&lt;/button&gt;
     &lt;/div&gt;
   );
-}
+}</code></pre>
+
+        <h4 class="mt-4 mb-2">
+          3.1 Atualização funcional (evita “estado antigo”)
+        </h4>
+        <p>
+          Quando a nova atualização depende do <strong>estado anterior</strong>,
+          use a forma funcional:
+        </p>
+        <pre><code class="language-jsx">setValor(prev =&gt; prev + 1); // seguro mesmo com várias atualizações seguidas</code></pre>
+
+        <h4 class="mt-3 mb-2">
+          3.2 Objetos e arrays no estado (imutabilidade)
+        </h4>
+        <p>Não modifique direto. Crie uma nova cópia ao atualizar.</p>
+        <pre><code class="language-jsx">const [aluno, setAluno] = useState({ nome: 'Ana', pontos: 0 });
+
+// ❌ NÃO faça:
+// aluno.pontos = aluno.pontos + 1; setAluno(aluno);
+
+// ✅ Faça:
+setAluno(prev =&gt; ({ ...prev, pontos: prev.pontos + 1 }));
+
+const [lista, setLista] = useState(['A', 'B']);
+setLista(prev =&gt; [...prev, 'C']); // adiciona sem mutar
 </code></pre>
+
+        <h4 class="mt-3 mb-2">3.3 Inputs controlados (estado &lt;→ input)</h4>
+        <pre><code class="language-jsx">function FormNome() {
+  const [nome, setNome] = useState('');
+
+  return (
+    &lt;div&gt;
+      &lt;input value={nome} onChange={e =&gt; setNome(e.target.value)} placeholder="Seu nome" /&gt;
+      &lt;p&gt;Olá, {nome || 'Visitante'}!&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
       </div>
     </div>
   </section>
 
+  <!-- 4. useEffect -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-sync"></i> 3. Efeitos com <code>useEffect</code>
+      <i class="fas fa-sync"></i> 4. Efeitos com <code>useEffect</code>
     </h3>
+
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          O hook <code>useEffect</code> permite executar código em resposta a
-          mudanças de estado ou props. É ideal para buscar dados em APIs ou
-          sincronizar o componente com APIs externas.
+          <code>useEffect</code> executa efeitos colaterais: chamar APIs,
+          configurar timers, <em>listeners</em>, sincronizar com armazenamento,
+          etc. A assinatura é <code>useEffect(callback, deps?)</code>.
         </p>
+
+        <h4 class="mt-2 mb-2">4.1 Padrões de dependência</h4>
+        <ul>
+          <li>
+            <strong>Sem array</strong>: roda em toda renderização (cuidado!).
+          </li>
+          <li>
+            <strong>Array vazio []</strong>: roda uma vez no <em>mount</em> e
+            limpa no <em>unmount</em>.
+          </li>
+          <li>
+            <strong>[x, y]</strong>: roda quando <code>x</code> ou
+            <code>y</code> mudarem.
+          </li>
+        </ul>
+
+        <pre><code class="language-jsx">import { useState, useEffect } from 'react';
+
+export default function Relogio() {
+  const [hora, setHora] = useState(new Date());
+
+  useEffect(() =&gt; {
+    const id = setInterval(() =&gt; setHora(new Date()), 1000);
+    return () =&gt; clearInterval(id); // limpeza no unmount
+  }, []); // roda uma vez
+
+  return &lt;p&gt;{hora.toLocaleTimeString()}&lt;/p&gt;;
+}</code></pre>
+
+        <h4 class="mt-3 mb-2">
+          4.2 Exemplo: escutar eventos do teclado (com limpeza)
+        </h4>
+        <pre><code class="language-jsx">function Teclado() {
+  const [ultimaTecla, setUltimaTecla] = useState('');
+
+  useEffect(() =&gt; {
+    const onKey = (e) =&gt; setUltimaTecla(e.key);
+    window.addEventListener('keydown', onKey);
+    return () =&gt; window.removeEventListener('keydown', onKey);
+  }, []);
+
+  return &lt;p&gt;Última tecla: {ultimaTecla}&lt;/p&gt;;
+}</code></pre>
+
+        <h4 class="mt-3 mb-2">
+          4.3 Exemplo: busca em API (com carregando/erro)
+        </h4>
+        <pre><code class="language-jsx">function Usuarios() {
+  const [dados, setDados] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
+
+  useEffect(() =&gt; {
+    let ativo = true;
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(r =&gt; r.json())
+      .then(json =&gt; { if (ativo) { setDados(json); setCarregando(false); }})
+      .catch(e =&gt; { if (ativo) { setErro(e.message); setCarregando(false); }});
+    return () =&gt; { ativo = false; };
+  }, []);
+
+  if (carregando) return &lt;p&gt;Carregando...&lt;/p&gt;;
+  if (erro) return &lt;p&gt;Erro: {erro}&lt;/p&gt;;
+
+  return (
+    &lt;ul&gt;
+      {dados.map(u =&gt; &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+
+        <div class="alert alert-warning mt-3">
+          <strong>Cuidados comuns:</strong> não chame <code>setState</code> em
+          loop dentro do render; limpe timers e <em>listeners</em>; inclua todas
+          as dependências usadas dentro do efeito no array de dependências.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Resumo -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 5. Resumo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li>
+            <code>useState</code>: controla dados mutáveis do componente; use
+            atualização funcional quando depender do valor anterior.
+          </li>
+          <li>
+            <code>useEffect</code>: executa efeitos colaterais; entenda
+            <strong>dependências</strong> e a função de
+            <strong>limpeza</strong>.
+          </li>
+          <li>
+            <strong>Imutabilidade</strong>: crie novas cópias de objetos/arrays
+            ao atualizar.
+          </li>
+          <li>
+            <strong>Regras dos Hooks</strong>: topo do componente e mesma ordem
+            sempre.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Testes rápidos (quiz) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-clipboard-check"></i> 6. Testes Rápidos (Quiz)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ol>
+          <li class="mb-3">
+            Onde podemos chamar hooks como <code>useState</code> e
+            <code>useEffect</code>?
+            <div>
+              a) Em qualquer função JS &nbsp; b) Em componentes de função e
+              custom hooks &nbsp; c) Dentro de <code>if</code> &nbsp; d) Em
+              classes
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual forma é mais segura quando a atualização depende do valor
+            anterior?
+            <div>
+              a) <code>setX(x + 1)</code> &nbsp; b)
+              <code>setX(prev =&gt; prev + 1)</code>
+            </div>
+          </li>
+          <li class="mb-3">
+            O que faz o <code>return</code> dentro do <code>useEffect</code>?
+            <div>
+              a) Cancela a renderização &nbsp; b) Define estado inicial &nbsp;
+              c) Função de limpeza &nbsp; d) Nada
+            </div>
+          </li>
+          <li class="mb-3">
+            Quando um efeito com <code>[nome]</code> como dependência é
+            reexecutado?
+            <div>
+              a) Apenas no mount &nbsp; b) Em toda renderização &nbsp; c) Quando
+              <code>nome</code> mudar &nbsp; d) Nunca
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual opção <strong>não</strong> respeita imutabilidade?
+            <div>
+              a) <code>setArr(prev =&gt; [...prev, 10])</code> &nbsp; b)
+              <code>arr.push(10); setArr(arr)</code> &nbsp; c)
+              <code>setObj(prev =&gt; ({...prev, a:1}))</code>
+            </div>
+          </li>
+        </ol>
+
+        <details class="solucao">
+          <summary>Mostrar gabarito</summary>
+          <ol>
+            <li>b) Em componentes de função e custom hooks</li>
+            <li>b) <code>setX(prev =&gt; prev + 1)</code></li>
+            <li>c) Função de limpeza</li>
+            <li>c) Quando <code>nome</code> mudar</li>
+            <li>b) <code>arr.push(10); setArr(arr)</code></li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Exercícios (com solução escondida) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 7. Exercícios
+    </h3>
+
+    <!-- Exercício 1 -->
+    <div class="desafio">
+      <h4>Exercício 1: Contador</h4>
+      <p>
+        <strong>Objetivo:</strong> criar um contador que aumente e diminua o
+        valor.
+      </p>
+      <ol>
+        <li>
+          Implemente o componente <code>Contador</code> com <code>+1</code> e
+          <code>-1</code>.
+        </li>
+        <li>Mostre o valor atual em um <code>&lt;p&gt;</code>.</li>
+        <li>Evite valores negativos (opcional).</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">import { useState } from 'react';
+
+export default function Contador() {
+  const [valor, setValor] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Valor: {valor}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setValor(prev =&gt; prev + 1)}&gt;+1&lt;/button&gt;
+      &lt;button onClick={() =&gt; setValor(prev =&gt; Math.max(0, prev - 1))}&gt;-1&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 2 -->
+    <div class="desafio">
+      <h4>Exercício 2: Relógio</h4>
+      <p><strong>Objetivo:</strong> exibir a hora atualizada a cada segundo.</p>
+      <ol>
+        <li>
+          Crie um <code>useEffect</code> com <code>setInterval</code> que
+          atualiza a hora.
+        </li>
+        <li>
+          Faça a limpeza com <code>clearInterval</code> no retorno do efeito.
+        </li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
         <pre><code class="language-jsx">import { useState, useEffect } from 'react';
 
 export default function Relogio() {
@@ -86,49 +421,213 @@ export default function Relogio() {
   }, []);
 
   return &lt;p&gt;{hora.toLocaleTimeString()}&lt;/p&gt;;
-}
-</code></pre>
-      </div>
+}</code></pre>
+      </details>
     </div>
-  </section>
 
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-check-circle"></i> 4. Resumo
-    </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <ul>
-          <li><code>useState</code> controla dados mutáveis do componente.</li>
-          <li><code>useEffect</code> executa efeitos colaterais e permite
-            sincronizar o componente com o exterior.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 5. Exercícios
-    </h3>
-
+    <!-- Exercício 3 -->
     <div class="desafio">
-      <h4>Exercício 1: Contador</h4>
-      <p><strong>Objetivo:</strong> criar um contador que aumente o valor ao clicar em um botão.</p>
+      <h4>Exercício 3: Campo de Texto Controlado</h4>
+      <p>
+        <strong>Objetivo:</strong> criar um input controlado e mostrar o texto
+        digitado.
+      </p>
       <ol>
-        <li>Implemente o componente <code>Contador</code> mostrado acima.</li>
-        <li>Adicione um segundo botão para diminuir o valor.</li>
-        <li>Exiba o valor atual na tela.</li>
+        <li>
+          Crie estado <code>texto</code> e ligue ao <code>value</code> do input.
+        </li>
+        <li>
+          Atualize com <code>onChange</code> e exiba o texto em um parágrafo.
+        </li>
+        <li>Mostre também a contagem de caracteres.</li>
       </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">import { useState } from 'react';
+
+export default function CampoTexto() {
+  const [texto, setTexto] = useState('');
+  return (
+    &lt;div&gt;
+      &lt;input value={texto} onChange={e =&gt; setTexto(e.target.value)} placeholder="Digite algo" /&gt;
+      &lt;p&gt;Você digitou: {texto || '(vazio)'}&lt;/p&gt;
+      &lt;p&gt;Caracteres: {texto.length}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </details>
     </div>
 
+    <!-- Exercício 4 -->
     <div class="desafio">
-      <h4>Exercício 2: Relógio</h4>
-      <p><strong>Objetivo:</strong> exibir a hora atualizada a cada segundo.</p>
+      <h4>Exercício 4: To-Do simples</h4>
+      <p>
+        <strong>Objetivo:</strong> adicionar itens em uma lista usando
+        <code>useState</code>.
+      </p>
       <ol>
-        <li>Use o componente <code>Relogio</code> mostrado anteriormente.</li>
-        <li>Altere o formato da hora utilizando <code>toLocaleTimeString</code>.</li>
+        <li>Crie um input e um botão “Adicionar”.</li>
+        <li>Guarde a lista em estado (array de strings).</li>
+        <li>
+          Liste os itens usando <code>map()</code> e uma
+          <code>key</code> estável.
+        </li>
       </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">import { useState } from 'react';
+
+export default function TodoSimples() {
+  const [texto, setTexto] = useState('');
+  const [itens, setItens] = useState([]);
+
+  function adicionar() {
+    const t = texto.trim();
+    if (!t) return;
+    setItens(prev =&gt; [...prev, t]);
+    setTexto('');
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;input value={texto} onChange={e =&gt; setTexto(e.target.value)} placeholder="Nova tarefa" /&gt;
+      &lt;button onClick={adicionar}&gt;Adicionar&lt;/button&gt;
+      &lt;ul&gt;{itens.map((it, i) =&gt; &lt;li key={it + i}&gt;{it}&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 5 -->
+    <div class="desafio">
+      <h4>Exercício 5: Timer com Iniciar/Pausar/Reset</h4>
+      <p>
+        <strong>Objetivo:</strong> criar um cronômetro que conte segundos com
+        controle por botões.
+      </p>
+      <ol>
+        <li>
+          Estados: <code>segundos</code> e <code>rodando</code> (boolean).
+        </li>
+        <li>
+          Se <code>rodando</code> for <code>true</code>, inicie um
+          <code>setInterval</code> em um <code>useEffect</code>.
+        </li>
+        <li>Botões: Iniciar/Pausar/Reset.</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">import { useEffect, useState } from 'react';
+
+export default function Timer() {
+  const [segundos, setSegundos] = useState(0);
+  const [rodando, setRodando] = useState(false);
+
+  useEffect(() =&gt; {
+    if (!rodando) return;
+    const id = setInterval(() =&gt; setSegundos(prev =&gt; prev + 1), 1000);
+    return () =&gt; clearInterval(id);
+  }, [rodando]);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Tempo: {segundos}s&lt;/p&gt;
+      &lt;button onClick={() =&gt; setRodando(true)}&gt;Iniciar&lt;/button&gt;
+      &lt;button onClick={() =&gt; setRodando(false)}&gt;Pausar&lt;/button&gt;
+      &lt;button onClick={() =&gt; { setRodando(false); setSegundos(0); }}&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 6 -->
+    <div class="desafio">
+      <h4>Exercício 6: Tema Claro/Escuro com persistência</h4>
+      <p>
+        <strong>Objetivo:</strong> alternar tema e salvar no
+        <code>localStorage</code> usando <code>useEffect</code>.
+      </p>
+      <ol>
+        <li>Estado: <code>tema</code> = 'light' | 'dark'.</li>
+        <li>
+          Ao mudar o tema, salve em <code>localStorage</code> e aplique uma
+          classe no <code>body</code>.
+        </li>
+        <li>No <em>mount</em>, leia o valor salvo.</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">import { useEffect, useState } from 'react';
+
+export default function Tema() {
+  const [tema, setTema] = useState('light');
+
+  useEffect(() =&gt; {
+    const salvo = localStorage.getItem('tema');
+    if (salvo) setTema(salvo);
+  }, []);
+
+  useEffect(() =&gt; {
+    document.body.classList.toggle('dark', tema === 'dark');
+    localStorage.setItem('tema', tema);
+    return () =&gt; document.body.classList.remove('dark');
+  }, [tema]);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Tema atual: {tema}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setTema(prev =&gt; prev === 'light' ? 'dark' : 'light')}&gt;
+        Alternar Tema
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 7 (Desafio) -->
+    <div class="desafio">
+      <h4>Exercício 7 (Desafio): Busca em API com Loading/Erro</h4>
+      <p>
+        <strong>Objetivo:</strong> exibir usuários de uma API simulando estados
+        de carregamento e erro.
+      </p>
+      <ol>
+        <li>
+          Estados: <code>dados</code>, <code>carregando</code>,
+          <code>erro</code>.
+        </li>
+        <li>
+          Faça <code>fetch</code> no <em>mount</em>; trate erro e finalize o
+          carregamento.
+        </li>
+        <li>Liste os nomes quando carregar.</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">import { useEffect, useState } from 'react';
+
+export default function Usuarios() {
+  const [dados, setDados] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(null);
+
+  useEffect(() =&gt; {
+    let ativo = true;
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(r =&gt; r.json())
+      .then(json =&gt; { if (ativo) { setDados(json); setCarregando(false); }})
+      .catch(e =&gt; { if (ativo) { setErro(e.message); setCarregando(false); }});
+    return () =&gt; { ativo = false; };
+  }, []);
+
+  if (carregando) return &lt;p&gt;Carregando...&lt;/p&gt;;
+  if (erro) return &lt;p&gt;Erro: {erro}&lt;/p&gt;;
+  return &lt;ul&gt;{dados.map(u =&gt; &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;)}&lt;/ul&gt;;
+}</code></pre>
+      </details>
     </div>
   </section>
 </article>

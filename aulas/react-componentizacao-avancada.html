@@ -1,4 +1,4 @@
-<!-- ==================== Aula React 4 ==================== -->
+<!-- ==================== Aula React 4 (versão expandida) ==================== -->
 <article class="lesson-content">
   <h2>
     <i class="fab fa-react"></i> React – Componentização Avançada e Composição
@@ -6,18 +6,21 @@
 
   <div class="intro-box mb-5">
     <p>
-      Neste encontro vamos aprofundar as técnicas de componentização,
-      explorando diferentes formas de compor interfaces e evitar problemas
-      comuns como o <em>props drilling</em>.
+      Vamos aprofundar as técnicas de componentização, explorando diferentes
+      formas de compor interfaces e evitar problemas comuns como o
+      <em>props drilling</em>. O objetivo é deixar o código mais reutilizável,
+      organizado e fácil de manter.
     </p>
     <ul>
       <li>✅ Técnicas de composição e reutilização</li>
-      <li>✅ Uso avançado do <code>children</code></li>
-      <li>✅ Introdução ao problema do <em>props drilling</em></li>
-      <li>✅ Boas práticas de organização de componentes</li>
+      <li>✅ Uso avançado do <code>children</code> e <em>slots</em></li>
+      <li>✅ Introdução ao problema do <em>props drilling</em> e soluções</li>
+      <li>✅ Boas práticas de organização e manutenção</li>
+      <li>✅ Quiz e exercícios práticos com solução</li>
     </ul>
   </div>
 
+  <!-- 1. Técnicas de Composição -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-layer-group"></i> 1. Técnicas de Composição
@@ -25,10 +28,15 @@
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Componentes menores podem ser combinados para formar estruturas mais
-          complexas. Essa abordagem facilita o reuso e a leitura do código.
+          Em vez de criar um componente gigante, podemos quebrá-lo em peças
+          menores e combiná-las. Isso facilita testes, reuso e clareza do
+          código.
         </p>
-        <pre><code class="language-jsx">function Toolbar() {
+        <pre><code class="language-jsx">function Botao({ texto }) {
+  return &lt;button&gt;{texto}&lt;/button&gt;;
+}
+
+function Toolbar() {
   return (
     &lt;div className="toolbar"&gt;
       &lt;Botao texto="Salvar" /&gt;
@@ -36,10 +44,36 @@
     &lt;/div&gt;
   );
 }</code></pre>
+
+        <h4 class="mt-4 mb-2">1.1 Composição com múltiplos componentes</h4>
+        <pre><code class="language-jsx">function Card({ titulo, conteudo, acoes }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h3&gt;{titulo}&lt;/h3&gt;
+      &lt;p&gt;{conteudo}&lt;/p&gt;
+      &lt;div className="acoes"&gt;{acoes}&lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default function App() {
+  return (
+    &lt;Card
+      titulo="Bem-vindo"
+      conteudo="Este é um card reutilizável."
+      acoes={&lt;button&gt;OK&lt;/button&gt;}
+    /&gt;
+  );
+}</code></pre>
+        <div class="alert alert-info mt-3">
+          <strong>Dica:</strong> Podemos passar JSX como props (ex.:
+          <code>acoes</code>) para criar layouts flexíveis.
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- 2. Uso do children -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-box-open"></i> 2. Uso do <code>children</code>
@@ -47,8 +81,9 @@
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          A prop especial <code>children</code> permite que um componente envolva
-          elementos arbitrários, tornando-o altamente reutilizável.
+          <code>children</code> é uma prop especial que recebe tudo que estiver
+          entre as tags de abertura e fechamento do componente. Isso permite
+          criar "containers" reutilizáveis.
         </p>
         <pre><code class="language-jsx">function Painel({ children }) {
   return &lt;section className="painel"&gt;{children}&lt;/section&gt;;
@@ -62,10 +97,33 @@ export default function App() {
     &lt;/Painel&gt;
   );
 }</code></pre>
+
+        <h4 class="mt-4 mb-2">2.1 Children com múltiplas áreas (slots)</h4>
+        <pre><code class="language-jsx">function Painel({ cabecalho, rodape, children }) {
+  return (
+    &lt;section className="painel"&gt;
+      &lt;header&gt;{cabecalho}&lt;/header&gt;
+      &lt;div&gt;{children}&lt;/div&gt;
+      &lt;footer&gt;{rodape}&lt;/footer&gt;
+    &lt;/section&gt;
+  );
+}
+
+export default function App() {
+  return (
+    &lt;Painel
+      cabecalho={&lt;h2&gt;Título&lt;/h2&gt;}
+      rodape={&lt;small&gt;Rodapé&lt;/small&gt;}
+    &gt;
+      &lt;p&gt;Conteúdo do painel&lt;/p&gt;
+    &lt;/Painel&gt;
+  );
+}</code></pre>
       </div>
     </div>
   </section>
 
+  <!-- 3. Props Drilling -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-share"></i> 3. Props Drilling
@@ -73,18 +131,34 @@ export default function App() {
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          O <em>props drilling</em> ocorre quando uma prop precisa ser passada por
-          muitos níveis de componentes apenas para alcançar um componente mais
-          interno. Isso torna o código difícil de manter.
+          O <em>props drilling</em> ocorre quando passamos props por vários
+          níveis de componentes apenas para que cheguem ao destino final.
         </p>
+        <pre><code class="language-jsx">function Nivel3({ mensagem }) {
+  return &lt;p&gt;Mensagem: {mensagem}&lt;/p&gt;;
+}
+
+function Nivel2({ mensagem }) {
+  return &lt;Nivel3 mensagem={mensagem} /&gt;;
+}
+
+function Nivel1({ mensagem }) {
+  return &lt;Nivel2 mensagem={mensagem} /&gt;;
+}
+
+export default function App() {
+  return &lt;Nivel1 mensagem="Olá!" /&gt;;
+}</code></pre>
         <p>
-          Uma alternativa é utilizar o <code>Context API</code> ou bibliotecas de
-          gerenciamento de estado, que veremos em aulas futuras.
+          Isso funciona, mas é difícil de manter se muitos níveis precisarem da
+          prop. A solução é usar <strong>Context API</strong> ou um gerenciador
+          de estado.
         </p>
       </div>
     </div>
   </section>
 
+  <!-- 4. Boas Práticas -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-check-double"></i> 4. Boas Práticas
@@ -92,14 +166,22 @@ export default function App() {
     <div class="card mb-4">
       <div class="card-body">
         <ul>
-          <li>Mantenha os componentes pequenos e com uma responsabilidade clara.</li>
-          <li>Organize os arquivos em pastas que reflitam a estrutura da aplicação.</li>
-          <li>Prefira composição em vez de herança.</li>
+          <li>Componentes pequenos e com responsabilidade única.</li>
+          <li>
+            Organizar em pastas por <em>feature</em> ou tipo de componente.
+          </li>
+          <li>Usar composição ao invés de herança.</li>
+          <li>
+            Evitar <em>props drilling</em> excessivo (use Context quando
+            necessário).
+          </li>
+          <li>Nomear componentes e props de forma clara.</li>
         </ul>
       </div>
     </div>
   </section>
 
+  <!-- 5. Resumo -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-check-circle"></i> 5. Resumo
@@ -107,36 +189,150 @@ export default function App() {
     <div class="card mb-4">
       <div class="card-body">
         <ul>
-          <li>Componentes podem ser combinados para formar interfaces complexas.</li>
-          <li><code>children</code> torna componentes mais flexíveis.</li>
-          <li>Evite o <em>props drilling</em> para manter o código limpo.</li>
+          <li>
+            Quebre interfaces grandes em componentes menores e reutilizáveis.
+          </li>
+          <li>
+            Use <code>children</code> e props JSX para compor layouts flexíveis.
+          </li>
+          <li>
+            Evite <em>props drilling</em> — prefira Context API ou estados
+            globais quando necessário.
+          </li>
         </ul>
       </div>
     </div>
   </section>
 
+  <!-- 6. Testes rápidos -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 6. Exercícios
+      <i class="fas fa-clipboard-check"></i> 6. Testes Rápidos (Quiz)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ol>
+          <li>O que é <em>props drilling</em>?</li>
+          <li>Qual prop especial recebe elementos filhos no JSX?</li>
+          <li>Qual é mais recomendado: composição ou herança no React?</li>
+          <li>
+            Verdadeiro ou falso: você pode passar JSX como valor de uma prop
+            normal.
+          </li>
+          <li>Qual é uma solução comum para evitar <em>props drilling</em>?</li>
+        </ol>
+        <details class="solucao">
+          <summary>Mostrar gabarito</summary>
+          <ol>
+            <li>Passar props por muitos níveis até chegar ao destino.</li>
+            <li><code>children</code></li>
+            <li>Composição</li>
+            <li>Verdadeiro</li>
+            <li>Context API ou gerenciador de estado</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Exercícios -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 7. Exercícios
     </h3>
 
     <div class="desafio">
       <h4>Exercício 1: Painel Reutilizável</h4>
-      <p><strong>Objetivo:</strong> criar um componente <code>Painel</code> que utilize <code>children</code>.</p>
+      <p>
+        <strong>Objetivo:</strong> criar um componente <code>Painel</code> que
+        utilize <code>children</code>.
+      </p>
       <ol>
-        <li>Implemente o componente <code>Painel</code> mostrado acima.</li>
+        <li>Implemente o <code>Painel</code> com uma borda e padding.</li>
         <li>Utilize-o para envolver diferentes blocos de conteúdo.</li>
       </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">function Painel({ children }) {
+  const estilo = { border: '1px solid #ccc', padding: '12px', borderRadius: '8px' };
+  return &lt;section style={estilo}&gt;{children}&lt;/section&gt;;
+}
+
+export default function App() {
+  return (
+    &lt;&gt;
+      &lt;Painel&gt;&lt;h2&gt;Título 1&lt;/h2&gt;&lt;p&gt;Conteúdo 1&lt;/p&gt;&lt;/Painel&gt;
+      &lt;Painel&gt;&lt;h2&gt;Título 2&lt;/h2&gt;&lt;p&gt;Conteúdo 2&lt;/p&gt;&lt;/Painel&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+      </details>
     </div>
 
     <div class="desafio">
       <h4>Exercício 2: Evitando Props Drilling</h4>
-      <p><strong>Objetivo:</strong> perceber o problema de passar props em cadeia.</p>
+      <p>
+        <strong>Objetivo:</strong> perceber o problema de passar props em
+        cadeia.
+      </p>
       <ol>
         <li>Crie três componentes aninhados.</li>
-        <li>Passe uma prop do primeiro até o último componente.</li>
-        <li>Reflita sobre como o Context API pode simplificar esse processo.</li>
+        <li>Passe uma prop do primeiro até o último.</li>
+        <li>Reflita sobre como o Context API simplificaria o processo.</li>
       </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">function Neto({ mensagem }) {
+  return &lt;p&gt;Mensagem recebida: {mensagem}&lt;/p&gt;;
+}
+function Filho({ mensagem }) {
+  return &lt;Neto mensagem={mensagem} /&gt;;
+}
+function Pai({ mensagem }) {
+  return &lt;Filho mensagem={mensagem} /&gt;;
+}
+export default function App() {
+  return &lt;Pai mensagem="Olá do Pai!" /&gt;;
+}</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Card com Slots</h4>
+      <p>
+        <strong>Objetivo:</strong> criar um <code>Card</code> com áreas de
+        cabeçalho, conteúdo e rodapé.
+      </p>
+      <ol>
+        <li>
+          Receba <code>cabecalho</code>, <code>rodape</code> e
+          <code>children</code> como props.
+        </li>
+        <li>Monte o layout do card usando essas áreas.</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">function Card({ cabecalho, rodape, children }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;header&gt;{cabecalho}&lt;/header&gt;
+      &lt;main&gt;{children}&lt;/main&gt;
+      &lt;footer&gt;{rodape}&lt;/footer&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default function App() {
+  return (
+    &lt;Card
+      cabecalho={&lt;h2&gt;Título do Card&lt;/h2&gt;}
+      rodape={&lt;small&gt;Rodapé&lt;/small&gt;}
+    &gt;
+      &lt;p&gt;Conteúdo central do card&lt;/p&gt;
+    &lt;/Card&gt;
+  );
+}</code></pre>
+      </details>
     </div>
   </section>
 </article>

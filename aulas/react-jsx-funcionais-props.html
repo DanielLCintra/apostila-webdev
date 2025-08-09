@@ -1,4 +1,3 @@
-<!-- ==================== Aula React 2 ==================== -->
 <article class="lesson-content">
   <h2>
     <i class="fab fa-react"></i> React – JSX Avançado, Componentes e Props
@@ -16,153 +15,289 @@
       <li>✅ Componentes funcionais com arrow functions</li>
       <li>✅ Desestruturação e valores padrão de props</li>
       <li>✅ Composição e uso de <code>children</code></li>
-      <li>✅ Renderização de listas</li>
+      <li>✅ Renderização de listas e <code>key</code></li>
       <li>✅ Hierarquia de componentes e boas práticas</li>
+      <li>
+        ✅ <strong>Testes rápidos (quiz)</strong> e
+        <strong>exercícios com solução</strong>
+      </li>
     </ul>
   </div>
 
+  <!-- 1. JSX AVANÇADO -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-code"></i> 1. Sintaxe Avançada do JSX
     </h3>
+
     <div class="card mb-4">
       <div class="card-body">
-        <p>
-          O JSX permite inserir expressões JavaScript dentro de chaves <code>{}</code> e agrupar elementos com <code>&lt;React.Fragment&gt;</code> ou <code>&lt;&gt;</code>.
-        </p>
+        <h4 class="mb-3">1.1 Regras fundamentais</h4>
+        <ul>
+          <li>
+            JSX precisa retornar <strong>um único elemento pai</strong>. Use
+            <code>&lt;&gt; ... &lt;/&gt;</code> (Fragment).
+          </li>
+          <li>Expressões JS vão entre chaves <code>{ }</code>.</li>
+          <li>Comentários em JSX: <code>{/* ... */}</code>.</li>
+          <li>
+            Atributos usam <strong>camelCase</strong>: <code>className</code>,
+            <code>onClick</code>, <code>tabIndex</code>.
+          </li>
+          <li>
+            <code>class</code> em HTML vira <code>className</code> em JSX.
+          </li>
+        </ul>
+
         <pre><code class="language-jsx">const nome = 'Ana';
 function Hello() {
   return (
     &lt;&gt;
       &lt;h1&gt;Olá, {nome}!&lt;/h1&gt;
-      {nome === 'Ana' && &lt;p&gt;Que bom ver você aqui!&lt;/p&gt;}
+      {/* Renderização condicional com &amp;&amp; */}
+      {nome === 'Ana' &amp;&amp; &lt;p&gt;Que bom ver você aqui!&lt;/p&gt;}
     &lt;/&gt;
   );
 }</code></pre>
+
+        <h4 class="mt-4 mb-3">1.2 Condicionais: &amp;&amp; vs. ternário</h4>
         <p>
-          Comentários em JSX ficam entre <code>{/* */}</code> e é comum usar o operador <code>&amp;&amp;</code> ou o ternário para renderização condicional.
+          <strong>Cuidado:</strong> valores como <code>0</code> são renderizados
+          na tela. Se sua expressão puder virar <code>0</code>, prefira o
+          ternário.
         </p>
+        <pre><code class="language-jsx">const pontos = 0;
+&lt;p&gt;
+  {/* Isto exibirá 0 na tela */}
+  {pontos &amp;&amp; 'Você tem pontos'}
+&lt;/p&gt;
+
+&lt;p&gt;
+  {/* Melhor: evita mostrar 0 */}
+  {pontos &gt; 0 ? 'Você tem pontos' : null}
+&lt;/p&gt;</code></pre>
+
+        <h4 class="mt-4 mb-3">1.3 Estilos inline e classes dinâmicas</h4>
+        <pre><code class="language-jsx">const ativo = true;
+const estilo = { padding: '8px', borderRadius: '6px' };
+
+&lt;button
+  style={estilo}
+  className={ativo ? 'btn btn-primary' : 'btn btn-outline'}
+&gt;
+  Botão
+&lt;/button&gt;</code></pre>
+
+        <h4 class="mt-4 mb-3">1.4 Atributos, strings e números</h4>
+        <pre><code class="language-jsx">const url = 'https://react.dev';
+const contagem = 3;
+
+&lt;a href={url} target="_blank" rel="noreferrer"&gt;Site&lt;/a&gt;
+&lt;p&gt;Você tem {contagem} novas mensagens.&lt;/p&gt;</code></pre>
+
+        <h4 class="mt-4 mb-3">1.5 Elementos autocontidos (self-closing)</h4>
+        <pre><code class="language-jsx">&lt;img src="/logo.png" alt="Logo" /&gt;
+&lt;input type="text" /&gt;</code></pre>
+
+        <div class="alert alert-info mt-4">
+          <strong>Segurança:</strong> JSX escapa valores por padrão (protege
+          contra XSS). Só use <code>dangerouslySetInnerHTML</code> quando souber
+          exatamente o que está fazendo.
+        </div>
       </div>
     </div>
   </section>
 
-
-
+  <!-- 2. COMPONENTES COM ARROW FUNCTIONS -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-puzzle-piece"></i> 2. Componentes Funcionais com Arrow Functions
+      <i class="fas fa-puzzle-piece"></i> 2. Componentes Funcionais com Arrow
+      Functions
     </h3>
+
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Podemos declarar componentes como funções tradicionais ou como <em>arrow functions</em>. Essa sintaxe costuma ser mais concisa e facilita a desestruturação de props.
+          Componentes devem ter nome em <strong>PascalCase</strong> e
+          <strong>retornar JSX</strong>.
         </p>
-        <pre><code class="language-jsx">const Botao = ({ texto }) =&gt; &lt;button&gt;{texto}&lt;/button&gt;;
+
+        <pre><code class="language-jsx">// Forma concisa (retorno implícito)
+const Botao = ({ texto }) =&gt; &lt;button&gt;{texto}&lt;/button&gt;;
+
+// Com bloco (retorno explícito)
+const BotaoGrande = ({ texto }) =&gt; {
+  return &lt;button className="btn btn-lg"&gt;{texto}&lt;/button&gt;;
+};
 
 export default function App() {
   return (
     &lt;div&gt;
       &lt;Botao texto="Salvar" /&gt;
       &lt;Botao texto="Cancelar" /&gt;
+      &lt;BotaoGrande texto="Continuar" /&gt;
     &lt;/div&gt;
   );
 }</code></pre>
-        <p>
-          Reutilizando o componente <code>Botao</code> com textos diferentes, mantemos o c&oacute;digo organizado e f&aacute;cil de manter.
-        </p>
+
+        <h4 class="mt-4 mb-2">
+          2.1 Desestruturação, valores padrão e rest props
+        </h4>
+        <pre><code class="language-jsx">const Alerta = ({ tipo = 'info', children, ...rest }) =&gt; {
+  const classe = `alert alert-${tipo}`;
+  return &lt;div className={classe} {...rest}&gt;{children}&lt;/div&gt;;
+};
+
+// Uso:
+&lt;Alerta tipo="warning" id="aviso"&gt;Cuidado!&lt;/Alerta&gt;
+&lt;Alerta&gt;Mensagem informativa&lt;/Alerta&gt;</code></pre>
+
+        <div class="alert alert-warning mt-3">
+          <strong>Erro comum:</strong> não esquecer de
+          <code>return</code> quando usar chaves <code>{'{'}{'}'}</code> no
+          corpo da arrow function.
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- 3. PROPS -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-paper-plane"></i> 3. Passando Dados com Props
     </h3>
+
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          As <strong>props</strong> são parâmetros recebidos pelos componentes. Podemos desestruturá-las na assinatura e definir valores padrão.
+          Props são <strong>somente leitura</strong>. Você envia dados do
+          componente pai para o filho.
         </p>
-        <pre><code class="language-jsx">function Saudacao({ nome = 'Visitante' }) {
-  return &lt;h2&gt;Olá, {nome}!&lt;/h2&gt;;
+
+        <pre><code class="language-jsx">function Saudacao({ nome = 'Visitante', dia = 'hoje' }) {
+  return &lt;h2&gt;Olá, {nome}! Como vai {dia}?&lt;/h2&gt;;
 }
 
 export default function App() {
+  const nomes = ['Maria', 'João', 'Aline'];
   return (
     &lt;&gt;
-      &lt;Saudacao nome="Maria" /&gt;
-      &lt;Saudacao /&gt;
+      &lt;Saudacao nome="Maria" dia="essa manhã" /&gt;
+      &lt;Saudacao /&gt; {/* Visitante, hoje */}
+      {nomes.map(n =&gt; &lt;Saudacao key={n} nome={n} dia="agora" /&gt;)}
     &lt;/&gt;
   );
 }</code></pre>
-        <p>
-          Quando nenhuma prop é enviada, é utilizado o valor padrão <code>Visitante</code>.
-        </p>
+
+        <h4 class="mt-4 mb-2">3.1 Passando funções como props</h4>
+        <pre><code class="language-jsx">const BotaoAcao = ({ onAcao, children }) =&gt; (
+  &lt;button onClick={onAcao}&gt;{children}&lt;/button&gt;
+);
+
+export default function App() {
+  const dizerOi = () =&gt; alert('Oi!');
+  return &lt;BotaoAcao onAcao={dizerOi}&gt;Clique&lt;/BotaoAcao&gt;;
+}</code></pre>
       </div>
     </div>
   </section>
 
+  <!-- 4. CHILDREN / COMPOSIÇÃO -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-layer-group"></i> 4. Composição com <code>children</code>
     </h3>
+
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Componentes podem envolver outros elementos usando a prop especial <code>children</code>. Dessa forma criamos blocos reutilizáveis de layout.
+          <code>children</code> permite envolver conteúdo e criar layouts
+          reutilizáveis.
         </p>
+
         <pre><code class="language-jsx">function Card({ children }) {
   return &lt;div className="card"&gt;{children}&lt;/div&gt;;
+}
+
+function CardHeader({ children }) {
+  return &lt;div className="card-header"&gt;{children}&lt;/div&gt;;
+}
+
+function CardBody({ children }) {
+  return &lt;div className="card-body"&gt;{children}&lt;/div&gt;;
 }
 
 export default function App() {
   return (
     &lt;Card&gt;
-      &lt;h2&gt;Título&lt;/h2&gt;
-      &lt;p&gt;Conteúdo enviado como children.&lt;/p&gt;
+      &lt;CardHeader&gt;&lt;h2&gt;Título&lt;/h2&gt;&lt;/CardHeader&gt;
+      &lt;CardBody&gt;&lt;p&gt;Conteúdo enviado como children.&lt;/p&gt;&lt;/CardBody&gt;
     &lt;/Card&gt;
   );
 }</code></pre>
-        <p>
-          Utilizando <code>children</code> é possível compor telas complexas de forma
-          simples e modular.
-        </p>
       </div>
     </div>
   </section>
 
+  <!-- 5. LISTAS E KEYS -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-list"></i> 5. Renderizando Listas
+      <i class="fas fa-list"></i> 5. Renderizando Listas (e a importância de
+      <code>key</code>)
     </h3>
+
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Para criar vários elementos a partir de um array, utilize o método <code>map()</code>.
+          Para criar vários elementos a partir de um array, utilize
+          <code>map()</code> e forneça uma <strong>key única e estável</strong>.
         </p>
+
         <pre><code class="language-jsx">const itens = ['React', 'Vue', 'Angular'];
+
 export default function App() {
   return (
     &lt;ul&gt;
-      {itens.map(framework => (
+      {itens.map(framework =&gt; (
         &lt;li key={framework}&gt;{framework}&lt;/li&gt;
       ))}
     &lt;/ul&gt;
   );
 }</code></pre>
+
+        <h4 class="mt-3">5.1 Objetos com IDs</h4>
+        <pre><code class="language-jsx">const cursos = [
+  { id: 101, nome: 'Lógica de Programação' },
+  { id: 102, nome: 'Front-end' },
+  { id: 103, nome: 'Back-end' },
+];
+
+export default function App() {
+  return (
+    &lt;ol&gt;
+      {cursos.map(c =&gt; &lt;li key={c.id}&gt;{c.nome}&lt;/li&gt;)}
+    &lt;/ol&gt;
+  );
+}</code></pre>
+
+        <div class="alert alert-warning mt-3">
+          <strong>Atenção:</strong> usar o índice do array como
+          <code>key</code> pode causar bugs em reordenações/remoções. Prefira um
+          identificador estável (ex.: <code>id</code> do item).
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- 6. HIERARQUIA E BOAS PRÁTICAS -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-sitemap"></i> 6. Hierarquia de Componentes
+      <i class="fas fa-sitemap"></i> 6. Hierarquia de Componentes e Boas
+      Práticas
     </h3>
+
     <div class="card mb-4">
       <div class="card-body">
-        <p>
-          Em React, os componentes se organizam em uma <strong>árvore</strong>. Componentes "pais" podem renderizar componentes "filhos" e transmitir dados através das <strong>props</strong>.
-        </p>
         <pre><code class="language-jsx">function Header() {
   return &lt;h1&gt;Meu App&lt;/h1&gt;;
 }
@@ -179,33 +314,127 @@ export default function App() {
     &lt;/Layout&gt;
   );
 }</code></pre>
-        <p>
-          Manter uma hierarquia clara facilita a manutenção e ajuda a evitar o <em>props drilling</em>, quando muitas props precisam atravessar vários níveis da árvore.
-        </p>
+
+        <h4 class="mt-4 mb-2">Boas práticas:</h4>
+        <ul>
+          <li>Quebre componentes grandes em menores e reutilizáveis.</li>
+          <li>
+            Evite <em>props drilling</em> (passar props por muitos níveis). Em
+            breve veremos Context API.
+          </li>
+          <li>
+            Nomeie props de eventos com <code>onAlgo</code> e handlers com
+            <code>handleAlgo</code>.
+          </li>
+          <li>
+            Prefira dados imutáveis (não mutar arrays/objetos diretamente).
+          </li>
+        </ul>
       </div>
     </div>
   </section>
 
+  <!-- 7. TESTES RÁPIDOS (QUIZ) -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 7. Exercícios
+      <i class="fas fa-check-circle"></i> 7. Testes Rápidos (Quiz)
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <ol>
+          <li class="mb-3">
+            Em JSX, qual atributo substitui <code>class</code> do HTML?
+            <div>
+              a) <code>classname</code> &nbsp; b) <code>className</code> &nbsp;
+              c) <code>class_html</code> &nbsp; d) <code>class()</code>
+            </div>
+          </li>
+          <li class="mb-3">
+            Onde colocamos expressões JavaScript no JSX?
+            <div>
+              a) Entre parênteses &nbsp; b) Entre colchetes &nbsp; c) Entre
+              chaves &nbsp; d) Entre aspas
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual a melhor <code>key</code> para uma lista de objetos?
+            <div>
+              a) Índice do array &nbsp; b) <code>Math.random()</code> &nbsp; c)
+              Um <code>id</code> estável &nbsp; d) O texto exibido
+            </div>
+          </li>
+          <li class="mb-3">
+            O que <strong>não</strong> é recomendado fazer com props?
+            <div>
+              a) Desestruturar &nbsp; b) Definir valor padrão &nbsp; c)
+              Modificar dentro do filho &nbsp; d) Passar função como prop
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual opção <strong>evita</strong> renderizar o número
+            <code>0</code> quando não há pontos?
+            <pre><code class="language-jsx">const pontos = 0;
+{/* escolha a melhor linha para dentro do JSX */}
+A) {pontos &amp;&amp; 'Você tem pontos'}
+B) {pontos &gt; 0 ? 'Você tem pontos' : null}</code></pre>
+          </li>
+        </ol>
+
+        <details class="solucao">
+          <summary>Mostrar gabarito</summary>
+          <ol>
+            <li>b) <code>className</code></li>
+            <li>c) Entre chaves <code>{'{'}{'}'}</code></li>
+            <li>c) Um <code>id</code> estável</li>
+            <li>c) Modificar dentro do filho</li>
+            <li>
+              B) <code>{'{'}pontos &gt; 0 ? 'Você tem pontos' : null{'}'}</code>
+            </li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. EXERCÍCIOS PRÁTICOS COM SOLUÇÃO -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios Práticos
     </h3>
 
     <!-- Exercício 1 -->
     <div class="desafio">
       <h4>Exercício 1: Card Componente</h4>
       <p>
-        <strong>Objetivo:</strong> criar um componente reutilizável que utilize a
-        prop <code>children</code>.
+        <strong>Objetivo:</strong> criar um componente reutilizável que utilize
+        a prop <code>children</code>.
       </p>
       <ol>
-        <li>Implemente o componente <code>Card</code> como mostrado na aula.</li>
         <li>
-          Use-o no <code>App</code> para envolver um título e um parágrafo de
-          sua escolha.
+          Implemente o componente <code>Card</code> com uma borda e padding.
+        </li>
+        <li>
+          Use-o no <code>App</code> para envolver um título e um parágrafo.
         </li>
         <li>Confira o resultado no navegador.</li>
       </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">function Card({ children }) {
+  const estilo = { border: '1px solid #ddd', padding: '12px', borderRadius: '8px' };
+  return &lt;div style={estilo}&gt;{children}&lt;/div&gt;;
+}
+
+export default function App() {
+  return (
+    &lt;Card&gt;
+      &lt;h3&gt;Título do Card&lt;/h3&gt;
+      &lt;p&gt;Este é um conteúdo qualquer.&lt;/p&gt;
+    &lt;/Card&gt;
+  );
+}</code></pre>
+      </details>
     </div>
 
     <!-- Exercício 2 -->
@@ -217,9 +446,21 @@ export default function App() {
       </p>
       <ol>
         <li>Crie um array com três ou mais strings.</li>
-        <li>Utilize <code>map()</code> para gerar os elementos <code>li</code>.</li>
-        <li>Não esqueça de definir uma <code>key</code> única para cada item.</li>
+        <li>Use <code>map()</code> para gerar os elementos <code>li</code>.</li>
+        <li>Defina uma <code>key</code> única para cada item.</li>
       </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">const linguagens = ['JavaScript', 'Python', 'Go', 'Rust'];
+
+export default function App() {
+  return (
+    &lt;ul&gt;
+      {linguagens.map(lang =&gt; &lt;li key={lang}&gt;{lang}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+      </details>
     </div>
 
     <!-- Exercício 3 -->
@@ -230,11 +471,185 @@ export default function App() {
         saudações personalizadas.
       </p>
       <ol>
-        <li>Reaproveite o componente <code>Saudacao</code> apresentado.</li>
+        <li>Reaproveite o componente <code>Saudacao</code>.</li>
         <li>Renderize-o enviando nomes diferentes como prop.</li>
         <li>Verifique que cada instância exibe a mensagem correta.</li>
       </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">function Saudacao({ nome = 'Visitante' }) {
+  return &lt;h2&gt;Olá, {nome}!&lt;/h2&gt;;
+}
+
+export default function App() {
+  const nomes = ['Ana', 'Bruno', 'Carla'];
+  return (
+    &lt;&gt;
+      {nomes.map(n =&gt; &lt;Saudacao key={n} nome={n} /&gt;)}
+      &lt;Saudacao /&gt; {/* Visitante */}
+    &lt;/&gt;
+  );
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 4 -->
+    <div class="desafio">
+      <h4>Exercício 4: Botão de Ação</h4>
+      <p>
+        <strong>Objetivo:</strong> passar uma função como prop e reagir a um
+        clique.
+      </p>
+      <ol>
+        <li>
+          Crie um componente <code>BotaoAcao</code> que recebe
+          <code>onAcao</code> e <code>children</code>.
+        </li>
+        <li>
+          No <code>App</code>, defina uma função que exibe um
+          <code>alert</code>.
+        </li>
+        <li>Passe essa função para o botão e teste.</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">const BotaoAcao = ({ onAcao, children }) =&gt; (
+  &lt;button onClick={onAcao}&gt;{children}&lt;/button&gt;
+);
+
+export default function App() {
+  const handleClick = () =&gt; alert('Ação executada!');
+  return &lt;BotaoAcao onAcao={handleClick}&gt;Clique Aqui&lt;/BotaoAcao&gt;;
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 5 -->
+    <div class="desafio">
+      <h4>Exercício 5: Lista de Objetos com ID</h4>
+      <p>
+        <strong>Objetivo:</strong> renderizar uma lista de objetos usando
+        <code>key</code> estável.
+      </p>
+      <ol>
+        <li>
+          Crie um array de objetos com <code>id</code> e <code>nome</code>.
+        </li>
+        <li>
+          Mostre a lista em um <code>&lt;ol&gt;</code> usando
+          <code>key={obj.id}</code>.
+        </li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">const alunos = [
+  { id: 1, nome: 'Paula' },
+  { id: 2, nome: 'Rafael' },
+  { id: 3, nome: 'Nina' },
+];
+
+export default function App() {
+  return (
+    &lt;ol&gt;
+      {alunos.map(a =&gt; &lt;li key={a.id}&gt;{a.nome}&lt;/li&gt;)}
+    &lt;/ol&gt;
+  );
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 6 -->
+    <div class="desafio">
+      <h4>Exercício 6: Card com variação de estilo por prop</h4>
+      <p><strong>Objetivo:</strong> alterar classe/estilo conforme uma prop.</p>
+      <ol>
+        <li>
+          Crie um componente <code>Badge</code> que recebe
+          <code>tipo</code> (<code>success</code> | <code>warning</code> |
+          <code>info</code>).
+        </li>
+        <li>Mude a classe do elemento com base em <code>tipo</code>.</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">const Badge = ({ tipo = 'info', children }) =&gt; {
+  const classe = `badge badge-${tipo}`;
+  return &lt;span className={classe}&gt;{children}&lt;/span&gt;;
+};
+
+export default function App() {
+  return (
+    &lt;p&gt;
+      &lt;Badge tipo="success"&gt;OK&lt;/Badge&gt;{' '}
+      &lt;Badge tipo="warning"&gt;Atenção&lt;/Badge&gt;{' '}
+      &lt;Badge&gt;Info&lt;/Badge&gt;
+    &lt;/p&gt;
+  );
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 7 -->
+    <div class="desafio">
+      <h4>Exercício 7 (Desafio): Composição com Header e Body</h4>
+      <p>
+        <strong>Objetivo:</strong> praticar <code>children</code> criando
+        <code>Card</code>, <code>CardHeader</code> e <code>CardBody</code>.
+      </p>
+      <ol>
+        <li>Implemente os três componentes.</li>
+        <li>Use-os juntos para montar um card com título e conteúdo.</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">function Card({ children }) {
+  return &lt;div className="card"&gt;{children}&lt;/div&gt;;
+}
+function CardHeader({ children }) {
+  return &lt;div className="card-header"&gt;{children}&lt;/div&gt;;
+}
+function CardBody({ children }) {
+  return &lt;div className="card-body"&gt;{children}&lt;/div&gt;;
+}
+
+export default function App() {
+  return (
+    &lt;Card&gt;
+      &lt;CardHeader&gt;&lt;h3&gt;Título&lt;/h3&gt;&lt;/CardHeader&gt;
+      &lt;CardBody&gt;&lt;p&gt;Texto do corpo do card.&lt;/p&gt;&lt;/CardBody&gt;
+    &lt;/Card&gt;
+  );
+}</code></pre>
+      </details>
     </div>
   </section>
 
+  <!-- 9. REFERÊNCIAS RÁPIDAS -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-book"></i> 9. Referências Rápidas (Resumo)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li>
+            JSX: um pai, expressões em <code>{'{'}{'}'}</code>,
+            <code>className</code>, eventos em camelCase.
+          </li>
+          <li>
+            Props: somente leitura, desestruturação e valores padrão na
+            assinatura.
+          </li>
+          <li><code>children</code>: composição e layouts reutilizáveis.</li>
+          <li>
+            Listas: use <code>map()</code> e <code>key</code> estável (evite
+            índice).
+          </li>
+          <li>
+            Condicionais: prefira ternário para evitar mostrar <code>0</code>.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </article>
