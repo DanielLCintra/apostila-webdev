@@ -58,10 +58,47 @@
     </div>
   </section>
 
-  <!-- 2. Regras dos Hooks -->
+  <!-- 2. O que são Hooks -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-ruler"></i> 2. Regras dos Hooks
+      <i class="fas fa-link"></i> 2. O que são Hooks?
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          <strong>Hooks</strong> são funções especiais do React que permitem
+          “ligar” recursos da biblioteca em componentes funcionais. Antes deles,
+          recursos como estado e ciclo de vida só estavam disponíveis em
+          <em>class components</em>.
+        </p>
+        <ul>
+          <li>
+            Foram introduzidos no React 16.8 para simplificar e unificar a forma
+            de escrever componentes.
+          </li>
+          <li>
+            Permitem usar <strong>estado</strong>,
+            <strong>efeitos colaterais</strong>
+            e outras funcionalidades sem precisar de classes.
+          </li>
+          <li>
+            Sempre começam com a palavra <code>use</code> (ex:
+            <code>useState</code>, <code>useEffect</code>,
+            <code>useContext</code>).
+          </li>
+        </ul>
+        <div class="alert alert-info mt-3">
+          <strong>Dica mental:</strong> Hooks são como “atalhos” para acessar
+          recursos avançados do React em componentes funcionais.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Regras dos Hooks -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-ruler"></i> 3. Regras dos Hooks
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -98,10 +135,10 @@ export default function Erro() {
     </div>
   </section>
 
-  <!-- 3. useState (básico e avançado) -->
+  <!-- 4. useState (básico e avançado) -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-toggle-on"></i> 3. Gerenciando dados com
+      <i class="fas fa-toggle-on"></i> 4. Gerenciando dados com
       <code>useState</code>
     </h3>
 
@@ -130,7 +167,7 @@ export default function Contador() {
 }</code></pre>
 
         <h4 class="mt-4 mb-2">
-          3.1 Atualização funcional (evita “estado antigo”)
+          4.1 Atualização funcional (evita “estado antigo”)
         </h4>
         <p>
           Quando a nova atualização depende do <strong>estado anterior</strong>,
@@ -139,7 +176,7 @@ export default function Contador() {
         <pre><code class="language-jsx">setValor(prev =&gt; prev + 1); // seguro mesmo com várias atualizações seguidas</code></pre>
 
         <h4 class="mt-3 mb-2">
-          3.2 Objetos e arrays no estado (imutabilidade)
+          4.2 Objetos e arrays no estado (imutabilidade)
         </h4>
         <p>Não modifique direto. Crie uma nova cópia ao atualizar.</p>
         <pre><code class="language-jsx">const [aluno, setAluno] = useState({ nome: 'Ana', pontos: 0 });
@@ -169,10 +206,10 @@ setLista(prev =&gt; [...prev, 'C']); // adiciona sem mutar
     </div>
   </section>
 
-  <!-- 4. useEffect -->
+  <!-- 5. useEffect -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-sync"></i> 4. Efeitos com <code>useEffect</code>
+      <i class="fas fa-sync"></i> 5. Efeitos com <code>useEffect</code>
     </h3>
 
     <div class="card mb-4">
@@ -183,7 +220,7 @@ setLista(prev =&gt; [...prev, 'C']); // adiciona sem mutar
           etc. A assinatura é <code>useEffect(callback, deps?)</code>.
         </p>
 
-        <h4 class="mt-2 mb-2">4.1 Padrões de dependência</h4>
+        <h4 class="mt-2 mb-2">5.1 Padrões de dependência</h4>
         <ul>
           <li>
             <strong>Sem array</strong>: roda em toda renderização (cuidado!).
@@ -212,7 +249,7 @@ export default function Relogio() {
 }</code></pre>
 
         <h4 class="mt-3 mb-2">
-          4.2 Exemplo: escutar eventos do teclado (com limpeza)
+          5.2 Exemplo: escutar eventos do teclado (com limpeza)
         </h4>
         <pre><code class="language-jsx">function Teclado() {
   const [ultimaTecla, setUltimaTecla] = useState('');
@@ -227,7 +264,7 @@ export default function Relogio() {
 }</code></pre>
 
         <h4 class="mt-3 mb-2">
-          4.3 Exemplo: busca em API (com carregando/erro)
+          5.3 Exemplo: busca em API (com carregando/erro)
         </h4>
         <pre><code class="language-jsx">function Usuarios() {
   const [dados, setDados] = useState([]);
@@ -262,10 +299,10 @@ export default function Relogio() {
     </div>
   </section>
 
-  <!-- 5. Resumo -->
+  <!-- 6. Resumo -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-check-circle"></i> 5. Resumo
+      <i class="fas fa-check-circle"></i> 6. Resumo
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -292,10 +329,10 @@ export default function Relogio() {
     </div>
   </section>
 
-  <!-- 6. Testes rápidos (quiz) -->
+  <!-- 7. Testes rápidos (quiz) -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-clipboard-check"></i> 6. Testes Rápidos (Quiz)
+      <i class="fas fa-clipboard-check"></i> 7. Testes Rápidos (Quiz)
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -342,7 +379,7 @@ export default function Relogio() {
           </li>
         </ol>
 
-        <details class="solucao">
+        <details class="solucao" style="display: none">
           <summary>Mostrar gabarito</summary>
           <ol>
             <li>b) Em componentes de função e custom hooks</li>
@@ -356,10 +393,10 @@ export default function Relogio() {
     </div>
   </section>
 
-  <!-- 7. Exercícios (com solução escondida) -->
+  <!-- 8. Exercícios (com solução escondida) -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 7. Exercícios
+      <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios
     </h3>
 
     <!-- Exercício 1 -->
