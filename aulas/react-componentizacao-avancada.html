@@ -1,338 +1,916 @@
-<!-- ==================== Aula React 4 (versão expandida) ==================== -->
+<!-- ==================== Aula React 4 - Componentização Avançada ==================== -->
 <article class="lesson-content">
   <h2>
-    <i class="fab fa-react"></i> React – Componentização Avançada e Composição
+    <i class="fab fa-react"></i> React – Componentização Avançada na Prática
   </h2>
 
   <div class="intro-box mb-5">
     <p>
-      Vamos aprofundar as técnicas de componentização, explorando diferentes
-      formas de compor interfaces e evitar problemas comuns como o
-      <em>props drilling</em>. O objetivo é deixar o código mais reutilizável,
-      organizado e fácil de manter.
+      Vamos aprender componentização avançada através de um exemplo prático:
+      criaremos uma página de dashboard completa e depois a quebraremos em
+      componentes menores e reutilizáveis. Usaremos Tailwind CSS para
+      estilização e mostraremos como cada pedaço da interface pode se tornar um
+      componente.
     </p>
     <ul>
-      <li>✅ Técnicas de composição e reutilização</li>
-      <li>✅ Uso avançado do <code>children</code> e <em>slots</em></li>
-      <li>✅ Introdução ao problema do <em>props drilling</em> e soluções</li>
-      <li>✅ Boas práticas de organização e manutenção</li>
-      <li>✅ Quiz e exercícios práticos com solução</li>
+      <li>✅ Criando uma página completa com Tailwind CSS</li>
+      <li>✅ Identificando oportunidades de componentização</li>
+      <li>✅ Refatorando em componentes menores e reutilizáveis</li>
+      <li>✅ Uso avançado de props e children</li>
+      <li>✅ Boas práticas de organização de código</li>
     </ul>
   </div>
 
-  <!-- 1. Técnicas de Composição -->
+  <!-- 1. Página Completa (Antes da Componentização) -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-layer-group"></i> 1. Técnicas de Composição
+      <i class="fas fa-desktop"></i> 1. Página Completa - Dashboard
     </h3>
+
+    <img src="assets/images/dashboard.png" alt="Dashboard" />
+
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Em vez de criar um componente gigante, podemos quebrá-lo em peças
-          menores e combiná-las. Isso facilita testes, reuso e clareza do
-          código.
+          Vamos começar criando uma página de dashboard completa com tudo em um
+          único componente. Esta é a abordagem "monolítica" que depois
+          refatoraremos.
         </p>
-        <pre><code class="language-jsx">function Botao({ texto }) {
-  return &lt;button&gt;{texto}&lt;/button&gt;;
-}
 
-function Toolbar() {
+        <h4 class="mt-4 mb-2">1.1 Dashboard Monolítico</h4>
+        <pre><code class="language-jsx">import React, { useState } from 'react';
+
+function Dashboard() {
+  const [user] = useState({
+    name: 'João Silva',
+    email: 'joao@email.com',
+    avatar: 'https://via.placeholder.com/40'
+  });
+
+  const [stats] = useState([
+    { label: 'Vendas', value: 'R$ 12.500', change: '+15%', color: 'green' },
+    { label: 'Usuários', value: '1.234', change: '+8%', color: 'blue' },
+    { label: 'Pedidos', value: '89', change: '+23%', color: 'purple' },
+    { label: 'Receita', value: 'R$ 45.200', change: '+12%', color: 'orange' }
+  ]);
+
+  const [recentOrders] = useState([
+    { id: 1, customer: 'Maria Santos', amount: 'R$ 150', status: 'Entregue' },
+    { id: 2, customer: 'Pedro Costa', amount: 'R$ 89', status: 'Em trânsito' },
+    { id: 3, customer: 'Ana Lima', amount: 'R$ 320', status: 'Processando' }
+  ]);
+
   return (
-    &lt;div className="toolbar"&gt;
-      &lt;Botao texto="Salvar" /&gt;
-      &lt;Botao texto="Cancelar" /&gt;
+    &lt;div className="min-h-screen bg-gray-50"&gt;
+      {/* Header */}
+      &lt;header className="bg-white shadow-sm border-b"&gt;
+        &lt;div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"&gt;
+          &lt;div className="flex justify-between items-center py-4"&gt;
+            &lt;div className="flex items-center"&gt;
+              &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Dashboard&lt;/h1&gt;
+            &lt;/div&gt;
+            &lt;div className="flex items-center space-x-4"&gt;
+              &lt;span className="text-gray-700"&gt;{user.name}&lt;/span&gt;
+              &lt;img 
+                className="w-10 h-10 rounded-full" 
+                src={user.avatar} 
+                alt={user.name} 
+              /&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      {/* Main Content */}
+      &lt;main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"&gt;
+        {/* Stats Grid */}
+        &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"&gt;
+          {stats.map((stat, index) =&gt; (
+            &lt;div key={index} className="bg-white rounded-lg shadow p-6"&gt;
+              &lt;div className="flex items-center"&gt;
+                &lt;div className="flex-1"&gt;
+                  &lt;p className="text-sm font-medium text-gray-600"&gt;{stat.label}&lt;/p&gt;
+                  &lt;p className="text-2xl font-bold text-gray-900"&gt;{stat.value}&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div className={`text-sm font-medium text-${stat.color}-600`}&gt;
+                  {stat.change}
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          ))}
+        &lt;/div&gt;
+
+        {/* Recent Orders */}
+        &lt;div className="bg-white rounded-lg shadow"&gt;
+          &lt;div className="px-6 py-4 border-b border-gray-200"&gt;
+            &lt;h2 className="text-lg font-medium text-gray-900"&gt;Pedidos Recentes&lt;/h2&gt;
+          &lt;/div&gt;
+          &lt;div className="overflow-hidden"&gt;
+            &lt;table className="min-w-full divide-y divide-gray-200"&gt;
+              &lt;thead className="bg-gray-50"&gt;
+                &lt;tr&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                    ID
+                  &lt;/th&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                    Cliente
+                  &lt;/th&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                    Valor
+                  &lt;/th&gt;
+                  &lt;th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                    Status
+                  &lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody className="bg-white divide-y divide-gray-200"&gt;
+                {recentOrders.map((order) =&gt; (
+                  &lt;tr key={order.id}&gt;
+                    &lt;td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"&gt;
+                      #{order.id}
+                    &lt;/td&gt;
+                    &lt;td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"&gt;
+                      {order.customer}
+                    &lt;/td&gt;
+                    &lt;td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"&gt;
+                      {order.amount}
+                    &lt;/td&gt;
+                    &lt;td className="px-6 py-4 whitespace-nowrap"&gt;
+                      &lt;span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        order.status === 'Entregue' ? 'bg-green-100 text-green-800' :
+                        order.status === 'Em trânsito' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-blue-100 text-blue-800'
+                      }`}&gt;
+                        {order.status}
+                      &lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                ))}
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
     &lt;/div&gt;
   );
-}</code></pre>
-
-        <h4 class="mt-4 mb-2">1.1 Composição com múltiplos componentes</h4>
-        <pre><code class="language-jsx">function Card({ titulo, conteudo, acoes }) {
-  return (
-    &lt;div className="card"&gt;
-      &lt;h3&gt;{titulo}&lt;/h3&gt;
-      &lt;p&gt;{conteudo}&lt;/p&gt;
-      &lt;div className="acoes"&gt;{acoes}&lt;/div&gt;
-    &lt;/div&gt;
-  );
 }
 
-export default function App() {
-  return (
-    &lt;Card
-      titulo="Bem-vindo"
-      conteudo="Este é um card reutilizável."
-      acoes={&lt;button&gt;OK&lt;/button&gt;}
-    /&gt;
-  );
-}</code></pre>
-        <div class="alert alert-info mt-3">
-          <strong>Dica:</strong> Podemos passar JSX como props (ex.:
-          <code>acoes</code>) para criar layouts flexíveis.
+export default Dashboard;</code></pre>
+
+        <div class="alert alert-warning mt-3">
+          <strong>Problema:</strong> Este código funciona, mas é difícil de
+          manter, testar e reutilizar. Cada parte da interface está misturada em
+          um único componente.
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 2. Uso do children -->
+  <!-- 2. Identificando Componentes -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-box-open"></i> 2. Uso do <code>children</code>
+      <i class="fas fa-search"></i> 2. Identificando Oportunidades de
+      Componentização
+    </h3>
+
+    <img
+      src="assets/images/dashboard_components_highlighted.png"
+      alt="Oportunidade de componentização"
+    />
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Analisando nossa página, podemos identificar vários componentes
+          reutilizáveis:
+        </p>
+
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <h5>Componentes Identificados:</h5>
+            <ul>
+              <li>
+                <strong>Header</strong> - Cabeçalho com logo e perfil do usuário
+              </li>
+              <li>
+                <strong>StatCard</strong> - Card de estatística individual
+              </li>
+              <li><strong>StatsGrid</strong> - Grid de estatísticas</li>
+              <li><strong>DataTable</strong> - Tabela de dados reutilizável</li>
+              <li><strong>StatusBadge</strong> - Badge de status</li>
+              <li><strong>UserProfile</strong> - Perfil do usuário</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h5>Benefícios da Componentização:</h5>
+            <ul>
+              <li>✅ Código mais organizado e legível</li>
+              <li>✅ Componentes reutilizáveis</li>
+              <li>✅ Facilita testes unitários</li>
+              <li>✅ Manutenção simplificada</li>
+              <li>✅ Trabalho em equipe mais eficiente</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Refatorando em Componentes -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-puzzle-piece"></i> 3. Refatorando em Componentes Menores
+    </h3>
+
+    <!-- 3.1 Componentes Básicos -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">3.1 Componentes Básicos</h4>
+
+        <h5>StatusBadge Component</h5>
+        <pre><code class="language-jsx">function StatusBadge({ status }) {
+  const getStatusStyles = (status) =&gt; {
+    switch (status) {
+      case 'Entregue':
+        return 'bg-green-100 text-green-800';
+      case 'Em trânsito':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Processando':
+        return 'bg-blue-100 text-blue-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    &lt;span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusStyles(status)}`}&gt;
+      {status}
+    &lt;/span&gt;
+  );
+}</code></pre>
+
+        <h5>UserProfile Component</h5>
+        <pre><code class="language-jsx">function UserProfile({ user }) {
+  return (
+    &lt;div className="flex items-center space-x-4"&gt;
+      &lt;span className="text-gray-700"&gt;{user.name}&lt;/span&gt;
+      &lt;img 
+        className="w-10 h-10 rounded-full" 
+        src={user.avatar} 
+        alt={user.name} 
+      /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+        <h5>StatCard Component</h5>
+        <pre><code class="language-jsx">function StatCard({ label, value, change, color = 'blue' }) {
+  return (
+    &lt;div className="bg-white rounded-lg shadow p-6"&gt;
+      &lt;div className="flex items-center"&gt;
+        &lt;div className="flex-1"&gt;
+          &lt;p className="text-sm font-medium text-gray-600"&gt;{label}&lt;/p&gt;
+          &lt;p className="text-2xl font-bold text-gray-900"&gt;{value}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div className={`text-sm font-medium text-${color}-600`}&gt;
+          {change}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- 3.2 Componentes Compostos -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">3.2 Componentes Compostos</h4>
+
+        <h5>Header Component</h5>
+        <pre><code class="language-jsx">function Header({ title, children }) {
+  return (
+    &lt;header className="bg-white shadow-sm border-b"&gt;
+      &lt;div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"&gt;
+        &lt;div className="flex justify-between items-center py-4"&gt;
+          &lt;div className="flex items-center"&gt;
+            &lt;h1 className="text-2xl font-bold text-gray-900"&gt;{title}&lt;/h1&gt;
+          &lt;/div&gt;
+          {children}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  );
+}</code></pre>
+
+        <h5>StatsGrid Component</h5>
+        <pre><code class="language-jsx">function StatsGrid({ stats }) {
+  return (
+    &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"&gt;
+      {stats.map((stat, index) =&gt; (
+        &lt;StatCard
+          key={index}
+          label={stat.label}
+          value={stat.value}
+          change={stat.change}
+          color={stat.color}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+        <h5>DataTable Component</h5>
+        <pre><code class="language-jsx">function DataTable({ title, columns, data }) {
+  return (
+    &lt;div className="bg-white rounded-lg shadow"&gt;
+      &lt;div className="px-6 py-4 border-b border-gray-200"&gt;
+        &lt;h2 className="text-lg font-medium text-gray-900"&gt;{title}&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;div className="overflow-hidden"&gt;
+        &lt;table className="min-w-full divide-y divide-gray-200"&gt;
+          &lt;thead className="bg-gray-50"&gt;
+            &lt;tr&gt;
+              {columns.map((column, index) =&gt; (
+                &lt;th key={index} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+                  {column}
+                &lt;/th&gt;
+              ))}
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody className="bg-white divide-y divide-gray-200"&gt;
+            {data.map((row, index) =&gt; (
+              &lt;tr key={index}&gt;
+                {Object.values(row).map((cell, cellIndex) =&gt; (
+                  &lt;td key={cellIndex} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"&gt;
+                    {cell}
+                  &lt;/td&gt;
+                ))}
+              &lt;/tr&gt;
+            ))}
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Dashboard Refatorado -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-magic"></i> 4. Dashboard Refatorado
     </h3>
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          <code>children</code> é uma prop especial que recebe tudo que estiver
-          entre as tags de abertura e fechamento do componente. Isso permite
-          criar "containers" reutilizáveis.
+          Agora vamos ver como nossa página principal fica muito mais limpa e
+          organizada:
         </p>
-        <pre><code class="language-jsx">function Painel({ children }) {
-  return &lt;section className="painel"&gt;{children}&lt;/section&gt;;
+
+        <pre><code class="language-jsx">import React, { useState } from 'react';
+import Header from './components/Header';
+import UserProfile from './components/UserProfile';
+import StatsGrid from './components/StatsGrid';
+import DataTable from './components/DataTable';
+import StatusBadge from './components/StatusBadge';
+
+function Dashboard() {
+  const [user] = useState({
+    name: 'João Silva',
+    email: 'joao@email.com',
+    avatar: 'https://via.placeholder.com/40'
+  });
+
+  const [stats] = useState([
+    { label: 'Vendas', value: 'R$ 12.500', change: '+15%', color: 'green' },
+    { label: 'Usuários', value: '1.234', change: '+8%', color: 'blue' },
+    { label: 'Pedidos', value: '89', change: '+23%', color: 'purple' },
+    { label: 'Receita', value: 'R$ 45.200', change: '+12%', color: 'orange' }
+  ]);
+
+  const [recentOrders] = useState([
+    { id: 1, customer: 'Maria Santos', amount: 'R$ 150', status: 'Entregue' },
+    { id: 2, customer: 'Pedro Costa', amount: 'R$ 89', status: 'Em trânsito' },
+    { id: 3, customer: 'Ana Lima', amount: 'R$ 320', status: 'Processando' }
+  ]);
+
+  // Preparar dados para a tabela
+  const tableData = recentOrders.map(order =&gt; ({
+    id: `#${order.id}`,
+    customer: order.customer,
+    amount: order.amount,
+    status: &lt;StatusBadge status={order.status} /&gt;
+  }));
+
+  return (
+    &lt;div className="min-h-screen bg-gray-50"&gt;
+      &lt;Header title="Dashboard"&gt;
+        &lt;UserProfile user={user} /&gt;
+      &lt;/Header&gt;
+
+      &lt;main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"&gt;
+        &lt;StatsGrid stats={stats} /&gt;
+        
+        &lt;DataTable
+          title="Pedidos Recentes"
+          columns={['ID', 'Cliente', 'Valor', 'Status']}
+          data={tableData}
+        /&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
 }
 
-export default function App() {
-  return (
-    &lt;Painel&gt;
-      &lt;h2&gt;Título&lt;/h2&gt;
-      &lt;p&gt;Conteúdo do painel&lt;/p&gt;
-    &lt;/Painel&gt;
-  );
-}</code></pre>
+export default Dashboard;</code></pre>
 
-        <h4 class="mt-4 mb-2">2.1 Children com múltiplas áreas (slots)</h4>
-        <pre><code class="language-jsx">function Painel({ cabecalho, rodape, children }) {
+        <div class="alert alert-success mt-3">
+          <strong>Resultado:</strong> O código agora está muito mais organizado,
+          cada componente tem uma responsabilidade específica e pode ser
+          reutilizado em outras partes da aplicação!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Estrutura de Pastas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-folder-tree"></i> 5. Organização de Pastas
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Uma boa organização de pastas facilita a manutenção e escalabilidade
+          do projeto:
+        </p>
+
+        <pre><code class="language-plaintext">app/
+├── (dashboard)/
+│   └── page.jsx                 # Página do Dashboard
+├── components/
+│   ├── common/
+│   │   ├── StatusBadge.jsx
+│   │   ├── DataTable.jsx
+│   │   └── UserProfile.jsx
+│   ├── dashboard/
+│   │   ├── Header.jsx
+│   │   ├── StatsGrid.jsx
+│   │   └── StatCard.jsx
+│   └── ui/
+│       ├── Button.jsx
+│       └── Card.jsx
+├── lib/
+│   └── status.js
+├── hooks/
+│   └── useDashboard.js
+├── styles/
+│   └── globals.css              # Tailwind importado aqui
+└── layout.jsx                   # Layout raiz do App Router</code></pre>
+
+        <h5 class="mt-4">
+          Benefícios desta Organização (Next.js App Router, sem src/, em JS):
+        </h5>
+        <ul>
+          <li>
+            <strong>app/</strong>: raiz do App Router; cada pasta vira rota
+          </li>
+          <li><strong>(dashboard)/page.jsx</strong>: página do dashboard</li>
+          <li><strong>components/common</strong>: componentes reutilizáveis</li>
+          <li><strong>components/dashboard</strong>: componentes da feature</li>
+          <li><strong>components/ui</strong>: componentes visuais genéricos</li>
+          <li><strong>hooks/</strong>: custom hooks compartilhados</li>
+          <li><strong>lib/</strong>: utilitários e funções puras (.js)</li>
+          <li>
+            <strong>styles/globals.css</strong>: importa Tailwind globalmente
+          </li>
+          <li><strong>layout.jsx</strong>: layout raiz (App Router)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Uso Avançado de Props -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-cogs"></i> 6. Uso Avançado de Props e Children
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">6.1 Componente com Render Props</h4>
+        <pre><code class="language-jsx">function ConditionalRender({ condition, children, fallback }) {
+  return condition ? children : fallback;
+}
+
+// Uso:
+&lt;ConditionalRender 
+  condition={user.isAdmin} 
+  fallback={&lt;p&gt;Acesso negado&lt;/p&gt;}
+&gt;
+  &lt;AdminPanel /&gt;
+&lt;/ConditionalRender&gt;</code></pre>
+
+        <h4 class="mt-4 mb-3">6.2 Componente com Múltiplos Slots</h4>
+        <pre><code class="language-jsx">function Card({ header, footer, children, className = '' }) {
   return (
-    &lt;section className="painel"&gt;
-      &lt;header&gt;{cabecalho}&lt;/header&gt;
-      &lt;div&gt;{children}&lt;/div&gt;
-      &lt;footer&gt;{rodape}&lt;/footer&gt;
-    &lt;/section&gt;
+    &lt;div className={`bg-white rounded-lg shadow ${className}`}&gt;
+      {header && (
+        &lt;div className="px-6 py-4 border-b border-gray-200"&gt;
+          {header}
+        &lt;/div&gt;
+      )}
+      &lt;div className="px-6 py-4"&gt;
+        {children}
+      &lt;/div&gt;
+      {footer && (
+        &lt;div className="px-6 py-4 border-t border-gray-200 bg-gray-50"&gt;
+          {footer}
+        &lt;/div&gt;
+      )}
+    &lt;/div&gt;
   );
 }
 
-export default function App() {
+// Uso:
+&lt;Card
+  header={&lt;h3&gt;Título do Card&lt;/h3&gt;}
+  footer={&lt;button&gt;Ação&lt;/button&gt;}
+&gt;
+  &lt;p&gt;Conteúdo do card&lt;/p&gt;
+&lt;/Card&gt;</code></pre>
+
+        <h4 class="mt-4 mb-3">6.3 Componente com Props Dinâmicas</h4>
+        <pre><code class="language-jsx">function Button({ 
+  variant = 'primary', 
+  size = 'md', 
+  children, 
+  ...props 
+}) {
+  const baseClasses = 'font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2';
+  
+  const variants = {
+    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
+    secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
+    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500'
+  };
+  
+  const sizes = {
+    sm: 'px-3 py-1.5 text-sm',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-6 py-3 text-base'
+  };
+
   return (
-    &lt;Painel
-      cabecalho={&lt;h2&gt;Título&lt;/h2&gt;}
-      rodape={&lt;small&gt;Rodapé&lt;/small&gt;}
+    &lt;button
+      className={`${baseClasses} ${variants[variant]} ${sizes[size]}`}
+      {...props}
     &gt;
-      &lt;p&gt;Conteúdo do painel&lt;/p&gt;
-    &lt;/Painel&gt;
+      {children}
+    &lt;/button&gt;
   );
 }</code></pre>
       </div>
     </div>
   </section>
 
-  <!-- 3. Props Drilling -->
+  <!-- 7. Boas Práticas -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-share"></i> 3. Props Drilling
+      <i class="fas fa-check-double"></i> 7. Boas Práticas de Componentização
     </h3>
     <div class="card mb-4">
       <div class="card-body">
-        <p>
-          O <em>props drilling</em> ocorre quando passamos props por vários
-          níveis de componentes apenas para que cheguem ao destino final.
-        </p>
-        <pre><code class="language-jsx">function Nivel3({ mensagem }) {
-  return &lt;p&gt;Mensagem: {mensagem}&lt;/p&gt;;
-}
-
-function Nivel2({ mensagem }) {
-  return &lt;Nivel3 mensagem={mensagem} /&gt;;
-}
-
-function Nivel1({ mensagem }) {
-  return &lt;Nivel2 mensagem={mensagem} /&gt;;
-}
-
-export default function App() {
-  return &lt;Nivel1 mensagem="Olá!" /&gt;;
-}</code></pre>
-        <p>
-          Isso funciona, mas é difícil de manter se muitos níveis precisarem da
-          prop. A solução é usar <strong>Context API</strong> ou um gerenciador
-          de estado.
-        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <h5>✅ O que Fazer:</h5>
+            <ul>
+              <li>Componentes pequenos e com responsabilidade única</li>
+              <li>Nomes descritivos para componentes e props</li>
+              <li>Usar TypeScript para tipagem (quando possível)</li>
+              <li>Documentar props complexas com PropTypes</li>
+              <li>Organizar imports de forma lógica</li>
+              <li>Usar composition over inheritance</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h5>❌ O que Evitar:</h5>
+            <ul>
+              <li>Componentes muito grandes (mais de 200 linhas)</li>
+              <li>Props drilling excessivo</li>
+              <li>Lógica de negócio dentro de componentes de UI</li>
+              <li>Nomes genéricos como "Component" ou "Wrapper"</li>
+              <li>Misturar responsabilidades no mesmo componente</li>
+              <li>Hardcoding de dados dentro de componentes</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 4. Boas Práticas -->
+  <!-- 8. Testes Rápidos (Quiz) -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-check-double"></i> 4. Boas Práticas
-    </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <ul>
-          <li>Componentes pequenos e com responsabilidade única.</li>
-          <li>
-            Organizar em pastas por <em>feature</em> ou tipo de componente.
-          </li>
-          <li>Usar composição ao invés de herança.</li>
-          <li>
-            Evitar <em>props drilling</em> excessivo (use Context quando
-            necessário).
-          </li>
-          <li>Nomear componentes e props de forma clara.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. Resumo -->
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-check-circle"></i> 5. Resumo
-    </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <ul>
-          <li>
-            Quebre interfaces grandes em componentes menores e reutilizáveis.
-          </li>
-          <li>
-            Use <code>children</code> e props JSX para compor layouts flexíveis.
-          </li>
-          <li>
-            Evite <em>props drilling</em> — prefira Context API ou estados
-            globais quando necessário.
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6. Testes rápidos -->
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-clipboard-check"></i> 6. Testes Rápidos (Quiz)
+      <i class="fas fa-clipboard-check"></i> 8. Testes Rápidos (Quiz)
     </h3>
     <div class="card mb-4">
       <div class="card-body">
         <ol>
-          <li>O que é <em>props drilling</em>?</li>
-          <li>Qual prop especial recebe elementos filhos no JSX?</li>
-          <li>Qual é mais recomendado: composição ou herança no React?</li>
-          <li>
+          <li class="mb-3">
+            Qual é a principal vantagem de quebrar uma interface grande em
+            componentes menores?
+            <div>
+              a) Reduzir o tamanho do arquivo &nbsp; b) Melhorar a performance
+              &nbsp; c) Facilitar manutenção, testes e reuso &nbsp; d) Tornar o
+              código mais complexo
+            </div>
+          </li>
+          <li class="mb-3">
+            O que é a prop especial <code>children</code> no React?
+            <div>
+              a) Uma prop que recebe dados do componente pai &nbsp; b) Uma prop
+              que recebe tudo entre as tags de abertura e fechamento &nbsp; c)
+              Uma prop para estilização &nbsp; d) Uma prop para eventos
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual padrão é mais recomendado no React: composição ou herança?
+            <div>
+              a) Herança &nbsp; b) Composição &nbsp; c) Ambos são iguais &nbsp;
+              d) Depende do caso
+            </div>
+          </li>
+          <li class="mb-3">
+            O que significa "props drilling"?
+            <div>
+              a) Passar props por muitos níveis de componentes &nbsp; b) Usar
+              muitas props em um componente &nbsp; c) Props com nomes muito
+              longos &nbsp; d) Props que não são utilizadas
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual é uma solução comum para evitar props drilling?
+            <div>
+              a) Usar mais props &nbsp; b) Context API ou gerenciador de estado
+              &nbsp; c) Criar componentes maiores &nbsp; d) Usar classes ao
+              invés de funções
+            </div>
+          </li>
+          <li class="mb-3">
             Verdadeiro ou falso: você pode passar JSX como valor de uma prop
             normal.
+            <div>a) Verdadeiro &nbsp; b) Falso</div>
           </li>
-          <li>Qual é uma solução comum para evitar <em>props drilling</em>?</li>
+          <li class="mb-3">
+            Qual é o tamanho recomendado máximo para um componente React?
+            <div>
+              a) 50 linhas &nbsp; b) 100 linhas &nbsp; c) 200 linhas &nbsp; d)
+              Não há limite
+            </div>
+          </li>
+          <li class="mb-3">
+            O que significa "responsabilidade única" em um componente?
+            <div>
+              a) Ter apenas uma prop &nbsp; b) Fazer apenas uma coisa específica
+              &nbsp; c) Ter apenas um estado &nbsp; d) Renderizar apenas um
+              elemento
+            </div>
+          </li>
         </ol>
-        <details class="solucao">
+
+        <details class="solucao" style="display: block">
           <summary>Mostrar gabarito</summary>
           <ol>
-            <li>Passar props por muitos níveis até chegar ao destino.</li>
-            <li><code>children</code></li>
-            <li>Composição</li>
-            <li>Verdadeiro</li>
-            <li>Context API ou gerenciador de estado</li>
+            <li>c) Facilitar manutenção, testes e reuso</li>
+            <li>
+              b) Uma prop que recebe tudo entre as tags de abertura e fechamento
+            </li>
+            <li>b) Composição</li>
+            <li>a) Passar props por muitos níveis de componentes</li>
+            <li>b) Context API ou gerenciador de estado</li>
+            <li>a) Verdadeiro</li>
+            <li>c) 200 linhas</li>
+            <li>b) Fazer apenas uma coisa específica</li>
           </ol>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- 7. Exercícios -->
+  <!-- 9. Exercícios Práticos -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 7. Exercícios
+      <i class="fas fa-chalkboard-teacher"></i> 9. Exercícios Práticos
     </h3>
 
     <div class="desafio">
-      <h4>Exercício 1: Painel Reutilizável</h4>
+      <h4>Exercício 1: Criar um Card Reutilizável</h4>
       <p>
-        <strong>Objetivo:</strong> criar um componente <code>Painel</code> que
-        utilize <code>children</code>.
+        <strong>Objetivo:</strong> Criar um componente Card que aceite header,
+        content e footer como props.
       </p>
       <ol>
-        <li>Implemente o <code>Painel</code> com uma borda e padding.</li>
-        <li>Utilize-o para envolver diferentes blocos de conteúdo.</li>
+        <li>Crie o componente Card com slots para header, content e footer</li>
+        <li>Use Tailwind CSS para estilização</li>
+        <li>Teste com diferentes tipos de conteúdo</li>
       </ol>
       <details class="solucao">
         <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">function Painel({ children }) {
-  const estilo = { border: '1px solid #ccc', padding: '12px', borderRadius: '8px' };
-  return &lt;section style={estilo}&gt;{children}&lt;/section&gt;;
-}
-
-export default function App() {
+        <pre><code class="language-jsx">function Card({ header, content, footer, className = '' }) {
   return (
-    &lt;&gt;
-      &lt;Painel&gt;&lt;h2&gt;Título 1&lt;/h2&gt;&lt;p&gt;Conteúdo 1&lt;/p&gt;&lt;/Painel&gt;
-      &lt;Painel&gt;&lt;h2&gt;Título 2&lt;/h2&gt;&lt;p&gt;Conteúdo 2&lt;/p&gt;&lt;/Painel&gt;
-    &lt;/&gt;
-  );
-}</code></pre>
-      </details>
-    </div>
-
-    <div class="desafio">
-      <h4>Exercício 2: Evitando Props Drilling</h4>
-      <p>
-        <strong>Objetivo:</strong> perceber o problema de passar props em
-        cadeia.
-      </p>
-      <ol>
-        <li>Crie três componentes aninhados.</li>
-        <li>Passe uma prop do primeiro até o último.</li>
-        <li>Reflita sobre como o Context API simplificaria o processo.</li>
-      </ol>
-      <details class="solucao">
-        <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">function Neto({ mensagem }) {
-  return &lt;p&gt;Mensagem recebida: {mensagem}&lt;/p&gt;;
-}
-function Filho({ mensagem }) {
-  return &lt;Neto mensagem={mensagem} /&gt;;
-}
-function Pai({ mensagem }) {
-  return &lt;Filho mensagem={mensagem} /&gt;;
-}
-export default function App() {
-  return &lt;Pai mensagem="Olá do Pai!" /&gt;;
-}</code></pre>
-      </details>
-    </div>
-
-    <div class="desafio">
-      <h4>Exercício 3: Card com Slots</h4>
-      <p>
-        <strong>Objetivo:</strong> criar um <code>Card</code> com áreas de
-        cabeçalho, conteúdo e rodapé.
-      </p>
-      <ol>
-        <li>
-          Receba <code>cabecalho</code>, <code>rodape</code> e
-          <code>children</code> como props.
-        </li>
-        <li>Monte o layout do card usando essas áreas.</li>
-      </ol>
-      <details class="solucao">
-        <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">function Card({ cabecalho, rodape, children }) {
-  return (
-    &lt;div className="card"&gt;
-      &lt;header&gt;{cabecalho}&lt;/header&gt;
-      &lt;main&gt;{children}&lt;/main&gt;
-      &lt;footer&gt;{rodape}&lt;/footer&gt;
+    &lt;div className={`bg-white rounded-lg shadow-lg overflow-hidden ${className}`}&gt;
+      {header && (
+        &lt;div className="px-6 py-4 bg-gray-50 border-b border-gray-200"&gt;
+          {header}
+        &lt;/div&gt;
+      )}
+      &lt;div className="px-6 py-4"&gt;
+        {content}
+      &lt;/div&gt;
+      {footer && (
+        &lt;div className="px-6 py-4 bg-gray-50 border-t border-gray-200"&gt;
+          {footer}
+        &lt;/div&gt;
+      )}
     &lt;/div&gt;
   );
 }
 
-export default function App() {
-  return (
-    &lt;Card
-      cabecalho={&lt;h2&gt;Título do Card&lt;/h2&gt;}
-      rodape={&lt;small&gt;Rodapé&lt;/small&gt;}
-    &gt;
-      &lt;p&gt;Conteúdo central do card&lt;/p&gt;
-    &lt;/Card&gt;
-  );
-}</code></pre>
+// Uso:
+&lt;Card
+  header={&lt;h3 className="text-lg font-semibold"&gt;Título&lt;/h3&gt;}
+  content={&lt;p&gt;Conteúdo do card&lt;/p&gt;}
+  footer={&lt;button className="bg-blue-500 text-white px-4 py-2 rounded"&gt;Ação&lt;/button&gt;}
+/&gt;</code></pre>
       </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Lista Reutilizável</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar um componente de lista que aceite dados
+        dinâmicos e renderização customizada.
+      </p>
+      <ol>
+        <li>Crie um componente List que aceite um array de dados</li>
+        <li>Permita renderização customizada de cada item</li>
+        <li>Adicione suporte para lista vazia</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">function List({ 
+  items, 
+  renderItem, 
+  emptyMessage = "Nenhum item encontrado",
+  className = '' 
+}) {
+  if (items.length === 0) {
+    return (
+      &lt;div className={`text-center py-8 text-gray-500 ${className}`}&gt;
+        {emptyMessage}
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className={`space-y-2 ${className}`}&gt;
+      {items.map((item, index) =&gt; (
+        &lt;div key={index}&gt;
+          {renderItem(item, index)}
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+// Uso:
+const users = [
+  { id: 1, name: 'João', email: 'joao@email.com' },
+  { id: 2, name: 'Maria', email: 'maria@email.com' }
+];
+
+&lt;List
+  items={users}
+  renderItem={(user) =&gt; (
+    &lt;div className="p-4 bg-white rounded border"&gt;
+      &lt;h3&gt;{user.name}&lt;/h3&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  )}
+/&gt;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Modal Reutilizável</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar um componente Modal que use children
+        para conteúdo flexível.
+      </p>
+      <ol>
+        <li>Crie um Modal com backdrop e animação</li>
+        <li>Use children para o conteúdo</li>
+        <li>Adicione suporte para fechar com ESC ou clique fora</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">import { useEffect } from 'react';
+
+function Modal({ isOpen, onClose, children, title }) {
+  useEffect(() =&gt; {
+    const handleEsc = (e) =&gt; {
+      if (e.key === 'Escape') onClose();
+    };
+    
+    if (isOpen) {
+      document.addEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'hidden';
+    }
+    
+    return () =&gt; {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    &lt;div className="fixed inset-0 z-50 overflow-y-auto"&gt;
+      &lt;div className="flex items-center justify-center min-h-screen px-4"&gt;
+        &lt;div 
+          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+          onClick={onClose}
+        /&gt;
+        &lt;div className="relative bg-white rounded-lg shadow-xl max-w-md w-full"&gt;
+          &lt;div className="flex items-center justify-between p-6 border-b"&gt;
+            &lt;h3 className="text-lg font-medium"&gt;{title}&lt;/h3&gt;
+            &lt;button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600"
+            &gt;
+              ✕
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div className="p-6"&gt;
+            {children}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+// Uso:
+&lt;Modal isOpen={showModal} onClose={() =&gt; setShowModal(false)} title="Confirmação"&gt;
+  &lt;p&gt;Tem certeza que deseja excluir este item?&lt;/p&gt;
+  &lt;div className="flex justify-end space-x-2 mt-4"&gt;
+    &lt;button onClick={() =&gt; setShowModal(false)}&gt;Cancelar&lt;/button&gt;
+    &lt;button onClick={handleDelete}&gt;Excluir&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/Modal&gt;</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- 10. Resumo -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 10. Resumo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li>
+            <strong>Componentização</strong> transforma interfaces complexas em
+            peças menores e reutilizáveis
+          </li>
+          <li>
+            <strong>Tailwind CSS</strong> facilita a criação de componentes
+            consistentes e responsivos
+          </li>
+          <li>
+            <strong>Props e Children</strong> permitem criar componentes
+            flexíveis e reutilizáveis
+          </li>
+          <li>
+            <strong>Organização</strong> adequada de pastas melhora a
+            manutenibilidade do código
+          </li>
+          <li>
+            <strong>Boas práticas</strong> garantem código limpo, testável e
+            escalável
+          </li>
+        </ul>
+
+        <div class="alert alert-info mt-3">
+          <strong>Próximo Passo:</strong> Na próxima aula, vamos explorar
+          gerenciamento de estado com Context API e hooks personalizados para
+          completar o ciclo de desenvolvimento React.
+        </div>
+      </div>
     </div>
   </section>
 </article>

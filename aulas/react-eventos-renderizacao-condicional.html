@@ -1,0 +1,486 @@
+<!-- ==================== Aula React 5 - Eventos e Renderização Condicional ==================== -->
+<article class="lesson-content">
+  <h2>
+    <i class="fab fa-react"></i> React – Manipulação de Eventos e Renderização
+    Condicional
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula vamos trabalhar com eventos (onClick, onChange, etc.),
+      formulários controlados, lógicas de renderização condicional e validações
+      simples. Vamos construir uma tela prática usando Next.js (App Router, sem
+      TypeScript) e Tailwind para consolidar os conceitos.
+    </p>
+    <ul>
+      <li>✅ Eventos: onClick, onChange, onSubmit</li>
+      <li>✅ Formulários controlados</li>
+      <li>✅ Renderização condicional</li>
+      <li>✅ Validação simples de campos</li>
+      <li>✅ Projeto prático com Next.js (JS) + Tailwind</li>
+    </ul>
+  </div>
+
+  <!-- 1. Conceitos Fundamentais -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-bolt"></i> 1. Conceitos Fundamentais
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">1.1 Eventos no React</h4>
+        <p>
+          Eventos em React são passados como props para elementos. Use funções
+          para tratar ações do usuário.
+        </p>
+        <pre><code class="language-jsx">export default function ExemploEventos() {
+  function handleClick() {
+    alert('Botão clicado!');
+  }
+
+  function handleChange(e) {
+    console.log('Valor:', e.target.value);
+  }
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={handleClick}&gt;Clique aqui&lt;/button&gt;
+      &lt;input onChange={handleChange} placeholder="Digite algo" /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+        <h4 class="mt-4 mb-3">1.2 Formulários Controlados</h4>
+        <p>
+          Em formulários controlados, o valor dos inputs é controlado pelo
+          estado do componente via <code>useState</code>.
+        </p>
+        <pre><code class="language-jsx">import { useState } from 'react';
+
+export default function FormControlado() {
+  const [nome, setNome] = useState('');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    alert(`Olá, ${nome}!`);
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input value={nome} onChange={(e) =&gt; setNome(e.target.value)} /&gt;
+      &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+
+        <h4 class="mt-4 mb-3">1.3 Renderização Condicional</h4>
+        <pre><code class="language-jsx">function Mensagem({ ok }) {
+  if (!ok) return &lt;span className="text-red-600"&gt;Erro!&lt;/span&gt;;
+  return &lt;span className="text-green-600"&gt;Tudo certo!&lt;/span&gt;;
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Página Principal (Estrutura Componentizada) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-laptop-code"></i> 2. Página Principal (Estrutura
+      Componentizada)
+    </h3>
+
+    <img
+      src="assets/images/contatos.png"
+      alt="Cadastro de Contatos"
+      class="img-fluid mb-4"
+    />
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Vamos começar criando a página principal que já referencia os
+          componentes que vamos criar. Esta abordagem nos ajuda a visualizar a
+          estrutura final antes de implementar cada peça.
+        </p>
+        <pre><code class="language-jsx">"use client";
+import { useState } from "react";
+import { FilterInput } from "./components/FilterInput";
+import { ContactForm } from "./components/ContactForm";
+import { ContactList } from "./components/ContactList";
+
+export default function Page() {
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+  const [errors, setErrors] = useState({});
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState("");
+
+  function handleSubmit(e) {
+    // Será implementado no ContactForm
+  }
+
+  function handleRemove(id) {
+    setContacts((prev) =&gt; prev.filter((c) =&gt; c.id !== id));
+  }
+
+  const filtered = contacts.filter((c) =&gt;
+    c.nome.toLowerCase().includes(filter.toLowerCase()) ||
+    c.email.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return (
+    &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;FilterInput value={filter} onChange={setFilter} /&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleSubmit} /&gt;
+
+        &lt;ContactList items={filtered} onRemove={handleRemove} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Observação:</strong> Esta página já está estruturada para usar
+          componentes, mas eles ainda não existem. Vamos criá-los um por um na
+          próxima seção.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Criando os Componentes -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-puzzle-piece"></i> 3. Criando os Componentes
+    </h3>
+
+    <img
+      src="assets/images/contatos_components.png"
+      alt="Cadastro de Contatos - Componentes"
+      class="img-fluid mb-4"
+    />
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Agora vamos criar cada componente individualmente. Começaremos pelos
+          mais simples e depois os mais complexos.
+        </p>
+
+        <h4 class="mt-3 mb-2">3.1 FilterInput Component</h4>
+        <pre><code class="language-jsx">export function FilterInput({ value, onChange }) {
+  return (
+    &lt;input
+      className="border rounded px-3 py-2"
+      placeholder="Filtrar por nome ou email"
+      value={value}
+      onChange={(e) =&gt; onChange(e.target.value)}
+    /&gt;
+  );
+}
+</code></pre>
+
+        <h4 class="mt-3 mb-2">3.2 ContactForm Component</h4>
+        <pre><code class="language-jsx">import { useState } from "react";
+
+export function ContactForm({ onAdd }) {
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+  const [errors, setErrors] = useState({});
+
+  function validate(values) {
+    const newErrors = {};
+    if (!values.nome.trim()) newErrors.nome = "Informe o nome";
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(values.email)) newErrors.email = "Email inválido";
+    if (!/^\d{10,11}$/.test(values.telefone)) newErrors.telefone = "Telefone deve ter 10-11 dígitos";
+    return newErrors;
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm((prev) =&gt; ({ ...prev, [name]: value }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const v = validate(form);
+    setErrors(v);
+    if (Object.keys(v).length) return;
+    onAdd({ ...form, id: Date.now() });
+    setForm({ nome: "", email: "", telefone: "" });
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1"&gt;Nome&lt;/label&gt;
+        &lt;input
+          name="nome"
+          className="w-full border rounded px-3 py-2"
+          value={form.nome}
+          onChange={handleChange}
+        /&gt;
+        {errors.nome && &lt;p className="text-sm text-red-600 mt-1"&gt;{errors.nome}&lt;/p&gt;}
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1"&gt;Email&lt;/label&gt;
+        &lt;input
+          name="email"
+          className="w-full border rounded px-3 py-2"
+          value={form.email}
+          onChange={handleChange}
+        /&gt;
+        {errors.email && &lt;p className="text-sm text-red-600 mt-1"&gt;{errors.email}&lt;/p&gt;}
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1"&gt;Telefone&lt;/label&gt;
+        &lt;input
+          name="telefone"
+          className="w-full border rounded px-3 py-2"
+          value={form.telefone}
+          onChange={handleChange}
+        /&gt;
+        {errors.telefone && &lt;p className="text-sm text-red-600 mt-1"&gt;{errors.telefone}&lt;/p&gt;}
+      &lt;/div&gt;
+
+      &lt;div className="flex gap-2"&gt;
+        &lt;button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"&gt;
+          Adicionar
+        &lt;/button&gt;
+        &lt;button type="button" className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded" onClick={() =&gt; setForm({ nome: '', email: '', telefone: '' })}&gt;
+          Limpar
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+
+        <h4 class="mt-3 mb-2">3.3 ContactItem Component</h4>
+        <pre><code class="language-jsx">export function ContactItem({ contact, onRemove }) {
+  return (
+    &lt;li className="p-4 flex items-center justify-between"&gt;
+      &lt;div&gt;
+        &lt;p className="font-medium"&gt;{contact.nome}&lt;/p&gt;
+        &lt;p className="text-sm text-gray-600"&gt;
+          {contact.email} • {contact.telefone}
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button className="text-red-600 hover:text-red-700" onClick={() =&gt; onRemove(contact.id)}&gt;
+        Remover
+      &lt;/button&gt;
+    &lt;/li&gt;
+  );
+}
+</code></pre>
+
+        <h4 class="mt-3 mb-2">3.4 ContactList Component</h4>
+        <pre><code class="language-jsx">import { ContactItem } from './ContactItem';
+
+export function ContactList({ items, onRemove }) {
+  return (
+    &lt;section className="bg-white shadow rounded"&gt;
+      &lt;div className="px-4 py-3 border-b"&gt;
+        &lt;h2 className="font-medium"&gt;Contatos ({items.length})&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;ul className="divide-y"&gt;
+        {items.length === 0 ? (
+          &lt;li className="p-4 text-gray-500"&gt;Nenhum contato encontrado&lt;/li&gt;
+        ) : (
+          items.map((c) =&gt; (
+            &lt;ContactItem key={c.id} contact={c} onRemove={onRemove} /&gt;
+          ))
+        )}
+      &lt;/ul&gt;
+    &lt;/section&gt;
+  );
+}
+</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Testes Rápidos (Quiz) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-clipboard-check"></i> 4. Testes Rápidos (Quiz)
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <ol>
+          <li class="mb-3">
+            Onde devemos chamar <code>useState</code> em formulários
+            controlados?
+            <div>
+              a) Em qualquer função &nbsp; b) Em componentes de função &nbsp; c)
+              Dentro de loops &nbsp; d) Dentro de if
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual evento usamos para capturar digitação em inputs?
+            <div>
+              a) onClick &nbsp; b) onSubmit &nbsp; c) onChange &nbsp; d) onInput
+            </div>
+          </li>
+          <li class="mb-3">
+            O que faz <code>e.preventDefault()</code> no submit?
+            <div>
+              a) Recarrega a página &nbsp; b) Impede o comportamento padrão
+              &nbsp; c) Limpa o formulário &nbsp; d) Nada
+            </div>
+          </li>
+          <li class="mb-3">
+            Como exibir um erro abaixo do input apenas quando houver erro?
+            <div>
+              a) Renderização condicional com {errors.campo && ...} &nbsp; b)
+              Sempre renderizar &nbsp; c) setTimeout &nbsp; d) CSS apenas
+            </div>
+          </li>
+          <li class="mb-3">
+            Como limpar um formulário controlado?
+            <div>
+              a) Atribuir string vazia ao estado de cada campo &nbsp; b) Dar
+              reload &nbsp; c) Zerar DOM &nbsp; d) setState(null)
+            </div>
+          </li>
+        </ol>
+
+        <details class="solucao" style="display: block">
+          <summary>Mostrar gabarito</summary>
+          <ol>
+            <li>b) Em componentes de função</li>
+            <li>c) onChange</li>
+            <li>b) Impede o comportamento padrão</li>
+            <li>a) Renderização condicional com {errors.campo && ...}</li>
+            <li>a) Atribuir string vazia ao estado de cada campo</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Exercícios -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 5. Exercícios
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Formulário de Login</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar um formulário controlado com validação
+        simples.
+      </p>
+      <ol>
+        <li>Crie campos de email e senha controlados</li>
+        <li>Valide email (regex) e senha (mín. 6 chars)</li>
+        <li>Mostre mensagens de erro condicionalmente</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">"use client";
+import { useState } from "react";
+
+export default function LoginForm() {
+  const [form, setForm] = useState({ email: "", senha: "" });
+  const [errors, setErrors] = useState({});
+
+  function validate(v) {
+    const e = {};
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email)) e.email = "Email inválido";
+    if ((v.senha || '').length < 6) e.senha = "Mínimo 6 caracteres";
+    return e;
+  }
+
+  function handleSubmit(ev) {
+    ev.preventDefault();
+    const e = validate(form);
+    setErrors(e);
+    if (Object.keys(e).length) return;
+    alert("Login OK");
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit} className="space-y-3"&gt;
+      &lt;div&gt;
+        &lt;label className="block text-sm"&gt;Email&lt;/label&gt;
+        &lt;input
+          className="border rounded px-3 py-2 w-full"
+          value={form.email}
+          onChange={(e) =&gt; setForm((p) =&gt; ({ ...p, email: e.target.value }))}
+        /&gt;
+        {errors.email && &lt;p className="text-sm text-red-600"&gt;{errors.email}&lt;/p&gt;}
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;label className="block text-sm"&gt;Senha&lt;/label&gt;
+        &lt;input
+          type="password"
+          className="border rounded px-3 py-2 w-full"
+          value={form.senha}
+          onChange={(e) =&gt; setForm((p) =&gt; ({ ...p, senha: e.target.value }))}
+        /&gt;
+        {errors.senha && &lt;p className="text-sm text-red-600"&gt;{errors.senha}&lt;/p&gt;}
+      &lt;/div&gt;
+      &lt;button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"&gt;
+        Entrar
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: To-do com Filtros</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar uma lista de tarefas com renderização
+        condicional e eventos.
+      </p>
+      <ol>
+        <li>Adicionar tarefas (form controlado)</li>
+        <li>Filtrar por status (todos, abertos, concluídos)</li>
+        <li>Mostrar contagens e estados vazios condicionalmente</li>
+      </ol>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Validação passo a passo</h4>
+      <p>
+        <strong>Objetivo:</strong> Validar campos conforme o usuário digita
+        (onChange).
+      </p>
+      <ol>
+        <li>Mostrar feedback em tempo real abaixo de cada campo</li>
+        <li>Habilitar o botão somente se o formulário for válido</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6. Resumo -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 6. Resumo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul>
+          <li>Eventos conectam a interface às ações do usuário</li>
+          <li>Formulários controlados centralizam o estado nos componentes</li>
+          <li>Renderização condicional mantém a UI clara e contextual</li>
+          <li>Validações simples aumentam a qualidade de dados</li>
+          <li>
+            Next.js + Tailwind ajudam a demonstrar rapidamente os conceitos
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</article>

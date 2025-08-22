@@ -166,6 +166,12 @@ export default function Contador() {
   );
 }</code></pre>
 
+        <img
+          src="assets/images/contador_demo.gif"
+          alt="Contador"
+          class="img-fluid mb-4"
+        />
+
         <h4 class="mt-4 mb-2">
           4.1 Atualização funcional (evita “estado antigo”)
         </h4>
@@ -190,8 +196,13 @@ setAluno(prev =&gt; ({ ...prev, pontos: prev.pontos + 1 }));
 const [lista, setLista] = useState(['A', 'B']);
 setLista(prev =&gt; [...prev, 'C']); // adiciona sem mutar
 </code></pre>
+        <img
+          src="assets/images/estado-imutavel_react_slow.gif"
+          alt="Estado Imutável"
+          class="img-fluid mb-4"
+        />
 
-        <h4 class="mt-3 mb-2">3.3 Inputs controlados (estado &lt;→ input)</h4>
+        <h4 class="mt-3 mb-2">4.3 Inputs controlados (estado &lt;→ input)</h4>
         <pre><code class="language-jsx">function FormNome() {
   const [nome, setNome] = useState('');
 
@@ -203,6 +214,11 @@ setLista(prev =&gt; [...prev, 'C']); // adiciona sem mutar
   );
 }</code></pre>
       </div>
+      <img
+        src="assets/images/formnome_demo.gif"
+        alt="Formulário de Nome"
+        class="img-fluid mb-4"
+      />
     </div>
   </section>
 
@@ -248,6 +264,12 @@ export default function Relogio() {
   return &lt;p&gt;{hora.toLocaleTimeString()}&lt;/p&gt;;
 }</code></pre>
 
+        <img
+          src="assets/images/relogio_demo.gif"
+          alt="Relógio"
+          class="img-fluid mb-4"
+        />
+
         <h4 class="mt-3 mb-2">
           5.2 Exemplo: escutar eventos do teclado (com limpeza)
         </h4>
@@ -262,6 +284,12 @@ export default function Relogio() {
 
   return &lt;p&gt;Última tecla: {ultimaTecla}&lt;/p&gt;;
 }</code></pre>
+
+        <img
+          src="assets/images/teclado_demo.gif"
+          alt="Teclado"
+          class="img-fluid mb-4"
+        />
 
         <h4 class="mt-3 mb-2">
           5.3 Exemplo: busca em API (com carregando/erro)
@@ -296,6 +324,12 @@ export default function Relogio() {
           as dependências usadas dentro do efeito no array de dependências.
         </div>
       </div>
+
+      <img
+        src="assets/images/usuarios_simplificado.gif"
+        alt="Usuários"
+        class="img-fluid mb-4"
+      />
     </div>
   </section>
 
