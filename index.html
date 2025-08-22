@@ -56,10 +56,7 @@
           </li>
 
           <li>
-            <a
-              href="#"
-              onclick="loadContent('introducaojs-variaveis-operadores')"
-            >
+            <a href="#" onclick="loadContent('introducaojs-variaveis-operadores')">
               <i class="fab fa-js"></i> Fundamentos do JavaScript I –
               Introdução, Variáveis e Operadores
             </a>
@@ -122,20 +119,17 @@
               useEffect
             </a>
           </li>
-          <!-- <li>
+          <li>
             <a href="#" onclick="loadContent('react-componentizacao-avancada')">
               <i class="fab fa-react"></i> Componentização Avançada (com
               Tailwind)
             </a>
-          </li> -->
+          </li>
           <!-- <li>
-            <a
-              href="#"
-              onclick="loadContent('react-eventos-renderizacao-condicional')"
-            >
+            <a href="#" onclick="loadContent('react-eventos-renderizacao-condicional')">
               <i class="fab fa-react"></i> Eventos e Renderização Condicional
             </a>
-          </li> -->
+          </li>
         </ul>
 
         <!-- Seção de recursos -->
@@ -145,6 +139,7 @@
             <a
               href="https://github.com/DanielLCintra/apostila-webdev"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <i class="fab fa-github"></i> Repositório no GitHub
             </a>
@@ -213,6 +208,10 @@
           activeLink.classList.add("active");
         }
 
+        // Atualizar URL sem recarregar a página
+        const newUrl = `?page=${pageName}`;
+        window.history.pushState({ page: pageName }, '', newUrl);
+
         // Carregar conteúdo da aula
         fetch(`aulas/${pageName}.html`)
           .then((response) => {
@@ -258,6 +257,12 @@
           });
       }
 
+      // Função para obter parâmetros da URL
+      function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+
       // Toggle menu para dispositivos móveis
       document
         .querySelector(".toggle-menu")
@@ -280,7 +285,13 @@
 
       // Carregar conteúdo inicial quando a página é carregada
       document.addEventListener("DOMContentLoaded", function () {
-        loadContent("principal");
+        // Verificar se há uma página específica na URL
+        const pageParam = getUrlParameter('page');
+        if (pageParam) {
+          loadContent(pageParam);
+        } else {
+          loadContent("principal");
+        }
 
         // Definir estado inicial do botão de menu
         document
@@ -298,6 +309,15 @@
             menuButton.setAttribute("aria-expanded", "false");
           }
         });
+      });
+
+      // Lidar com navegação do histórico do navegador
+      window.addEventListener('popstate', function(event) {
+        if (event.state && event.state.page) {
+          loadContent(event.state.page);
+        } else {
+          loadContent("principal");
+        }
       });
 
       // Prevenir cliques em links ativos
