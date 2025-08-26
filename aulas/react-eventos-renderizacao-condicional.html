@@ -1,23 +1,21 @@
-<!-- ==================== Aula React 5 - Eventos e Renderização Condicional ==================== -->
+<!-- ==================== Aula React 5 - Eventos, Formulários e React Router ==================== -->
 <article class="lesson-content">
-  <h2>
-    <i class="fab fa-react"></i> React – Manipulação de Eventos e Renderização
-    Condicional
-  </h2>
+  <h2><i class="fab fa-react"></i> React – Eventos, Formulários e Navegação</h2>
 
   <div class="intro-box mb-5">
     <p>
       Nesta aula vamos trabalhar com eventos (onClick, onChange, etc.),
-      formulários controlados, lógicas de renderização condicional e validações
-      simples. Vamos construir uma tela prática usando Next.js (App Router, sem
-      TypeScript) e Tailwind para consolidar os conceitos.
+      formulários controlados, renderização condicional, validações e navegação
+      entre páginas com React Router. Vamos construir uma aplicação completa de
+      cadastro de contatos usando Next.js e Tailwind.
     </p>
     <ul>
       <li>✅ Eventos: onClick, onChange, onSubmit</li>
-      <li>✅ Formulários controlados</li>
+      <li>✅ Formulários controlados e validação</li>
       <li>✅ Renderização condicional</li>
-      <li>✅ Validação simples de campos</li>
-      <li>✅ Projeto prático com Next.js (JS) + Tailwind</li>
+      <li>✅ React Router para navegação</li>
+      <li>✅ Passagem de parâmetros via URL</li>
+      <li>✅ Projeto prático completo</li>
     </ul>
   </div>
 
@@ -82,11 +80,11 @@ export default function FormControlado() {
     </div>
   </section>
 
-  <!-- 2. Página Principal (Estrutura Componentizada) -->
+  <!-- 2. Projeto Prático: Cadastro de Contatos -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-laptop-code"></i> 2. Página Principal (Estrutura
-      Componentizada)
+      <i class="fas fa-laptop-code"></i> 2. Projeto Prático: Cadastro de
+      Contatos
     </h3>
 
     <img
@@ -97,32 +95,142 @@ export default function FormControlado() {
 
     <div class="card mb-4">
       <div class="card-body">
+        <h4 class="mb-3">2.1 Estrutura da Aplicação</h4>
         <p>
-          Vamos começar criando a página principal que já referencia os
-          componentes que vamos criar. Esta abordagem nos ajuda a visualizar a
-          estrutura final antes de implementar cada peça.
+          Vamos criar uma aplicação completa de cadastro de contatos com
+          navegação entre páginas. A estrutura será:
+        </p>
+        <ul>
+          <li>
+            <strong>Página Principal:</strong> Lista de contatos com formulário
+            de cadastro
+          </li>
+          <li>
+            <strong>Página de Detalhes:</strong> Exibe informações completas de
+            um contato
+          </li>
+          <li>
+            <strong>Componentes:</strong> Formulário, lista, filtro e item de
+            contato
+          </li>
+        </ul>
+
+        <h5 class="mt-4 mb-2">Estrutura de Pastas Completa</h5>
+        <pre><code class="language-plaintext">app/
+├── page.js                    # Página inicial (/)
+├── layout.js                  # Layout compartilhado
+├── globals.css                # Estilos globais com Tailwind
+├── contact/
+│   └── [id]/
+│       └── page.js            # Página de detalhes (/contact/[id])
+└── components/
+    ├── FilterInput.jsx        # Componente de filtro
+    ├── ContactForm.jsx        # Formulário de contato
+    ├── ContactList.jsx        # Lista de contatos
+    └── ContactItem.jsx        # Item individual de contato</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Nota:</strong> A pasta <code>components</code> é opcional, mas
+          ajuda a organizar melhor o código.
+        </div>
+
+        <h5 class="mt-4 mb-2">Layout Compartilhado (app/layout.js)</h5>
+        <p>
+          O layout compartilhado é aplicado a todas as páginas da aplicação e
+          deve importar o arquivo globals.css para que o Tailwind CSS seja
+          aplicado:
+        </p>
+        <pre><code class="language-jsx">// app/layout.js
+import './globals.css'
+
+export default function RootLayout({ children }) {
+  return (
+    &lt;html lang="pt-BR"&gt;
+      &lt;body&gt;
+        &lt;main&gt;{children}&lt;/main&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+
+        <h5 class="mt-4 mb-2">Arquivo de Estilos Globais (app/globals.css)</h5>
+        <p>O arquivo globals.css deve conter as diretivas do Tailwind CSS:</p>
+        <pre><code class="language-css">/* app/globals.css */
+@import "tailwindcss";
+</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Importante:</strong> Sem a importação do globals.css no layout
+          e as diretivas do Tailwind no globals.css, as classes do Tailwind não
+          funcionarão na aplicação.
+        </div>
+
+        <h5 class="mt-4 mb-2">Configuração do Tailwind CSS</h5>
+        <p>
+          Para que o Tailwind CSS funcione corretamente, você também precisa ter
+          o arquivo de configuração:
+        </p>
+        <pre><code class="language-js">// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}</code></pre>
+
+        <div class="alert alert-warning mt-3">
+          <strong>Dica:</strong> Se você criou o projeto com
+          <code>create-next-app</code> e selecionou Tailwind CSS, esses arquivos
+          já estarão configurados automaticamente.
+        </div>
+      </div>
+    </div>
+
+    <!-- 2.2 Página Principal -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">2.2 Página Principal (app/page.js)</h4>
+        <p>
+          Esta é a página inicial da aplicação. Ela gerencia o estado global dos
+          contatos e integra todos os componentes. Quando um contato é clicado
+          na lista, o usuário é direcionado para a página de detalhes.
         </p>
         <pre><code class="language-jsx">"use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FilterInput } from "./components/FilterInput";
 import { ContactForm } from "./components/ContactForm";
 import { ContactList } from "./components/ContactList";
 
-export default function Page() {
-  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
-  const [errors, setErrors] = useState({});
+export default function HomePage() {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState("");
 
-  function handleSubmit(e) {
-    // Será implementado no ContactForm
+  // Carrega contatos do localStorage ao iniciar
+  useEffect(() =&gt; {
+    const savedContacts = JSON.parse(localStorage.getItem('contacts') || '[]');
+    setContacts(savedContacts);
+  }, []);
+
+  // Salva contatos no localStorage sempre que mudar
+  useEffect(() =&gt; {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  function handleSubmit(newContact) {
+    setContacts(prev =&gt; [...prev, newContact]);
   }
 
   function handleRemove(id) {
-    setContacts((prev) =&gt; prev.filter((c) =&gt; c.id !== id));
+    setContacts(prev =&gt; prev.filter(c =&gt; c.id !== id));
   }
 
-  const filtered = contacts.filter((c) =&gt;
+  const filtered = contacts.filter(c =&gt;
     c.nome.toLowerCase().includes(filter.toLowerCase()) ||
     c.email.toLowerCase().includes(filter.toLowerCase())
   );
@@ -131,7 +239,7 @@ export default function Page() {
     &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
       &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
         &lt;header className="flex items-center justify-between"&gt;
-          &lt;h1 className="text-2xl font-bold"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
           &lt;FilterInput value={filter} onChange={setFilter} /&gt;
         &lt;/header&gt;
 
@@ -141,51 +249,34 @@ export default function Page() {
       &lt;/div&gt;
     &lt;/div&gt;
   );
-}
-</code></pre>
+}</code></pre>
 
         <div class="alert alert-info mt-3">
-          <strong>Observação:</strong> Esta página já está estruturada para usar
-          componentes, mas eles ainda não existem. Vamos criá-los um por um na
-          próxima seção.
+          <strong>Integração:</strong> Esta página salva os contatos no
+          localStorage, que serão acessados pela página de detalhes quando um
+          contato for clicado.
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- 3. Criando os Componentes -->
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-puzzle-piece"></i> 3. Criando os Componentes
-    </h3>
-
-    <img
-      src="assets/images/contatos_components.png"
-      alt="Cadastro de Contatos - Componentes"
-      class="img-fluid mb-4"
-    />
-
+    <!-- 2.3 Componentes -->
     <div class="card mb-4">
       <div class="card-body">
-        <p>
-          Agora vamos criar cada componente individualmente. Começaremos pelos
-          mais simples e depois os mais complexos.
-        </p>
+        <h4 class="mb-3">2.3 Componentes da Aplicação</h4>
 
-        <h4 class="mt-3 mb-2">3.1 FilterInput Component</h4>
+        <h5 class="mt-3 mb-2">FilterInput Component</h5>
         <pre><code class="language-jsx">export function FilterInput({ value, onChange }) {
   return (
     &lt;input
-      className="border rounded px-3 py-2"
+      className="border rounded px-3 py-2 text-gray-900"
       placeholder="Filtrar por nome ou email"
       value={value}
       onChange={(e) =&gt; onChange(e.target.value)}
     /&gt;
   );
-}
-</code></pre>
+}</code></pre>
 
-        <h4 class="mt-3 mb-2">3.2 ContactForm Component</h4>
+        <h5 class="mt-3 mb-2">ContactForm Component</h5>
         <pre><code class="language-jsx">import { useState } from "react";
 
 export function ContactForm({ onAdd }) {
@@ -217,10 +308,10 @@ export function ContactForm({ onAdd }) {
   return (
     &lt;form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4"&gt;
       &lt;div&gt;
-        &lt;label className="block text-sm font-medium mb-1"&gt;Nome&lt;/label&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Nome&lt;/label&gt;
         &lt;input
           name="nome"
-          className="w-full border rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2 text-gray-900"
           value={form.nome}
           onChange={handleChange}
         /&gt;
@@ -228,10 +319,10 @@ export function ContactForm({ onAdd }) {
       &lt;/div&gt;
 
       &lt;div&gt;
-        &lt;label className="block text-sm font-medium mb-1"&gt;Email&lt;/label&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Email&lt;/label&gt;
         &lt;input
           name="email"
-          className="w-full border rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2 text-gray-900"
           value={form.email}
           onChange={handleChange}
         /&gt;
@@ -239,10 +330,10 @@ export function ContactForm({ onAdd }) {
       &lt;/div&gt;
 
       &lt;div&gt;
-        &lt;label className="block text-sm font-medium mb-1"&gt;Telefone&lt;/label&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Telefone&lt;/label&gt;
         &lt;input
           name="telefone"
-          className="w-full border rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2 text-gray-900"
           value={form.telefone}
           onChange={handleChange}
         /&gt;
@@ -259,15 +350,21 @@ export function ContactForm({ onAdd }) {
       &lt;/div&gt;
     &lt;/form&gt;
   );
-}
-</code></pre>
+}</code></pre>
 
-        <h4 class="mt-3 mb-2">3.3 ContactItem Component</h4>
-        <pre><code class="language-jsx">export function ContactItem({ contact, onRemove }) {
+        <h5 class="mt-3 mb-2">ContactList e ContactItem Components</h5>
+        <pre><code class="language-jsx">import Link from 'next/link';
+
+export function ContactItem({ contact, onRemove }) {
   return (
     &lt;li className="p-4 flex items-center justify-between"&gt;
       &lt;div&gt;
-        &lt;p className="font-medium"&gt;{contact.nome}&lt;/p&gt;
+        &lt;Link 
+          href={`/contact/${contact.id}`} 
+          className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+        &gt;
+          {contact.nome}
+        &lt;/Link&gt;
         &lt;p className="text-sm text-gray-600"&gt;
           {contact.email} • {contact.telefone}
         &lt;/p&gt;
@@ -278,16 +375,12 @@ export function ContactForm({ onAdd }) {
     &lt;/li&gt;
   );
 }
-</code></pre>
-
-        <h4 class="mt-3 mb-2">3.4 ContactList Component</h4>
-        <pre><code class="language-jsx">import { ContactItem } from './ContactItem';
 
 export function ContactList({ items, onRemove }) {
   return (
     &lt;section className="bg-white shadow rounded"&gt;
       &lt;div className="px-4 py-3 border-b"&gt;
-        &lt;h2 className="font-medium"&gt;Contatos ({items.length})&lt;/h2&gt;
+        &lt;h2 className="font-medium text-gray-900"&gt;Contatos ({items.length})&lt;/h2&gt;
       &lt;/div&gt;
       &lt;ul className="divide-y"&gt;
         {items.length === 0 ? (
@@ -300,8 +393,225 @@ export function ContactList({ items, onRemove }) {
       &lt;/ul&gt;
     &lt;/section&gt;
   );
-}
-</code></pre>
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Next.js App Router - Navegação entre Páginas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-route"></i> 3. Next.js App Router - Navegação entre
+      Páginas
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">3.1 Estrutura de Pastas do App Router</h4>
+        <p>
+          O Next.js App Router usa uma estrutura baseada em pastas. Cada pasta
+          representa uma rota:
+        </p>
+        <pre><code class="language-plaintext">app/
+├── page.js              # Página inicial (/)
+├── contact/
+│   └── [id]/
+│       └── page.js      # Página de detalhes (/contact/[id])
+└── layout.js            # Layout compartilhado</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Nota:</strong> O <code>[id]</code> na pasta
+          <code>/contact/[id]</code> é um parâmetro dinâmico que será capturado
+          pelo componente da página.
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">3.2 Componente Link do Next.js</h4>
+        <p>
+          O componente <code>Link</code> do Next.js permite navegação sem
+          recarregar a página, mantendo a experiência SPA (Single Page
+          Application).
+        </p>
+        <pre><code class="language-jsx">import Link from 'next/link';
+
+// Exemplo de uso no ContactItem
+&lt;Link 
+  href={`/contact/${contact.id}`} 
+  className="font-medium hover:text-blue-600 transition-colors"
+&gt;
+  {contact.nome}
+&lt;/Link&gt;</code></pre>
+
+        <div class="alert alert-warning mt-3">
+          <strong>Importante:</strong> Sempre use <code>Link</code> do Next.js
+          em vez de <code>&lt;a&gt;</code> para navegação interna. O
+          <code>&lt;a&gt;</code> recarrega a página, perdendo o estado da
+          aplicação.
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">
+          3.3 Página de Detalhes do Contato (app/contact/[id]/page.js)
+        </h4>
+        <p>
+          Esta página é acessada quando um contato é clicado na lista principal.
+          Ela busca o contato específico no localStorage usando o ID da URL e
+          exibe seus detalhes.
+        </p>
+        <pre><code class="language-jsx">// app/contact/[id]/page.js
+"use client";
+import { useParams, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+
+export default function ContactDetailPage() {
+  const params = useParams(); // Captura os parâmetros da URL
+  const router = useRouter(); // Hook para navegação programática
+  const [contact, setContact] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() =&gt; {
+    // Busca o contato do localStorage (mesmo local onde a página principal salva)
+    const contacts = JSON.parse(localStorage.getItem('contacts') || '[]');
+    const foundContact = contacts.find(c =&gt; c.id === parseInt(params.id));
+    
+    if (foundContact) {
+      setContact(foundContact);
+    }
+    setLoading(false);
+  }, [params.id]);
+
+  function handleBack() {
+    router.push('/'); // Volta para a página principal
+  }
+
+  if (loading) {
+    return (
+      &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center"&gt;
+        &lt;div className="text-lg text-gray-900"&gt;Carregando...&lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (!contact) {
+    return (
+      &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center"&gt;
+        &lt;div className="text-center"&gt;
+          &lt;h2 className="text-xl font-bold mb-4 text-gray-900"&gt;Contato não encontrado&lt;/h2&gt;
+          &lt;button 
+            onClick={handleBack}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          &gt;
+            Voltar
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+      &lt;div className="max-w-2xl mx-auto"&gt;
+        &lt;header className="mb-6"&gt;
+          &lt;button 
+            onClick={handleBack}
+            className="text-blue-600 hover:text-blue-700 mb-4 flex items-center"
+          &gt;
+            &lt;span className="mr-2"&gt;←&lt;/span&gt; Voltar
+          &lt;/button&gt;
+          &lt;h1 className="text-3xl font-bold text-gray-900"&gt;Detalhes do Contato&lt;/h1&gt;
+        &lt;/header&gt;
+
+        &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+          &lt;div className="space-y-4"&gt;
+            &lt;div&gt;
+              &lt;label className="block text-sm font-medium text-gray-700"&gt;Nome&lt;/label&gt;
+              &lt;p className="text-lg text-gray-900"&gt;{contact.nome}&lt;/p&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label className="block text-sm font-medium text-gray-700"&gt;Email&lt;/label&gt;
+              &lt;p className="text-lg text-gray-900"&gt;{contact.email}&lt;/p&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label className="block text-sm font-medium text-gray-700"&gt;Telefone&lt;/label&gt;
+              &lt;p className="text-lg text-gray-900"&gt;{contact.telefone}&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Fluxo de Integração:</strong>
+          <ol class="mt-2">
+            <li>Usuário clica em um contato na página principal</li>
+            <li>Next.js navega para <code>/contact/[id]</code></li>
+            <li>Página de detalhes busca o contato no localStorage</li>
+            <li>Exibe os detalhes completos do contato</li>
+            <li>Botão "Voltar" retorna à página principal</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">3.4 Passagem de Parâmetros via URL</h4>
+        <p>Existem várias formas de passar dados entre páginas via URL:</p>
+
+        <h5 class="mt-3 mb-2">Parâmetros de Rota ([id])</h5>
+        <pre><code class="language-jsx">// Pasta: /contact/[id]
+// URL: /contact/123
+// Captura: const params = useParams(); // params.id = "123"
+
+&lt;Link href="/contact/123"&gt;Ver Contato&lt;/Link&gt;</code></pre>
+
+        <h5 class="mt-3 mb-2">Query Parameters (?search=termo)</h5>
+        <pre><code class="language-jsx">// URL: /contacts?search=joao&filter=active
+import { useSearchParams } from 'next/navigation';
+
+function ContactList() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search'); // "joao"
+  const filter = searchParams.get('filter'); // "active"
+
+  function updateSearch(newSearch) {
+    const params = new URLSearchParams(searchParams);
+    params.set('search', newSearch);
+    router.push(`/contacts?${params.toString()}`);
+  }
+}</code></pre>
+
+        <h5 class="mt-3 mb-2">Navegação Programática</h5>
+        <pre><code class="language-jsx">import { useRouter } from 'next/navigation';
+
+function LoginForm() {
+  const router = useRouter();
+
+  function handleLogin() {
+    // Lógica de login...
+    if (loginSuccessful) {
+      router.push('/dashboard'); // Navega para dashboard
+    }
+  }
+
+  function handleBack() {
+    router.back(); // Volta uma página no histórico
+  }
+
+  function handleReplace() {
+    router.replace('/dashboard'); // Substitui a entrada atual no histórico
+  }
+}</code></pre>
       </div>
     </div>
   </section>
@@ -344,10 +654,17 @@ export function ContactList({ items, onRemove }) {
             </div>
           </li>
           <li class="mb-3">
-            Como limpar um formulário controlado?
+            Qual hook do Next.js captura parâmetros da URL?
             <div>
-              a) Atribuir string vazia ao estado de cada campo &nbsp; b) Dar
-              reload &nbsp; c) Zerar DOM &nbsp; d) setState(null)
+              a) useParams &nbsp; b) useRouter &nbsp; c) useLocation &nbsp; d)
+              useRoute
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual componente devemos usar para navegação interna no Next.js?
+            <div>
+              a) &lt;a&gt; &nbsp; b) &lt;Link&gt; &nbsp; c) &lt;Nav&gt; &nbsp;
+              d) &lt;Route&gt;
             </div>
           </li>
         </ol>
@@ -359,7 +676,8 @@ export function ContactList({ items, onRemove }) {
             <li>c) onChange</li>
             <li>b) Impede o comportamento padrão</li>
             <li>a) Renderização condicional com {errors.campo && ...}</li>
-            <li>a) Atribuir string vazia ao estado de cada campo</li>
+            <li>a) useParams</li>
+            <li>b) &lt;Link&gt;</li>
           </ol>
         </details>
       </div>
@@ -373,24 +691,27 @@ export function ContactList({ items, onRemove }) {
     </h3>
 
     <div class="desafio">
-      <h4>Exercício 1: Formulário de Login</h4>
+      <h4>Exercício 1: Formulário de Login com Navegação</h4>
       <p>
-        <strong>Objetivo:</strong> Criar um formulário controlado com validação
-        simples.
+        <strong>Objetivo:</strong> Criar um formulário de login que navega para
+        uma página de dashboard após sucesso.
       </p>
       <ol>
         <li>Crie campos de email e senha controlados</li>
         <li>Valide email (regex) e senha (mín. 6 chars)</li>
         <li>Mostre mensagens de erro condicionalmente</li>
+        <li>Após login bem-sucedido, navegue para /dashboard</li>
       </ol>
       <details class="solucao">
         <summary>Mostrar solução</summary>
         <pre><code class="language-jsx">"use client";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const [form, setForm] = useState({ email: "", senha: "" });
   const [errors, setErrors] = useState({});
+  const router = useRouter();
 
   function validate(v) {
     const e = {};
@@ -404,7 +725,9 @@ export default function LoginForm() {
     const e = validate(form);
     setErrors(e);
     if (Object.keys(e).length) return;
-    alert("Login OK");
+    
+    // Simula login bem-sucedido
+    router.replace('/dashboard');
   }
 
   return (
@@ -433,41 +756,48 @@ export default function LoginForm() {
       &lt;/button&gt;
     &lt;/form&gt;
   );
-}
-</code></pre>
+}</code></pre>
       </details>
     </div>
 
     <div class="desafio">
-      <h4>Exercício 2: To-do com Filtros</h4>
-      <p>
-        <strong>Objetivo:</strong> Criar uma lista de tarefas com renderização
-        condicional e eventos.
-      </p>
+      <h4>Exercício 2: Página de Edição de Contatos</h4>
+      <p><strong>Objetivo:</strong> Criar uma página de edição de contatos.</p>
       <ol>
-        <li>Adicionar tarefas (form controlado)</li>
-        <li>Filtrar por status (todos, abertos, concluídos)</li>
-        <li>Mostrar contagens e estados vazios condicionalmente</li>
+        <li>Crie uma rota <code>/contact/:id/edit</code></li>
+        <li>Carregue os dados do contato no formulário</li>
+        <li>Permita salvar as alterações</li>
+        <li>Redirecione para a página de detalhes após salvar</li>
       </ol>
     </div>
 
     <div class="desafio">
-      <h4>Exercício 3: Validação passo a passo</h4>
+      <h4>Exercício 3: Filtros Persistentes via URL</h4>
       <p>
-        <strong>Objetivo:</strong> Validar campos conforme o usuário digita
-        (onChange).
+        <strong>Objetivo:</strong> Implementar filtros que persistam na URL.
       </p>
       <ol>
-        <li>Mostrar feedback em tempo real abaixo de cada campo</li>
-        <li>Habilitar o botão somente se o formulário for válido</li>
+        <li>Use query parameters para filtros (search, status)</li>
+        <li>Atualize a URL conforme o usuário filtra</li>
+        <li>Mantenha os filtros ao recarregar a página</li>
+      </ol>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 4: Breadcrumb Navigation</h4>
+      <p><strong>Objetivo:</strong> Criar navegação breadcrumb.</p>
+      <ol>
+        <li>Mostre o caminho atual: Home > Contatos > Detalhes</li>
+        <li>Permita navegação clicando nos itens</li>
+        <li>Use <code>useLocation</code> para detectar a rota atual</li>
       </ol>
     </div>
   </section>
 
-  <!-- 6. Resumo -->
+  <!-- 6. Resumo Final -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-check-circle"></i> 6. Resumo
+      <i class="fas fa-check-circle"></i> 6. Resumo Final
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -476,9 +806,10 @@ export default function LoginForm() {
           <li>Formulários controlados centralizam o estado nos componentes</li>
           <li>Renderização condicional mantém a UI clara e contextual</li>
           <li>Validações simples aumentam a qualidade de dados</li>
-          <li>
-            Next.js + Tailwind ajudam a demonstrar rapidamente os conceitos
-          </li>
+          <li>React Router permite navegação SPA sem recarregar a página</li>
+          <li>Parâmetros de URL permitem compartilhar estados específicos</li>
+          <li>Navegação programática oferece controle total sobre o fluxo</li>
+          <li>Next.js + Tailwind + React Router criam aplicações completas</li>
         </ul>
       </div>
     </div>

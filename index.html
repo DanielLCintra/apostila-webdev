@@ -56,7 +56,10 @@
           </li>
 
           <li>
-            <a href="#" onclick="loadContent('introducaojs-variaveis-operadores')">
+            <a
+              href="#"
+              onclick="loadContent('introducaojs-variaveis-operadores')"
+            >
               <i class="fab fa-js"></i> Fundamentos do JavaScript I –
               Introdução, Variáveis e Operadores
             </a>
@@ -126,10 +129,13 @@
             </a>
           </li>
           <!-- <li>
-            <a href="#" onclick="loadContent('react-eventos-renderizacao-condicional')">
+            <a
+              href="#"
+              onclick="loadContent('react-eventos-renderizacao-condicional')"
+            >
               <i class="fab fa-react"></i> Eventos e Renderização Condicional
             </a>
-          </li>
+          </li> -->
         </ul>
 
         <!-- Seção de recursos -->
@@ -210,7 +216,7 @@
 
         // Atualizar URL sem recarregar a página
         const newUrl = `?page=${pageName}`;
-        window.history.pushState({ page: pageName }, '', newUrl);
+        window.history.pushState({ page: pageName }, "", newUrl);
 
         // Carregar conteúdo da aula
         fetch(`aulas/${pageName}.html`)
@@ -286,7 +292,7 @@
       // Carregar conteúdo inicial quando a página é carregada
       document.addEventListener("DOMContentLoaded", function () {
         // Verificar se há uma página específica na URL
-        const pageParam = getUrlParameter('page');
+        const pageParam = getUrlParameter("page");
         if (pageParam) {
           loadContent(pageParam);
         } else {
@@ -312,7 +318,7 @@
       });
 
       // Lidar com navegação do histórico do navegador
-      window.addEventListener('popstate', function(event) {
+      window.addEventListener("popstate", function (event) {
         if (event.state && event.state.page) {
           loadContent(event.state.page);
         } else {

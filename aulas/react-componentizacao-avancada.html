@@ -40,7 +40,7 @@
         <h4 class="mt-4 mb-2">1.1 Dashboard Monolítico</h4>
         <pre><code class="language-jsx">import React, { useState } from 'react';
 
-function Dashboard() {
+const Dashboard = () => {
   const [user] = useState({
     name: 'João Silva',
     email: 'joao@email.com',
@@ -153,7 +153,7 @@ function Dashboard() {
       &lt;/main&gt;
     &lt;/div&gt;
   );
-}
+};
 
 export default Dashboard;</code></pre>
 
@@ -192,13 +192,13 @@ export default Dashboard;</code></pre>
               <li>
                 <strong>Header</strong> - Cabeçalho com logo e perfil do usuário
               </li>
+              <li><strong>UserProfile</strong> - Perfil do usuário</li>
+              <li><strong>StatsGrid</strong> - Grid de estatísticas</li>
               <li>
                 <strong>StatCard</strong> - Card de estatística individual
               </li>
-              <li><strong>StatsGrid</strong> - Grid de estatísticas</li>
               <li><strong>DataTable</strong> - Tabela de dados reutilizável</li>
               <li><strong>StatusBadge</strong> - Badge de status</li>
-              <li><strong>UserProfile</strong> - Perfil do usuário</li>
             </ul>
           </div>
           <div class="col-md-6">
@@ -227,68 +227,8 @@ export default Dashboard;</code></pre>
       <div class="card-body">
         <h4 class="mb-3">3.1 Componentes Básicos</h4>
 
-        <h5>StatusBadge Component</h5>
-        <pre><code class="language-jsx">function StatusBadge({ status }) {
-  const getStatusStyles = (status) =&gt; {
-    switch (status) {
-      case 'Entregue':
-        return 'bg-green-100 text-green-800';
-      case 'Em trânsito':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'Processando':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  return (
-    &lt;span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusStyles(status)}`}&gt;
-      {status}
-    &lt;/span&gt;
-  );
-}</code></pre>
-
-        <h5>UserProfile Component</h5>
-        <pre><code class="language-jsx">function UserProfile({ user }) {
-  return (
-    &lt;div className="flex items-center space-x-4"&gt;
-      &lt;span className="text-gray-700"&gt;{user.name}&lt;/span&gt;
-      &lt;img 
-        className="w-10 h-10 rounded-full" 
-        src={user.avatar} 
-        alt={user.name} 
-      /&gt;
-    &lt;/div&gt;
-  );
-}</code></pre>
-
-        <h5>StatCard Component</h5>
-        <pre><code class="language-jsx">function StatCard({ label, value, change, color = 'blue' }) {
-  return (
-    &lt;div className="bg-white rounded-lg shadow p-6"&gt;
-      &lt;div className="flex items-center"&gt;
-        &lt;div className="flex-1"&gt;
-          &lt;p className="text-sm font-medium text-gray-600"&gt;{label}&lt;/p&gt;
-          &lt;p className="text-2xl font-bold text-gray-900"&gt;{value}&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className={`text-sm font-medium text-${color}-600`}&gt;
-          {change}
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  );
-}</code></pre>
-      </div>
-    </div>
-
-    <!-- 3.2 Componentes Compostos -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <h4 class="mb-3">3.2 Componentes Compostos</h4>
-
         <h5>Header Component</h5>
-        <pre><code class="language-jsx">function Header({ title, children }) {
+        <pre><code class="language-jsx">const Header = ({ title, children }) => {
   return (
     &lt;header className="bg-white shadow-sm border-b"&gt;
       &lt;div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"&gt;
@@ -301,10 +241,30 @@ export default Dashboard;</code></pre>
       &lt;/div&gt;
     &lt;/header&gt;
   );
-}</code></pre>
+};
+
+export default Header;</code></pre>
+
+        <h5>UserProfile Component</h5>
+        <pre><code class="language-jsx">const UserProfile = ({ user }) => {
+  return (
+    &lt;div className="flex items-center space-x-4"&gt;
+      &lt;span className="text-gray-700"&gt;{user.name}&lt;/span&gt;
+      &lt;img 
+        className="w-10 h-10 rounded-full" 
+        src={user.avatar} 
+        alt={user.name} 
+      /&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default UserProfile;</code></pre>
 
         <h5>StatsGrid Component</h5>
-        <pre><code class="language-jsx">function StatsGrid({ stats }) {
+        <pre><code class="language-jsx">import StatCard from './StatCard';
+
+const StatsGrid = ({ stats }) => {
   return (
     &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"&gt;
       {stats.map((stat, index) =&gt; (
@@ -318,10 +278,31 @@ export default Dashboard;</code></pre>
       ))}
     &lt;/div&gt;
   );
-}</code></pre>
+};
+
+export default StatsGrid;</code></pre>
+
+        <h5>StatCard Component</h5>
+        <pre><code class="language-jsx">const StatCard = ({ label, value, change, color = 'blue' }) => {
+  return (
+    &lt;div className="bg-white rounded-lg shadow p-6"&gt;
+      &lt;div className="flex items-center"&gt;
+        &lt;div className="flex-1"&gt;
+          &lt;p className="text-sm font-medium text-gray-600"&gt;{label}&lt;/p&gt;
+          &lt;p className="text-2xl font-bold text-gray-900"&gt;{value}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div className={`text-sm font-medium text-${color}-600`}&gt;
+          {change}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default StatCard;</code></pre>
 
         <h5>DataTable Component</h5>
-        <pre><code class="language-jsx">function DataTable({ title, columns, data }) {
+        <pre><code class="language-jsx">const DataTable = ({ title, columns, data }) => {
   return (
     &lt;div className="bg-white rounded-lg shadow"&gt;
       &lt;div className="px-6 py-4 border-b border-gray-200"&gt;
@@ -353,7 +334,63 @@ export default Dashboard;</code></pre>
       &lt;/div&gt;
     &lt;/div&gt;
   );
-}</code></pre>
+};
+
+export default DataTable;</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Explicação do Object.values():</strong>
+          <ul class="mt-2">
+            <li>
+              <strong>O que é:</strong> <code>Object.values()</code> é um método
+              nativo do JavaScript que retorna um array com todos os valores das
+              propriedades enumeráveis de um objeto.
+            </li>
+            <li>
+              <strong>Como funciona:</strong> Para um objeto
+              <code
+                >{id: "#1", customer: "João", amount: "R$ 100", status:
+                "Entregue"}</code
+              >, <code>Object.values()</code> retorna
+              <code>["#1", "João", "R$ 100", "Entregue"]</code>.
+            </li>
+            <li>
+              <strong>Por que usar aqui:</strong> Como nossa tabela é genérica e
+              não sabemos quais colunas existirão,
+              <code>Object.values()</code> nos permite iterar sobre todos os
+              valores de cada linha automaticamente, sem precisar especificar
+              cada propriedade individualmente.
+            </li>
+            <li>
+              <strong>Vantagem:</strong> Torna o componente DataTable
+              verdadeiramente reutilizável para qualquer estrutura de dados.
+            </li>
+          </ul>
+        </div>
+
+        <h5>StatusBadge Component</h5>
+        <pre><code class="language-jsx">const StatusBadge = ({ status }) => {
+  const getStatusStyles = (status) => {
+    switch (status) {
+      case 'Entregue':
+        return 'bg-green-100 text-green-800';
+      case 'Em trânsito':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Processando':
+        return 'bg-blue-100 text-blue-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    &lt;span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusStyles(status)}`}&gt;
+      {status}
+    &lt;/span&gt;
+  );
+};
+
+export default StatusBadge;</code></pre>
       </div>
     </div>
   </section>
@@ -377,7 +414,7 @@ import StatsGrid from './components/StatsGrid';
 import DataTable from './components/DataTable';
 import StatusBadge from './components/StatusBadge';
 
-function Dashboard() {
+const Dashboard = () => {
   const [user] = useState({
     name: 'João Silva',
     email: 'joao@email.com',
@@ -419,12 +456,42 @@ function Dashboard() {
           columns={['ID', 'Cliente', 'Valor', 'Status']}
           data={tableData}
         /&gt;
-      &lt;/main&gt;
+              &lt;/main&gt;
     &lt;/div&gt;
   );
-}
+};
 
 export default Dashboard;</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Explicação da Preparação de Dados:</strong>
+          <ul class="mt-2">
+            <li>
+              <strong>Por que transformar os dados:</strong> Os dados originais
+              <code>recentOrders</code> têm estrutura específica, mas o
+              componente <code>DataTable</code> é genérico e espera uma
+              estrutura padronizada.
+            </li>
+            <li>
+              <strong>Transformação necessária:</strong> Adicionamos
+              <code>#</code> ao ID para formatação visual, mantemos customer e
+              amount como estão, e incluímos o
+              <code>StatusBadge</code> diretamente no campo status.
+            </li>
+            <li>
+              <strong>Vantagem:</strong> Esta abordagem mantém o
+              <code>DataTable</code>
+              100% genérico - ele não precisa saber sobre StatusBadge ou
+              qualquer outro componente específico. A lógica de apresentação
+              fica na preparação dos dados, não no componente.
+            </li>
+            <li>
+              <strong>Flexibilidade:</strong> Se mudarmos a estrutura dos dados
+              originais ou quisermos usar outros componentes, só precisamos
+              ajustar esta transformação, não o componente DataTable.
+            </li>
+          </ul>
+        </div>
 
         <div class="alert alert-success mt-3">
           <strong>Resultado:</strong> O código agora está muito mais organizado,
@@ -500,9 +567,11 @@ export default Dashboard;</code></pre>
     <div class="card mb-4">
       <div class="card-body">
         <h4 class="mb-3">6.1 Componente com Render Props</h4>
-        <pre><code class="language-jsx">function ConditionalRender({ condition, children, fallback }) {
+        <pre><code class="language-jsx">const ConditionalRender = ({ condition, children, fallback }) => {
   return condition ? children : fallback;
-}
+};
+
+export default ConditionalRender;
 
 // Uso:
 &lt;ConditionalRender 
@@ -513,7 +582,7 @@ export default Dashboard;</code></pre>
 &lt;/ConditionalRender&gt;</code></pre>
 
         <h4 class="mt-4 mb-3">6.2 Componente com Múltiplos Slots</h4>
-        <pre><code class="language-jsx">function Card({ header, footer, children, className = '' }) {
+        <pre><code class="language-jsx">const Card = ({ header, footer, children, className = '' }) => {
   return (
     &lt;div className={`bg-white rounded-lg shadow ${className}`}&gt;
       {header && (
@@ -531,7 +600,9 @@ export default Dashboard;</code></pre>
       )}
     &lt;/div&gt;
   );
-}
+};
+
+export default Card;
 
 // Uso:
 &lt;Card
@@ -542,12 +613,12 @@ export default Dashboard;</code></pre>
 &lt;/Card&gt;</code></pre>
 
         <h4 class="mt-4 mb-3">6.3 Componente com Props Dinâmicas</h4>
-        <pre><code class="language-jsx">function Button({ 
+        <pre><code class="language-jsx">const Button = ({ 
   variant = 'primary', 
   size = 'md', 
   children, 
   ...props 
-}) {
+}) => {
   const baseClasses = 'font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2';
   
   const variants = {
@@ -570,7 +641,9 @@ export default Dashboard;</code></pre>
       {children}
     &lt;/button&gt;
   );
-}</code></pre>
+};
+
+export default Button;</code></pre>
       </div>
     </div>
   </section>
@@ -718,7 +791,7 @@ export default Dashboard;</code></pre>
       </ol>
       <details class="solucao">
         <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">function Card({ header, content, footer, className = '' }) {
+        <pre><code class="language-jsx">const Card = ({ header, content, footer, className = '' }) => {
   return (
     &lt;div className={`bg-white rounded-lg shadow-lg overflow-hidden ${className}`}&gt;
       {header && (
@@ -736,7 +809,9 @@ export default Dashboard;</code></pre>
       )}
     &lt;/div&gt;
   );
-}
+};
+
+export default Card;
 
 // Uso:
 &lt;Card
@@ -760,12 +835,12 @@ export default Dashboard;</code></pre>
       </ol>
       <details class="solucao">
         <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">function List({ 
+        <pre><code class="language-jsx">const List = ({ 
   items, 
   renderItem, 
   emptyMessage = "Nenhum item encontrado",
   className = '' 
-}) {
+}) => {
   if (items.length === 0) {
     return (
       &lt;div className={`text-center py-8 text-gray-500 ${className}`}&gt;
@@ -783,7 +858,9 @@ export default Dashboard;</code></pre>
       ))}
     &lt;/div&gt;
   );
-}
+};
+
+export default List;
 
 // Uso:
 const users = [
@@ -818,7 +895,7 @@ const users = [
         <summary>Mostrar solução</summary>
         <pre><code class="language-jsx">import { useEffect } from 'react';
 
-function Modal({ isOpen, onClose, children, title }) {
+const Modal = ({ isOpen, onClose, children, title }) => {
   useEffect(() =&gt; {
     const handleEsc = (e) =&gt; {
       if (e.key === 'Escape') onClose();
@@ -861,7 +938,9 @@ function Modal({ isOpen, onClose, children, title }) {
       &lt;/div&gt;
     &lt;/div&gt;
   );
-}
+};
+
+export default Modal;
 
 // Uso:
 &lt;Modal isOpen={showModal} onClose={() =&gt; setShowModal(false)} title="Confirmação"&gt;
