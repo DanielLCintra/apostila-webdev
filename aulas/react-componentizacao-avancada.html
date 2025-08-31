@@ -85,8 +85,8 @@ const Dashboard = () => {
       &lt;main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"&gt;
         {/* Stats Grid */}
         &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"&gt;
-          {stats.map((stat, index) =&gt; (
-            &lt;div key={index} className="bg-white rounded-lg shadow p-6"&gt;
+          {stats.map((stat) =&gt; (
+            &lt;div key={stat.label} className="bg-white rounded-lg shadow p-6"&gt;
               &lt;div className="flex items-center"&gt;
                 &lt;div className="flex-1"&gt;
                   &lt;p className="text-sm font-medium text-gray-600"&gt;{stat.label}&lt;/p&gt;
@@ -267,9 +267,9 @@ export default UserProfile;</code></pre>
 const StatsGrid = ({ stats }) => {
   return (
     &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"&gt;
-      {stats.map((stat, index) =&gt; (
+      {stats.map((stat) =&gt; (
         &lt;StatCard
-          key={index}
+          key={stat.label}
           label={stat.label}
           value={stat.value}
           change={stat.change}
@@ -281,6 +281,45 @@ const StatsGrid = ({ stats }) => {
 };
 
 export default StatsGrid;</code></pre>
+
+        <h5>StatsGrid Component (Versão com Spread Operator)</h5>
+        <pre><code class="language-jsx">import StatCard from './StatCard';
+
+const StatsGrid = ({ stats }) => {
+  return (
+    &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"&gt;
+      {stats.map((stat) =&gt; (
+        &lt;StatCard
+          key={stat.label}
+          {...stat}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+};
+
+export default StatsGrid;</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Comparação das duas abordagens:</strong>
+          <ul class="mt-2">
+            <li>
+              <strong>Versão 1:</strong> Passa cada propriedade explicitamente
+            </li>
+            <li>
+              <strong>Versão 2:</strong> Usa spread operator
+              <code>{...stat}</code> para passar todas as propriedades
+            </li>
+            <li>
+              <strong>Vantagem do spread:</strong> Código mais limpo e
+              automático
+            </li>
+            <li>
+              <strong>Vantagem explícita:</strong> Mais claro quais props estão
+              sendo passadas
+            </li>
+          </ul>
+        </div>
 
         <h5>StatCard Component</h5>
         <pre><code class="language-jsx">const StatCard = ({ label, value, change, color = 'blue' }) => {
@@ -312,8 +351,8 @@ export default StatCard;</code></pre>
         &lt;table className="min-w-full divide-y divide-gray-200"&gt;
           &lt;thead className="bg-gray-50"&gt;
             &lt;tr&gt;
-              {columns.map((column, index) =&gt; (
-                &lt;th key={index} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
+              {columns.map((column) =&gt; (
+                &lt;th key={column} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"&gt;
                   {column}
                 &lt;/th&gt;
               ))}
@@ -321,9 +360,9 @@ export default StatCard;</code></pre>
           &lt;/thead&gt;
           &lt;tbody className="bg-white divide-y divide-gray-200"&gt;
             {data.map((row, index) =&gt; (
-              &lt;tr key={index}&gt;
+              &lt;tr key={row.id || index}&gt;
                 {Object.values(row).map((cell, cellIndex) =&gt; (
-                  &lt;td key={cellIndex} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"&gt;
+                  &lt;td key={`${row.id || index}-${cellIndex}`} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"&gt;
                     {cell}
                   &lt;/td&gt;
                 ))}
@@ -852,7 +891,7 @@ export default Card;
   return (
     &lt;div className={`space-y-2 ${className}`}&gt;
       {items.map((item, index) =&gt; (
-        &lt;div key={index}&gt;
+        &lt;div key={item.id || index}&gt;
           {renderItem(item, index)}
         &lt;/div&gt;
       ))}

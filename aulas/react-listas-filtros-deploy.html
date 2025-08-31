@@ -282,7 +282,7 @@ const maioresQue3 = numeros.filter(numero => numero > 3);
 
         <h4>4.3 Implementando Busca no Projeto</h4>
         <pre><code class="language-jsx">// Componente FilterInput
-export default function FilterInput({ value, onChange }) {
+const FilterInput = ({ value, onChange }) => {
   return (
     &lt;input
       type="text"
@@ -292,7 +292,9 @@ export default function FilterInput({ value, onChange }) {
       className="border rounded px-3 py-2 text-gray-900"
     /&gt;
   );
-}</code></pre>
+};
+
+export default FilterInput;</code></pre>
 
         <h4>4.4 Lógica de Filtro na Página Principal</h4>
         <pre><code class="language-jsx">// Em HomePage - Lógica de filtro simples
@@ -389,71 +391,70 @@ export default function FilterInput({ value, onChange }) {
   );
 }</code></pre>
 
-        <h4>6.2 HomePage Atualizada com localStorage</h4>
-        <pre><code class="language-jsx">// app/page.js - HomePage expandida (continuação da aula anterior)
-"use client";
-import { useState, useEffect } from 'react';
-import ContactForm from '../components/ContactForm';
-import ContactList from '../components/ContactList';
-import FilterInput from '../components/FilterInput';
+        <h4>6.2 Adicionando localStorage à HomePage</h4>
+        <p>
+          Vamos adicionar as funcionalidades de persistência e filtro à página
+          principal que você já tem da aula anterior:
+        </p>
 
-export default function HomePage() {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
+        <h5>1. Importar useEffect</h5>
+        <pre><code class="language-jsx">// Adicione useEffect ao import existente
+import { useState, useEffect } from 'react';</code></pre>
 
-  // Carregar contatos do localStorage na inicialização
-  useEffect(() => {
-    const savedContacts = localStorage.getItem('contatos');
-    if (savedContacts) {
-      setContacts(JSON.parse(savedContacts));
-    }
-  }, []);
+        <h5>2. Adicionar estado de controle</h5>
+        <pre><code class="language-jsx">// Adicione este estado junto aos outros
+const [isLoaded, setIsLoaded] = useState(false);</code></pre>
 
-  // Salvar contatos no localStorage sempre que mudarem
-  useEffect(() => {
+        <h5>3. Adicionar useEffect de carregamento</h5>
+        <pre><code class="language-jsx">// Adicione este useEffect após os estados
+useEffect(() => {
+  const savedContacts = localStorage.getItem('contatos');
+  if (savedContacts) {
+    setContacts(JSON.parse(savedContacts));
+  }
+  setIsLoaded(true);
+}, []);</code></pre>
+
+        <h5>4. Adicionar useEffect de salvamento</h5>
+        <pre><code class="language-jsx">// Adicione este useEffect após o anterior
+useEffect(() => {
+  if (isLoaded) {
     localStorage.setItem('contatos', JSON.stringify(contacts));
-  }, [contacts]);
+  }
+}, [contacts, isLoaded]);</code></pre>
 
-  const handleSubmit = (newContact) => {
-    setContacts(prev => [...prev, { ...newContact, id: Date.now() }]);
-  };
+        <h5>5. Atualizar handleSubmit</h5>
+        <pre><code class="language-jsx">// Modifique a função handleSubmit existente
+const handleSubmit = (newContact) => {
+  setContacts(prev => [...prev, { ...newContact, id: Date.now() }]);
+};</code></pre>
 
-  const handleRemove = (id) => {
-    setContacts(prev => prev.filter(c => c.id !== id));
-  };
+        <h5>6. Adicionar lógica de filtro</h5>
+        <pre><code class="language-jsx">// Adicione antes do return
+const filteredContacts = contacts.filter(contact =>
+  contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+  contact.email.toLowerCase().includes(filter.toLowerCase())
+);</code></pre>
 
-  // Filtro simples por nome ou email
-  const filteredContacts = contacts.filter(contact =>
-    contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
-    contact.email.toLowerCase().includes(filter.toLowerCase())
-  );
+        <h5>7. Atualizar ContactList</h5>
+        <pre><code class="language-jsx">// Modifique a linha do ContactList
+&lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;</code></pre>
 
-  return (
-    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
-      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
-        &lt;header className="flex items-center justify-between"&gt;
-          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
-          &lt;FilterInput value={filter} onChange={setFilter} /&gt;
-        &lt;/header&gt;
+        <div class="alert alert-info">
+          <strong>Nota:</strong> O resto do código permanece igual ao da aula
+          anterior. Apenas adicionamos localStorage e filtro!
+        </div>
 
-        &lt;ContactForm onAdd={handleSubmit} /&gt;
-
-        &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  );
-}</code></pre>
-
-        <h4>6.3 ContactItem Atualizado</h4>
+        <h4>6.3 ContactItem Simplificado</h4>
         <pre><code class="language-jsx">// components/ContactItem.jsx (atualização do componente da aula anterior)
 import Link from 'next/link';
 
-export default function ContactItem({ contact, onRemove }) {
+const ContactItem = ({ contact, onRemove }) => {
   return (
     &lt;li className="p-4 border border-gray-200 rounded-lg flex items-center justify-between hover:bg-gray-50"&gt;
       &lt;div className="flex-1"&gt;
         &lt;Link
-          href={`/contact/${contact.id}?nome=${encodeURIComponent(contact.nome)}&email=${encodeURIComponent(contact.email)}&telefone=${encodeURIComponent(contact.telefone)}`}
+          href={`/contact/${contact.id}`}
           className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
         &gt;
           {contact.nome}
@@ -470,7 +471,121 @@ export default function ContactItem({ contact, onRemove }) {
       &lt;/button&gt;
     &lt;/li&gt;
   );
-}</code></pre>
+};
+
+export default ContactItem;</code></pre>
+
+        <div class="alert alert-info">
+          <strong>Mudança:</strong> Removemos os query parameters da URL. Agora
+          apenas passamos o ID do contato!
+        </div>
+
+        <h4>6.4 Página de Detalhes Atualizada</h4>
+        <p>
+          Agora que temos persistência, vamos atualizar a página de detalhes
+          para buscar os dados do contato pelo ID no localStorage:
+        </p>
+
+        <h5>1. Atualizar imports</h5>
+        <pre><code class="language-jsx">// app/contact/[id]/page.js
+"use client";
+import { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';</code></pre>
+
+        <h5>2. Implementar busca no localStorage</h5>
+        <pre><code class="language-jsx">const ContactDetailPage = () => {
+  const params = useParams();
+  const router = useRouter();
+  const [contact, setContact] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Buscar contatos do localStorage
+    const savedContacts = localStorage.getItem('contatos');
+    if (savedContacts) {
+      const contacts = JSON.parse(savedContacts);
+      const foundContact = contacts.find(c => c.id === parseInt(params.id));
+      
+      if (foundContact) {
+        setContact(foundContact);
+      } else {
+        // Contato não encontrado
+        router.push('/');
+      }
+    } else {
+      // Não há contatos salvos
+      router.push('/');
+    }
+    setLoading(false);
+  }, [params.id, router]);
+
+  if (loading) {
+    return (
+      &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+        &lt;div className="max-w-2xl mx-auto"&gt;
+          &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+            &lt;p className="text-gray-600"&gt;Carregando...&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (!contact) {
+    return (
+      &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+        &lt;div className="max-w-2xl mx-auto"&gt;
+          &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+            &lt;p className="text-gray-600"&gt;Contato não encontrado&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+      &lt;div className="max-w-2xl mx-auto"&gt;
+        &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+          &lt;div className="flex items-center justify-between mb-6"&gt;
+            &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Detalhes do Contato&lt;/h1&gt;
+            &lt;button
+              onClick={() => router.back()}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded"
+            &gt;
+              ← Voltar
+            &lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;div className="space-y-4"&gt;
+            &lt;div&gt;
+              &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Nome&lt;/label&gt;
+              &lt;p className="text-gray-900"&gt;{contact.nome}&lt;/p&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Email&lt;/label&gt;
+              &lt;p className="text-gray-900"&gt;{contact.email}&lt;/p&gt;
+            &lt;/div&gt;
+            
+            &lt;div&gt;
+              &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Telefone&lt;/label&gt;
+              &lt;p className="text-gray-900"&gt;{contact.telefone}&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default ContactDetailPage;</code></pre>
+
+        <div class="alert alert-success">
+          <strong>Vantagens:</strong> Agora a página de detalhes busca os dados
+          diretamente do localStorage, eliminando a necessidade de passar dados
+          via URL e tornando a navegação mais limpa e eficiente!
+        </div>
       </div>
     </div>
   </section>
@@ -694,14 +809,8 @@ module.exports = nextConfig</code></pre>
           >
         </div>
 
-        <div class="mt-4">
-          <button class="btn btn-primary" onclick="mostrarGabarito()">
-            Ver Gabarito
-          </button>
-        </div>
-
-        <div id="gabarito" class="mt-3" style="display: none">
-          <h5>Gabarito:</h5>
+        <details class="solucao">
+          <summary>Mostrar gabarito</summary>
           <ol>
             <li>
               <strong>b)</strong> Armazenar dados permanentemente no navegador
@@ -711,12 +820,10 @@ module.exports = nextConfig</code></pre>
               <code>localStorage.setItem('chave', JSON.stringify(objeto))</code>
             </li>
             <li><strong>b)</strong> <code>filter()</code></li>
-            <li><strong>c)</strong> Usar um ID único e estável</li>
-            <li>
-              <strong>a)</strong> Detecta o framework e configura o deploy
-            </li>
+            <li><strong>a)</strong> <code>key={item.id}</code></li>
+            <li><strong>c)</strong> Vercel</li>
           </ol>
-        </div>
+        </details>
       </div>
     </div>
   </section>
@@ -726,51 +833,27 @@ module.exports = nextConfig</code></pre>
     <h3 class="section-title with-icon">
       <i class="fas fa-code"></i> 9. Exercícios Práticos
     </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <h4>Exercício 1: Lista de Tarefas</h4>
-        <p>Crie uma aplicação de lista de tarefas com:</p>
-        <ul>
-          <li>Adicionar nova tarefa</li>
-          <li>Marcar como concluída</li>
-          <li>Filtrar por prioridade (alta, média, baixa)</li>
-          <li>Buscar por texto</li>
-        </ul>
 
-        <h4>Exercício 2: Galeria de Produtos</h4>
-        <p>Crie uma galeria de produtos com:</p>
-        <ul>
-          <li>Lista de produtos com imagem, nome, preço</li>
-          <li>Filtro por categoria</li>
-          <li>Busca por nome</li>
-          <li>Ordenação por preço (menor/maior)</li>
-        </ul>
-
-        <h4>Exercício 3: Dashboard de Usuários</h4>
-        <p>Expanda o projeto de contatos com:</p>
-        <ul>
-          <li>Adicionar campo "cargo" aos contatos</li>
-          <li>Filtro por cargo</li>
-          <li>Estatísticas (total de contatos, ativos, inativos)</li>
-          <li>Exportar lista filtrada</li>
-        </ul>
-
-        <h4>Exercício 4: Deploy</h4>
-        <p>Faça o deploy de um dos exercícios no Vercel:</p>
-        <ol>
-          <li>Crie um repositório no GitHub</li>
-          <li>Faça push do código</li>
-          <li>Conecte ao Vercel</li>
-          <li>Configure variáveis de ambiente se necessário</li>
-          <li>Teste a aplicação online</li>
-        </ol>
-
-        <h4>Propostas de Solução</h4>
-
-        <h5>Exercício 1: Lista de Tarefas</h5>
+    <!-- Exercício 1 -->
+    <div class="desafio">
+      <h4>Exercício 1: Lista de Tarefas</h4>
+      <p>
+        <strong>Objetivo:</strong> criar uma aplicação de lista de tarefas com
+        persistência e filtros.
+      </p>
+      <ol>
+        <li>Adicionar nova tarefa com título e prioridade</li>
+        <li>Marcar tarefa como concluída</li>
+        <li>Filtrar por prioridade (alta, média, baixa)</li>
+        <li>Buscar tarefas por texto</li>
+        <li>Salvar dados no localStorage</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
         <pre><code class="language-jsx">// Estrutura de dados
 const [tarefas, setTarefas] = useState([]);
 const [filtro, setFiltro] = useState('');
+const [filtroPrioridade, setFiltroPrioridade] = useState('todas');
 
 // Carregar do localStorage
 useEffect(() => {
@@ -789,10 +872,27 @@ const tarefasFiltradas = tarefas.filter(tarefa => {
   const matchPrioridade = filtroPrioridade === 'todas' || tarefa.prioridade === filtroPrioridade;
   return matchTexto && matchPrioridade;
 });</code></pre>
+      </details>
+    </div>
 
-        <h5>Exercício 2: Galeria de Produtos</h5>
+    <!-- Exercício 2 -->
+    <div class="desafio">
+      <h4>Exercício 2: Galeria de Produtos</h4>
+      <p>
+        <strong>Objetivo:</strong> criar uma galeria de produtos com filtros
+        avançados.
+      </p>
+      <ol>
+        <li>Lista de produtos com imagem, nome, preço e categoria</li>
+        <li>Filtro por categoria (dropdown)</li>
+        <li>Busca por nome do produto</li>
+        <li>Ordenação por preço (menor/maior)</li>
+        <li>Persistência no localStorage</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
         <pre><code class="language-jsx">// Componente de filtro
-function FiltroProdutos({ categoria, setCategoria, busca, setBusca }) {
+const FiltroProdutos = ({ categoria, setCategoria, busca, setBusca }) => {
   return (
     &lt;div className="flex gap-4 mb-4"&gt;
       &lt;select 
@@ -814,11 +914,30 @@ function FiltroProdutos({ categoria, setCategoria, busca, setBusca }) {
       /&gt;
     &lt;/div&gt;
   );
-}</code></pre>
+};
 
-        <h5>Exercício 3: Dashboard de Usuários</h5>
+export default FiltroProdutos;</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 3 -->
+    <div class="desafio">
+      <h4>Exercício 3: Dashboard de Usuários</h4>
+      <p>
+        <strong>Objetivo:</strong> expandir o projeto de contatos com
+        funcionalidades avançadas.
+      </p>
+      <ol>
+        <li>Adicionar campo "cargo" aos contatos</li>
+        <li>Filtro por cargo (select)</li>
+        <li>Estatísticas em tempo real (total, ativos, inativos)</li>
+        <li>Exportar lista filtrada para CSV</li>
+        <li>Persistência completa no localStorage</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
         <pre><code class="language-jsx">// Estatísticas
-function Estatisticas({ contatos }) {
+const Estatisticas = ({ contatos }) => {
   const total = contatos.length;
   const ativos = contatos.filter(c => c.status === 'ativo').length;
   const inativos = total - ativos;
@@ -838,8 +957,43 @@ function Estatisticas({ contatos }) {
       &lt;/div&gt;
     &lt;/div&gt;
   );
-}</code></pre>
-      </div>
+};
+
+export default Estatisticas;</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 4 -->
+    <div class="desafio">
+      <h4>Exercício 4: Deploy no Vercel</h4>
+      <p>
+        <strong>Objetivo:</strong> fazer o deploy de um dos exercícios no
+        Vercel.
+      </p>
+      <ol>
+        <li>Crie um repositório no GitHub</li>
+        <li>Faça push do código completo</li>
+        <li>Conecte o repositório ao Vercel</li>
+        <li>Configure variáveis de ambiente se necessário</li>
+        <li>Teste a aplicação online</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-bash"># 1. Criar repositório no GitHub
+git init
+git add .
+git commit -m "Primeira versão da aplicação"
+git branch -M main
+git remote add origin https://github.com/seu-usuario/seu-repo.git
+git push -u origin main
+
+# 2. Conectar ao Vercel
+# - Acesse vercel.com
+# - Clique em "New Project"
+# - Importe o repositório do GitHub
+# - Configure as opções de build
+# - Deploy automático!</code></pre>
+      </details>
     </div>
   </section>
 
@@ -895,14 +1049,3 @@ function Estatisticas({ contatos }) {
     </div>
   </section>
 </article>
-
-<script>
-  function mostrarGabarito() {
-    const gabarito = document.getElementById("gabarito");
-    if (gabarito.style.display === "none") {
-      gabarito.style.display = "block";
-    } else {
-      gabarito.style.display = "none";
-    }
-  }
-</script>

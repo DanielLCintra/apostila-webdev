@@ -167,30 +167,25 @@ export default function RootLayout({ children }) {
         </p>
         <pre><code class="language-jsx">"use client";
 import { useState } from "react";
+import ContactForm from "./components/ContactForm";
+import ContactList from "./components/ContactList";
 
-import { ContactForm } from "./components/ContactForm";
-import { ContactList } from "./components/ContactList";
-
-export default function HomePage() {
+const HomePage = () => {
   const [contacts, setContacts] = useState([]);
 
+  const handleSubmit = (newContact) => {
+    setContacts(prev => [...prev, newContact]);
+  };
 
-  function handleSubmit(newContact) {
-    setContacts(prev =&gt; [...prev, newContact]);
-  }
-
-  function handleRemove(id) {
-    setContacts(prev =&gt; prev.filter(c =&gt; c.id !== id));
-  }
-
-
+  const handleRemove = (id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  };
 
   return (
     &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
       &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
         &lt;header className="flex items-center justify-between"&gt;
           &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
-
         &lt;/header&gt;
 
         &lt;ContactForm onAdd={handleSubmit} /&gt;
@@ -199,7 +194,9 @@ export default function HomePage() {
       &lt;/div&gt;
     &lt;/div&gt;
   );
-}</code></pre>
+};
+
+export default HomePage;</code></pre>
 
         <div class="alert alert-info mt-3">
           <strong>Estado em Memória:</strong> Os contatos são mantidos apenas em
@@ -229,20 +226,20 @@ export default function HomePage() {
         <h5 class="mt-3 mb-2">ContactForm Component</h5>
         <pre><code class="language-jsx">import { useState } from "react";
 
-export function ContactForm({ onAdd }) {
+const ContactForm = ({ onAdd }) => {
   const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) =&gt; ({ ...prev, [name]: value }));
-  }
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.nome.trim()) return; // Validação simples
     onAdd({ ...form, id: Date.now() });
     setForm({ nome: "", email: "", telefone: "" });
-  }
+  };
 
   return (
     &lt;form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4"&gt;
@@ -283,12 +280,14 @@ export function ContactForm({ onAdd }) {
       &lt;/button&gt;
     &lt;/form&gt;
   );
-}</code></pre>
+};
 
-        <h5 class="mt-3 mb-2">ContactList e ContactItem Components</h5>
+export default ContactForm;</code></pre>
+
+        <h5 class="mt-3 mb-2">ContactItem Component</h5>
         <pre><code class="language-jsx">import Link from 'next/link';
 
-export function ContactItem({ contact, onRemove }) {
+const ContactItem = ({ contact, onRemove }) => {
   return (
     &lt;li className="p-4 flex items-center justify-between"&gt;
       &lt;div&gt;
@@ -303,16 +302,21 @@ export function ContactItem({ contact, onRemove }) {
         &lt;/p&gt;
       &lt;/div&gt;
       &lt;button 
-        onClick={() =&gt; onRemove(contact.id)}
+        onClick={() => onRemove(contact.id)}
         className="text-red-600 hover:text-red-700 px-2 py-1 rounded"
       &gt;
         Excluir
       &lt;/button&gt;
     &lt;/li&gt;
   );
-}
+};
 
-export function ContactList({ items, onRemove }) {
+export default ContactItem;</code></pre>
+
+        <h5 class="mt-3 mb-2">ContactList Component</h5>
+        <pre><code class="language-jsx">import ContactItem from './ContactItem';
+
+const ContactList = ({ items, onRemove }) => {
   return (
     &lt;section className="bg-white shadow rounded"&gt;
       &lt;div className="px-4 py-3 border-b"&gt;
@@ -322,14 +326,16 @@ export function ContactList({ items, onRemove }) {
         {items.length === 0 ? (
           &lt;li className="p-4 text-gray-500"&gt;Nenhum contato encontrado&lt;/li&gt;
         ) : (
-          items.map((c) =&gt; (
+          items.map((c) => (
             &lt;ContactItem key={c.id} contact={c} onRemove={onRemove} /&gt;
           ))
         )}
       &lt;/ul&gt;
     &lt;/section&gt;
   );
-}</code></pre>
+};
+
+export default ContactList;</code></pre>
       </div>
     </div>
   </section>
@@ -411,7 +417,7 @@ export function ContactList({ items, onRemove }) {
 "use client";
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
-export default function ContactDetailPage() {
+const ContactDetailPage = () => {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -431,7 +437,7 @@ export default function ContactDetailPage() {
           &lt;div className="flex items-center justify-between mb-6"&gt;
             &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Detalhes do Contato&lt;/h1&gt;
             &lt;button
-              onClick={() =&gt; router.back()}
+              onClick={() => router.back()}
               className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded"
             &gt;
               ← Voltar
@@ -458,7 +464,9 @@ export default function ContactDetailPage() {
       &lt;/div&gt;
     &lt;/div&gt;
   );
-}</code></pre>
+};
+
+export default ContactDetailPage;</code></pre>
 
         <div class="alert alert-info mt-3">
           <strong>Fluxo de Passagem de Dados:</strong>
