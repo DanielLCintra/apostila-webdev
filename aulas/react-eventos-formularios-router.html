@@ -58,9 +58,7 @@
             <strong>ContactForm:</strong> Formulário para adicionar novos
             contatos
           </li>
-          <li>
-            <strong>FilterInput:</strong> Campo de filtro para buscar contatos
-          </li>
+
           <li>
             <strong>ContactList:</strong> Lista que exibe todos os contatos
           </li>
@@ -77,7 +75,7 @@
 │       └── page.js            # Página de detalhes (/contact/[id])
 └── components/
     ├── ContactForm.jsx        # Formulário de contato
-    ├── FilterInput.jsx        # Campo de filtro
+    
     ├── ContactList.jsx        # Lista de contatos
     └── ContactItem.jsx        # Item de contato</code></pre>
       </div>
@@ -107,35 +105,22 @@
         <ul>
           <li>
             <strong>Página Principal:</strong> Lista de contatos com formulário
-            de cadastro e filtro simples
+            de cadastro
           </li>
           <li>
             <strong>Página de Detalhes:</strong> Exibe informações completas de
             um contato
           </li>
           <li>
-            <strong>Componentes:</strong> Formulário, lista, filtro e item de
-            contato
+            <strong>Componentes:</strong> Formulário, lista e item de contato
           </li>
         </ul>
 
-        <h5 class="mt-4 mb-2">Estrutura de Pastas Completa</h5>
-        <pre><code class="language-plaintext">app/
-├── page.js                    # Página inicial (/)
-├── layout.js                  # Layout compartilhado
-├── globals.css                # Estilos globais com Tailwind
-├── contact/
-│   └── [id]/
-│       └── page.js            # Página de detalhes (/contact/[id])
-└── components/
-    ├── FilterInput.jsx        # Componente de filtro
-    ├── ContactForm.jsx        # Formulário de contato
-    ├── ContactList.jsx        # Lista de contatos
-    └── ContactItem.jsx        # Item individual de contato</code></pre>
-
         <div class="alert alert-info mt-3">
-          <strong>Nota:</strong> A pasta <code>components</code> é opcional, mas
-          ajuda a organizar melhor o código.
+          <strong>Nota:</strong> Na imagem acima, você pode ver que há um campo
+          de filtro no layout. Este componente será implementado na próxima aula
+          "Listas, Filtros e Deploy Vercel". Por enquanto, focaremos apenas no
+          formulário, lista e navegação.
         </div>
 
         <h5 class="mt-4 mb-2">Layout Compartilhado (app/layout.js)</h5>
@@ -168,31 +153,6 @@ export default function RootLayout({ children }) {
           e as diretivas do Tailwind no globals.css, as classes do Tailwind não
           funcionarão na aplicação.
         </div>
-
-        <h5 class="mt-4 mb-2">Configuração do Tailwind CSS</h5>
-        <p>
-          Para que o Tailwind CSS funcione corretamente, você também precisa ter
-          o arquivo de configuração:
-        </p>
-        <pre><code class="language-js">// tailwind.config.js
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}</code></pre>
-
-        <div class="alert alert-warning mt-3">
-          <strong>Dica:</strong> Se você criou o projeto com
-          <code>create-next-app</code> e selecionou Tailwind CSS, esses arquivos
-          já estarão configurados automaticamente.
-        </div>
       </div>
     </div>
 
@@ -207,13 +167,13 @@ module.exports = {
         </p>
         <pre><code class="language-jsx">"use client";
 import { useState } from "react";
-import { FilterInput } from "./components/FilterInput";
+
 import { ContactForm } from "./components/ContactForm";
 import { ContactList } from "./components/ContactList";
 
 export default function HomePage() {
   const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState("");
+
 
   function handleSubmit(newContact) {
     setContacts(prev =&gt; [...prev, newContact]);
@@ -223,23 +183,19 @@ export default function HomePage() {
     setContacts(prev =&gt; prev.filter(c =&gt; c.id !== id));
   }
 
-  // Filtro simples por nome ou email
-  const filtered = contacts.filter(c =&gt;
-    c.nome.toLowerCase().includes(filter.toLowerCase()) ||
-    c.email.toLowerCase().includes(filter.toLowerCase())
-  );
+
 
   return (
     &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
       &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
         &lt;header className="flex items-center justify-between"&gt;
           &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
-          &lt;FilterInput value={filter} onChange={setFilter} /&gt;
+
         &lt;/header&gt;
 
         &lt;ContactForm onAdd={handleSubmit} /&gt;
 
-        &lt;ContactList items={filtered} onRemove={handleRemove} /&gt;
+        &lt;ContactList items={contacts} onRemove={handleRemove} /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   );
@@ -269,18 +225,6 @@ export default function HomePage() {
             Estrutura de componentes da aplicação de contatos
           </p>
         </div>
-
-        <h5 class="mt-3 mb-2">FilterInput Component</h5>
-        <pre><code class="language-jsx">export function FilterInput({ value, onChange }) {
-  return (
-    &lt;input
-      className="border rounded px-3 py-2 text-gray-900"
-      placeholder="Filtrar por nome ou email"
-      value={value}
-      onChange={(e) =&gt; onChange(e.target.value)}
-    /&gt;
-  );
-}</code></pre>
 
         <h5 class="mt-3 mb-2">ContactForm Component</h5>
         <pre><code class="language-jsx">import { useState } from "react";

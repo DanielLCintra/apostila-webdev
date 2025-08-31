@@ -1,0 +1,908 @@
+<!-- ==================== Aula React 6 - Listas, Filtros e Deploy Vercel ==================== -->
+<article class="lesson-content">
+  <h2><i class="fab fa-react"></i> React – Listas, Filtros e Deploy Vercel</h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula, vamos expandir nosso projeto de contatos da aula anterior com
+      funcionalidades de persistência, filtros de busca e deploy no Vercel.
+      Vamos aprender como trabalhar com localStorage, implementar busca
+      eficiente e colocar nossa aplicação em produção.
+    </p>
+    <ul>
+      <li>✅ Persistência: Salvar dados no localStorage</li>
+      <li>
+        ✅ Filtros e Busca: Implementar busca usando <code>filter()</code>
+      </li>
+      <li>✅ Keys: Entender a importância das keys na renderização</li>
+      <li>✅ Deploy: Fazer o deploy da aplicação no Vercel</li>
+      <li>
+        ✅ Projeto Expandido: Funcionalidades avançadas no projeto de contatos
+      </li>
+    </ul>
+  </div>
+
+  <div class="alert alert-info">
+    <strong>Pré-requisito:</strong> Esta aula continua o projeto da aula
+    anterior "React – Eventos, Formulários e Navegação". Certifique-se de ter o
+    projeto base funcionando.
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h4><i class="fas fa-link"></i> Continuidade do Projeto</h4>
+    </div>
+    <div class="card-body">
+      <p>
+        <strong>Esta aula é uma continuação direta da aula anterior.</strong>
+        Vamos usar o mesmo projeto de contatos que criamos, mas agora vamos
+        adicionar funcionalidades mais avançadas:
+      </p>
+      <ul>
+        <li>
+          <strong>Projeto Base:</strong> Sistema de contatos com formulário,
+          lista e navegação
+        </li>
+        <li><strong>Novas Funcionalidades:</strong> Busca simples e deploy</li>
+        <li>
+          <strong>Componentes Existentes:</strong> ContactForm, ContactList,
+          ContactItem
+        </li>
+        <li><strong>Novo Componente:</strong> FilterInput</li>
+      </ul>
+      <div class="alert alert-warning">
+        <strong>Importante:</strong> Se você não completou a aula anterior, faça
+        isso primeiro. Esta aula assume que você já tem o projeto base
+        funcionando.
+      </div>
+    </div>
+  </div>
+
+  <!-- Layout do Projeto -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-palette"></i> Layout do Projeto
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">Componentização da Aplicação</h4>
+        <p>
+          Vamos começar visualizando a estrutura de componentes da nossa
+          aplicação de contatos:
+        </p>
+
+        <div class="text-center mb-4">
+          <img
+            src="../assets/images/contatos_components.png"
+            alt="Componentização do projeto de contatos"
+            class="img-fluid rounded shadow"
+            style="max-width: 100%; height: auto"
+          />
+          <p class="text-sm text-gray-600 mt-2">
+            Estrutura de componentes da aplicação de contatos
+          </p>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>Destaque:</strong> Na imagem acima, você pode ver todos os
+          componentes da aplicação. Nesta aula, vamos implementar o
+          <strong>FilterInput</strong> (campo de busca) que estava visível no
+          layout da aula anterior, mas ainda não tinha funcionalidade.
+        </div>
+
+        <h5 class="mt-4 mb-2">Componentes que vamos trabalhar:</h5>
+        <ul>
+          <li>
+            <strong>ContactForm:</strong> Formulário de cadastro (já
+            implementado)
+          </li>
+          <li>
+            <strong>ContactList:</strong> Lista de contatos (já implementado)
+          </li>
+          <li>
+            <strong>ContactItem:</strong> Item individual (já implementado)
+          </li>
+          <li>
+            <strong>FilterInput:</strong> Campo de busca simples (será
+            implementado nesta aula)
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. Introdução -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-info-circle"></i> 1. Introdução
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta aula, vamos expandir nosso projeto de contatos da aula anterior
+          com funcionalidades essenciais:
+        </p>
+        <ul>
+          <li>
+            <strong>Persistência:</strong> Salvar dados no localStorage para
+            manter informações entre sessões
+          </li>
+          <li>
+            <strong>Filtros e Busca:</strong> Implementar busca e filtros usando
+            <code>filter()</code>
+          </li>
+          <li>
+            <strong>Keys:</strong> Entender a importância das keys na
+            renderização
+          </li>
+          <li>
+            <strong>Deploy:</strong> Fazer o deploy da aplicação no Vercel
+          </li>
+        </ul>
+
+        <div class="alert alert-warning">
+          <strong>Projeto Base:</strong> Vamos usar o mesmo projeto da aula
+          anterior, mas agora com funcionalidades mais avançadas de listas e
+          filtros.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Listas Dinâmicas com map() -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-list"></i> 2. Listas Dinâmicas com map()
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>2.1 Conceito do map()</h4>
+        <p>
+          O método <code>map()</code> é fundamental para renderizar listas em
+          React. Ele transforma cada elemento de um array em um elemento JSX.
+        </p>
+
+        <h4>2.2 Sintaxe Básica</h4>
+        <pre><code class="language-jsx">// Sintaxe básica do map()
+const lista = [1, 2, 3, 4, 5];
+
+const elementosJSX = lista.map((item, index) => {
+  return &lt;li key={index}&gt;{item}&lt;/li&gt;;
+});
+
+// Renderização
+return &lt;ul&gt;{elementosJSX}&lt;/ul&gt;;</code></pre>
+
+        <h4>2.3 Exemplo Prático - Lista de Contatos</h4>
+        <pre><code class="language-jsx">// Componente ContactList
+export default function ContactList({ contacts, onRemove }) {
+  return (
+    &lt;div className="mt-6"&gt;
+      &lt;h3 className="text-lg font-semibold text-gray-900 mb-4"&gt;Lista de Contatos&lt;/h3&gt;
+      &lt;ul className="space-y-2"&gt;
+        {contacts.map((contact) => (
+          &lt;ContactItem 
+            key={contact.id} 
+            contact={contact} 
+            onRemove={onRemove} 
+          /&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+        <div class="alert alert-info">
+          <strong>Importante:</strong> Sempre use uma <code>key</code> única
+          para cada elemento da lista. Isso ajuda o React a identificar e
+          atualizar elementos eficientemente.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Persistência com localStorage -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-database"></i> 3. Persistência com localStorage
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>3.1 Conceito do localStorage</h4>
+        <p>
+          O <code>localStorage</code> é uma API do navegador que permite
+          armazenar dados no navegador do usuário. Os dados persistem mesmo após
+          fechar e reabrir o navegador.
+        </p>
+
+        <h4>3.2 Métodos Principais</h4>
+        <pre><code class="language-js">// Salvar dados
+localStorage.setItem('chave', 'valor');
+
+// Recuperar dados
+const valor = localStorage.getItem('chave');
+
+// Remover dados
+localStorage.removeItem('chave');
+
+// Limpar tudo
+localStorage.clear();
+
+// Verificar se existe
+if (localStorage.getItem('chave')) {
+  // dados existem
+}</code></pre>
+
+        <h4>3.3 Trabalhando com Objetos</h4>
+        <p>
+          Como o localStorage só armazena strings, precisamos converter objetos
+          para JSON:
+        </p>
+        <pre><code class="language-js">// Salvar array de objetos
+const contatos = [
+  { id: 1, nome: 'João', email: 'joao@email.com' },
+  { id: 2, nome: 'Maria', email: 'maria@email.com' }
+];
+
+localStorage.setItem('contatos', JSON.stringify(contatos));
+
+// Recuperar array de objetos
+const contatosSalvos = JSON.parse(localStorage.getItem('contatos') || '[]');</code></pre>
+
+        <div class="alert alert-info">
+          <strong>Importante:</strong> Sempre use <code>JSON.parse()</code> para
+          recuperar objetos e <code>JSON.stringify()</code> para salvar objetos.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Filtros e Busca com filter() -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-search"></i> 4. Filtros e Busca com filter()
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>4.1 Conceito do filter()</h4>
+        <p>
+          O método <code>filter()</code> cria um novo array com elementos que
+          passam em um teste. É perfeito para implementar busca e filtros.
+        </p>
+
+        <h4>4.2 Sintaxe Básica</h4>
+        <pre><code class="language-jsx">// Sintaxe básica do filter()
+const numeros = [1, 2, 3, 4, 5, 6];
+
+const pares = numeros.filter(numero => numero % 2 === 0);
+// Resultado: [2, 4, 6]
+
+const maioresQue3 = numeros.filter(numero => numero > 3);
+// Resultado: [4, 5, 6]</code></pre>
+
+        <h4>4.3 Implementando Busca no Projeto</h4>
+        <pre><code class="language-jsx">// Componente FilterInput
+export default function FilterInput({ value, onChange }) {
+  return (
+    &lt;input
+      type="text"
+      placeholder="Filtrar por nome ou email..."
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="border rounded px-3 py-2 text-gray-900"
+    /&gt;
+  );
+}</code></pre>
+
+        <h4>4.4 Lógica de Filtro na Página Principal</h4>
+        <pre><code class="language-jsx">// Em HomePage - Lógica de filtro simples
+const [filter, setFilter] = useState('');
+
+// Filtrar contatos baseado no termo de busca
+const filteredContacts = contacts.filter(contact =>
+  contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+  contact.email.toLowerCase().includes(filter.toLowerCase())
+);
+
+// Renderizar lista filtrada
+&lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Importância das Keys -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-key"></i> 5. Importância das Keys
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>5.1 Por que usar Keys?</h4>
+        <p>
+          As keys ajudam o React a identificar quais itens foram alterados,
+          adicionados ou removidos. Sem keys, o React pode renderizar
+          incorretamente ou perder o estado dos componentes.
+        </p>
+
+        <h4>5.2 Exemplo sem Key (❌ Problema)</h4>
+        <pre><code class="language-jsx">// ❌ SEM key - pode causar problemas
+{contacts.map((contact) => (
+  &lt;ContactItem contact={contact} /&gt;
+))}</code></pre>
+
+        <h4>5.3 Exemplo com Key (✅ Correto)</h4>
+        <pre><code class="language-jsx">// ✅ COM key - React pode otimizar
+{contacts.map((contact) => (
+  &lt;ContactItem 
+    key={contact.id} 
+    contact={contact} 
+  /&gt;
+))}</code></pre>
+
+        <h4>5.4 Regras para Keys</h4>
+        <ul>
+          <li><strong>Únicas:</strong> Cada key deve ser única entre irmãos</li>
+          <li>
+            <strong>Estáveis:</strong> Não devem mudar entre re-renderizações
+          </li>
+          <li><strong>Previsíveis:</strong> Devem ser consistentes</li>
+        </ul>
+
+        <h4>5.5 Exemplos de Keys Boas e Ruins</h4>
+        <pre><code class="language-jsx">// ✅ BOAS keys
+key={contact.id}           // ID único do banco
+key={`contact-${contact.id}`} // Prefixo + ID
+key={contact.email}        // Email único
+
+// ❌ RUINS keys
+key={Math.random()}        // Muda a cada render
+key={index}               // Pode mudar ordem
+key={contact.name}        // Pode não ser único</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Projeto Expandido -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-rocket"></i> 6. Projeto Expandido
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>6.1 Implementando Persistência e Filtros</h4>
+        <p>
+          Vamos adicionar o componente FilterInput ao nosso projeto da aula
+          anterior:
+        </p>
+
+        <h5>FilterInput Component</h5>
+        <pre><code class="language-jsx">// components/FilterInput.jsx
+export default function FilterInput({ value, onChange }) {
+  return (
+    &lt;input
+      type="text"
+      placeholder="Filtrar por nome ou email..."
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="border rounded px-3 py-2 text-gray-900"
+    /&gt;
+  );
+}</code></pre>
+
+        <h4>6.2 HomePage Atualizada com localStorage</h4>
+        <pre><code class="language-jsx">// app/page.js - HomePage expandida (continuação da aula anterior)
+"use client";
+import { useState, useEffect } from 'react';
+import ContactForm from '../components/ContactForm';
+import ContactList from '../components/ContactList';
+import FilterInput from '../components/FilterInput';
+
+export default function HomePage() {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  // Carregar contatos do localStorage na inicialização
+  useEffect(() => {
+    const savedContacts = localStorage.getItem('contatos');
+    if (savedContacts) {
+      setContacts(JSON.parse(savedContacts));
+    }
+  }, []);
+
+  // Salvar contatos no localStorage sempre que mudarem
+  useEffect(() => {
+    localStorage.setItem('contatos', JSON.stringify(contacts));
+  }, [contacts]);
+
+  const handleSubmit = (newContact) => {
+    setContacts(prev => [...prev, { ...newContact, id: Date.now() }]);
+  };
+
+  const handleRemove = (id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  };
+
+  // Filtro simples por nome ou email
+  const filteredContacts = contacts.filter(contact =>
+    contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+    contact.email.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;FilterInput value={filter} onChange={setFilter} /&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleSubmit} /&gt;
+
+        &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+        <h4>6.3 ContactItem Atualizado</h4>
+        <pre><code class="language-jsx">// components/ContactItem.jsx (atualização do componente da aula anterior)
+import Link from 'next/link';
+
+export default function ContactItem({ contact, onRemove }) {
+  return (
+    &lt;li className="p-4 border border-gray-200 rounded-lg flex items-center justify-between hover:bg-gray-50"&gt;
+      &lt;div className="flex-1"&gt;
+        &lt;Link
+          href={`/contact/${contact.id}?nome=${encodeURIComponent(contact.nome)}&email=${encodeURIComponent(contact.email)}&telefone=${encodeURIComponent(contact.telefone)}`}
+          className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+        &gt;
+          {contact.nome}
+        &lt;/Link&gt;
+        &lt;p className="text-sm text-gray-600"&gt;
+          {contact.email} • {contact.telefone}
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button
+        onClick={() => onRemove(contact.id)}
+        className="text-red-600 hover:text-red-700 px-3 py-1 rounded hover:bg-red-50"
+      &gt;
+        Excluir
+      &lt;/button&gt;
+    &lt;/li&gt;
+  );
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Deploy no Vercel -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-cloud-upload-alt"></i> 7. Deploy no Vercel
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>7.1 Preparando o Projeto</h4>
+        <p>
+          Antes do deploy, vamos garantir que o projeto está configurado
+          corretamente:
+        </p>
+
+        <h5>package.json</h5>
+        <pre><code class="language-json">{
+  "name": "contatos-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "14.0.0",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0"
+  }
+}</code></pre>
+
+        <h5>next.config.js</h5>
+        <pre><code class="language-js">/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export', // Para deploy estático
+  trailingSlash: true,
+  images: {
+    unoptimized: true
+  }
+}
+
+module.exports = nextConfig</code></pre>
+
+        <h4>7.2 Passos para Deploy</h4>
+        <ol>
+          <li>
+            <strong>1. Criar conta no Vercel:</strong> Acesse
+            <a href="https://vercel.com" target="_blank" rel="noopener"
+              >vercel.com</a
+            >
+          </li>
+          <li><strong>2. Conectar GitHub:</strong> Conecte sua conta GitHub</li>
+          <li><strong>3. Importar projeto:</strong> Clique em "New Project"</li>
+          <li>
+            <strong>4. Selecionar repositório:</strong> Escolha seu projeto de
+            contatos
+          </li>
+          <li>
+            <strong>5. Configurar:</strong> Vercel detecta automaticamente
+            Next.js
+          </li>
+          <li><strong>6. Deploy:</strong> Clique em "Deploy"</li>
+        </ol>
+
+        <h4>6.3 Configurações do Vercel</h4>
+        <pre><code class="language-json">// vercel.json (opcional)
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": "out",
+  "installCommand": "npm install"
+}</code></pre>
+
+        <h4>6.4 Variáveis de Ambiente</h4>
+        <p>Se seu projeto usar variáveis de ambiente:</p>
+        <ol>
+          <li>Vá para Settings do projeto no Vercel</li>
+          <li>Adicione suas variáveis em "Environment Variables"</li>
+          <li>Configure para Production, Preview e Development</li>
+        </ol>
+
+        <h4>6.5 Domínio Personalizado</h4>
+        <p>Após o deploy, você pode:</p>
+        <ul>
+          <li>
+            Usar o domínio gratuito do Vercel (ex: contatos-app.vercel.app)
+          </li>
+          <li>Configurar um domínio personalizado</li>
+          <li>Configurar subdomínios</li>
+        </ul>
+
+        <div class="alert alert-success">
+          <strong>Deploy Automático:</strong> O Vercel faz deploy automático
+          sempre que você fizer push para a branch principal do GitHub!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Quiz -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-question-circle"></i> 8. Quiz
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Questão 1</h4>
+        <p>Qual é a principal função do <code>localStorage</code>?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q1" id="q1a" />
+          <label class="form-check-label" for="q1a"
+            >a) Armazenar dados temporariamente na memória</label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q1" id="q1b" />
+          <label class="form-check-label" for="q1b"
+            >b) Armazenar dados permanentemente no navegador</label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q1" id="q1c" />
+          <label class="form-check-label" for="q1c"
+            >c) Fazer upload de arquivos para o servidor</label
+          >
+        </div>
+
+        <h4>Questão 2</h4>
+        <p>Como salvar um objeto no <code>localStorage</code>?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q2" id="q2a" />
+          <label class="form-check-label" for="q2a"
+            >a) <code>localStorage.setItem('chave', objeto)</code></label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q2" id="q2b" />
+          <label class="form-check-label" for="q2b"
+            >b)
+            <code
+              >localStorage.setItem('chave', JSON.stringify(objeto))</code
+            ></label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q2" id="q2c" />
+          <label class="form-check-label" for="q2c"
+            >c) <code>localStorage.save('chave', objeto)</code></label
+          >
+        </div>
+
+        <h4>Questão 3</h4>
+        <p>Qual método é melhor para implementar busca em uma lista?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q3" id="q3a" />
+          <label class="form-check-label" for="q3a"
+            >a) <code>map()</code></label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q3" id="q3b" />
+          <label class="form-check-label" for="q3b"
+            >b) <code>filter()</code></label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q3" id="q3c" />
+          <label class="form-check-label" for="q3c"
+            >c) <code>forEach()</code></label
+          >
+        </div>
+
+        <h4>Questão 4</h4>
+        <p>Qual é uma boa prática para keys em listas?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q4" id="q4a" />
+          <label class="form-check-label" for="q4a"
+            >a) Usar <code>Math.random()</code></label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q4" id="q4b" />
+          <label class="form-check-label" for="q4b"
+            >b) Usar o índice do array</label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q4" id="q4c" />
+          <label class="form-check-label" for="q4c"
+            >c) Usar um ID único e estável</label
+          >
+        </div>
+
+        <h4>Questão 5</h4>
+        <p>O que o Vercel faz automaticamente após conectar com GitHub?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q5" id="q5a" />
+          <label class="form-check-label" for="q5a"
+            >a) Detecta o framework e configura o deploy</label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q5" id="q5b" />
+          <label class="form-check-label" for="q5b"
+            >b) Instala todas as dependências</label
+          >
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q5" id="q5c" />
+          <label class="form-check-label" for="q5c"
+            >c) Configura o domínio personalizado</label
+          >
+        </div>
+
+        <div class="mt-4">
+          <button class="btn btn-primary" onclick="mostrarGabarito()">
+            Ver Gabarito
+          </button>
+        </div>
+
+        <div id="gabarito" class="mt-3" style="display: none">
+          <h5>Gabarito:</h5>
+          <ol>
+            <li>
+              <strong>b)</strong> Armazenar dados permanentemente no navegador
+            </li>
+            <li>
+              <strong>b)</strong>
+              <code>localStorage.setItem('chave', JSON.stringify(objeto))</code>
+            </li>
+            <li><strong>b)</strong> <code>filter()</code></li>
+            <li><strong>c)</strong> Usar um ID único e estável</li>
+            <li>
+              <strong>a)</strong> Detecta o framework e configura o deploy
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> 9. Exercícios Práticos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Exercício 1: Lista de Tarefas</h4>
+        <p>Crie uma aplicação de lista de tarefas com:</p>
+        <ul>
+          <li>Adicionar nova tarefa</li>
+          <li>Marcar como concluída</li>
+          <li>Filtrar por prioridade (alta, média, baixa)</li>
+          <li>Buscar por texto</li>
+        </ul>
+
+        <h4>Exercício 2: Galeria de Produtos</h4>
+        <p>Crie uma galeria de produtos com:</p>
+        <ul>
+          <li>Lista de produtos com imagem, nome, preço</li>
+          <li>Filtro por categoria</li>
+          <li>Busca por nome</li>
+          <li>Ordenação por preço (menor/maior)</li>
+        </ul>
+
+        <h4>Exercício 3: Dashboard de Usuários</h4>
+        <p>Expanda o projeto de contatos com:</p>
+        <ul>
+          <li>Adicionar campo "cargo" aos contatos</li>
+          <li>Filtro por cargo</li>
+          <li>Estatísticas (total de contatos, ativos, inativos)</li>
+          <li>Exportar lista filtrada</li>
+        </ul>
+
+        <h4>Exercício 4: Deploy</h4>
+        <p>Faça o deploy de um dos exercícios no Vercel:</p>
+        <ol>
+          <li>Crie um repositório no GitHub</li>
+          <li>Faça push do código</li>
+          <li>Conecte ao Vercel</li>
+          <li>Configure variáveis de ambiente se necessário</li>
+          <li>Teste a aplicação online</li>
+        </ol>
+
+        <h4>Propostas de Solução</h4>
+
+        <h5>Exercício 1: Lista de Tarefas</h5>
+        <pre><code class="language-jsx">// Estrutura de dados
+const [tarefas, setTarefas] = useState([]);
+const [filtro, setFiltro] = useState('');
+
+// Carregar do localStorage
+useEffect(() => {
+  const saved = localStorage.getItem('tarefas');
+  if (saved) setTarefas(JSON.parse(saved));
+}, []);
+
+// Salvar no localStorage
+useEffect(() => {
+  localStorage.setItem('tarefas', JSON.stringify(tarefas));
+}, [tarefas]);
+
+// Filtro por prioridade e texto
+const tarefasFiltradas = tarefas.filter(tarefa => {
+  const matchTexto = tarefa.texto.toLowerCase().includes(filtro.toLowerCase());
+  const matchPrioridade = filtroPrioridade === 'todas' || tarefa.prioridade === filtroPrioridade;
+  return matchTexto && matchPrioridade;
+});</code></pre>
+
+        <h5>Exercício 2: Galeria de Produtos</h5>
+        <pre><code class="language-jsx">// Componente de filtro
+function FiltroProdutos({ categoria, setCategoria, busca, setBusca }) {
+  return (
+    &lt;div className="flex gap-4 mb-4"&gt;
+      &lt;select 
+        value={categoria} 
+        onChange={(e) => setCategoria(e.target.value)}
+        className="border rounded px-3 py-2"
+      &gt;
+        &lt;option value=""&gt;Todas as categorias&lt;/option&gt;
+        &lt;option value="eletronicos"&gt;Eletrônicos&lt;/option&gt;
+        &lt;option value="roupas"&gt;Roupas&lt;/option&gt;
+      &lt;/select&gt;
+      
+      &lt;input
+        type="text"
+        placeholder="Buscar produtos..."
+        value={busca}
+        onChange={(e) => setBusca(e.target.value)}
+        className="border rounded px-3 py-2"
+      /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+        <h5>Exercício 3: Dashboard de Usuários</h5>
+        <pre><code class="language-jsx">// Estatísticas
+function Estatisticas({ contatos }) {
+  const total = contatos.length;
+  const ativos = contatos.filter(c => c.status === 'ativo').length;
+  const inativos = total - ativos;
+  
+  const cargos = [...new Set(contatos.map(c => c.cargo))];
+  
+  return (
+    &lt;div className="grid grid-cols-3 gap-4 mb-6"&gt;
+      &lt;div className="bg-blue-100 p-4 rounded"&gt;
+        &lt;h3 className="font-bold"&gt;Total: {total}&lt;/h3&gt;
+      &lt;/div&gt;
+      &lt;div className="bg-green-100 p-4 rounded"&gt;
+        &lt;h3 className="font-bold"&gt;Ativos: {ativos}&lt;/h3&gt;
+      &lt;/div&gt;
+      &lt;div className="bg-red-100 p-4 rounded"&gt;
+        &lt;h3 className="font-bold"&gt;Inativos: {inativos}&lt;/h3&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Resumo -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 10. Resumo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Conceitos Aprendidos</h4>
+        <ul>
+          <li>
+            <strong>localStorage:</strong> Armazenamento persistente no
+            navegador
+          </li>
+          <li>
+            <strong>filter():</strong> Filtra arrays baseado em condições para
+            busca e filtros
+          </li>
+          <li>
+            <strong>Keys:</strong> Identificadores únicos que ajudam o React a
+            otimizar renderização
+          </li>
+          <li>
+            <strong>Deploy:</strong> Processo de colocar aplicação em produção
+          </li>
+        </ul>
+
+        <h4>Habilidades Desenvolvidas</h4>
+        <ul>
+          <li>Implementar persistência com localStorage</li>
+          <li>Implementar busca e filtros eficientes</li>
+          <li>Usar boas práticas para keys</li>
+          <li>Fazer deploy no Vercel</li>
+          <li>Expandir projetos existentes</li>
+        </ul>
+
+        <h4>Próximos Passos</h4>
+        <ul>
+          <li>Estudar outros métodos de array (reduce, sort)</li>
+          <li>Aprender sobre paginação em listas grandes</li>
+          <li>Explorar outros serviços de deploy (Netlify, Railway)</li>
+          <li>Implementar testes automatizados</li>
+        </ul>
+
+        <div class="alert alert-success">
+          <strong>Parabéns!</strong> Você agora sabe como implementar
+          persistência com localStorage, filtros eficientes e fazer deploy de
+          aplicações React no Vercel!
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<script>
+  function mostrarGabarito() {
+    const gabarito = document.getElementById("gabarito");
+    if (gabarito.style.display === "none") {
+      gabarito.style.display = "block";
+    } else {
+      gabarito.style.display = "none";
+    }
+  }
+</script>
