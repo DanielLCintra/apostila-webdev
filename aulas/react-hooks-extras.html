@@ -1,0 +1,1154 @@
+<!-- ==================== Aula React 7 - Hooks Extras ==================== -->
+<article class="lesson-content">
+  <h2>
+    <i class="fab fa-react"></i> React – Hooks Extras: useRef, useMemo,
+    useCallback
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula vamos explorar hooks avançados do React que nos ajudam a
+      otimizar performance e gerenciar referências de elementos. Vamos
+      incrementar nosso projeto de contatos para ensinar esses novos conceitos
+      na prática.
+    </p>
+    <ul>
+      <li>
+        ✅ useRef para foco automático no campo e armazenar valor anterior
+      </li>
+      <li>✅ useMemo para memorizar lista filtrada e evitar recálculos</li>
+      <li>
+        ✅ useCallback para handlers estáveis e evitar re-renders desnecessários
+      </li>
+      <li>✅ Comparativos práticos (com/sem memoização) e micro-otimizações</li>
+      <li>✅ Implementação no projeto de contatos existente</li>
+    </ul>
+  </div>
+
+  <!-- 1. Relembrando o Projeto de Contatos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-address-book"></i> 1. Relembrando o Projeto de Contatos
+    </h3>
+
+    <div class="text-center mb-4">
+      <img
+        src="assets/images/pagina_principal_contatos.png"
+        alt="Projeto de Contatos"
+        class="img-fluid rounded shadow"
+      />
+      <p class="text-sm text-gray-600 mt-2">
+        Projeto de contatos que vamos otimizar com hooks extras
+      </p>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Vamos trabalhar com o projeto de contatos que já desenvolvemos nas
+          aulas anteriores. Este projeto tem:
+        </p>
+        <ul>
+          <li>
+            <strong>ContactForm:</strong> Formulário para adicionar contatos
+          </li>
+          <li><strong>ContactList:</strong> Lista de contatos com filtro</li>
+          <li><strong>ContactItem:</strong> Item individual de cada contato</li>
+          <li><strong>FilterInput:</strong> Campo de busca</li>
+        </ul>
+
+        <div class="alert alert-info mt-3">
+          <strong>Objetivo:</strong> Vamos otimizar este projeto usando useRef,
+          useMemo e useCallback para melhorar a performance e adicionar
+          funcionalidades avançadas.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. useRef - Referências e Foco -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-crosshairs"></i> 2. useRef - Referências e Foco
+      Automático
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">2.1 O que é useRef?</h4>
+        <p>
+          O <code>useRef</code> é um hook que retorna um objeto mutável com uma
+          propriedade <code>current</code>. Ele é útil para:
+        </p>
+        <ul>
+          <li>Acessar elementos DOM diretamente</li>
+          <li>Armazenar valores que não causam re-render quando mudam</li>
+          <li>Manter referências a valores anteriores</li>
+        </ul>
+
+        <h4 class="mt-4 mb-2">2.2 Sintaxe Básica</h4>
+        <pre><code class="language-jsx">import { useRef } from 'react';
+
+const MeuComponente = () => {
+  const inputRef = useRef(null);
+  
+  const focarInput = () => {
+    inputRef.current.focus();
+  };
+  
+  return (
+    &lt;div&gt;
+      &lt;input ref={inputRef} type="text" /&gt;
+      &lt;button onClick={focarInput}&gt;Focar Input&lt;/button&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">2.3 Implementando Foco Automático no ContactForm</h4>
+        <p>
+          Vamos melhorar nosso ContactForm para que o campo de nome receba foco
+          automaticamente quando o formulário é carregado:
+        </p>
+
+        <pre><code class="language-jsx">import { useState, useRef, useEffect } from "react";
+
+const ContactForm = ({ onAdd }) => {
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+  const nomeInputRef = useRef(null);
+
+  // Foco automático no campo nome quando o componente é montado
+  useEffect(() => {
+    nomeInputRef.current?.focus();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.nome.trim()) return;
+    
+    onAdd({ ...form, id: Date.now() });
+    setForm({ nome: "", email: "", telefone: "" });
+    
+    // Voltar o foco para o campo nome após adicionar
+    nomeInputRef.current?.focus();
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Nome&lt;/label&gt;
+        &lt;input
+          ref={nomeInputRef}
+          name="nome"
+          className="w-full border rounded px-3 py-2 text-gray-900"
+          value={form.nome}
+          onChange={handleChange}
+          required
+        /&gt;
+      &lt;/div&gt;
+      
+      {/* ... resto dos campos ... */}
+      
+      &lt;button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"&gt;
+        Adicionar Contato
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+};
+
+export default ContactForm;</code></pre>
+
+        <div class="alert alert-success mt-3">
+          <strong>Resultado:</strong> Agora o campo de nome recebe foco
+          automaticamente quando a página carrega e após adicionar um contato,
+          melhorando a experiência do usuário.
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">2.4 useRef para Armazenar Valor Anterior</h4>
+        <p>
+          Vamos criar um hook personalizado para rastrear o valor anterior de
+          uma variável:
+        </p>
+
+        <pre><code class="language-jsx">import { useRef, useEffect } from 'react';
+
+// Hook personalizado para valor anterior
+const usePrevious = (value) => {
+  const ref = useRef();
+  
+  useEffect(() => {
+    ref.current = value;
+  });
+  
+  return ref.current;
+};
+
+// Uso no componente
+const ContactForm = ({ onAdd }) => {
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+  const previousNome = usePrevious(form.nome);
+  
+  // Log quando o nome muda
+  useEffect(() => {
+    if (previousNome && previousNome !== form.nome) {
+      console.log(`Nome mudou de "${previousNome}" para "${form.nome}"`);
+    }
+  }, [form.nome, previousNome]);
+  
+  // ... resto do componente
+};</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. useMemo - Memoização de Cálculos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-memory"></i> 3. useMemo - Memoização de Cálculos
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">3.1 O que é useMemo?</h4>
+        <p>
+          O <code>useMemo</code> memoriza o resultado de um cálculo e só
+          recalcula quando suas dependências mudam. É útil para:
+        </p>
+        <ul>
+          <li>Evitar cálculos caros em toda renderização</li>
+          <li>Otimizar listas filtradas</li>
+          <li>Memorizar objetos complexos</li>
+        </ul>
+
+        <h4 class="mt-4 mb-2">3.2 Sintaxe Básica</h4>
+        <pre><code class="language-jsx">import { useMemo } from 'react';
+
+const MeuComponente = ({ items, filter }) => {
+  const filteredItems = useMemo(() => {
+    console.log('Filtrando itens...'); // Só executa quando filter muda
+    return items.filter(item => item.name.includes(filter));
+  }, [items, filter]);
+  
+  return &lt;div&gt;{/* renderizar filteredItems */}&lt;/div&gt;;
+};</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">3.3 Otimizando a Lista Filtrada</h4>
+        <p>
+          Vamos otimizar nossa lista de contatos para que o filtro só seja
+          recalculado quando necessário:
+        </p>
+
+        <pre><code class="language-jsx">import { useState, useMemo } from 'react';
+import ContactList from './ContactList';
+import FilterInput from './FilterInput';
+
+const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  // Memoizar a lista filtrada
+  const filteredContacts = useMemo(() => {
+    console.log('Filtrando contatos...'); // Só executa quando contacts ou filter mudam
+    
+    if (!filter.trim()) {
+      return contacts;
+    }
+    
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.telefone.includes(filter)
+    );
+  }, [contacts, filter]);
+
+  const handleSubmit = (newContact) => {
+    setContacts(prev => [...prev, newContact]);
+  };
+
+  const handleRemove = (id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  };
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleSubmit} /&gt;
+        
+        &lt;div className="bg-white shadow rounded p-4"&gt;
+          &lt;FilterInput value={filter} onChange={setFilter} /&gt;
+        &lt;/div&gt;
+
+        &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default HomePage;</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Benefício:</strong> Com useMemo, o filtro só é recalculado
+          quando a lista de contatos ou o termo de busca mudam, não a cada
+          renderização do componente.
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">3.4 useMemo para Estatísticas</h4>
+        <p>Vamos adicionar estatísticas à nossa aplicação usando useMemo:</p>
+
+        <pre><code class="language-jsx">const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  // Estatísticas memoizadas
+  const stats = useMemo(() => {
+    console.log('Calculando estatísticas...');
+    
+    const total = contacts.length;
+    const comEmail = contacts.filter(c => c.email).length;
+    const comTelefone = contacts.filter(c => c.telefone).length;
+    
+    return {
+      total,
+      comEmail,
+      comTelefone,
+      semEmail: total - comEmail,
+      semTelefone: total - comTelefone
+    };
+  }, [contacts]);
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        {/* ... outros componentes ... */}
+        
+        {/* Estatísticas */}
+        &lt;div className="bg-white shadow rounded p-4"&gt;
+          &lt;h3 className="text-lg font-semibold mb-3"&gt;Estatísticas&lt;/h3&gt;
+          &lt;div className="grid grid-cols-2 md:grid-cols-4 gap-4"&gt;
+            &lt;div className="text-center"&gt;
+              &lt;div className="text-2xl font-bold text-blue-600"&gt;{stats.total}&lt;/div&gt;
+              &lt;div className="text-sm text-gray-600"&gt;Total&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div className="text-center"&gt;
+              &lt;div className="text-2xl font-bold text-green-600"&gt;{stats.comEmail}&lt;/div&gt;
+              &lt;div className="text-sm text-gray-600"&gt;Com Email&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div className="text-center"&gt;
+              &lt;div className="text-2xl font-bold text-purple-600"&gt;{stats.comTelefone}&lt;/div&gt;
+              &lt;div className="text-sm text-gray-600"&gt;Com Telefone&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div className="text-center"&gt;
+              &lt;div className="text-2xl font-bold text-orange-600"&gt;{stats.semEmail}&lt;/div&gt;
+              &lt;div className="text-sm text-gray-600"&gt;Sem Email&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. useCallback - Handlers Estáveis -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-link"></i> 4. useCallback - Handlers Estáveis
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">4.1 O que é useCallback?</h4>
+        <p>
+          O <code>useCallback</code> memoriza uma função e só recria quando suas
+          dependências mudam. É útil para:
+        </p>
+        <ul>
+          <li>Evitar re-renders desnecessários em componentes filhos</li>
+          <li>Manter referências estáveis de funções</li>
+          <li>Otimizar componentes que recebem funções como props</li>
+        </ul>
+
+        <h4 class="mt-4 mb-2">4.2 Sintaxe Básica</h4>
+        <pre><code class="language-jsx">import { useCallback } from 'react';
+
+const MeuComponente = ({ items }) => {
+  const handleClick = useCallback((id) => {
+    console.log('Clicou no item:', id);
+  }, []); // Array de dependências vazio = função nunca muda
+  
+  return (
+    &lt;div&gt;
+      {items.map(item => (
+        &lt;Item key={item.id} onClick={handleClick} /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+};</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">4.3 Otimizando ContactItem com useCallback</h4>
+        <p>
+          Vamos otimizar nosso ContactItem para evitar re-renders
+          desnecessários:
+        </p>
+
+        <pre><code class="language-jsx">import { memo } from 'react';
+import Link from 'next/link';
+
+// ContactItem otimizado com memo
+const ContactItem = memo(({ contact, onRemove }) => {
+  console.log(`Renderizando ContactItem: ${contact.nome}`); // Para debug
+  
+  return (
+    &lt;li className="p-4 flex items-center justify-between"&gt;
+      &lt;div&gt;
+        &lt;Link 
+          href={`/contact/${contact.id}?nome=${encodeURIComponent(contact.nome)}&email=${encodeURIComponent(contact.email)}&telefone=${encodeURIComponent(contact.telefone)}`} 
+          className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+        &gt;
+          {contact.nome}
+        &lt;/Link&gt;
+        &lt;p className="text-sm text-gray-600"&gt;
+          {contact.email} • {contact.telefone}
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button 
+        onClick={() => onRemove(contact.id)}
+        className="text-red-600 hover:text-red-700 px-2 py-1 rounded"
+      &gt;
+        Excluir
+      &lt;/button&gt;
+    &lt;/li&gt;
+  );
+});
+
+ContactItem.displayName = 'ContactItem';
+
+export default ContactItem;</code></pre>
+
+        <h4 class="mt-4 mb-2">4.4 Otimizando Handlers na HomePage</h4>
+        <pre><code class="language-jsx">import { useState, useCallback, useMemo } from 'react';
+import ContactForm from './ContactForm';
+import ContactList from './ContactList';
+import FilterInput from './FilterInput';
+
+const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+
+  // Handler memoizado para adicionar contato
+  const handleSubmit = useCallback((newContact) => {
+    setContacts(prev => [...prev, newContact]);
+  }, []);
+
+  // Handler memoizado para remover contato
+  const handleRemove = useCallback((id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  }, []);
+
+  // Handler memoizado para filtro
+  const handleFilterChange = useCallback((value) => {
+    setFilter(value);
+  }, []);
+
+  // Lista filtrada memoizada
+  const filteredContacts = useMemo(() => {
+    if (!filter.trim()) {
+      return contacts;
+    }
+    
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.telefone.includes(filter)
+    );
+  }, [contacts, filter]);
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleSubmit} /&gt;
+        
+        &lt;div className="bg-white shadow rounded p-4"&gt;
+          &lt;FilterInput value={filter} onChange={handleFilterChange} /&gt;
+        &lt;/div&gt;
+
+        &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default HomePage;</code></pre>
+
+        <div class="alert alert-success mt-3">
+          <strong>Resultado:</strong> Agora os ContactItems só re-renderizam
+          quando seus dados específicos mudam, não quando outros contatos são
+          adicionados ou removidos.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Comparativos Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-balance-scale"></i> 5. Comparativos Práticos: Com vs Sem
+      Memoização
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">5.1 Teste de Performance - Lista Filtrada</h4>
+        <p>Vamos criar um exemplo que demonstra a diferença de performance:</p>
+
+        <h5>❌ Sem useMemo (Ineficiente)</h5>
+        <pre><code class="language-jsx">const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [counter, setCounter] = useState(0);
+
+  // ❌ PROBLEMA: Filtro é recalculado a cada render
+  const filteredContacts = contacts.filter(contact =>
+    contact.nome.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() => setCounter(c => c + 1)}&gt;
+        Counter: {counter} {/* Este botão causa re-render */}
+      &lt;/button&gt;
+      &lt;ContactList items={filteredContacts} /&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+        <h5>✅ Com useMemo (Otimizado)</h5>
+        <pre><code class="language-jsx">const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [counter, setCounter] = useState(0);
+
+  // ✅ SOLUÇÃO: Filtro só recalcula quando contacts ou filter mudam
+  const filteredContacts = useMemo(() => {
+    console.log('Filtrando...'); // Só aparece quando necessário
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [contacts, filter]);
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() => setCounter(c => c + 1)}&gt;
+        Counter: {counter} {/* Este botão NÃO recalcula o filtro */}
+      &lt;/button&gt;
+      &lt;ContactList items={filteredContacts} /&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">5.2 Teste de Performance - Handlers</h4>
+
+        <h5>❌ Sem useCallback (Ineficiente)</h5>
+        <pre><code class="language-jsx">const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [counter, setCounter] = useState(0);
+
+  // ❌ PROBLEMA: Nova função a cada render
+  const handleRemove = (id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() => setCounter(c => c + 1)}&gt;
+        Counter: {counter}
+      &lt;/button&gt;
+      {/* Todos os ContactItems re-renderizam quando counter muda */}
+      &lt;ContactList items={contacts} onRemove={handleRemove} /&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+        <h5>✅ Com useCallback (Otimizado)</h5>
+        <pre><code class="language-jsx">const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [counter, setCounter] = useState(0);
+
+  // ✅ SOLUÇÃO: Função estável
+  const handleRemove = useCallback((id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  }, []);
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() => setCounter(c => c + 1)}&gt;
+        Counter: {counter}
+      &lt;/button&gt;
+      {/* ContactItems NÃO re-renderizam quando counter muda */}
+      &lt;ContactList items={contacts} onRemove={handleRemove} /&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">5.3 Ferramentas de Debug</h4>
+        <p>
+          Para medir a performance, podemos usar as ferramentas de
+          desenvolvedor:
+        </p>
+
+        <h5>React DevTools Profiler</h5>
+        <ol>
+          <li>Instale a extensão React DevTools</li>
+          <li>Abra a aba "Profiler"</li>
+          <li>Clique em "Record"</li>
+          <li>Interaja com a aplicação</li>
+          <li>Clique em "Stop" para ver os resultados</li>
+        </ol>
+
+        <h5>Console.log para Debug</h5>
+        <pre><code class="language-jsx">// Adicione logs para ver quando componentes re-renderizam
+const ContactItem = memo(({ contact, onRemove }) => {
+  console.log(`🔄 ContactItem renderizado: ${contact.nome}`);
+  // ... resto do componente
+});
+
+const HomePage = () => {
+  console.log('🔄 HomePage renderizada');
+  // ... resto do componente
+};</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Micro-otimizações Avançadas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-tachometer-alt"></i> 6. Micro-otimizações Avançadas
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">6.1 useMemo para Objetos Complexos</h4>
+        <p>Evite criar novos objetos a cada render:</p>
+
+        <pre><code class="language-jsx">const ContactForm = ({ onAdd }) => {
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+
+  // ❌ PROBLEMA: Novo objeto a cada render
+  const formConfig = {
+    className: "w-full border rounded px-3 py-2 text-gray-900",
+    required: true
+  };
+
+  // ✅ SOLUÇÃO: Objeto memoizado
+  const formConfig = useMemo(() => ({
+    className: "w-full border rounded px-3 py-2 text-gray-900",
+    required: true
+  }), []);
+
+  return (
+    &lt;form&gt;
+      &lt;input {...formConfig} /&gt;
+    &lt;/form&gt;
+  );
+};</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">6.2 useCallback com Dependências</h4>
+        <p>Quando o useCallback depende de outros valores:</p>
+
+        <pre><code class="language-jsx">const ContactForm = ({ onAdd, initialData }) => {
+  const [form, setForm] = useState(initialData || { nome: "", email: "", telefone: "" });
+
+  // ✅ useCallback com dependências
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+    if (!form.nome.trim()) return;
+    
+    onAdd({ ...form, id: Date.now() });
+    setForm({ nome: "", email: "", telefone: "" });
+  }, [form, onAdd]); // Depende de form e onAdd
+
+  // ✅ useCallback sem dependências (função pura)
+  const resetForm = useCallback(() => {
+    setForm({ nome: "", email: "", telefone: "" });
+  }, []); // Não depende de nada
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      {/* ... campos do formulário ... */}
+      &lt;button type="button" onClick={resetForm}&gt;Limpar&lt;/button&gt;
+    &lt;/form&gt;
+  );
+};</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">6.3 Combinando Hooks para Máxima Performance</h4>
+        <p>Exemplo completo com todos os hooks otimizados:</p>
+
+        <pre><code class="language-jsx">import { useState, useRef, useMemo, useCallback, useEffect, memo } from 'react';
+
+// Componente otimizado
+const OptimizedContactItem = memo(({ contact, onRemove, onEdit }) => {
+  const handleRemove = useCallback(() => {
+    onRemove(contact.id);
+  }, [contact.id, onRemove]);
+
+  const handleEdit = useCallback(() => {
+    onEdit(contact);
+  }, [contact, onEdit]);
+
+  return (
+    &lt;li className="p-4 flex items-center justify-between"&gt;
+      &lt;div&gt;
+        &lt;h3 className="font-medium text-gray-900"&gt;{contact.nome}&lt;/h3&gt;
+        &lt;p className="text-sm text-gray-600"&gt;
+          {contact.email} • {contact.telefone}
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div className="space-x-2"&gt;
+        &lt;button onClick={handleEdit} className="text-blue-600 hover:text-blue-700"&gt;
+          Editar
+        &lt;/button&gt;
+        &lt;button onClick={handleRemove} className="text-red-600 hover:text-red-700"&gt;
+          Excluir
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+  );
+});
+
+// Página principal otimizada
+const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [editingContact, setEditingContact] = useState(null);
+  const filterInputRef = useRef(null);
+
+  // Foco no campo de filtro quando necessário
+  useEffect(() => {
+    if (filterInputRef.current && contacts.length > 0) {
+      filterInputRef.current.focus();
+    }
+  }, [contacts.length]);
+
+  // Handlers memoizados
+  const handleAdd = useCallback((newContact) => {
+    setContacts(prev => [...prev, newContact]);
+  }, []);
+
+  const handleRemove = useCallback((id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  }, []);
+
+  const handleEdit = useCallback((contact) => {
+    setEditingContact(contact);
+  }, []);
+
+  const handleFilterChange = useCallback((value) => {
+    setFilter(value);
+  }, []);
+
+  // Lista filtrada memoizada
+  const filteredContacts = useMemo(() => {
+    if (!filter.trim()) return contacts;
+    
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.telefone.includes(filter)
+    );
+  }, [contacts, filter]);
+
+  // Estatísticas memoizadas
+  const stats = useMemo(() => ({
+    total: contacts.length,
+    filtered: filteredContacts.length,
+    comEmail: contacts.filter(c => c.email).length,
+    comTelefone: contacts.filter(c => c.telefone).length
+  }), [contacts, filteredContacts]);
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Contatos Otimizados&lt;/h1&gt;
+          &lt;div className="text-sm text-gray-600"&gt;
+            Total: {stats.total} | Filtrados: {stats.filtered} | Com Email: {stats.comEmail}
+          &lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleAdd} /&gt;
+        
+        &lt;div className="bg-white shadow rounded p-4"&gt;
+          &lt;FilterInput 
+            ref={filterInputRef}
+            value={filter} 
+            onChange={handleFilterChange} 
+          /&gt;
+        &lt;/div&gt;
+
+        &lt;ul className="bg-white shadow rounded divide-y"&gt;
+          {filteredContacts.map(contact => (
+            &lt;OptimizedContactItem
+              key={contact.id}
+              contact={contact}
+              onRemove={handleRemove}
+              onEdit={handleEdit}
+            /&gt;
+          ))}
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default HomePage;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Resumo e Boas Práticas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 7. Resumo e Boas Práticas
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">7.1 Quando Usar Cada Hook</h4>
+
+        <div class="row">
+          <div class="col-md-4">
+            <h5>useRef</h5>
+            <ul>
+              <li>✅ Acessar elementos DOM</li>
+              <li>✅ Armazenar valores que não causam re-render</li>
+              <li>✅ Manter referências a valores anteriores</li>
+              <li>❌ Não use para estado que afeta a UI</li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <h5>useMemo</h5>
+            <ul>
+              <li>✅ Cálculos caros</li>
+              <li>✅ Listas filtradas</li>
+              <li>✅ Objetos complexos</li>
+              <li>❌ Não use para valores simples</li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <h5>useCallback</h5>
+            <ul>
+              <li>✅ Funções passadas como props</li>
+              <li>✅ Dependências de useEffect</li>
+              <li>✅ Componentes otimizados com memo</li>
+              <li>❌ Não use para funções internas simples</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">7.2 Regras de Ouro</h4>
+        <ol>
+          <li>
+            <strong>Meça primeiro:</strong> Use React DevTools Profiler para
+            identificar problemas reais de performance
+          </li>
+          <li>
+            <strong>Otimize depois:</strong> Não otimize prematuramente - código
+            legível é mais importante que micro-otimizações
+          </li>
+          <li>
+            <strong>Dependências corretas:</strong> Sempre inclua todas as
+            dependências nos arrays de useMemo e useCallback
+          </li>
+          <li>
+            <strong>Teste a performance:</strong> Verifique se as otimizações
+            realmente melhoram a performance
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">7.3 Checklist de Otimização</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <h5>✅ O que Fazer:</h5>
+            <ul>
+              <li>Use useMemo para cálculos caros</li>
+              <li>Use useCallback para funções estáveis</li>
+              <li>Use useRef para referências DOM</li>
+              <li>Use memo() para componentes puros</li>
+              <li>Meça performance com DevTools</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h5>❌ O que Evitar:</h5>
+            <ul>
+              <li>Otimização prematura</li>
+              <li>useMemo para valores simples</li>
+              <li>useCallback sem necessidade</li>
+              <li>Dependências incorretas</li>
+              <li>Complexidade desnecessária</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios Práticos
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Foco Automático</h4>
+      <p>
+        <strong>Objetivo:</strong> Implementar foco automático no campo de
+        filtro quando a página carrega.
+      </p>
+      <ol>
+        <li>Use useRef para referenciar o campo de filtro</li>
+        <li>Use useEffect para focar o campo no mount</li>
+        <li>Teste a funcionalidade</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">const FilterInput = ({ value, onChange }) => {
+  const inputRef = useRef(null);
+  
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+  
+  return (
+    &lt;input
+      ref={inputRef}
+      type="text"
+      placeholder="Filtrar por nome ou email..."
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="border rounded px-3 py-2 text-gray-900"
+    /&gt;
+  );
+};</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: useMemo para Estatísticas</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar estatísticas memoizadas para a lista de
+        contatos.
+      </p>
+      <ol>
+        <li>Calcule total de contatos</li>
+        <li>Calcule contatos com email</li>
+        <li>Calcule contatos com telefone</li>
+        <li>Use useMemo para otimizar</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">const stats = useMemo(() => {
+  const total = contacts.length;
+  const comEmail = contacts.filter(c => c.email).length;
+  const comTelefone = contacts.filter(c => c.telefone).length;
+  
+  return {
+    total,
+    comEmail,
+    comTelefone,
+    semEmail: total - comEmail,
+    semTelefone: total - comTelefone
+  };
+}, [contacts]);</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: useCallback para Handlers</h4>
+      <p>
+        <strong>Objetivo:</strong> Otimizar handlers com useCallback e memo.
+      </p>
+      <ol>
+        <li>Envolva ContactItem com memo()</li>
+        <li>Use useCallback para handleRemove</li>
+        <li>Use useCallback para handleAdd</li>
+        <li>Teste com React DevTools</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// ContactItem com memo
+const ContactItem = memo(({ contact, onRemove }) => {
+  return (
+    &lt;li className="p-4 flex items-center justify-between"&gt;
+      &lt;div&gt;
+        &lt;h3 className="font-medium text-gray-900"&gt;{contact.nome}&lt;/h3&gt;
+        &lt;p className="text-sm text-gray-600"&gt;{contact.email}&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button onClick={() => onRemove(contact.id)}&gt;Excluir&lt;/button&gt;
+    &lt;/li&gt;
+  );
+});
+
+// Handlers otimizados
+const handleAdd = useCallback((newContact) => {
+  setContacts(prev => [...prev, newContact]);
+}, []);
+
+const handleRemove = useCallback((id) => {
+  setContacts(prev => prev.filter(c => c.id !== id));
+}, []);</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 4: Valor Anterior com useRef</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar um hook personalizado para rastrear
+        valores anteriores.
+      </p>
+      <ol>
+        <li>Crie o hook usePrevious</li>
+        <li>Use no ContactForm para rastrear mudanças</li>
+        <li>Exiba uma mensagem quando o nome mudar</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">const usePrevious = (value) => {
+  const ref = useRef();
+  
+  useEffect(() => {
+    ref.current = value;
+  });
+  
+  return ref.current;
+};
+
+// Uso no ContactForm
+const ContactForm = ({ onAdd }) => {
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+  const previousNome = usePrevious(form.nome);
+  
+  useEffect(() => {
+    if (previousNome && previousNome !== form.nome) {
+      console.log(`Nome mudou de "${previousNome}" para "${form.nome}"`);
+    }
+  }, [form.nome, previousNome]);
+  
+  // ... resto do componente
+};</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- 9. Resumo Final -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-graduation-cap"></i> 9. Resumo Final
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Nesta aula aprendemos três hooks essenciais para otimização em React:
+        </p>
+
+        <div class="row mt-4">
+          <div class="col-md-4">
+            <h5>useRef</h5>
+            <ul>
+              <li>Referências a elementos DOM</li>
+              <li>Armazenar valores sem re-render</li>
+              <li>Foco automático</li>
+              <li>Valores anteriores</li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <h5>useMemo</h5>
+            <ul>
+              <li>Memorizar cálculos caros</li>
+              <li>Listas filtradas</li>
+              <li>Objetos complexos</li>
+              <li>Estatísticas</li>
+            </ul>
+          </div>
+
+          <div class="col-md-4">
+            <h5>useCallback</h5>
+            <ul>
+              <li>Funções estáveis</li>
+              <li>Evitar re-renders</li>
+              <li>Componentes otimizados</li>
+              <li>Props estáveis</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4">
+          <strong>Próximo Passo:</strong> Na próxima aula, vamos explorar
+          Context API e gerenciamento de estado global para completar nosso
+          conhecimento de React avançado.
+        </div>
+      </div>
+    </div>
+  </section>
+</article>

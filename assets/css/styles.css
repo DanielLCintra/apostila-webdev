@@ -545,6 +545,24 @@ details[open] summary {
   box-shadow: var(--box-shadow-md);
 }
 
+/* ========== VÍDEO EMBED ========== */
+.video-embed {
+  max-width: 100%;
+  width: 640px;
+  height: 360px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .video-embed {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+  }
+}
+
 /* ========== RESPONSIVIDADE ========== */
 @media (max-width: 992px) {
   .grid-cols-3 {
