@@ -324,9 +324,68 @@ export default HomePage;</code></pre>
     <div class="card mb-4">
       <div class="card-body">
         <h4 class="mb-3">3.4 useMemo para Estatísticas</h4>
-        <p>Vamos adicionar estatísticas à nossa aplicação usando useMemo:</p>
+        <p>
+          Vamos adicionar estatísticas à nossa aplicação usando useMemo.
+          Primeiro, vamos criar um componente separado para as estatísticas:
+        </p>
 
-        <pre><code class="language-jsx">const HomePage = () => {
+        <h5 class="mt-3 mb-2">Statistics.js - Componente Separado</h5>
+        <pre><code class="language-jsx">// components/Statistics.js
+import React from 'react'
+
+const Statistics = ({ stats }) => {
+    return (
+        &lt;div className="bg-white shadow rounded p-4"&gt;
+            &lt;h3 className="text-lg font-semibold mb-3"&gt;Estatísticas&lt;/h3&gt;
+            &lt;div className="grid grid-cols-2 md:grid-cols-4 gap-4"&gt;
+                &lt;div className="text-center"&gt;
+                    &lt;div className="text-2xl font-bold text-blue-600"&gt;{stats.total}&lt;/div&gt;
+                    &lt;div className="text-sm text-gray-600"&gt;Total&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div className="text-center"&gt;
+                    &lt;div className="text-2xl font-bold text-green-600"&gt;{stats.comEmail}&lt;/div&gt;
+                    &lt;div className="text-sm text-gray-600"&gt;Com Email&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div className="text-center"&gt;
+                    &lt;div className="text-2xl font-bold text-purple-600"&gt;{stats.comTelefone}&lt;/div&gt;
+                    &lt;div className="text-sm text-gray-600"&gt;Com Telefone&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div className="text-center"&gt;
+                    &lt;div className="text-2xl font-bold text-orange-600"&gt;{stats.semEmail}&lt;/div&gt;
+                    &lt;div className="text-sm text-gray-600"&gt;Sem Email&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div className="text-center"&gt;
+                    &lt;div className="text-2xl font-bold text-yellow-600"&gt;{stats.semTelefone}&lt;/div&gt;
+                    &lt;div className="text-sm text-gray-600"&gt;Sem Telefone&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    )
+}
+
+export default Statistics</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Vantagens de separar em componente:</strong>
+          <ul>
+            <li>✅ Código mais organizado e reutilizável</li>
+            <li>✅ Facilita manutenção e testes</li>
+            <li>✅ Melhora a legibilidade do código principal</li>
+            <li>✅ Permite reutilização em outras páginas</li>
+          </ul>
+        </div>
+
+        <h5 class="mt-3 mb-2">
+          Agora vamos usar o componente na página principal:
+        </h5>
+
+        <pre><code class="language-jsx">// app/page.js
+import { useState, useMemo } from 'react';
+import Statistics from './components/Statistics';
+import ContactForm from './components/ContactForm';
+import ContactList from './components/ContactList';
+
+const HomePage = () => {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
@@ -350,30 +409,16 @@ export default HomePage;</code></pre>
   return (
     &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
       &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
-        {/* ... outros componentes ... */}
+        &lt;header&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Contatos com Estatísticas&lt;/h1&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleAdd} /&gt;
         
-        {/* Estatísticas */}
-        &lt;div className="bg-white shadow rounded p-4"&gt;
-          &lt;h3 className="text-lg font-semibold mb-3"&gt;Estatísticas&lt;/h3&gt;
-          &lt;div className="grid grid-cols-2 md:grid-cols-4 gap-4"&gt;
-            &lt;div className="text-center"&gt;
-              &lt;div className="text-2xl font-bold text-blue-600"&gt;{stats.total}&lt;/div&gt;
-              &lt;div className="text-sm text-gray-600"&gt;Total&lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div className="text-center"&gt;
-              &lt;div className="text-2xl font-bold text-green-600"&gt;{stats.comEmail}&lt;/div&gt;
-              &lt;div className="text-sm text-gray-600"&gt;Com Email&lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div className="text-center"&gt;
-              &lt;div className="text-2xl font-bold text-purple-600"&gt;{stats.comTelefone}&lt;/div&gt;
-              &lt;div className="text-sm text-gray-600"&gt;Com Telefone&lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div className="text-center"&gt;
-              &lt;div className="text-2xl font-bold text-orange-600"&gt;{stats.semEmail}&lt;/div&gt;
-              &lt;div className="text-sm text-gray-600"&gt;Sem Email&lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
+        {/* Componente de Estatísticas */}
+        &lt;Statistics stats={stats} /&gt;
+        
+        &lt;ContactList items={contacts} onRemove={handleRemove} /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   );
@@ -1007,14 +1052,19 @@ export default HomePage;</code></pre>
         contatos.
       </p>
       <ol>
-        <li>Calcule total de contatos</li>
-        <li>Calcule contatos com email</li>
-        <li>Calcule contatos com telefone</li>
-        <li>Use useMemo para otimizar</li>
+        <li>Crie o componente Statistics.js separado</li>
+        <li>Calcule total de contatos com useMemo</li>
+        <li>Calcule contatos com email e telefone</li>
+        <li>Importe e use o componente na página principal</li>
       </ol>
       <details class="solucao">
         <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">const stats = useMemo(() => {
+        <pre><code class="language-jsx">// 1. Criar components/Statistics.js (como mostrado acima)
+
+// 2. Na página principal:
+import Statistics from './components/Statistics';
+
+const stats = useMemo(() => {
   const total = contacts.length;
   const comEmail = contacts.filter(c => c.email).length;
   const comTelefone = contacts.filter(c => c.telefone).length;
@@ -1026,7 +1076,15 @@ export default HomePage;</code></pre>
     semEmail: total - comEmail,
     semTelefone: total - comTelefone
   };
-}, [contacts]);</code></pre>
+}, [contacts]);
+
+// 3. Usar o componente:
+return (
+  &lt;div&gt;
+    &lt;Statistics stats={stats} /&gt;
+    {/* outros componentes */}
+  &lt;/div&gt;
+);</code></pre>
       </details>
     </div>
 

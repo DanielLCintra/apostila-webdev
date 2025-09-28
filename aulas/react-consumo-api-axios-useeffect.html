@@ -1,0 +1,2216 @@
+<!-- ==================== Aula React 8 - Consumo de API com axios e useEffect ==================== -->
+<article class="lesson-content">
+  <h2>
+    <i class="fab fa-react"></i> React – Consumo de API com axios e useEffect
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      Nesta aula vamos evoluir nosso projeto de contatos da aula anterior (hooks
+      extras) para integrar APIs externas usando <strong>axios</strong> e
+      <strong>useEffect</strong>. Vamos transformar nossa aplicação local em uma
+      aplicação que consome uma API real, implementa cache offline e
+      sincronização automática.
+    </p>
+    <ul>
+      <li>
+        ✅ Evoluir projeto existente: partir do estado da aula de hooks extras
+      </li>
+      <li>✅ Integrar MockAPI com axios para operações CRUD</li>
+      <li>✅ Manter otimizações existentes (useMemo, useCallback, useRef)</li>
+      <li>✅ Adicionar estados de loading/erro e feedback ao usuário</li>
+      <li>✅ Implementar cache offline com localStorage</li>
+      <li>✅ Sincronização automática quando voltar online</li>
+    </ul>
+  </div>
+
+  <div class="alert alert-info">
+    <strong>Pré-requisito:</strong> Esta aula continua o projeto da aula
+    anterior "React – Hooks Extras". Certifique-se de ter o projeto base
+    funcionando com useMemo, useCallback, useRef e o componente Statistics
+    separado.
+  </div>
+
+  <!-- 1. Estado Atual do Projeto -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-address-book"></i> 1. Estado Atual do Projeto
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>1.1 Projeto Base da Aula Anterior</h4>
+        <p>
+          Vamos partir do projeto de contatos que já está otimizado com hooks
+          extras:
+        </p>
+
+        <div class="text-center mb-4">
+          <img
+            src="assets/images/pagina_principal_contatos.png"
+            alt="Projeto de Contatos Otimizado"
+            class="img-fluid rounded shadow"
+          />
+          <p class="text-sm text-gray-600 mt-2">
+            Projeto atual com useMemo, useCallback, useRef e componente
+            Statistics
+          </p>
+        </div>
+
+        <h5>Funcionalidades já implementadas (3 aulas):</h5>
+        <ul>
+          <li>
+            <strong>Aula 5:</strong> Componentização, navegação, formulários
+          </li>
+          <li><strong>Aula 6:</strong> localStorage, filtros, deploy Vercel</li>
+          <li>
+            <strong>Aula 7:</strong> useMemo, useCallback, useRef, Statistics
+          </li>
+          <li>✅ Formulário com foco automático (useRef)</li>
+          <li>✅ Lista filtrada otimizada (useMemo)</li>
+          <li>✅ Handlers memoizados (useCallback)</li>
+          <li>✅ Componente Statistics separado</li>
+          <li>✅ Persistência local com localStorage</li>
+          <li>✅ Navegação para página de detalhes</li>
+        </ul>
+
+        <h5>Estrutura de componentes atual (após 3 aulas):</h5>
+        <pre><code class="language-plaintext">app/
+├── page.js                    # Página principal (evoluída)
+├── layout.js                  # Layout compartilhado
+├── globals.css                # Estilos globais
+├── contact/[id]/page.js       # Página de detalhes (aula 5)
+└── components/
+    ├── ContactForm.jsx        # Formulário (useRef + API)
+    ├── ContactList.jsx        # Lista de contatos (estrutura original)
+    ├── ContactItem.jsx        # Item individual (memo + navegação)
+    ├── FilterInput.jsx        # Campo de filtro (useRef)
+    ├── Statistics.jsx         # Estatísticas (separado)
+    └── ConnectionStatus.jsx   # Status de conexão (novo)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Introdução às APIs -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-cloud"></i> 2. Introdução às APIs
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>2.1 O que é uma API?</h4>
+        <p>
+          <strong>API (Application Programming Interface)</strong> é uma
+          interface que permite que diferentes sistemas se comuniquem. No
+          contexto web, APIs REST permitem que nossa aplicação React troque
+          dados com servidores.
+        </p>
+
+        <h4>2.2 Por que evoluir para API?</h4>
+        <p>
+          Atualmente nosso projeto salva dados apenas no localStorage. Vamos
+          evoluir para:
+        </p>
+        <ul>
+          <li><strong>Persistência real:</strong> Dados salvos no servidor</li>
+          <li>
+            <strong>Compartilhamento:</strong> Múltiplos usuários acessam os
+            mesmos dados
+          </li>
+          <li>
+            <strong>Escalabilidade:</strong> Servidor pode processar muitas
+            requisições
+          </li>
+          <li>
+            <strong>Sincronização:</strong> Dados atualizados em tempo real
+          </li>
+          <li><strong>Backup automático:</strong> Dados não se perdem</li>
+        </ul>
+
+        <h4>2.3 API que vamos usar</h4>
+        <p>
+          Vamos usar o <strong>MockAPI.io</strong> que já está configurado e
+          funcionando:
+        </p>
+
+        <div class="alert alert-info mt-3">
+          <strong>API do Projeto:</strong>
+          <code>https://68d96d1b90a75154f0da61ae.mockapi.io/contacts</code>
+          <br />
+          Esta API suporta todas as operações CRUD e mantém os dados
+          persistentes.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Configurando axios -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-download"></i> 3. Configurando axios
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>3.1 Instalação do axios</h4>
+        <p>
+          O <strong>axios</strong> é uma biblioteca popular para fazer
+          requisições HTTP em JavaScript. É mais poderoso que o
+          <code>fetch</code> nativo.
+        </p>
+
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">npm install axios</code></pre>
+
+        <h4>3.2 Configuração básica</h4>
+        <pre><code class="language-jsx">// utils/api.js
+import axios from 'axios';
+
+// Configuração base do axios
+const api = axios.create({
+  baseURL: 'https://68d96d1b90a75154f0da61ae.mockapi.io', // MockAPI
+  timeout: 10000, // 10 segundos (API online pode ser mais lenta)
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export default api;</code></pre>
+
+        <h4>3.3 Interceptors para tratamento global</h4>
+        <pre><code class="language-jsx">// Adicionar interceptors para tratamento global
+api.interceptors.request.use(
+  (config) => {
+    console.log('Enviando requisição:', config.url);
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    console.log('Resposta recebida:', response.status);
+    return response;
+  },
+  (error) => {
+    console.error('Erro na requisição:', error.message);
+    return Promise.reject(error);
+  }
+);</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. useEffect para APIs -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-sync"></i> 4. useEffect para APIs
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>4.1 Padrão básico de consumo de API</h4>
+        <p>
+          O <code>useEffect</code> é ideal para fazer chamadas de API quando o
+          componente é montado ou quando dependências mudam. Vamos adaptar nosso
+          projeto existente para carregar dados da API.
+        </p>
+
+        <pre><code class="language-jsx">// components/ContactList.jsx - ESTRUTURA ORIGINAL MANTIDA
+import ContactItem from './ContactItem';
+
+const ContactList = ({ items, onRemove }) => {
+  return (
+    &lt;section className="bg-white shadow rounded"&gt;
+      &lt;div className="px-4 py-3 border-b"&gt;
+        &lt;h2 className="font-medium text-gray-900"&gt;Contatos ({items.length})&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;ul className="divide-y"&gt;
+        {items.length === 0 ? (
+          &lt;li className="p-4 text-gray-500"&gt;Nenhum contato encontrado&lt;/li&gt;
+        ) : (
+          items.map((c) => (
+            &lt;ContactItem key={c.id} contact={c} onRemove={onRemove} /&gt;
+          ))
+        )}
+      &lt;/ul&gt;
+    &lt;/section&gt;
+  );
+};
+
+export default ContactList;</code></pre>
+
+        <h4>4.2 Carregando Contatos da API no Componente</h4>
+        <p>
+          Vamos implementar a lógica de API diretamente no componente principal,
+          sem usar hooks customizados (que serão aprendidos na próxima aula).
+        </p>
+        <pre><code class="language-jsx">// app/page.js - EVOLUÇÃO do projeto existente
+"use client";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import ContactForm from "./components/ContactForm";
+import ContactList from "./components/ContactList";
+import FilterInput from "./components/FilterInput";
+import Statistcs from "./components/Statistcs";
+import api from './utils/api';
+
+const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isOffline, setIsOffline] = useState(false);
+
+  // Carregar contatos da API + localStorage
+  useEffect(() => {
+    const loadContacts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Tentar carregar da API primeiro
+        try {
+          const response = await api.get('/contacts');
+          setContacts(response.data);
+          // Salvar no localStorage como cache
+          localStorage.setItem('contatos', JSON.stringify(response.data));
+          setIsOffline(false);
+        } catch (apiError) {
+          // Se API falhar, carregar do localStorage
+          console.log('API offline, carregando do cache');
+          setIsOffline(true);
+          const cached = localStorage.getItem('contatos');
+          if (cached) {
+            setContacts(JSON.parse(cached));
+          } else {
+            setError('Erro ao carregar contatos e sem cache disponível.');
+          }
+        }
+      } catch (err) {
+        setError('Erro ao carregar contatos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadContacts();
+  }, []);
+
+  // MANTER: localStorage do projeto existente
+  useEffect(() => {
+    if (contacts.length > 0) {
+      localStorage.setItem('contatos', JSON.stringify(contacts));
+    }
+  }, [contacts]);
+
+  // MANTER: Lista filtrada otimizada (useMemo da aula anterior)
+  const filteredContacts = useMemo(() => {
+    if (!filter.trim()) {
+      return contacts;
+    }
+    
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.telefone.includes(filter)
+    );
+  }, [contacts, filter]);
+
+  // MANTER: Estatísticas memoizadas (useMemo da aula anterior)
+  const stats = useMemo(() => {
+    const total = contacts.length;
+    const comEmail = contacts.filter(c => c.email).length;
+    const comTelefone = contacts.filter(c => c.telefone).length;
+    
+    return {
+      total,
+      comEmail,
+      comTelefone,
+      semEmail: total - comEmail,
+      semTelefone: total - comTelefone
+    };
+  }, [contacts]);
+
+  // MANTER: Handlers memoizados do projeto existente
+  const handleSubmit = useCallback((newContact) => {
+    setContacts(prev => [...prev, newContact]);
+  }, []);
+
+  const handleRemove = useCallback((id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  }, []);
+
+  const handleFilterChange = useCallback((value) => {
+    setFilter(value);
+  }, []);
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;div className="flex items-center space-x-4"&gt;
+            &lt;FilterInput value={filter} onChange={handleFilterChange} /&gt;
+            {isOffline && (
+              &lt;span className="text-orange-600 text-sm"&gt;
+                &lt;i className="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Offline
+              &lt;/span&gt;
+            )}
+          &lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleSubmit} /&gt;
+
+        {loading && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2"&gt;Carregando contatos...&lt;/p&gt;
+          &lt;/div&gt;
+        )}
+
+        {error && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-exclamation-circle text-2xl text-red-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2 text-red-600"&gt;{error}&lt;/p&gt;
+            &lt;button 
+              onClick={() => window.location.reload()}
+              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            &gt;
+              Tentar Novamente
+            &lt;/button&gt;
+          &lt;/div&gt;
+        )}
+
+        {!loading && !error && (
+          &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
+        )}
+
+        &lt;Statistcs stats={stats} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default HomePage;</code></pre>
+
+        <h4>4.3 Cleanup para evitar memory leaks</h4>
+        <pre><code class="language-jsx">useEffect(() => {
+  let isMounted = true;
+
+  const fetchData = async () => {
+    try {
+      const response = await api.get('/contacts');
+      if (isMounted) {
+        setContacts(response.data);
+      }
+    } catch (err) {
+      if (isMounted) {
+        setError('Erro ao carregar dados');
+      }
+    }
+  };
+
+  fetchData();
+
+  return () => {
+    isMounted = false; // Cleanup
+  };
+}, []);</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Estados de Loading e Erro -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-exclamation-triangle"></i> 5. Estados de Loading e Erro
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>5.1 Gerenciando estados de UI</h4>
+        <p>
+          É importante fornecer feedback visual ao usuário durante operações de
+          API. Vamos implementar estados de loading, erro e sucesso no nosso
+          projeto existente.
+        </p>
+
+        <pre><code class="language-jsx">function ContactForm({ onContactAdded }) {
+  const [form, setForm] = useState({ name: '', email: '', phone: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+
+      const response = await api.post('/contacts', form);
+      
+      setSuccess(true);
+      setForm({ name: '', email: '', phone: '' });
+      onContactAdded(response.data);
+      
+      // Limpar mensagem de sucesso após 3 segundos
+      setTimeout(() => setSuccess(false), 3000);
+      
+    } catch (err) {
+      setError('Erro ao adicionar contato');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      {/* Campos do formulário */}
+      
+      {loading && (
+        &lt;div className="text-blue-600"&gt;
+          &lt;i className="fas fa-spinner fa-spin"&gt;&lt;/i&gt; Salvando...
+        &lt;/div&gt;
+      )}
+      
+      {error && (
+        &lt;div className="text-red-600 bg-red-100 p-2 rounded"&gt;
+          &lt;i className="fas fa-exclamation-circle"&gt;&lt;/i&gt; {error}
+        &lt;/div&gt;
+      )}
+      
+      {success && (
+        &lt;div className="text-green-600 bg-green-100 p-2 rounded"&gt;
+          &lt;i className="fas fa-check-circle"&gt;&lt;/i&gt; Contato adicionado com sucesso!
+        &lt;/div&gt;
+      )}
+      
+      &lt;button 
+        type="submit" 
+        disabled={loading}
+        className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+      &gt;
+        {loading ? 'Salvando...' : 'Adicionar Contato'}
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+
+        <h4>5.2 Estados de Loading no ContactForm</h4>
+        <p>
+          Vamos implementar estados de loading diretamente no componente
+          ContactForm, sem usar hooks customizados.
+        </p>
+        <pre><code class="language-jsx">// components/ContactForm.js - EVOLUÇÃO do projeto existente
+import { useEffect, useRef, useState } from "react";
+import api from '../utils/api';
+
+const ContactForm = ({ onAdd }) => {
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const nomeInputRef = useRef(null);
+
+  // MANTER: Foco automático do projeto existente
+  useEffect(() => {
+    nomeInputRef.current?.focus();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.nome.trim()) return; // Validação simples
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Tentar salvar via API primeiro
+      try {
+        const response = await api.post('/contacts', form);
+        // Se API funcionar, usar o ID retornado
+        onAdd({ ...form, id: response.data.id });
+      } catch (apiError) {
+        // Se API falhar, salvar localmente
+        console.log('API offline, salvando localmente');
+        onAdd({ ...form, id: Date.now() });
+      }
+      
+      setForm({ nome: "", email: "", telefone: "" });
+      // Focar novamente no campo nome após adicionar
+      nomeInputRef.current?.focus();
+      
+    } catch (err) {
+      setError('Erro ao adicionar contato');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Nome&lt;/label&gt;
+        &lt;input
+          ref={nomeInputRef}
+          name="nome"
+          className="w-full border rounded px-3 py-2 text-gray-900"
+          value={form.nome}
+          onChange={handleChange}
+          required
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Email&lt;/label&gt;
+        &lt;input
+          name="email"
+          type="email"
+          className="w-full border rounded px-3 py-2 text-gray-900"
+          value={form.email}
+          onChange={handleChange}
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Telefone&lt;/label&gt;
+        &lt;input
+          name="telefone"
+          className="w-full border rounded px-3 py-2 text-gray-900"
+          value={form.telefone}
+          onChange={handleChange}
+        /&gt;
+      &lt;/div&gt;
+
+      {error && (
+        &lt;div className="text-red-600 text-sm"&gt;{error}&lt;/div&gt;
+      )}
+
+      &lt;button 
+        type="submit" 
+        disabled={loading}
+        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
+      &gt;
+        {loading ? 'Salvando...' : 'Adicionar Contato'}
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+};
+
+export default ContactForm;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. localStorage como Cache -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-database"></i> 6. localStorage como Cache
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>6.1 Estratégia de Cache Offline</h4>
+        <p>
+          Vamos evoluir nosso sistema de localStorage existente para funcionar
+          como cache offline quando a API não estiver disponível.
+        </p>
+
+        <pre><code class="language-jsx">// utils/cache.js
+const CACHE_KEY = 'contacts_cache';
+const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutos
+
+export const cacheService = {
+  // Salvar dados no cache
+  set: (data) => {
+    const cacheData = {
+      data,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+  },
+
+  // Recuperar dados do cache
+  get: () => {
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (!cached) return null;
+
+      const { data, timestamp } = JSON.parse(cached);
+      const isExpired = Date.now() - timestamp > CACHE_EXPIRY;
+      
+      return isExpired ? null : data;
+    } catch {
+      return null;
+    }
+  },
+
+  // Limpar cache
+  clear: () => {
+    localStorage.removeItem(CACHE_KEY);
+  },
+
+  // Verificar se cache existe e é válido
+  isValid: () => {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (!cached) return false;
+
+    try {
+      const { timestamp } = JSON.parse(cached);
+      return Date.now() - timestamp <= CACHE_EXPIRY;
+    } catch {
+      return false;
+    }
+  }
+};</code></pre>
+
+        <h4>6.2 Cache Integrado no ContactItem</h4>
+        <p>
+          Vamos implementar a lógica de cache diretamente no componente
+          ContactItem, sem usar hooks customizados.
+        </p>
+        <pre><code class="language-jsx">// components/ContactItem.js - EVOLUÇÃO do projeto existente
+import Link from 'next/link';
+import { memo } from 'react';
+import api from '../utils/api';
+
+const ContactItem = memo(({ contact, onRemove }) => {
+  const handleRemove = async () => {
+    try {
+      // Tentar remover via API primeiro
+      await api.delete(`/contacts/${contact.id}`);
+      onRemove(contact.id);
+    } catch (err) {
+      // Se API falhar, remover apenas localmente
+      console.log('API offline, removendo localmente');
+      onRemove(contact.id);
+    }
+  };
+
+  return (
+    &lt;li className="p-4 flex items-center justify-between"&gt;
+      &lt;div&gt;
+        &lt;Link
+          href={`/contact/${contact.id}`}
+          className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+        &gt;
+          {contact.nome}
+        &lt;/Link&gt;
+        &lt;p className="text-sm text-gray-600"&gt;
+          {contact.email} • {contact.telefone}
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button
+        onClick={handleRemove}
+        className="text-red-600 hover:text-red-700 px-2 py-1 rounded"
+      &gt;
+        Excluir
+      &lt;/button&gt;
+    &lt;/li&gt;
+  );
+});
+
+ContactItem.displayName = 'ContactItem';
+export default ContactItem;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Sincronização Online/Offline -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-wifi"></i> 7. Sincronização Online/Offline
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>7.1 Detecção de Status de Conexão</h4>
+        <p>
+          Vamos implementar detecção de status de conexão diretamente no
+          componente principal, sem usar hooks customizados.
+        </p>
+
+        <pre><code class="language-jsx">// app/page.js - Adicionar detecção de conexão
+"use client";
+import { useCallback, useEffect, useMemo, useState } from "react";
+// ... outros imports
+
+const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isOffline, setIsOffline] = useState(false);
+
+  // Detectar status de conexão
+  useEffect(() => {
+    const syncPendingContacts = async () => {
+      try {
+        // Buscar contatos da API
+        const response = await api.get('/contacts');
+        const serverContacts = response.data;
+        
+        // Buscar contatos locais
+        const localContacts = contacts;
+        
+        // Encontrar contatos que existem localmente mas não no servidor
+        const pendingContacts = localContacts.filter(localContact => {
+          // Se o ID é um timestamp (salvo offline), precisa sincronizar
+          return typeof localContact.id === 'number' && 
+                 localContact.id > 1000000000000 && // Timestamp válido
+                 !serverContacts.some(serverContact => 
+                   serverContact.nome === localContact.nome &&
+                   serverContact.email === localContact.email &&
+                   serverContact.telefone === localContact.telefone
+                 );
+        });
+
+        // Enviar contatos pendentes para a API
+        for (const pendingContact of pendingContacts) {
+          try {
+            const { id, ...contactData } = pendingContact;
+            const response = await api.post('/contacts', contactData);
+            
+            // Atualizar o contato local com o ID da API
+            setContacts(prev => prev.map(contact => 
+              contact.id === pendingContact.id 
+                ? { ...contact, id: response.data.id }
+                : contact
+            ));
+            
+            console.log('Contato sincronizado:', contactData.nome);
+          } catch (err) {
+            console.error('Erro ao sincronizar contato:', err);
+          }
+        }
+
+        // Atualizar com dados do servidor
+        setContacts(serverContacts);
+        localStorage.setItem('contatos', JSON.stringify(serverContacts));
+        
+      } catch (err) {
+        console.error('Erro na sincronização:', err);
+      }
+    };
+
+    const handleOnline = () => {
+      setIsOffline(false);
+      console.log('Voltou online - sincronizando...');
+      syncPendingContacts();
+    };
+
+    const handleOffline = () => {
+      setIsOffline(true);
+      console.log('Ficou offline - usando cache local');
+    };
+
+    // Verificar status inicial
+    setIsOffline(!navigator.onLine);
+
+    // Adicionar listeners
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [contacts]);
+
+  // ... resto do código
+};</code></pre>
+
+        <h4>7.2 Sincronização Inteligente</h4>
+        <p>
+          A sincronização agora é mais inteligente: quando a internet volta, o
+          sistema:
+        </p>
+        <ul>
+          <li>
+            ✅ <strong>Identifica contatos pendentes:</strong> Contatos salvos
+            offline (com ID timestamp)
+          </li>
+          <li>
+            ✅ <strong>Envia para API:</strong> Sincroniza contatos que não
+            existem no servidor
+          </li>
+          <li>
+            ✅ <strong>Atualiza IDs:</strong> Substitui IDs temporários pelos
+            IDs reais da API
+          </li>
+          <li>
+            ✅ <strong>Evita duplicatas:</strong> Compara por nome, email e
+            telefone
+          </li>
+          <li>
+            ✅ <strong>Mantém dados:</strong> Nenhum contato se perde na
+            sincronização
+          </li>
+        </ul>
+
+        <h4>7.3 Indicador Visual de Status</h4>
+        <p>
+          Vamos adicionar um indicador visual simples no header para mostrar o
+          status de conexão.
+        </p>
+
+        <pre><code class="language-jsx">// No return do HomePage
+return (
+  &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+    &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+      &lt;header className="flex items-center justify-between"&gt;
+        &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+        &lt;div className="flex items-center space-x-4"&gt;
+          &lt;FilterInput value={filter} onChange={handleFilterChange} /&gt;
+          {isOffline && (
+            &lt;span className="text-orange-600 text-sm"&gt;
+              &lt;i className="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Offline
+            &lt;/span&gt;
+          )}
+        &lt;/div&gt;
+      &lt;/header&gt;
+      // ... resto do JSX
+    &lt;/div&gt;
+  &lt;/div&gt;
+);</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Projeto Prático Completo -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-laptop-code"></i> 8. Projeto Prático Completo
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>8.1 Evoluindo o Projeto Existente</h4>
+        <p>
+          Vamos evoluir o projeto de contatos completo que já está funcionando
+          com:
+        </p>
+        <ul>
+          <li>
+            ✅ Componentização completa (ContactForm, ContactList, ContactItem,
+            FilterInput, Statistics)
+          </li>
+          <li>✅ localStorage para persistência</li>
+          <li>✅ Otimizações com useMemo, useCallback, useRef</li>
+          <li>✅ Navegação para página de detalhes</li>
+          <li>✅ Filtros e estatísticas em tempo real</li>
+        </ul>
+        <p>
+          Agora vamos adicionar integração com API mantendo toda a estrutura
+          existente.
+        </p>
+
+        <div class="alert alert-success mt-3">
+          <strong>Vantagens do MockAPI:</strong>
+          <ul>
+            <li>✅ API online disponível 24/7</li>
+            <li>✅ Suporte completo a CRUD (Create, Read, Update, Delete)</li>
+            <li>✅ Dados persistem entre sessões</li>
+            <li>✅ Não precisa configurar servidor local</li>
+            <li>✅ Ideal para desenvolvimento e testes</li>
+          </ul>
+        </div>
+
+        <h5>Endpoints disponíveis:</h5>
+        <ul>
+          <li><strong>GET /contacts</strong> - Listar todos os contatos</li>
+          <li><strong>GET /contacts/:id</strong> - Buscar contato por ID</li>
+          <li><strong>POST /contacts</strong> - Criar novo contato</li>
+          <li><strong>PUT /contacts/:id</strong> - Atualizar contato</li>
+          <li><strong>DELETE /contacts/:id</strong> - Excluir contato</li>
+        </ul>
+
+        <h5>Testando a API:</h5>
+        <p>
+          Você pode testar a API diretamente no navegador ou usando ferramentas
+          como Postman:
+        </p>
+
+        <div class="code-header">Teste no navegador</div>
+        <pre><code class="language-bash"># Abrir no navegador para ver todos os contatos
+https://68d96d1b90a75154f0da61ae.mockapi.io/contacts
+
+# Verificar se a API está funcionando
+curl https://68d96d1b90a75154f0da61ae.mockapi.io/contacts</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>Dica:</strong> A API retorna um array vazio
+          <code>[]</code> inicialmente. Conforme você adicionar contatos através
+          da aplicação React, eles aparecerão aqui.
+        </div>
+
+        <h4>8.2 Evoluindo os Componentes Existentes</h4>
+        <p>
+          Vamos evoluir os componentes existentes para integrar com a API,
+          mantendo TODA a estrutura e otimizações das 3 aulas anteriores.
+        </p>
+
+        <h5>ContactItem - Evoluindo o componente existente</h5>
+        <pre><code class="language-jsx">// components/ContactItem.js - EVOLUÇÃO do projeto existente
+import Link from 'next/link';
+import { memo } from 'react';
+import api from '../utils/api';
+
+const ContactItem = memo(({ contact, onRemove }) => {
+  const handleRemove = async () => {
+    try {
+      // Tentar remover via API primeiro
+      await api.delete(`/contacts/${contact.id}`);
+      onRemove(contact.id);
+    } catch (err) {
+      // Se API falhar, remover apenas localmente
+      console.log('API offline, removendo localmente');
+      onRemove(contact.id);
+    }
+  };
+
+  return (
+    &lt;li className="p-4 flex items-center justify-between"&gt;
+      &lt;div&gt;
+        &lt;Link
+          href={`/contact/${contact.id}`}
+          className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+        &gt;
+          {contact.nome}
+        &lt;/Link&gt;
+        &lt;p className="text-sm text-gray-600"&gt;
+          {contact.email} • {contact.telefone}
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button
+        onClick={handleRemove}
+        className="text-red-600 hover:text-red-700 px-2 py-1 rounded"
+      &gt;
+        Excluir
+      &lt;/button&gt;
+    &lt;/li&gt;
+  );
+});
+
+ContactItem.displayName = 'ContactItem';
+export default ContactItem;</code></pre>
+
+        <h5>ContactList - Mantendo estrutura original</h5>
+        <pre><code class="language-jsx">// components/ContactList.js - ESTRUTURA ORIGINAL (sem mudanças)
+import ContactItem from './ContactItem';
+
+const ContactList = ({ items, onRemove }) => {
+  return (
+    &lt;section className="bg-white shadow rounded"&gt;
+      &lt;div className="px-4 py-3 border-b"&gt;
+        &lt;h2 className="font-medium text-gray-900"&gt;Contatos ({items.length})&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;ul className="divide-y"&gt;
+        {items.length === 0 ? (
+          &lt;li className="p-4 text-gray-500"&gt;Nenhum contato encontrado&lt;/li&gt;
+        ) : (
+          items.map((c) => (
+            &lt;ContactItem 
+              key={c.id} 
+              contact={c} 
+              onRemove={onRemove}
+            /&gt;
+          ))
+        )}
+      &lt;/ul&gt;
+    &lt;/section&gt;
+  );
+};
+
+export default ContactList;</code></pre>
+
+        <h4>8.3 Página Principal Evoluída</h4>
+        <p>
+          Agora vamos evoluir a página principal para integrar com a API,
+          mantendo TODAS as otimizações existentes.
+        </p>
+
+        <pre><code class="language-jsx">// app/page.js - EVOLUÇÃO do projeto existente
+"use client";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import ContactForm from "./components/ContactForm";
+import ContactList from "./components/ContactList";
+import FilterInput from "./components/FilterInput";
+import Statistcs from "./components/Statistcs";
+import api from './utils/api';
+
+const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isOffline, setIsOffline] = useState(false);
+
+  // Carregar contatos da API + localStorage
+  useEffect(() => {
+    const loadContacts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Tentar carregar da API primeiro
+        try {
+          const response = await api.get('/contacts');
+          setContacts(response.data);
+          // Salvar no localStorage como cache
+          localStorage.setItem('contatos', JSON.stringify(response.data));
+        } catch (apiError) {
+          // Se API falhar, carregar do localStorage
+          console.log('API offline, carregando do cache');
+          setIsOffline(true);
+          const cached = localStorage.getItem('contatos');
+          if (cached) {
+            setContacts(JSON.parse(cached));
+          }
+        }
+      } catch (err) {
+        setError('Erro ao carregar contatos');
+      } finally {
+        setLoading(false);
+        setIsLoaded(true);
+      }
+    };
+
+    loadContacts();
+  }, []);
+
+  // MANTER: localStorage do projeto existente
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('contatos', JSON.stringify(contacts));
+    }
+  }, [contacts, isLoaded]);
+
+  // MANTER: Lista filtrada otimizada (useMemo da aula anterior)
+  const filteredContacts = useMemo(() => {
+    console.log('Filtrando contatos...');
+    
+    if (!filter.trim()) {
+      return contacts;
+    }
+    
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.telefone.includes(filter)
+    );
+  }, [contacts, filter]);
+
+  // MANTER: Estatísticas memoizadas (useMemo da aula anterior)
+  const stats = useMemo(() => {
+    console.log('Calculando estatísticas...');
+    
+    const total = contacts.length;
+    const comEmail = contacts.filter(c => c.email).length;
+    const comTelefone = contacts.filter(c => c.telefone).length;
+    
+    return {
+      total,
+      comEmail,
+      comTelefone,
+      semEmail: total - comEmail,
+      semTelefone: total - comTelefone
+    };
+  }, [contacts]);
+
+  // MANTER: Handlers memoizados do projeto existente
+  const handleSubmit = useCallback((newContact) => {
+    setContacts(prev => [...prev, newContact]);
+  }, []);
+
+  const handleRemove = useCallback((id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  }, []);
+
+  const handleFilterChange = useCallback((value) => {
+    setFilter(value);
+  }, []);
+
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;div className="flex items-center space-x-4"&gt;
+            &lt;FilterInput value={filter} onChange={handleFilterChange} /&gt;
+            {isOffline && (
+              &lt;span className="text-orange-600 text-sm"&gt;
+                &lt;i className="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Offline
+              &lt;/span&gt;
+            )}
+          &lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleSubmit} /&gt;
+
+        {loading && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2"&gt;Carregando contatos...&lt;/p&gt;
+          &lt;/div&gt;
+        )}
+
+        {error && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-exclamation-circle text-2xl text-red-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2 text-red-600"&gt;{error}&lt;/p&gt;
+            &lt;button 
+              onClick={() => window.location.reload()}
+              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            &gt;
+              Tentar Novamente
+            &lt;/button&gt;
+          &lt;/div&gt;
+        )}
+
+        {!loading && !error && (
+          &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
+        )}
+
+        &lt;Statistcs stats={stats} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default HomePage;</code></pre>
+
+        <h4>8.4 Componente de Formulário Evoluído</h4>
+        <pre><code class="language-jsx">// components/ContactForm.js - EVOLUÇÃO do projeto existente
+import { useEffect, useRef, useState } from "react";
+import api from '../utils/api';
+
+const ContactForm = ({ onAdd }) => {
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const nomeInputRef = useRef(null);
+
+  // MANTER: Foco automático do projeto existente
+  useEffect(() => {
+    nomeInputRef.current?.focus();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.nome.trim()) return; // Validação simples
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Tentar salvar via API primeiro
+      try {
+        const response = await api.post('/contacts', form);
+        // Se API funcionar, usar o ID retornado
+        onAdd({ ...form, id: response.data.id });
+      } catch (apiError) {
+        // Se API falhar, salvar localmente
+        console.log('API offline, salvando localmente');
+        onAdd({ ...form, id: Date.now() });
+      }
+      
+      setForm({ nome: "", email: "", telefone: "" });
+      // Focar novamente no campo nome após adicionar
+      nomeInputRef.current?.focus();
+      
+    } catch (err) {
+      setError('Erro ao adicionar contato');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4"&gt;
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Nome&lt;/label&gt;
+        &lt;input
+          ref={nomeInputRef}
+          name="nome"
+          className="w-full border rounded px-3 py-2 text-gray-900"
+          value={form.nome}
+          onChange={handleChange}
+          required
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Email&lt;/label&gt;
+        &lt;input
+          name="email"
+          type="email"
+          className="w-full border rounded px-3 py-2 text-gray-900"
+          value={form.email}
+          onChange={handleChange}
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Telefone&lt;/label&gt;
+        &lt;input
+          name="telefone"
+          className="w-full border rounded px-3 py-2 text-gray-900"
+          value={form.telefone}
+          onChange={handleChange}
+        /&gt;
+      &lt;/div&gt;
+
+      {error && (
+        &lt;div className="text-red-600 text-sm"&gt;{error}&lt;/div&gt;
+      )}
+
+      &lt;button 
+        type="submit" 
+        disabled={loading}
+        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
+      &gt;
+        {loading ? 'Salvando...' : 'Adicionar Contato'}
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+};
+
+export default ContactForm;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Testes Rápidos (Quiz) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-clipboard-check"></i> 9. Testes Rápidos (Quiz)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ol>
+          <li class="mb-3">
+            Qual é a principal vantagem do axios sobre o fetch nativo?
+            <div>
+              a) É mais rápido &nbsp; b) Tem interceptors e melhor tratamento de
+              erro &nbsp; c) É mais leve &nbsp; d) Não precisa de configuração
+            </div>
+          </li>
+          <li class="mb-3">
+            Quando o useEffect com array vazio [] executa?
+            <div>
+              a) Em toda renderização &nbsp; b) Apenas no mount e unmount &nbsp;
+              c) Quando o estado muda &nbsp; d) Nunca
+            </div>
+          </li>
+          <li class="mb-3">
+            Para que serve o cleanup no useEffect?
+            <div>
+              a) Limpar o estado &nbsp; b) Evitar memory leaks &nbsp; c)
+              Cancelar requisições &nbsp; d) Todas as anteriores
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual é a melhor estratégia para cache offline?
+            <div>
+              a) Salvar tudo no localStorage &nbsp; b) Usar apenas API &nbsp; c)
+              Cache com expiração e fallback &nbsp; d) Não usar cache
+            </div>
+          </li>
+          <li class="mb-3">
+            Como detectar quando o usuário volta online?
+            <div>
+              a) Usar navigator.onLine &nbsp; b) Fazer ping no servidor &nbsp;
+              c) Usar WebSocket &nbsp; d) Todas as anteriores
+            </div>
+          </li>
+        </ol>
+
+        <details class="solucao">
+          <summary>Mostrar gabarito</summary>
+          <ol>
+            <li>b) Tem interceptors e melhor tratamento de erro</li>
+            <li>b) Apenas no mount e unmount</li>
+            <li>d) Todas as anteriores</li>
+            <li>c) Cache com expiração e fallback</li>
+            <li>d) Todas as anteriores</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 10. Exercícios Práticos
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Evoluir Projeto de Contatos</h4>
+      <p>
+        <strong>Objetivo:</strong> Evoluir o projeto de contatos da aula
+        anterior para integrar com API mantendo todas as otimizações existentes.
+      </p>
+      <ol>
+        <li>Manter todas as otimizações (useMemo, useCallback, useRef)</li>
+        <li>Integrar com MockAPI.io para persistência real</li>
+        <li>Implementar estados de loading e erro</li>
+        <li>Evoluir cache localStorage para funcionar offline</li>
+        <li>Adicionar sincronização automática</li>
+        <li>Manter componente Statistics separado</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// 1. Configurar axios (utils/api.js)
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: 'https://68d96d1b90a75154f0da61ae.mockapi.io',
+  timeout: 10000,
+});
+
+export default api;
+
+// 2. Evoluir HomePage (app/page.js)
+"use client";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import ContactForm from "./components/ContactForm";
+import ContactList from "./components/ContactList";
+import FilterInput from "./components/FilterInput";
+import Statistcs from "./components/Statistcs";
+import api from './utils/api';
+
+const HomePage = () => {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isOffline, setIsOffline] = useState(false);
+
+  // Carregar contatos da API + localStorage
+  useEffect(() => {
+    const loadContacts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        try {
+          const response = await api.get('/contacts');
+          setContacts(response.data);
+          localStorage.setItem('contatos', JSON.stringify(response.data));
+          setIsOffline(false);
+        } catch (apiError) {
+          console.log('API offline, carregando do cache');
+          setIsOffline(true);
+          const cached = localStorage.getItem('contatos');
+          if (cached) {
+            setContacts(JSON.parse(cached));
+          } else {
+            setError('Erro ao carregar contatos e sem cache disponível.');
+          }
+        }
+      } catch (err) {
+        setError('Erro ao carregar contatos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadContacts();
+  }, []);
+
+  // Detectar status de conexão
+  useEffect(() => {
+    const syncPendingContacts = async () => {
+      try {
+        // Buscar contatos da API
+        const response = await api.get('/contacts');
+        const serverContacts = response.data;
+        
+        // Buscar contatos locais
+        const localContacts = contacts;
+        
+        // Encontrar contatos que existem localmente mas não no servidor
+        const pendingContacts = localContacts.filter(localContact => {
+          // Se o ID é um timestamp (salvo offline), precisa sincronizar
+          return typeof localContact.id === 'number' && 
+                 localContact.id > 1000000000000 && // Timestamp válido
+                 !serverContacts.some(serverContact => 
+                   serverContact.nome === localContact.nome &&
+                   serverContact.email === localContact.email &&
+                   serverContact.telefone === localContact.telefone
+                 );
+        });
+
+        // Enviar contatos pendentes para a API
+        for (const pendingContact of pendingContacts) {
+          try {
+            const { id, ...contactData } = pendingContact;
+            const response = await api.post('/contacts', contactData);
+            
+            // Atualizar o contato local com o ID da API
+            setContacts(prev => prev.map(contact => 
+              contact.id === pendingContact.id 
+                ? { ...contact, id: response.data.id }
+                : contact
+            ));
+            
+            console.log('Contato sincronizado:', contactData.nome);
+          } catch (err) {
+            console.error('Erro ao sincronizar contato:', err);
+          }
+        }
+
+        // Atualizar com dados do servidor
+        setContacts(serverContacts);
+        localStorage.setItem('contatos', JSON.stringify(serverContacts));
+        
+      } catch (err) {
+        console.error('Erro na sincronização:', err);
+      }
+    };
+
+    const handleOnline = () => {
+      setIsOffline(false);
+      console.log('Voltou online - sincronizando...');
+      syncPendingContacts();
+    };
+
+    const handleOffline = () => {
+      setIsOffline(true);
+      console.log('Ficou offline - usando cache local');
+    };
+
+    setIsOffline(!navigator.onLine);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [contacts]);
+
+  // MANTER: localStorage do projeto existente
+  useEffect(() => {
+    if (contacts.length > 0) {
+      localStorage.setItem('contatos', JSON.stringify(contacts));
+    }
+  }, [contacts]);
+
+  // MANTER: Lista filtrada otimizada (useMemo)
+  const filteredContacts = useMemo(() => {
+    if (!filter.trim()) {
+      return contacts;
+    }
+    
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.telefone.includes(filter)
+    );
+  }, [contacts, filter]);
+
+  // MANTER: Estatísticas memoizadas (useMemo)
+  const stats = useMemo(() => {
+    const total = contacts.length;
+    const comEmail = contacts.filter(c => c.email).length;
+    const comTelefone = contacts.filter(c => c.telefone).length;
+    
+    return {
+      total,
+      comEmail,
+      comTelefone,
+      semEmail: total - comEmail,
+      semTelefone: total - comTelefone
+    };
+  }, [contacts]);
+
+  // MANTER: Handlers memoizados (useCallback)
+  const handleSubmit = useCallback((newContact) => {
+    setContacts(prev => [...prev, newContact]);
+  }, []);
+
+  const handleRemove = useCallback((id) => {
+    setContacts(prev => prev.filter(c => c.id !== id));
+  }, []);
+
+  const handleFilterChange = useCallback((value) => {
+    setFilter(value);
+  }, []);
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;div className="flex items-center space-x-4"&gt;
+            &lt;FilterInput value={filter} onChange={handleFilterChange} /&gt;
+            {isOffline && (
+              &lt;span className="text-orange-600 text-sm"&gt;
+                &lt;i className="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Offline
+              &lt;/span&gt;
+            )}
+          &lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm onAdd={handleSubmit} /&gt;
+
+        {loading && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2"&gt;Carregando contatos...&lt;/p&gt;
+          &lt;/div&gt;
+        )}
+
+        {error && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-exclamation-circle text-2xl text-red-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2 text-red-600"&gt;{error}&lt;/p&gt;
+            &lt;button 
+              onClick={() => window.location.reload()}
+              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            &gt;
+              Tentar Novamente
+            &lt;/button&gt;
+          &lt;/div&gt;
+        )}
+
+        {!loading && !error && (
+          &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
+        )}
+
+        &lt;Statistcs stats={stats} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default HomePage;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Melhorar Performance com API</h4>
+      <p>
+        <strong>Objetivo:</strong> Otimizar o projeto de contatos para melhor
+        performance com API, mantendo todas as otimizações existentes.
+      </p>
+      <ol>
+        <li>Criar endpoint /notifications no MockAPI.io</li>
+        <li>Implementar cache local para notificações não lidas</li>
+        <li>Adicionar badge de contador de notificações</li>
+        <li>Implementar sincronização quando voltar online</li>
+        <li>Adicionar animações para novas notificações</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// 1. Componente de Notificações (components/Notifications.js)
+import { useEffect, useState } from 'react';
+import api from '../utils/api';
+
+const Notifications = () => {
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadNotifications = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/notifications');
+        setNotifications(response.data);
+        
+        // Contar não lidas
+        const unread = response.data.filter(n => !n.read).length;
+        setUnreadCount(unread);
+        
+        // Salvar no cache
+        localStorage.setItem('notifications', JSON.stringify(response.data));
+      } catch (err) {
+        // Fallback para cache
+        const cached = localStorage.getItem('notifications');
+        if (cached) {
+          const data = JSON.parse(cached);
+          setNotifications(data);
+          setUnreadCount(data.filter(n => !n.read).length);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadNotifications();
+  }, []);
+
+  const markAsRead = async (id) => {
+    try {
+      await api.put(`/notifications/${id}`, { read: true });
+      setNotifications(prev => 
+        prev.map(n => n.id === id ? { ...n, read: true } : n)
+      );
+      setUnreadCount(prev => Math.max(0, prev - 1));
+    } catch (err) {
+      // Fallback local
+      setNotifications(prev => 
+        prev.map(n => n.id === id ? { ...n, read: true } : n)
+      );
+      setUnreadCount(prev => Math.max(0, prev - 1));
+    }
+  };
+
+  return (
+    &lt;div className="relative"&gt;
+      &lt;button className="relative p-2 text-gray-600 hover:text-gray-900"&gt;
+        &lt;i className="fas fa-bell text-xl"&gt;&lt;/i&gt;
+        {unreadCount > 0 && (
+          &lt;span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse"&gt;
+            {unreadCount}
+          &lt;/span&gt;
+        )}
+      &lt;/button&gt;
+      
+      {/* Dropdown de notificações */}
+      &lt;div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-50"&gt;
+        {notifications.map(notification => (
+          &lt;div 
+            key={notification.id}
+            className={`p-3 border-b hover:bg-gray-50 cursor-pointer ${
+              !notification.read ? 'bg-blue-50' : ''
+            }`}
+            onClick={() => markAsRead(notification.id)}
+          &gt;
+            &lt;p className="text-sm"&gt;{notification.message}&lt;/p&gt;
+            &lt;p className="text-xs text-gray-500"&gt;{notification.time}&lt;/p&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Notifications;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Chat Offline</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar um chat que funciona offline e
+        sincroniza mensagens.
+      </p>
+      <ol>
+        <li>Criar endpoint /messages no MockAPI.io</li>
+        <li>Criar fila de mensagens offline</li>
+        <li>Implementar envio em lote quando online</li>
+        <li>Adicionar indicadores de status de envio</li>
+        <li>Implementar rolagem automática para novas mensagens</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// 1. Componente de Chat (components/Chat.js)
+import { useEffect, useState, useRef } from 'react';
+import api from '../utils/api';
+
+const Chat = () => {
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [pendingMessages, setPendingMessages] = useState([]);
+  const messagesEndRef = useRef(null);
+
+  // Detectar status de conexão
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      syncPendingMessages();
+    };
+
+    const handleOffline = () => {
+      setIsOnline(false);
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Carregar mensagens
+  useEffect(() => {
+    const loadMessages = async () => {
+      try {
+        const response = await api.get('/messages');
+        setMessages(response.data);
+        localStorage.setItem('chat_messages', JSON.stringify(response.data));
+      } catch (err) {
+        const cached = localStorage.getItem('chat_messages');
+        if (cached) {
+          setMessages(JSON.parse(cached));
+        }
+      }
+    };
+
+    loadMessages();
+  }, []);
+
+  // Sincronizar mensagens pendentes
+  const syncPendingMessages = async () => {
+    if (pendingMessages.length === 0) return;
+
+    for (const message of pendingMessages) {
+      try {
+        await api.post('/messages', message);
+        setMessages(prev => [...prev, { ...message, status: 'sent' }]);
+      } catch (err) {
+        console.error('Erro ao sincronizar mensagem:', err);
+      }
+    }
+
+    setPendingMessages([]);
+  };
+
+  // Enviar mensagem
+  const sendMessage = async () => {
+    if (!newMessage.trim()) return;
+
+    const message = {
+      id: Date.now(),
+      text: newMessage,
+      timestamp: new Date().toISOString(),
+      status: isOnline ? 'sending' : 'pending'
+    };
+
+    if (isOnline) {
+      try {
+        const response = await api.post('/messages', message);
+        setMessages(prev => [...prev, { ...response.data, status: 'sent' }]);
+      } catch (err) {
+        // Se falhar, adicionar à fila
+        setPendingMessages(prev => [...prev, message]);
+        setMessages(prev => [...prev, { ...message, status: 'pending' }]);
+      }
+    } else {
+      // Offline - adicionar à fila
+      setPendingMessages(prev => [...prev, message]);
+      setMessages(prev => [...prev, { ...message, status: 'pending' }]);
+    }
+
+    setNewMessage('');
+  };
+
+  // Rolagem automática
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'sending': return '⏳';
+      case 'pending': return '📤';
+      case 'sent': return '✅';
+      default: return '';
+    }
+  };
+
+  return (
+    &lt;div className="flex flex-col h-96 bg-white rounded-lg shadow"&gt;
+      &lt;div className="p-3 border-b bg-gray-50"&gt;
+        &lt;h3 className="font-semibold"&gt;Chat&lt;/h3&gt;
+        &lt;div className="flex items-center space-x-2"&gt;
+          &lt;div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'}`}&gt;&lt;/div&gt;
+          &lt;span className="text-sm text-gray-600"&gt;
+            {isOnline ? 'Online' : 'Offline'}
+          &lt;/span&gt;
+          {pendingMessages.length > 0 && (
+            &lt;span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded"&gt;
+              {pendingMessages.length} pendente(s)
+            &lt;/span&gt;
+          )}
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div className="flex-1 overflow-y-auto p-3 space-y-2"&gt;
+        {messages.map(message => (
+          &lt;div key={message.id} className="flex justify-end"&gt;
+            &lt;div className="bg-blue-500 text-white p-2 rounded-lg max-w-xs"&gt;
+              &lt;p className="text-sm"&gt;{message.text}&lt;/p&gt;
+              &lt;div className="flex items-center justify-between mt-1"&gt;
+                &lt;span className="text-xs opacity-75"&gt;
+                  {new Date(message.timestamp).toLocaleTimeString()}
+                &lt;/span&gt;
+                &lt;span className="text-xs ml-2"&gt;
+                  {getStatusIcon(message.status)}
+                &lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        ))}
+        &lt;div ref={messagesEndRef} /&gt;
+      &lt;/div&gt;
+
+      &lt;div className="p-3 border-t"&gt;
+        &lt;div className="flex space-x-2"&gt;
+          &lt;input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+            placeholder="Digite sua mensagem..."
+            className="flex-1 border rounded px-3 py-2"
+          /&gt;
+          &lt;button
+            onClick={sendMessage}
+            disabled={!newMessage.trim()}
+            className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+          &gt;
+            Enviar
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Chat;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 4: Dashboard com Métricas</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar dashboard que consome múltiplas APIs
+        com cache inteligente.
+      </p>
+      <ol>
+        <li>Integrar com APIs externas (ex: JSONPlaceholder, MockAPI)</li>
+        <li>Implementar cache por endpoint com TTL diferente</li>
+        <li>Adicionar refresh manual e automático</li>
+        <li>Implementar fallback para dados em cache</li>
+        <li>Adicionar gráficos com dados da API</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// 1. Serviço de Cache Inteligente (utils/cacheService.js)
+class CacheService {
+  constructor() {
+    this.cache = new Map();
+    this.ttl = new Map();
+  }
+
+  set(key, data, ttlMinutes = 5) {
+    const expiry = Date.now() + (ttlMinutes * 60 * 1000);
+    this.cache.set(key, data);
+    this.ttl.set(key, expiry);
+    
+    // Salvar no localStorage também
+    localStorage.setItem(`cache_${key}`, JSON.stringify({
+      data,
+      expiry
+    }));
+  }
+
+  get(key) {
+    const now = Date.now();
+    const expiry = this.ttl.get(key);
+    
+    if (expiry && now > expiry) {
+      this.cache.delete(key);
+      this.ttl.delete(key);
+      localStorage.removeItem(`cache_${key}`);
+      return null;
+    }
+
+    if (this.cache.has(key)) {
+      return this.cache.get(key);
+    }
+
+    // Tentar carregar do localStorage
+    const stored = localStorage.getItem(`cache_${key}`);
+    if (stored) {
+      const { data, expiry } = JSON.parse(stored);
+      if (now < expiry) {
+        this.cache.set(key, data);
+        this.ttl.set(key, expiry);
+        return data;
+      } else {
+        localStorage.removeItem(`cache_${key}`);
+      }
+    }
+
+    return null;
+  }
+
+  clear() {
+    this.cache.clear();
+    this.ttl.clear();
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('cache_')) {
+        localStorage.removeItem(key);
+      }
+    });
+  }
+}
+
+export const cacheService = new CacheService();
+
+// 2. Dashboard Component (components/Dashboard.js)
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { cacheService } from '../utils/cacheService';
+
+const Dashboard = () => {
+  const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState({ users: false, posts: false, todos: false });
+  const [lastUpdate, setLastUpdate] = useState({});
+
+  // Carregar dados com cache
+  const loadData = async (endpoint, setter, loadingKey, ttlMinutes = 5) => {
+    const cacheKey = `dashboard_${endpoint}`;
+    
+    // Verificar cache primeiro
+    const cached = cacheService.get(cacheKey);
+    if (cached) {
+      setter(cached);
+      setLastUpdate(prev => ({ ...prev, [endpoint]: 'Cache' }));
+      return;
+    }
+
+    try {
+      setLoading(prev => ({ ...prev, [loadingKey]: true }));
+      
+      const response = await axios.get(`https://jsonplaceholder.typicode.com/${endpoint}`);
+      const data = response.data;
+      
+      setter(data);
+      cacheService.set(cacheKey, data, ttlMinutes);
+      setLastUpdate(prev => ({ ...prev, [endpoint]: new Date().toLocaleTimeString() }));
+      
+    } catch (err) {
+      console.error(`Erro ao carregar ${endpoint}:`, err);
+    } finally {
+      setLoading(prev => ({ ...prev, [loadingKey]: false }));
+    }
+  };
+
+  // Carregar todos os dados
+  const loadAllData = () => {
+    loadData('users', setUsers, 'users', 10); // Cache por 10 minutos
+    loadData('posts', setPosts, 'posts', 5);  // Cache por 5 minutos
+    loadData('todos', setTodos, 'todos', 2);  // Cache por 2 minutos
+  };
+
+  useEffect(() => {
+    loadAllData();
+    
+    // Refresh automático a cada 5 minutos
+    const interval = setInterval(loadAllData, 5 * 60 * 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  const refreshData = (endpoint) => {
+    switch (endpoint) {
+      case 'users':
+        loadData('users', setUsers, 'users', 10);
+        break;
+      case 'posts':
+        loadData('posts', setPosts, 'posts', 5);
+        break;
+      case 'todos':
+        loadData('todos', setTodos, 'todos', 2);
+        break;
+      default:
+        loadAllData();
+    }
+  };
+
+  const clearCache = () => {
+    cacheService.clear();
+    loadAllData();
+  };
+
+  return (
+    &lt;div className="p-6 space-y-6"&gt;
+      &lt;div className="flex justify-between items-center"&gt;
+        &lt;h1 className="text-2xl font-bold"&gt;Dashboard de Métricas&lt;/h1&gt;
+        &lt;div className="space-x-2"&gt;
+          &lt;button
+            onClick={() => refreshData('all')}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          &gt;
+            Refresh All
+          &lt;/button&gt;
+          &lt;button
+            onClick={clearCache}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          &gt;
+            Limpar Cache
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;
+        {/* Card de Usuários */}
+        &lt;div className="bg-white p-6 rounded-lg shadow"&gt;
+          &lt;div className="flex justify-between items-center mb-4"&gt;
+            &lt;h3 className="text-lg font-semibold"&gt;Usuários&lt;/h3&gt;
+            &lt;button
+              onClick={() => refreshData('users')}
+              disabled={loading.users}
+              className="text-blue-500 hover:text-blue-700 disabled:opacity-50"
+            &gt;
+              {loading.users ? '⏳' : '🔄'}
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div className="text-3xl font-bold text-blue-600"&gt;{users.length}&lt;/div&gt;
+          &lt;div className="text-sm text-gray-500"&gt;
+            Última atualização: {lastUpdate.users || 'Nunca'}
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        {/* Card de Posts */}
+        &lt;div className="bg-white p-6 rounded-lg shadow"&gt;
+          &lt;div className="flex justify-between items-center mb-4"&gt;
+            &lt;h3 className="text-lg font-semibold"&gt;Posts&lt;/h3&gt;
+            &lt;button
+              onClick={() => refreshData('posts')}
+              disabled={loading.posts}
+              className="text-blue-500 hover:text-blue-700 disabled:opacity-50"
+            &gt;
+              {loading.posts ? '⏳' : '🔄'}
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div className="text-3xl font-bold text-green-600"&gt;{posts.length}&lt;/div&gt;
+          &lt;div className="text-sm text-gray-500"&gt;
+            Última atualização: {lastUpdate.posts || 'Nunca'}
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        {/* Card de TODOs */}
+        &lt;div className="bg-white p-6 rounded-lg shadow"&gt;
+          &lt;div className="flex justify-between items-center mb-4"&gt;
+            &lt;h3 className="text-lg font-semibold"&gt;TODOs&lt;/h3&gt;
+            &lt;button
+              onClick={() => refreshData('todos')}
+              disabled={loading.todos}
+              className="text-blue-500 hover:text-blue-700 disabled:opacity-50"
+            &gt;
+              {loading.todos ? '⏳' : '🔄'}
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div className="text-3xl font-bold text-purple-600"&gt;{todos.length}&lt;/div&gt;
+          &lt;div className="text-sm text-gray-500"&gt;
+            Última atualização: {lastUpdate.todos || 'Nunca'}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      {/* Gráfico simples */}
+      &lt;div className="bg-white p-6 rounded-lg shadow"&gt;
+        &lt;h3 className="text-lg font-semibold mb-4"&gt;Resumo dos Dados&lt;/h3&gt;
+        &lt;div className="space-y-2"&gt;
+          &lt;div className="flex justify-between"&gt;
+            &lt;span&gt;Usuários:&lt;/span&gt;
+            &lt;span className="font-semibold"&gt;{users.length}&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div className="flex justify-between"&gt;
+            &lt;span&gt;Posts:&lt;/span&gt;
+            &lt;span className="font-semibold"&gt;{posts.length}&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div className="flex justify-between"&gt;
+            &lt;span&gt;TODOs:&lt;/span&gt;
+            &lt;span className="font-semibold"&gt;{todos.length}&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div className="flex justify-between"&gt;
+            &lt;span&gt;Total:&lt;/span&gt;
+            &lt;span className="font-semibold text-blue-600"&gt;
+              {users.length + posts.length + todos.length}
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Dashboard;</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- 10. Resumo Final -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 10. Resumo Final
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Conceitos Aprendidos</h4>
+        <ul>
+          <li>
+            <strong>axios:</strong> Biblioteca para requisições HTTP com
+            interceptors e melhor tratamento de erro
+          </li>
+          <li>
+            <strong>useEffect para APIs:</strong> Gerenciar ciclo de vida das
+            chamadas de API com cleanup
+          </li>
+          <li>
+            <strong>Estados de UI:</strong> Loading, erro e sucesso para melhor
+            experiência do usuário
+          </li>
+          <li>
+            <strong>Cache Offline:</strong> localStorage como fallback quando
+            API não está disponível
+          </li>
+          <li>
+            <strong>Sincronização:</strong> Detectar status online/offline e
+            sincronizar dados automaticamente
+          </li>
+        </ul>
+
+        <h4>Habilidades Desenvolvidas</h4>
+        <ul>
+          <li>Configurar e usar axios para requisições HTTP</li>
+          <li>Implementar hooks customizados para APIs</li>
+          <li>Criar sistemas de cache com expiração</li>
+          <li>Detectar e gerenciar status de conexão</li>
+          <li>Implementar sincronização offline/online</li>
+          <li>Tratar erros e estados de loading adequadamente</li>
+        </ul>
+
+        <h4>Próximos Passos</h4>
+        <ul>
+          <li>Estudar React Query para gerenciamento de estado de servidor</li>
+          <li>Aprender sobre WebSockets para atualizações em tempo real</li>
+          <li>Explorar Service Workers para cache avançado</li>
+          <li>Implementar testes para hooks de API</li>
+          <li>Estudar sobre otimização de performance em APIs</li>
+        </ul>
+
+        <div class="alert alert-success">
+          <strong>Parabéns!</strong> Você agora sabe como integrar APIs em
+          aplicações React, implementar cache offline e sincronização
+          automática. Essas são habilidades essenciais para desenvolvimento de
+          aplicações modernas!
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
