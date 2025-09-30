@@ -62,9 +62,17 @@
   <div class="alert alert-warning">
     <strong>Como ler os blocos de código nesta aula:</strong>
     <ul>
-      <li>Mostraremos apenas as <strong>diferenças</strong> (linhas novas/alteradas) e o <strong>arquivo/local</strong> onde implementar.</li>
-      <li>Evite copiar blocos enormes: aplique somente as alterações indicadas.</li>
-      <li>No final, há uma seção com as <strong>Versões Completas Finais</strong> dos arquivos modificados.</li>
+      <li>
+        Mostraremos apenas as <strong>diferenças</strong> (linhas
+        novas/alteradas) e o <strong>arquivo/local</strong> onde implementar.
+      </li>
+      <li>
+        Evite copiar blocos enormes: aplique somente as alterações indicadas.
+      </li>
+      <li>
+        No final, há uma seção com as
+        <strong>Versões Completas Finais</strong> dos arquivos modificados.
+      </li>
     </ul>
   </div>
 
@@ -300,7 +308,7 @@ export default ContactList;</code></pre>
           da seção anterior.
         </div>
 
-        <pre><code class="language-jsx">// app/page.js - DIFERENÇAS a aplicar
+        <pre><code class="language-plaintext">// app/page.js - DIFERENÇAS a aplicar
 // Onde: topo do arquivo (imports)
 import api from './utils/api'; // ADICIONAR
 
@@ -342,25 +350,25 @@ useEffect(() => {
 // Onde: no JSX do return (header)
 {/* ADICIONAR indicador simples quando offline */}
 {isOffline && (
-  <span className="text-orange-600 text-sm">
-    <i className="fas fa-exclamation-triangle"></i> Offline
-  </span>
+  &lt;span className=&quot;text-orange-600 text-sm&quot;&gt;
+    &lt;i className=&quot;fas fa-exclamation-triangle&quot;&gt;&lt;/i&gt; Offline
+  &lt;/span&gt;
 )}
 
 // Onde: no JSX do return (estados de UI)
 {loading && (
-  <div className="text-center py-8">
-    <i className="fas fa-spinner fa-spin text-2xl text-blue-600"></i>
-    <p className="mt-2">Carregando contatos...</p>
-  </div>
+  &lt;div className=&quot;text-center py-8&quot;&gt;
+    &lt;i className=&quot;fas fa-spinner fa-spin text-2xl text-blue-600&quot;&gt;&lt;/i&gt;
+    &lt;p className=&quot;mt-2&quot;&gt;Carregando contatos...&lt;/p&gt;
+  &lt;/div&gt;
 )}
 
 {error && (
-  <div className="text-center py-8">
-    <i className="fas fa-exclamation-circle text-2xl text-red-600"></i>
-    <p className="mt-2 text-red-600">{error}</p>
-    <button onClick={() => window.location.reload()} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Tentar Novamente</button>
-  </div>
+  &lt;div className=&quot;text-center py-8&quot;&gt;
+    &lt;i className=&quot;fas fa-exclamation-circle text-2xl text-red-600&quot;&gt;&lt;/i&gt;
+    &lt;p className=&quot;mt-2 text-red-600&quot;&gt;{error}&lt;/p&gt;
+    &lt;button onClick={() =&gt; window.location.reload()} className=&quot;mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700&quot;&gt;Tentar Novamente&lt;/button&gt;
+  &lt;/div&gt;
 )}</code></pre>
 
         <h4>4.3 Cleanup para evitar memory leaks</h4>
@@ -574,7 +582,7 @@ const HomePage = () => {
             </li>
           </ul>
         </div>
-        <pre><code class="language-jsx">// components/ContactForm.jsx - DIFERENÇAS a aplicar
+        <pre><code class="language-plaintext">// components/ContactForm.jsx - DIFERENÇAS a aplicar
 // Onde: topo do arquivo (imports)
 import api from '../utils/api'; // ADICIONAR
 
@@ -608,10 +616,10 @@ const handleSubmit = async (e) => {
 };
 
 // Onde: no JSX do return (feedback de erro/botão)
-{error && (<div className="text-red-600 text-sm">{error}</div>)}
-<button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50">
+{error && (&lt;div className=&quot;text-red-600 text-sm&quot;&gt;{error}&lt;/div&gt;)}
+&lt;button type=&quot;submit&quot; disabled={loading} className=&quot;bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50&quot;&gt;
   {loading ? 'Salvando...' : 'Adicionar Contato'}
-</button>
+&lt;/button&gt;
 import { useEffect, useRef, useState } from "react";
 import api from '../utils/api';
 
@@ -1379,7 +1387,7 @@ export default ContactList;</code></pre>
           mantendo TODAS as otimizações existentes.
         </p>
 
-        <pre><code class="language-jsx">// app/page.js - DIFERENÇAS a aplicar (consolidação)
+        <pre><code class="language-plaintext">// app/page.js - DIFERENÇAS a aplicar (consolidação)
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ContactForm from "./components/ContactForm";
