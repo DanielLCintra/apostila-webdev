@@ -661,8 +661,28 @@ const HomePage = () => {
     setContacts(prev => [...prev, newContact]);
   }, []);
 
-  const handleRemove = useCallback((id) => {
-    setContacts(prev => prev.filter(c => c.id !== id));
+  // 🆕 MODIFICAR: handleRemove com integração de API + fallback offline
+  const handleRemove = useCallback(async (id) => {
+    try {
+      // Tentar excluir via API primeiro
+      try {
+        await api.delete(`/contacts/${id}`);
+        console.log('Contato excluído da API');
+      } catch (apiError) {
+        // Se API falhar, apenas remover localmente
+        console.log('API offline, removendo apenas localmente');
+      }
+      
+      // Remover da lista local em ambos os casos
+      setContacts(prev => {
+        const updated = prev.filter(c => c.id !== id);
+        // Atualizar cache
+        localStorage.setItem('contatos', JSON.stringify(updated));
+        return updated;
+      });
+    } catch (err) {
+      console.error('Erro ao remover contato:', err);
+    }
   }, []);
 
   const handleFilterChange = useCallback((value) => {
@@ -1158,13 +1178,28 @@ const HomePage = () => {
     });
   }, []);
 
-  const handleRemove = useCallback((id) => {
-    setContacts(prev => {
-      const updated = prev.filter(c => c.id !== id);
-      // Atualizar cache
-      cacheService.set(updated);
-      return updated;
-    });
+  // 🆕 MODIFICAR: handleRemove com integração de API + fallback offline
+  const handleRemove = useCallback(async (id) => {
+    try {
+      // Tentar excluir via API primeiro
+      try {
+        await api.delete(`/contacts/${id}`);
+        console.log('Contato excluído da API');
+      } catch (apiError) {
+        // Se API falhar, apenas remover localmente
+        console.log('API offline, removendo apenas localmente');
+      }
+      
+      // Remover da lista local em ambos os casos
+      setContacts(prev => {
+        const updated = prev.filter(c => c.id !== id);
+        // Atualizar cache
+        cacheService.set(updated);
+        return updated;
+      });
+    } catch (err) {
+      console.error('Erro ao remover contato:', err);
+    }
   }, []);
 
   const handleFilterChange = useCallback((value) => {
@@ -1219,14 +1254,249 @@ export default HomePage;</code></pre>
     </div>
   </section>
 
-  <!-- 7. Sincronização Online/Offline -->
+  <!-- 7. Página de Detalhes com API -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-wifi"></i> 7. Sincronização Online/Offline
+      <i class="fas fa-user-circle"></i> 7. Página de Detalhes com API
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>7.1 Atualizando Página de Detalhes para Buscar da API</h4>
+        <p>
+          Vamos atualizar a página de detalhes do contato para buscar os dados
+          diretamente da API, mantendo fallback para cache local quando offline.
+        </p>
+
+        <div class="alert alert-info">
+          <strong>Evolução:</strong> A página de detalhes da aula anterior
+          buscava dados do localStorage. Agora vamos buscar da API com fallback
+          para cache.
+        </div>
+
+        <h5>📁 Arquivo: app/contact/[id]/page.js</h5>
+        <p>
+          <strong>Evolução completa:</strong> Buscar da API + fallback cache +
+          estados de loading/erro
+        </p>
+
+        <pre><code class="language-jsx">// app/contact/[id]/page.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
+
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import api from '../../utils/api'; // utils/api.js (existente)
+
+const ContactDetailPage = () => {
+    // ✅ MANTER: Estados e hooks existentes
+    const params = useParams();
+    const router = useRouter();
+    const [contact, setContact] = useState(null);
+    const [loading, setLoading] = useState(true);
+    // 🆕 ADICIONAR: Estado de erro para tratamento de falhas
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchContact = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                
+                // 🆕 SUBSTITUIR: Buscar da API primeiro (antes era só localStorage)
+                try {
+                    const response = await api.get(`/contacts/${params.id}`);
+                    setContact(response.data);
+                } catch (apiError) {
+                    // ✅ MANTER: Fallback para localStorage (como na versão anterior)
+                    console.log('API offline, buscando do cache local');
+                    const cachedContacts = localStorage.getItem('contatos');
+                    if (cachedContacts) {
+                        const contacts = JSON.parse(cachedContacts);
+                        const foundContact = contacts.find(c => c.id === parseInt(params.id));
+                        if (foundContact) {
+                            setContact(foundContact);
+                        } else {
+                            setError('Contato não encontrado');
+                        }
+                    } else {
+                        setError('Contato não encontrado e sem cache disponível');
+                    }
+                }
+            } catch (err) {
+                console.error('Erro ao buscar contato:', err);
+                setError('Erro ao carregar contato');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchContact();
+    }, [params.id]);
+
+    // 🆕 MELHORAR: Loading state mais elaborado (antes era só texto simples)
+    if (loading) {
+        return (
+            &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+                &lt;div className="max-w-2xl mx-auto"&gt;
+                    &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+                        &lt;div className="flex items-center justify-center"&gt;
+                            &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600 mr-3"&gt;&lt;/i&gt;
+                            &lt;p className="text-gray-600"&gt;Carregando contato...&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        );
+    }
+
+    // 🆕 ADICIONAR: Tratamento de erro elaborado (antes era só texto simples)
+    if (error || !contact) {
+        return (
+            &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+                &lt;div className="max-w-2xl mx-auto"&gt;
+                    &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+                        &lt;div className="flex items-center justify-between mb-6"&gt;
+                            &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Erro&lt;/h1&gt;
+                            &lt;button
+                                onClick={() =&gt; router.back()}
+                                className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded"
+                            &gt;
+                                &amp;larr; Voltar
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                        &lt;div className="text-center"&gt;
+                            &lt;i className="fas fa-exclamation-circle text-3xl text-red-600 mb-4"&gt;&lt;/i&gt;
+                            &lt;p className="text-gray-600"&gt;{error || 'Contato não encontrado'}&lt;/p&gt;
+                            &lt;button
+                                onClick={() =&gt; router.push('/')}
+                                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                            &gt;
+                                Ir para Lista de Contatos
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        );
+    }
+
+    // 🆕 MELHORAR: Layout da página de detalhes com funcionalidades extras
+    return (
+        &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+            &lt;div className="max-w-2xl mx-auto"&gt;
+                &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+                    &lt;div className="flex items-center justify-between mb-6"&gt;
+                        &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Detalhes do Contato&lt;/h1&gt;
+                        &lt;button
+                            onClick={() =&gt; router.back()}
+                            className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded"
+                        &gt;
+                            &amp;larr; Voltar
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="space-y-4"&gt;
+                        &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Nome&lt;/label&gt;
+                            &lt;p className="text-gray-900 text-lg"&gt;{contact.nome}&lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Email&lt;/label&gt;
+                            &lt;p className="text-gray-900"&gt;
+                                {contact.email ? (
+                                    &lt;a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline"&gt;
+                                        {contact.email}
+                                    &lt;/a&gt;
+                                ) : (
+                                    &lt;span className="text-gray-500"&gt;Não informado&lt;/span&gt;
+                                )}
+                            &lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Telefone&lt;/label&gt;
+                            &lt;p className="text-gray-900"&gt;
+                                {contact.telefone ? (
+                                    &lt;a href={`tel:${contact.telefone}`} className="text-blue-600 hover:underline"&gt;
+                                        {contact.telefone}
+                                    &lt;/a&gt;
+                                ) : (
+                                    &lt;span className="text-gray-500"&gt;Não informado&lt;/span&gt;
+                                )}
+                            &lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;ID&lt;/label&gt;
+                            &lt;p className="text-gray-500 text-sm"&gt;{contact.id}&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="mt-8 pt-6 border-t border-gray-200"&gt;
+                        &lt;div className="flex space-x-4"&gt;
+                            &lt;button
+                                onClick={() =&gt; router.push('/')}
+                                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                            &gt;
+                                Ver Todos os Contatos
+                            &lt;/button&gt;
+                            &lt;button
+                                onClick={() =&gt; router.back()}
+                                className="flex-1 bg-gray-100 text-gray-900 px-4 py-2 rounded hover:bg-gray-200"
+                            &gt;
+                                Voltar
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+};
+
+export default ContactDetailPage;</code></pre>
+
+        <div class="alert alert-success">
+          <strong>Vantagens da nova implementação:</strong>
+          <ul>
+            <li>
+              ✅ <strong>Busca da API:</strong> Dados sempre atualizados do
+              servidor
+            </li>
+            <li>
+              ✅ <strong>Fallback offline:</strong> Usa cache local quando API
+              não está disponível
+            </li>
+            <li>
+              ✅ <strong>Estados de UI:</strong> Loading, erro e sucesso bem
+              definidos
+            </li>
+            <li>
+              ✅ <strong>Links funcionais:</strong> Email e telefone clicáveis
+            </li>
+            <li>
+              ✅ <strong>Navegação melhorada:</strong> Botões para voltar e ir
+              para lista
+            </li>
+            <li>
+              ✅ <strong>Tratamento de erros:</strong> Mensagens claras para
+              diferentes cenários
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Sincronização Online/Offline -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-wifi"></i> 8. Sincronização Online/Offline
     </h3>
     <div class="card mb-4">
       <div class="card-body">
-        <h4>7.1 Detecção de Status de Conexão e Sincronização</h4>
+        <h4>8.1 Detecção de Status de Conexão e Sincronização</h4>
         <p>
           Vamos evoluir o componente principal para detectar mudanças no status
           de conexão e sincronizar automaticamente os dados quando voltar
@@ -1423,10 +1693,6 @@ const ConnectionStatus = () => {
     };
   }, []);
 
-  if (!showStatus && isOnline) {
-    return null; // Não mostrar quando online e status não foi alterado
-  }
-
   return (
     &lt;div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm transition-all duration-300 ${
       isOnline 
@@ -1439,7 +1705,7 @@ const ConnectionStatus = () => {
       &lt;span&gt;
         {isOnline ? 'Online' : 'Offline'}
       &lt;/span&gt;
-      {isOnline && (
+      {isOnline && showStatus && (
         &lt;span className="text-xs"&gt;✓ Sincronizado&lt;/span&gt;
       )}
     &lt;/div&gt;
@@ -1719,8 +1985,23 @@ const HomePage = () => {
     setContacts(prev => [...prev, newContact]);
   }, []);
 
-  const handleRemove = useCallback((id) => {
-    setContacts(prev => prev.filter(c => c.id !== id));
+  // 🆕 MODIFICAR: handleRemove com integração de API + fallback offline
+  const handleRemove = useCallback(async (id) => {
+    try {
+      // Tentar excluir via API primeiro
+      try {
+        await api.delete(`/contacts/${id}`);
+        console.log('Contato excluído da API');
+      } catch (apiError) {
+        // Se API falhar, apenas remover localmente
+        console.log('API offline, removendo apenas localmente');
+      }
+      
+      // Remover da lista local em ambos os casos
+      setContacts(prev => prev.filter(c => c.id !== id));
+    } catch (err) {
+      console.error('Erro ao remover contato:', err);
+    }
   }, []);
 
   const handleFilterChange = useCallback((value) => {

@@ -4,30 +4,78 @@
 
   <div class="intro-box mb-5">
     <p>
-      Nesta aula vamos refatorar nosso projeto de contatos para usar
+      Nesta aula vamos refatorar nosso projeto de contatos da aula anterior (API
+      com axios e useEffect) para usar
       <strong>useContext</strong> para gerenciamento de estado global e criar
       <strong>hooks customizados</strong> para organizar melhor a lógica da
-      aplicação. Vamos manter toda a funcionalidade existente e melhorar a
-      organização do código.
+      aplicação. Vamos manter toda a funcionalidade existente (API, cache
+      offline, sincronização) e melhorar a organização do código.
     </p>
     <ul>
       <li>
-        ✅ Criar ContactsContext para estado global (lista, loading, erro)
+        ✅ Refatorar projeto existente mantendo integração com MockAPI e cache
+        offline
       </li>
       <li>
-        ✅ Extrair regras para hooks customizados (ex.: useContacts, useFilter,
-        useApi)
+        ✅ Criar ContactsContext para estado global (lista, loading, erro,
+        isOffline)
+      </li>
+      <li>
+        ✅ Extrair lógica para hooks customizados (useContacts, useFilter,
+        useStatistics)
       </li>
       <li>✅ Manter nos componentes apenas layout e chamada dos hooks</li>
-      <li>✅ Organizar pastas (contexts/, hooks/, components/)</li>
-      <li>✅ Refatorar projeto existente mantendo funcionalidades</li>
+      <li>✅ Organizar pastas (contexts/, hooks/, components/, utils/)</li>
+      <li>
+        ✅ Preservar funcionalidades: API, localStorage, sincronização
+        online/offline
+      </li>
     </ul>
   </div>
 
   <div class="alert alert-info">
     <strong>Pré-requisito:</strong> Esta aula continua o projeto da aula
     anterior "React – Consumo de API com axios e useEffect". Certifique-se de
-    ter o projeto funcionando com integração de API e localStorage.
+    ter o projeto funcionando com:
+    <ul>
+      <li>✅ Integração com MockAPI.io usando axios</li>
+      <li>✅ Estados de loading, erro e indicador offline</li>
+      <li>✅ Cache service com expiração (utils/cache.js)</li>
+      <li>✅ Sincronização automática online/offline</li>
+      <li>✅ Componente ConnectionStatus</li>
+      <li>✅ Otimizações com useMemo, useCallback, useRef</li>
+      <li>✅ Componente Statistics separado</li>
+      <li>✅ Página de detalhes com busca da API e fallback offline</li>
+      <li>✅ Exclusão de contatos funcionando com API e offline</li>
+    </ul>
+  </div>
+
+  <div class="alert alert-success">
+    <strong>Estratégia de Refatoração:</strong> Vamos refatorar o projeto
+    existente de forma incremental:
+    <ol>
+      <li>
+        ✅ <strong>Manter tudo que já funciona:</strong> API, cache,
+        sincronização, otimizações
+      </li>
+      <li>
+        ✅ <strong>Criar Context:</strong> ContactsContext para estado global
+      </li>
+      <li>
+        ✅ <strong>Extrair hooks:</strong> useContacts, useFilter, useStatistics
+      </li>
+      <li>
+        ✅ <strong>Refatorar componentes:</strong> Usar Context em vez de props
+      </li>
+      <li>
+        ✅ <strong>Organizar pastas:</strong> contexts/, hooks/, components/,
+        utils/
+      </li>
+      <li>
+        ✅ <strong>Testar funcionalidades:</strong> Garantir que tudo continua
+        funcionando
+      </li>
+    </ol>
   </div>
 
   <!-- 1. Introdução ao useContext -->
@@ -88,32 +136,65 @@
 
     <div class="card mb-4">
       <div class="card-body">
-        <h4>2.1 Estrutura de Pastas</h4>
-        <p>Vamos organizar melhor nosso projeto criando pastas específicas:</p>
+        <h4>2.1 Estado Atual do Projeto (Aula 8)</h4>
+        <p>
+          Vamos partir da estrutura atual que já está funcionando com API e
+          cache:
+        </p>
 
         <pre><code class="language-plaintext">app/
-├── page.js
-├── layout.js
-├── globals.css
-├── contact/[id]/page.js
+├── page.js                    # Página principal (com API + cache + sincronização)
+├── layout.js                  # Layout compartilhado
+├── globals.css                # Estilos globais
+├── contact/[id]/page.js       # Página de detalhes
 ├── components/
-│   ├── ContactForm.js
-│   ├── ContactList.js
-│   ├── ContactItem.js
-│   ├── FilterInput.js
-│   └── Statistcs.js
-├── contexts/
-│   └── ContactsContext.js
-├── hooks/
-│   ├── useContacts.js
-│   ├── useFilter.js
-│   └── useApi.js
-└── utils/
-    └── api.js</code></pre>
+│   ├── ContactForm.jsx        # Formulário (useRef + API)
+│   ├── ContactList.jsx        # Lista de contatos
+│   ├── ContactItem.jsx        # Item individual (memo + navegação)
+│   ├── FilterInput.jsx        # Campo de filtro (useRef)
+│   ├── Statistics.jsx         # Estatísticas (separado)
+│   └── ConnectionStatus.jsx   # Status de conexão
+├── utils/
+│   ├── api.js                 # Configuração do axios
+│   └── cache.js               # Serviço de cache com expiração
+└── contexts/                  # 🆕 NOVA PASTA para Context
+    └── ContactsContext.js     # Context para estado global</code></pre>
 
-        <h4>2.2 Criando o Context</h4>
-        <pre><code class="language-jsx">// contexts/ContactsContext.js
-import { createContext, useContext } from 'react';
+        <h4>2.2 Nova Estrutura com Context e Hooks</h4>
+        <p>Vamos evoluir para uma estrutura mais organizada:</p>
+
+        <pre><code class="language-plaintext">app/
+├── page.js                    # Página principal (refatorada com Context)
+├── layout.js                  # Layout compartilhado
+├── globals.css                # Estilos globais
+├── contact/[id]/page.js       # Página de detalhes
+├── components/
+│   ├── ContactForm.jsx        # Formulário (usa Context)
+│   ├── ContactList.jsx        # Lista de contatos
+│   ├── ContactItem.jsx        # Item individual (usa Context)
+│   ├── FilterInput.jsx        # Campo de filtro
+│   ├── Statistics.jsx         # Estatísticas
+│   └── ConnectionStatus.jsx   # Status de conexão
+├── contexts/                  # Contexts para estado global
+│   └── ContactsContext.js     # Context de contatos
+├── hooks/                     # 🆕 NOVA PASTA para hooks customizados
+│   ├── useContacts.js         # Hook para gerenciar contatos
+│   ├── useFilter.js           # Hook para filtros
+│   └── useStatistics.js       # Hook para estatísticas
+└── utils/
+    ├── api.js                 # Configuração do axios (mantido)
+    └── cache.js               # Serviço de cache (mantido)</code></pre>
+
+        <h4>2.3 Criando o Context</h4>
+        <p>
+          Vamos criar um Context que encapsula toda a lógica de contatos da aula
+          anterior:
+        </p>
+
+        <pre><code class="language-jsx">// contexts/ContactsContext.js (NOVO ARQUIVO)
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import api from '../utils/api';
+import { cacheService } from '../utils/cache';
 
 // 1. Criar o Context
 const ContactsContext = createContext();
@@ -127,8 +208,210 @@ export const useContactsContext = () => {
   return context;
 };
 
-// 3. Provider Component
-export const ContactsProvider = ({ children, value }) => {
+// 3. Provider Component com toda a lógica da aula anterior
+export const ContactsProvider = ({ children }) => {
+  // ✅ MANTER: Estados existentes do projeto da aula 8
+  const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isOffline, setIsOffline] = useState(false);
+
+  // ✅ MANTER: Carregamento com cache service + API + cleanup
+  const loadContacts = useCallback(async () => {
+    let isMounted = true;
+
+    try {
+      if (isMounted) {
+        setLoading(true);
+        setError(null);
+      }
+      
+      // Verificar cache primeiro
+      const cachedContacts = cacheService.get();
+      if (cachedContacts && isMounted) {
+        setContacts(cachedContacts);
+        setLoading(false);
+      }
+      
+      // Tentar carregar da API
+      try {
+        const response = await api.get('/contacts');
+        const apiContacts = response.data;
+        
+        if (isMounted) {
+          // Salvar no cache service
+          cacheService.set(apiContacts);
+          setContacts(apiContacts);
+          setIsOffline(false);
+        }
+      } catch (apiError) {
+        // Se API falhar e não há cache, mostrar erro
+        if (isMounted) {
+          if (!cachedContacts) {
+            setIsOffline(true);
+            setError('Erro ao carregar contatos e sem cache disponível.');
+          } else {
+            setIsOffline(true);
+            console.log('API offline, usando cache');
+          }
+        }
+      }
+    } catch (err) {
+      if (isMounted) {
+        setError('Erro ao carregar contatos');
+      }
+    } finally {
+      if (isMounted) {
+        setLoading(false);
+      }
+    }
+  }, []);
+
+  // ✅ MANTER: Adicionar contato com API + fallback offline
+  const addContact = useCallback(async (newContact) => {
+    try {
+      // Tentar salvar via API primeiro
+      try {
+        const response = await api.post('/contacts', newContact);
+        const contactWithId = { ...newContact, id: response.data.id };
+        setContacts(prev => {
+          const updated = [...prev, contactWithId];
+          cacheService.set(updated);
+          return updated;
+        });
+        return contactWithId;
+      } catch (apiError) {
+        // Se API falhar, salvar localmente
+        console.log('API offline, salvando localmente');
+        const contactWithId = { ...newContact, id: Date.now() };
+        setContacts(prev => {
+          const updated = [...prev, contactWithId];
+          cacheService.set(updated);
+          return updated;
+        });
+        return contactWithId;
+      }
+    } catch (err) {
+      throw new Error('Erro ao adicionar contato');
+    }
+  }, []);
+
+  // ✅ MANTER: Remover contato com API + fallback offline
+  const removeContact = useCallback(async (id) => {
+    try {
+      // Tentar excluir via API primeiro
+      try {
+        await api.delete(`/contacts/${id}`);
+        console.log('Contato excluído da API');
+      } catch (apiError) {
+        // Se API falhar, apenas remover localmente
+        console.log('API offline, removendo apenas localmente');
+      }
+      
+      // Remover da lista local em ambos os casos
+      setContacts(prev => {
+        const updated = prev.filter(c => c.id !== id);
+        // Atualizar cache
+        cacheService.set(updated);
+        return updated;
+      });
+    } catch (err) {
+      console.error('Erro ao remover contato:', err);
+      throw new Error('Erro ao remover contato');
+    }
+  }, []);
+
+  // ✅ MANTER: Sincronização online/offline
+  useEffect(() => {
+    const syncPendingContacts = async () => {
+      try {
+        // Buscar contatos da API
+        const response = await api.get('/contacts');
+        const serverContacts = response.data;
+        
+        // Buscar contatos locais
+        const localContacts = contacts;
+        
+        // Encontrar contatos que existem localmente mas não no servidor
+        const pendingContacts = localContacts.filter(localContact => {
+          // Se o ID é um timestamp (salvo offline), precisa sincronizar
+          return typeof localContact.id === 'number' && 
+                 localContact.id > 1000000000000 && // Timestamp válido
+                 !serverContacts.some(serverContact => 
+                   serverContact.nome === localContact.nome &&
+                   serverContact.email === localContact.email &&
+                   serverContact.telefone === localContact.telefone
+                 );
+        });
+
+        // Enviar contatos pendentes para a API
+        for (const pendingContact of pendingContacts) {
+          try {
+            const { id, ...contactData } = pendingContact;
+            const response = await api.post('/contacts', contactData);
+            
+            // Atualizar o contato local com o ID da API
+            setContacts(prev => prev.map(contact => 
+              contact.id === pendingContact.id 
+                ? { ...contact, id: response.data.id }
+                : contact
+            ));
+            
+            console.log('Contato sincronizado:', contactData.nome);
+          } catch (err) {
+            console.error('Erro ao sincronizar contato:', err);
+          }
+        }
+
+        // Atualizar com dados do servidor
+        setContacts(serverContacts);
+        cacheService.set(serverContacts);
+        
+      } catch (err) {
+        console.error('Erro na sincronização:', err);
+      }
+    };
+
+    const handleOnline = () => {
+      setIsOffline(false);
+      console.log('Voltou online - sincronizando...');
+      syncPendingContacts();
+    };
+
+    const handleOffline = () => {
+      setIsOffline(true);
+      console.log('Ficou offline - usando cache local');
+    };
+
+    // Verificar status inicial
+    setIsOffline(!navigator.onLine);
+
+    // Adicionar listeners
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [contacts]);
+
+  // Carregar contatos na inicialização
+  useEffect(() => {
+    loadContacts();
+  }, [loadContacts]);
+
+  // Valor do Context
+  const value = {
+    contacts,
+    loading,
+    error,
+    isOffline,
+    addContact,
+    removeContact,
+    loadContacts
+  };
+
   return (
     &lt;ContactsContext.Provider value={value}&gt;
       {children}
@@ -149,101 +432,13 @@ export default ContactsContext;</code></pre>
 
     <div class="card mb-4">
       <div class="card-body">
-        <h4>3.1 useContacts - Gerenciamento de Contatos</h4>
-        <pre><code class="language-jsx">// hooks/useContacts.js
-import { useState, useEffect, useCallback } from 'react';
-import api from '../utils/api';
+        <h4>3.1 useFilter - Gerenciamento de Filtros</h4>
+        <p>
+          Como toda a lógica de contatos agora está no Context, vamos criar
+          hooks mais específicos:
+        </p>
 
-export const useContacts = () => {
-  const [contacts, setContacts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [isOffline, setIsOffline] = useState(false);
-
-  // Carregar contatos
-  const loadContacts = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      try {
-        const response = await api.get('/contacts');
-        setContacts(response.data);
-        localStorage.setItem('contatos', JSON.stringify(response.data));
-        setIsOffline(false);
-      } catch (apiError) {
-        console.log('API offline, carregando do cache');
-        setIsOffline(true);
-        const cached = localStorage.getItem('contatos');
-        if (cached) {
-          setContacts(JSON.parse(cached));
-        }
-      }
-    } catch (err) {
-      setError('Erro ao carregar contatos');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Adicionar contato
-  const addContact = useCallback(async (newContact) => {
-    try {
-      try {
-        const response = await api.post('/contacts', newContact);
-        const contactWithId = { ...newContact, id: response.data.id };
-        setContacts(prev => [...prev, contactWithId]);
-        return contactWithId;
-      } catch (apiError) {
-        console.log('API offline, salvando localmente');
-        const contactWithId = { ...newContact, id: Date.now() };
-        setContacts(prev => [...prev, contactWithId]);
-        return contactWithId;
-      }
-    } catch (err) {
-      throw new Error('Erro ao adicionar contato');
-    }
-  }, []);
-
-  // Remover contato
-  const removeContact = useCallback(async (id) => {
-    try {
-      try {
-        await api.delete(`/contacts/${id}`);
-      } catch (apiError) {
-        console.log('API offline, removendo localmente');
-      }
-      setContacts(prev => prev.filter(c => c.id !== id));
-    } catch (err) {
-      throw new Error('Erro ao remover contato');
-    }
-  }, []);
-
-  // Carregar contatos na inicialização
-  useEffect(() => {
-    loadContacts();
-  }, [loadContacts]);
-
-  // Salvar no localStorage quando contatos mudarem
-  useEffect(() => {
-    if (contacts.length > 0) {
-      localStorage.setItem('contatos', JSON.stringify(contacts));
-    }
-  }, [contacts]);
-
-  return {
-    contacts,
-    loading,
-    error,
-    isOffline,
-    addContact,
-    removeContact,
-    loadContacts
-  };
-};</code></pre>
-
-        <h4>3.2 useFilter - Gerenciamento de Filtros</h4>
-        <pre><code class="language-jsx">// hooks/useFilter.js
+        <pre><code class="language-jsx">// hooks/useFilter.js (NOVO ARQUIVO)
 import { useState, useMemo, useCallback } from 'react';
 
 export const useFilter = (contacts) => {
@@ -274,8 +469,8 @@ export const useFilter = (contacts) => {
   };
 };</code></pre>
 
-        <h4>3.3 useStatistics - Cálculo de Estatísticas</h4>
-        <pre><code class="language-jsx">// hooks/useStatistics.js
+        <h4>3.2 useStatistics - Cálculo de Estatísticas</h4>
+        <pre><code class="language-jsx">// hooks/useStatistics.js (NOVO ARQUIVO)
 import { useMemo } from 'react';
 
 export const useStatistics = (contacts) => {
@@ -297,6 +492,52 @@ export const useStatistics = (contacts) => {
 
   return stats;
 };</code></pre>
+
+        <h4>3.3 useConnectionStatus - Status de Conexão</h4>
+        <p>
+          Hook para gerenciar o status de conexão, extraído da aula anterior:
+        </p>
+
+        <pre><code class="language-jsx">// hooks/useConnectionStatus.js (NOVO ARQUIVO)
+import { useState, useEffect } from 'react';
+
+export const useConnectionStatus = () => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [showStatus, setShowStatus] = useState(false);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      setShowStatus(true);
+      // Esconder status após 3 segundos
+      setTimeout(() => setShowStatus(false), 3000);
+    };
+
+    const handleOffline = () => {
+      setIsOnline(false);
+      setShowStatus(true);
+    };
+
+    // Verificar status inicial
+    setIsOnline(navigator.onLine);
+
+    // Adicionar listeners
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  return {
+    isOnline,
+    showStatus,
+    setIsOnline,
+    setShowStatus
+  };
+};</code></pre>
       </div>
     </div>
   </section>
@@ -310,21 +551,28 @@ export const useStatistics = (contacts) => {
     <div class="card mb-4">
       <div class="card-body">
         <h4>4.1 Página Principal com Context</h4>
-        <pre><code class="language-jsx">// app/page.js - REFATORADO com Context e Hooks
+        <p>
+          Vamos refatorar a página principal para usar Context e hooks, mantendo
+          todas as funcionalidades da aula anterior:
+        </p>
+
+        <pre><code class="language-jsx">// app/page.js (MODIFICAR ARQUIVO EXISTENTE)
 "use client";
 import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 import FilterInput from "./components/FilterInput";
-import Statistcs from "./components/Statistcs";
+import Statistics from "./components/Statistics";
+import ConnectionStatus from "./components/ConnectionStatus";
 import { ContactsProvider } from "./contexts/ContactsContext";
-import { useContacts } from "./hooks/useContacts";
+import { useContactsContext } from "./contexts/ContactsContext";
 import { useFilter } from "./hooks/useFilter";
 import { useStatistics } from "./hooks/useStatistics";
 
 // Componente interno que usa os hooks
 const ContactsPage = () => {
-  const contactsData = useContacts();
-  const { filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
+  // ✅ MANTER: Usar Context em vez de props
+  const contactsData = useContactsContext();
+  const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
   const stats = useStatistics(contactsData.contacts);
 
   return (
@@ -337,16 +585,15 @@ const ContactsPage = () => {
               value={filter} 
               onChange={handleFilterChange} 
             /&gt;
-            {contactsData.isOffline && (
-              &lt;span className="text-orange-600 text-sm"&gt;
-                &lt;i className="fas fa-exclamation-triangle"&gt;&lt;/i&gt; Offline
-              &lt;/span&gt;
-            )}
+            {/* ✅ MANTER: ConnectionStatus da aula anterior */}
+            &lt;ConnectionStatus /&gt;
           &lt;/div&gt;
         &lt;/header&gt;
 
-        &lt;ContactForm onAdd={contactsData.addContact} /&gt;
+        {/* ✅ MANTER: ContactForm sem props - usa Context */}
+        &lt;ContactForm /&gt;
 
+        {/* ✅ MANTER: Estados de loading e erro */}
         {contactsData.loading && (
           &lt;div className="text-center py-8"&gt;
             &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
@@ -367,6 +614,7 @@ const ContactsPage = () => {
           &lt;/div&gt;
         )}
 
+        {/* ✅ MANTER: Renderização condicional */}
         {!contactsData.loading && !contactsData.error && (
           &lt;ContactList 
             items={filteredContacts} 
@@ -374,7 +622,8 @@ const ContactsPage = () => {
           /&gt;
         )}
 
-        &lt;Statistcs stats={stats} /&gt;
+        {/* ✅ MANTER: Statistics separado */}
+        &lt;Statistics stats={stats} /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   );
@@ -403,21 +652,35 @@ export default HomePage;</code></pre>
     <div class="card mb-4">
       <div class="card-body">
         <h4>5.1 ContactForm com Context</h4>
-        <pre><code class="language-jsx">// components/ContactForm.js - REFATORADO
+        <p>
+          Vamos refatorar o ContactForm para usar Context, mantendo todas as
+          funcionalidades da aula anterior:
+        </p>
+
+        <pre><code class="language-jsx">// components/ContactForm.jsx (MODIFICAR ARQUIVO EXISTENTE)
 import { useEffect, useRef, useState } from "react";
 import { useContactsContext } from "../contexts/ContactsContext";
 
 const ContactForm = () => {
+  // ✅ MANTER: Estados do formulário
   const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const nomeInputRef = useRef(null);
   
-  // Usar o Context em vez de props
+  // ✅ MANTER: Usar Context em vez de props
   const { addContact } = useContactsContext();
 
+  // ✅ MANTER: Foco automático da aula anterior
   useEffect(() => {
     nomeInputRef.current?.focus();
+  }, []);
+
+  // ✅ MANTER: Cleanup opcional para evitar memory leaks
+  useEffect(() => {
+    return () => {
+      console.log('ContactForm desmontado');
+    };
   }, []);
 
   const handleChange = (e) => {
@@ -427,14 +690,16 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.nome.trim()) return;
+    if (!form.nome.trim()) return; // Validação simples
 
     try {
       setLoading(true);
       setError(null);
 
+      // ✅ MANTER: Usar addContact do Context (que já tem API + fallback)
       await addContact(form);
       setForm({ nome: "", email: "", telefone: "" });
+      // ✅ MANTER: Focar novamente no campo nome após adicionar
       nomeInputRef.current?.focus();
       
     } catch (err) {
@@ -479,10 +744,12 @@ const ContactForm = () => {
         /&gt;
       &lt;/div&gt;
 
+      {/* ✅ MANTER: Feedback de erro */}
       {error && (
         &lt;div className="text-red-600 text-sm"&gt;{error}&lt;/div&gt;
       )}
 
+      {/* ✅ MANTER: Botão com estado de loading */}
       &lt;button 
         type="submit" 
         disabled={loading}
@@ -497,16 +764,23 @@ const ContactForm = () => {
 export default ContactForm;</code></pre>
 
         <h4>5.2 ContactItem com Context</h4>
-        <pre><code class="language-jsx">// components/ContactItem.js - REFATORADO
+        <p>
+          Vamos refatorar o ContactItem para usar Context, mantendo memo e
+          navegação:
+        </p>
+
+        <pre><code class="language-jsx">// components/ContactItem.jsx (MODIFICAR ARQUIVO EXISTENTE)
 import Link from 'next/link';
 import { memo } from 'react';
 import { useContactsContext } from '../contexts/ContactsContext';
 
 const ContactItem = memo(({ contact }) => {
+  // ✅ MANTER: Usar Context em vez de props
   const { removeContact } = useContactsContext();
 
   const handleRemove = async () => {
     try {
+      // ✅ MANTER: Usar removeContact do Context (que já tem API + fallback)
       await removeContact(contact.id);
     } catch (err) {
       console.error('Erro ao remover contato:', err);
@@ -516,6 +790,7 @@ const ContactItem = memo(({ contact }) => {
   return (
     &lt;li className="p-4 flex items-center justify-between"&gt;
       &lt;div&gt;
+        {/* ✅ MANTER: Navegação para página de detalhes */}
         &lt;Link
           href={`/contact/${contact.id}`}
           className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
@@ -538,6 +813,244 @@ const ContactItem = memo(({ contact }) => {
 
 ContactItem.displayName = 'ContactItem';
 export default ContactItem;</code></pre>
+
+        <h4>5.3 Página de Detalhes com Context</h4>
+        <p>
+          Vamos refatorar a página de detalhes para usar Context em vez de
+          buscar diretamente da API, mantendo todas as funcionalidades da aula
+          anterior:
+        </p>
+
+        <pre><code class="language-jsx">// app/contact/[id]/page.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
+
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useContactsContext } from '../../contexts/ContactsContext';
+
+const ContactDetailPage = () => {
+    const params = useParams();
+    const router = useRouter();
+    const [contact, setContact] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    // ✅ MANTER: Usar Context em vez de buscar diretamente da API
+    const { contacts, loadContacts } = useContactsContext();
+
+    useEffect(() => {
+        const fetchContact = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                
+                // ✅ MANTER: Buscar contato da lista do Context primeiro
+                const foundContact = contacts.find(c => c.id === parseInt(params.id));
+                
+                if (foundContact) {
+                    setContact(foundContact);
+                } else {
+                    // Se não encontrar no Context, tentar recarregar contatos
+                    console.log('Contato não encontrado no Context, recarregando...');
+                    await loadContacts();
+                    
+                    // Tentar novamente após recarregar
+                    const updatedContacts = contacts; // Será atualizado pelo Context
+                    const retryContact = updatedContacts.find(c => c.id === parseInt(params.id));
+                    
+                    if (retryContact) {
+                        setContact(retryContact);
+                    } else {
+                        setError('Contato não encontrado');
+                    }
+                }
+            } catch (err) {
+                console.error('Erro ao buscar contato:', err);
+                setError('Erro ao carregar contato');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchContact();
+    }, [params.id, contacts, loadContacts]);
+
+    if (loading) {
+        return (
+            &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+                &lt;div className="max-w-2xl mx-auto"&gt;
+                    &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+                        &lt;div className="flex items-center justify-center"&gt;
+                            &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600 mr-3"&gt;&lt;/i&gt;
+                            &lt;p className="text-gray-600"&gt;Carregando contato...&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        );
+    }
+
+    if (error || !contact) {
+        return (
+            &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+                &lt;div className="max-w-2xl mx-auto"&gt;
+                    &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+                        &lt;div className="flex items-center justify-between mb-6"&gt;
+                            &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Erro&lt;/h1&gt;
+                            &lt;button
+                                onClick={() =&gt; router.back()}
+                                className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded"
+                            &gt;
+                                &amp;larr; Voltar
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                        &lt;div className="text-center"&gt;
+                            &lt;i className="fas fa-exclamation-circle text-3xl text-red-600 mb-4"&gt;&lt;/i&gt;
+                            &lt;p className="text-gray-600"&gt;{error || 'Contato não encontrado'}&lt;/p&gt;
+                            &lt;button
+                                onClick={() =&gt; router.push('/')}
+                                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                            &gt;
+                                Ir para Lista de Contatos
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        );
+    }
+
+    return (
+        &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+            &lt;div className="max-w-2xl mx-auto"&gt;
+                &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+                    &lt;div className="flex items-center justify-between mb-6"&gt;
+                        &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Detalhes do Contato&lt;/h1&gt;
+                        &lt;button
+                            onClick={() =&gt; router.back()}
+                            className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded"
+                        &gt;
+                            &amp;larr; Voltar
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="space-y-4"&gt;
+                        &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Nome&lt;/label&gt;
+                            &lt;p className="text-gray-900 text-lg"&gt;{contact.nome}&lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Email&lt;/label&gt;
+                            &lt;p className="text-gray-900"&gt;
+                                {contact.email ? (
+                                    &lt;a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline"&gt;
+                                        {contact.email}
+                                    &lt;/a&gt;
+                                ) : (
+                                    &lt;span className="text-gray-500"&gt;Não informado&lt;/span&gt;
+                                )}
+                            &lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Telefone&lt;/label&gt;
+                            &lt;p className="text-gray-900"&gt;
+                                {contact.telefone ? (
+                                    &lt;a href={`tel:${contact.telefone}`} className="text-blue-600 hover:underline"&gt;
+                                        {contact.telefone}
+                                    &lt;/a&gt;
+                                ) : (
+                                    &lt;span className="text-gray-500"&gt;Não informado&lt;/span&gt;
+                                )}
+                            &lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;ID&lt;/label&gt;
+                            &lt;p className="text-gray-500 text-sm"&gt;{contact.id}&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="mt-8 pt-6 border-t border-gray-200"&gt;
+                        &lt;div className="flex space-x-4"&gt;
+                            &lt;button
+                                onClick={() =&gt; router.push('/')}
+                                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                            &gt;
+                                Ver Todos os Contatos
+                            &lt;/button&gt;
+                            &lt;button
+                                onClick={() =&gt; router.back()}
+                                className="flex-1 bg-gray-100 text-gray-900 px-4 py-2 rounded hover:bg-gray-200"
+                            &gt;
+                                Voltar
+                            &lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+};
+
+export default ContactDetailPage;</code></pre>
+
+        <div class="alert alert-success">
+          <strong>Vantagens da refatoração com Context:</strong>
+          <ul>
+            <li>
+              ✅ <strong>Dados centralizados:</strong> Contatos gerenciados pelo
+              Context
+            </li>
+            <li>
+              ✅ <strong>Performance:</strong> Não precisa fazer nova requisição
+              à API
+            </li>
+            <li>
+              ✅ <strong>Consistência:</strong> Dados sempre sincronizados com a
+              lista principal
+            </li>
+            <li>
+              ✅ <strong>Fallback inteligente:</strong> Recarrega contatos se
+              não encontrar
+            </li>
+            <li>
+              ✅ <strong>Manutenção:</strong> Lógica de API centralizada no
+              Context
+            </li>
+          </ul>
+        </div>
+
+        <h4>5.4 ConnectionStatus com Hook</h4>
+        <p>Vamos refatorar o ConnectionStatus para usar o hook customizado:</p>
+
+        <pre><code class="language-jsx">// components/ConnectionStatus.jsx (MODIFICAR ARQUIVO EXISTENTE)
+import { useConnectionStatus } from '../hooks/useConnectionStatus';
+
+const ConnectionStatus = () => {
+  const { isOnline, showStatus } = useConnectionStatus();
+
+  return (
+    &lt;div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm transition-all duration-300 ${
+      isOnline 
+        ? 'bg-green-100 text-green-800' 
+        : 'bg-orange-100 text-orange-800'
+    }`}&gt;
+      &lt;div className={`w-2 h-2 rounded-full ${
+        isOnline ? 'bg-green-500' : 'bg-orange-500'
+      }`}&gt;&lt;/div&gt;
+      &lt;span&gt;
+        {isOnline ? 'Online' : 'Offline'}
+      &lt;/span&gt;
+      {isOnline && showStatus && (
+        &lt;span className="text-xs"&gt;✓ Sincronizado&lt;/span&gt;
+      )}
+    &lt;/div&gt;
+  );
+};
+
+export default ConnectionStatus;</code></pre>
       </div>
     </div>
   </section>
@@ -630,20 +1143,414 @@ const ContactsPage = () => {
     </h3>
 
     <div class="desafio">
-      <h4>Exercício 1: Criar ThemeContext</h4>
+      <h4>Exercício 1: Refatorar Projeto com Context</h4>
+      <p>
+        <strong>Objetivo:</strong> Refatorar o projeto de contatos da aula
+        anterior para usar Context e hooks customizados.
+      </p>
+      <ol>
+        <li>
+          Manter todas as funcionalidades da aula 8 (API, cache, sincronização,
+          página de detalhes, exclusão)
+        </li>
+        <li>Criar ContactsContext com toda a lógica de contatos</li>
+        <li>
+          Criar hooks customizados (useFilter, useStatistics,
+          useConnectionStatus)
+        </li>
+        <li>Refatorar componentes para usar Context em vez de props</li>
+        <li>Refatorar página de detalhes para usar Context</li>
+        <li>Organizar pastas (contexts/, hooks/, components/, utils/)</li>
+        <li>Testar que todas as funcionalidades continuam funcionando</li>
+      </ol>
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// contexts/ContactsContext.js (NOVO ARQUIVO)
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import api from '../utils/api';
+import { cacheService } from '../utils/cache';
+
+const ContactsContext = createContext();
+
+export const useContactsContext = () => {
+  const context = useContext(ContactsContext);
+  if (!context) {
+    throw new Error('useContactsContext deve ser usado dentro de ContactsProvider');
+  }
+  return context;
+};
+
+export const ContactsProvider = ({ children }) => {
+  const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isOffline, setIsOffline] = useState(false);
+
+  const loadContacts = useCallback(async () => {
+    let isMounted = true;
+
+    try {
+      if (isMounted) {
+        setLoading(true);
+        setError(null);
+      }
+      
+      const cachedContacts = cacheService.get();
+      if (cachedContacts && isMounted) {
+        setContacts(cachedContacts);
+        setLoading(false);
+      }
+      
+      try {
+        const response = await api.get('/contacts');
+        const apiContacts = response.data;
+        
+        if (isMounted) {
+          cacheService.set(apiContacts);
+          setContacts(apiContacts);
+          setIsOffline(false);
+        }
+      } catch (apiError) {
+        if (isMounted) {
+          if (!cachedContacts) {
+            setIsOffline(true);
+            setError('Erro ao carregar contatos e sem cache disponível.');
+          } else {
+            setIsOffline(true);
+            console.log('API offline, usando cache');
+          }
+        }
+      }
+    } catch (err) {
+      if (isMounted) {
+        setError('Erro ao carregar contatos');
+      }
+    } finally {
+      if (isMounted) {
+        setLoading(false);
+      }
+    }
+  }, []);
+
+  const addContact = useCallback(async (newContact) => {
+    try {
+      try {
+        const response = await api.post('/contacts', newContact);
+        const contactWithId = { ...newContact, id: response.data.id };
+        setContacts(prev => {
+          const updated = [...prev, contactWithId];
+          cacheService.set(updated);
+          return updated;
+        });
+        return contactWithId;
+      } catch (apiError) {
+        console.log('API offline, salvando localmente');
+        const contactWithId = { ...newContact, id: Date.now() };
+        setContacts(prev => {
+          const updated = [...prev, contactWithId];
+          cacheService.set(updated);
+          return updated;
+        });
+        return contactWithId;
+      }
+    } catch (err) {
+      throw new Error('Erro ao adicionar contato');
+    }
+  }, []);
+
+  const removeContact = useCallback(async (id) => {
+    try {
+      // Tentar excluir via API primeiro
+      try {
+        await api.delete(`/contacts/${id}`);
+        console.log('Contato excluído da API');
+      } catch (apiError) {
+        // Se API falhar, apenas remover localmente
+        console.log('API offline, removendo apenas localmente');
+      }
+      
+      // Remover da lista local em ambos os casos
+      setContacts(prev => {
+        const updated = prev.filter(c => c.id !== id);
+        // Atualizar cache
+        cacheService.set(updated);
+        return updated;
+      });
+    } catch (err) {
+      console.error('Erro ao remover contato:', err);
+      throw new Error('Erro ao remover contato');
+    }
+  }, []);
+
+  // Sincronização online/offline
+  useEffect(() => {
+    const syncPendingContacts = async () => {
+      try {
+        const response = await api.get('/contacts');
+        const serverContacts = response.data;
+        
+        const localContacts = contacts;
+        
+        const pendingContacts = localContacts.filter(localContact => {
+          return typeof localContact.id === 'number' && 
+                 localContact.id > 1000000000000 && 
+                 !serverContacts.some(serverContact => 
+                   serverContact.nome === localContact.nome &&
+                   serverContact.email === localContact.email &&
+                   serverContact.telefone === localContact.telefone
+                 );
+        });
+
+        for (const pendingContact of pendingContacts) {
+          try {
+            const { id, ...contactData } = pendingContact;
+            const response = await api.post('/contacts', contactData);
+            
+            setContacts(prev => prev.map(contact => 
+              contact.id === pendingContact.id 
+                ? { ...contact, id: response.data.id }
+                : contact
+            ));
+            
+            console.log('Contato sincronizado:', contactData.nome);
+          } catch (err) {
+            console.error('Erro ao sincronizar contato:', err);
+          }
+        }
+
+        setContacts(serverContacts);
+        cacheService.set(serverContacts);
+        
+      } catch (err) {
+        console.error('Erro na sincronização:', err);
+      }
+    };
+
+    const handleOnline = () => {
+      setIsOffline(false);
+      console.log('Voltou online - sincronizando...');
+      syncPendingContacts();
+    };
+
+    const handleOffline = () => {
+      setIsOffline(true);
+      console.log('Ficou offline - usando cache local');
+    };
+
+    setIsOffline(!navigator.onLine);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [contacts]);
+
+  useEffect(() => {
+    loadContacts();
+  }, [loadContacts]);
+
+  const value = {
+    contacts,
+    loading,
+    error,
+    isOffline,
+    addContact,
+    removeContact,
+    loadContacts
+  };
+
+  return (
+    &lt;ContactsContext.Provider value={value}&gt;
+      {children}
+    &lt;/ContactsContext.Provider&gt;
+  );
+};
+
+export default ContactsContext;
+
+// hooks/useFilter.js (NOVO ARQUIVO)
+import { useState, useMemo, useCallback } from 'react';
+
+export const useFilter = (contacts) => {
+  const [filter, setFilter] = useState('');
+
+  const handleFilterChange = useCallback((value) => {
+    setFilter(value);
+  }, []);
+
+  const filteredContacts = useMemo(() => {
+    if (!filter.trim()) {
+      return contacts;
+    }
+    
+    return contacts.filter(contact =>
+      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.telefone.includes(filter)
+    );
+  }, [contacts, filter]);
+
+  return {
+    filter,
+    filteredContacts,
+    handleFilterChange
+  };
+};
+
+// hooks/useStatistics.js (NOVO ARQUIVO)
+import { useMemo } from 'react';
+
+export const useStatistics = (contacts) => {
+  const stats = useMemo(() => {
+    const total = contacts.length;
+    const comEmail = contacts.filter(c => c.email).length;
+    const comTelefone = contacts.filter(c => c.telefone).length;
+    
+    return {
+      total,
+      comEmail,
+      comTelefone,
+      semEmail: total - comEmail,
+      semTelefone: total - comTelefone
+    };
+  }, [contacts]);
+
+  return stats;
+};
+
+// hooks/useConnectionStatus.js (NOVO ARQUIVO)
+import { useState, useEffect } from 'react';
+
+export const useConnectionStatus = () => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [showStatus, setShowStatus] = useState(false);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      setShowStatus(true);
+      setTimeout(() => setShowStatus(false), 3000);
+    };
+
+    const handleOffline = () => {
+      setIsOnline(false);
+      setShowStatus(true);
+    };
+
+    setIsOnline(navigator.onLine);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  return {
+    isOnline,
+    showStatus,
+    setIsOnline,
+    setShowStatus
+  };
+};
+
+// app/page.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
+import ContactForm from "./components/ContactForm";
+import ContactList from "./components/ContactList";
+import FilterInput from "./components/FilterInput";
+import Statistics from "./components/Statistics";
+import ConnectionStatus from "./components/ConnectionStatus";
+import { ContactsProvider } from "./contexts/ContactsContext";
+import { useContactsContext } from "./contexts/ContactsContext";
+import { useFilter } from "./hooks/useFilter";
+import { useStatistics } from "./hooks/useStatistics";
+
+const ContactsPage = () => {
+  const contactsData = useContactsContext();
+  const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
+  const stats = useStatistics(contactsData.contacts);
+
+  return (
+    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;div className="flex items-center space-x-4"&gt;
+            &lt;FilterInput 
+              value={filter} 
+              onChange={handleFilterChange} 
+            /&gt;
+            &lt;ConnectionStatus /&gt;
+          &lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm /&gt;
+
+        {contactsData.loading && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2"&gt;Carregando contatos...&lt;/p&gt;
+          &lt;/div&gt;
+        )}
+
+        {contactsData.error && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-exclamation-circle text-2xl text-red-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2 text-red-600"&gt;{contactsData.error}&lt;/p&gt;
+            &lt;button 
+              onClick={contactsData.loadContacts}
+              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            &gt;
+              Tentar Novamente
+            &lt;/button&gt;
+          &lt;/div&gt;
+        )}
+
+        {!contactsData.loading && !contactsData.error && (
+          &lt;ContactList 
+            items={filteredContacts} 
+            onRemove={contactsData.removeContact} 
+          /&gt;
+        )}
+
+        &lt;Statistics stats={stats} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+const HomePage = () => {
+  return (
+    &lt;ContactsProvider&gt;
+      &lt;ContactsPage /&gt;
+    &lt;/ContactsProvider&gt;
+  );
+};
+
+export default HomePage;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Criar ThemeContext</h4>
       <p>
         <strong>Objetivo:</strong> Criar um Context para gerenciar tema
-        claro/escuro.
+        claro/escuro no projeto de contatos.
       </p>
       <ol>
         <li>Criar ThemeContext com tema claro/escuro</li>
         <li>Criar hook useTheme</li>
         <li>Implementar toggle de tema</li>
-        <li>Aplicar tema nos componentes</li>
+        <li>Aplicar tema nos componentes do projeto</li>
+        <li>Integrar com o ContactsContext existente</li>
       </ol>
       <details class="solucao">
         <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">// 1. ThemeContext (contexts/ThemeContext.js)
+        <pre><code class="language-jsx">// contexts/ThemeContext.js (NOVO ARQUIVO)
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
@@ -682,7 +1589,7 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-// 2. Hook useTheme (hooks/useTheme.js)
+// hooks/useTheme.js (NOVO ARQUIVO)
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
@@ -691,7 +1598,7 @@ export const useTheme = () => {
   return context;
 };
 
-// 3. Componente Toggle (components/ThemeToggle.js)
+// components/ThemeToggle.jsx (NOVO ARQUIVO)
 import { useTheme } from '../hooks/useTheme';
 
 const ThemeToggle = () => {
@@ -709,53 +1616,115 @@ const ThemeToggle = () => {
 
 export default ThemeToggle;
 
-// 4. Aplicar no layout (app/layout.js)
+// app/layout.js (MODIFICAR ARQUIVO EXISTENTE)
 import { ThemeProvider } from './contexts/ThemeContext';
+import { ContactsProvider } from './contexts/ContactsContext';
 
 export default function RootLayout({ children }) {
   return (
     &lt;html lang="pt-BR"&gt;
       &lt;body&gt;
         &lt;ThemeProvider&gt;
-          {children}
+          &lt;ContactsProvider&gt;
+            {children}
+          &lt;/ContactsProvider&gt;
         &lt;/ThemeProvider&gt;
       &lt;/body&gt;
     &lt;/html&gt;
   );
 }
 
-// 5. Usar nos componentes
-import { useTheme } from '../hooks/useTheme';
+// app/page.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
+import ContactForm from "./components/ContactForm";
+import ContactList from "./components/ContactList";
+import FilterInput from "./components/FilterInput";
+import Statistics from "./components/Statistics";
+import ConnectionStatus from "./components/ConnectionStatus";
+import ThemeToggle from "./components/ThemeToggle";
+import { useContactsContext } from "./contexts/ContactsContext";
+import { useTheme } from "./hooks/useTheme";
+import { useFilter } from "./hooks/useFilter";
+import { useStatistics } from "./hooks/useStatistics";
 
-const HomePage = () => {
+const ContactsPage = () => {
+  const contactsData = useContactsContext();
   const { isDark } = useTheme();
+  const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
+  const stats = useStatistics(contactsData.contacts);
 
   return (
-    &lt;div className={`min-h-screen p-6 ${
-      isDark ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'
+    &lt;div className={`min-h-screen p-6 transition-colors ${
+      isDark ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-900'
     }`}&gt;
-      &lt;h1 className="text-2xl font-bold"&gt;Meu App&lt;/h1&gt;
-      &lt;ThemeToggle /&gt;
+      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+        &lt;header className="flex items-center justify-between"&gt;
+          &lt;h1 className="text-2xl font-bold"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;div className="flex items-center space-x-4"&gt;
+            &lt;FilterInput 
+              value={filter} 
+              onChange={handleFilterChange} 
+            /&gt;
+            &lt;ConnectionStatus /&gt;
+            &lt;ThemeToggle /&gt;
+          &lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;ContactForm /&gt;
+
+        {contactsData.loading && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2"&gt;Carregando contatos...&lt;/p&gt;
+          &lt;/div&gt;
+        )}
+
+        {contactsData.error && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-exclamation-circle text-2xl text-red-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2 text-red-600"&gt;{contactsData.error}&lt;/p&gt;
+            &lt;button 
+              onClick={contactsData.loadContacts}
+              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            &gt;
+              Tentar Novamente
+            &lt;/button&gt;
+          &lt;/div&gt;
+        )}
+
+        {!contactsData.loading && !contactsData.error && (
+          &lt;ContactList 
+            items={filteredContacts} 
+            onRemove={contactsData.removeContact} 
+          /&gt;
+        )}
+
+        &lt;Statistics stats={stats} /&gt;
+      &lt;/div&gt;
     &lt;/div&gt;
   );
-};</code></pre>
+};
+
+export default ContactsPage;</code></pre>
       </details>
     </div>
 
     <div class="desafio">
-      <h4>Exercício 2: Hook useLocalStorage</h4>
+      <h4>Exercício 3: Hook useLocalStorage</h4>
       <p>
-        <strong>Objetivo:</strong> Criar hook customizado para localStorage.
+        <strong>Objetivo:</strong> Criar hook customizado para localStorage que
+        pode ser usado em qualquer parte do projeto.
       </p>
       <ol>
         <li>Criar hook useLocalStorage</li>
-        <li>Implementar sincronização automática</li>
+        <li>Implementar sincronização automática entre abas</li>
         <li>Adicionar tratamento de erros</li>
-        <li>Usar no projeto de contatos</li>
+        <li>Usar no projeto para configurações do usuário</li>
+        <li>Integrar com o ThemeContext</li>
       </ol>
       <details class="solucao">
         <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">// 1. Hook useLocalStorage (hooks/useLocalStorage.js)
+        <pre><code class="language-jsx">// hooks/useLocalStorage.js (NOVO ARQUIVO)
 import { useState, useEffect, useCallback } from 'react';
 
 const useLocalStorage = (key, initialValue) => {
@@ -818,445 +1787,385 @@ const useLocalStorage = (key, initialValue) => {
 
 export default useLocalStorage;
 
-// 2. Usar no projeto de contatos (app/page.js)
-import { useCallback, useEffect, useMemo, useState } from "react";
-import useLocalStorage from './hooks/useLocalStorage';
-import ContactForm from "./components/ContactForm";
-import ContactList from "./components/ContactList";
-import FilterInput from "./components/FilterInput";
-import Statistcs from "./components/Statistcs";
+// contexts/ThemeContext.js (MODIFICAR ARQUIVO EXISTENTE)
+import { createContext, useContext } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 
-const HomePage = () => {
-  // Usar hook customizado para localStorage
-  const [contacts, setContacts] = useLocalStorage('contatos', []);
-  const [filter, setFilter] = useState('');
+const ThemeContext = createContext();
 
-  // Lista filtrada otimizada
-  const filteredContacts = useMemo(() => {
-    if (!filter.trim()) {
-      return contacts;
-    }
-    
-    return contacts.filter(contact =>
-      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
-      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
-      contact.telefone.includes(filter)
-    );
-  }, [contacts, filter]);
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
 
-  // Estatísticas memoizadas
-  const stats = useMemo(() => {
-    const total = contacts.length;
-    const comEmail = contacts.filter(c => c.email).length;
-    const comTelefone = contacts.filter(c => c.telefone).length;
-    
-    return {
-      total,
-      comEmail,
-      comTelefone,
-      semEmail: total - comEmail,
-      semTelefone: total - comTelefone
-    };
-  }, [contacts]);
+  // Salvar tema no DOM
+  useEffect(() => {
+    document.documentElement.className = theme;
+  }, [theme]);
 
-  // Handlers memoizados
-  const handleSubmit = useCallback((newContact) => {
-    setContacts(prev => [...prev, { ...newContact, id: Date.now() }]);
-  }, [setContacts]);
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
-  const handleRemove = useCallback((id) => {
-    setContacts(prev => prev.filter(c => c.id !== id));
-  }, [setContacts]);
-
-  const handleFilterChange = useCallback((value) => {
-    setFilter(value);
-  }, []);
+  const value = {
+    theme,
+    toggleTheme,
+    isDark: theme === 'dark'
+  };
 
   return (
-    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
-      &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
-        &lt;header className="flex items-center justify-between"&gt;
-          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
-          &lt;FilterInput value={filter} onChange={handleFilterChange} /&gt;
-        &lt;/header&gt;
-
-        &lt;ContactForm onAdd={handleSubmit} /&gt;
-        &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
-        &lt;Statistcs stats={stats} /&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+    &lt;ThemeContext.Provider value={value}&gt;
+      {children}
+    &lt;/ThemeContext.Provider&gt;
   );
 };
 
-export default HomePage;
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme deve ser usado dentro de ThemeProvider');
+  }
+  return context;
+};
 
-// 3. Exemplo de uso com configurações
-const SettingsPage = () => {
-  const [theme, setTheme] = useLocalStorage('theme', 'light');
+// components/Settings.jsx (NOVO ARQUIVO)
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useTheme } from '../hooks/useTheme';
+
+const Settings = () => {
   const [language, setLanguage] = useLocalStorage('language', 'pt-BR');
   const [notifications, setNotifications] = useLocalStorage('notifications', true);
+  const [autoSync, setAutoSync] = useLocalStorage('autoSync', true);
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    &lt;div className="p-6"&gt;
-      &lt;h1 className="text-2xl font-bold mb-6"&gt;Configurações&lt;/h1&gt;
+    &lt;div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow"&gt;
+      &lt;h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white"&gt;
+        Configurações
+      &lt;/h2&gt;
       
-      &lt;div className="space-y-4"&gt;
+      &lt;div className="space-y-6"&gt;
+        {/* Tema */}
         &lt;div&gt;
-          &lt;label className="block text-sm font-medium mb-2"&gt;Tema&lt;/label&gt;
-          &lt;select 
-            value={theme} 
-            onChange={(e) => setTheme(e.target.value)}
-            className="border rounded px-3 py-2"
-          &gt;
-            &lt;option value="light"&gt;Claro&lt;/option&gt;
-            &lt;option value="dark"&gt;Escuro&lt;/option&gt;
-          &lt;/select&gt;
+          &lt;label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"&gt;
+            Tema
+          &lt;/label&gt;
+          &lt;div className="flex items-center space-x-4"&gt;
+            &lt;span className="text-sm text-gray-600 dark:text-gray-400"&gt;
+              {theme === 'light' ? 'Claro' : 'Escuro'}
+            &lt;/span&gt;
+            &lt;button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            &gt;
+              {theme === 'light' ? '🌙' : '☀️'}
+            &lt;/button&gt;
+          &lt;/div&gt;
         &lt;/div&gt;
 
+        {/* Idioma */}
         &lt;div&gt;
-          &lt;label className="block text-sm font-medium mb-2"&gt;Idioma&lt;/label&gt;
+          &lt;label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"&gt;
+            Idioma
+          &lt;/label&gt;
           &lt;select 
             value={language} 
             onChange={(e) => setLanguage(e.target.value)}
-            className="border rounded px-3 py-2"
+            className="border rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           &gt;
             &lt;option value="pt-BR"&gt;Português&lt;/option&gt;
             &lt;option value="en-US"&gt;English&lt;/option&gt;
+            &lt;option value="es-ES"&gt;Español&lt;/option&gt;
           &lt;/select&gt;
         &lt;/div&gt;
 
+        {/* Notificações */}
         &lt;div&gt;
           &lt;label className="flex items-center"&gt;
             &lt;input 
               type="checkbox" 
               checked={notifications}
               onChange={(e) => setNotifications(e.target.checked)}
-              className="mr-2"
+              className="mr-3 rounded"
             /&gt;
-            Receber notificações
+            &lt;span className="text-sm text-gray-700 dark:text-gray-300"&gt;
+              Receber notificações
+            &lt;/span&gt;
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+        {/* Sincronização Automática */}
+        &lt;div&gt;
+          &lt;label className="flex items-center"&gt;
+            &lt;input 
+              type="checkbox" 
+              checked={autoSync}
+              onChange={(e) => setAutoSync(e.target.checked)}
+              className="mr-3 rounded"
+            /&gt;
+            &lt;span className="text-sm text-gray-700 dark:text-gray-300"&gt;
+              Sincronização automática
+            &lt;/span&gt;
           &lt;/label&gt;
         &lt;/div&gt;
       &lt;/div&gt;
+
+      {/* Botão para limpar todas as configurações */}
+      &lt;div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700"&gt;
+        &lt;button
+          onClick={() => {
+            setLanguage('pt-BR');
+            setNotifications(true);
+            setAutoSync(true);
+            toggleTheme(); // Voltar para tema claro
+          }}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+        &gt;
+          Restaurar Padrões
+        &lt;/button&gt;
+      &lt;/div&gt;
     &lt;/div&gt;
   );
-};</code></pre>
-      </details>
-    </div>
-
-    <div class="desafio">
-      <h4>Exercício 3: Hook useApi</h4>
-      <p>
-        <strong>Objetivo:</strong> Criar hook genérico para chamadas de API.
-      </p>
-      <ol>
-        <li>Criar hook useApi com loading, error, data</li>
-        <li>Implementar cache automático</li>
-        <li>Adicionar retry automático</li>
-        <li>Integrar com o projeto</li>
-      </ol>
-      <details class="solucao">
-        <summary>Mostrar solução</summary>
-        <pre><code class="language-jsx">// 1. Hook useApi (hooks/useApi.js)
-import { useState, useEffect, useCallback, useRef } from 'react';
-import axios from 'axios';
-
-const useApi = (url, options = {}) => {
-  const {
-    method = 'GET',
-    data = null,
-    headers = {},
-    cache = true,
-    retry = 3,
-    retryDelay = 1000,
-    onSuccess = null,
-    onError = null
-  } = options;
-
-  const [state, setState] = useState({
-    data: null,
-    loading: false,
-    error: null
-  });
-
-  const retryCountRef = useRef(0);
-  const cacheKey = `api_${method}_${url}_${JSON.stringify(data)}`;
-
-  // Função para fazer a requisição
-  const makeRequest = useCallback(async (retryAttempt = 0) => {
-    try {
-      setState(prev => ({ ...prev, loading: true, error: null }));
-
-      // Verificar cache primeiro
-      if (cache && method === 'GET') {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) {
-          const { data: cachedData, timestamp } = JSON.parse(cached);
-          const now = Date.now();
-          const cacheAge = now - timestamp;
-          const cacheExpiry = 5 * 60 * 1000; // 5 minutos
-
-          if (cacheAge < cacheExpiry) {
-            setState(prev => ({ ...prev, data: cachedData, loading: false }));
-            onSuccess?.(cachedData);
-            return cachedData;
-          }
-        }
-      }
-
-      // Fazer requisição
-      const config = {
-        method,
-        url,
-        data,
-        headers
-      };
-
-      const response = await axios(config);
-      const responseData = response.data;
-
-      // Salvar no cache
-      if (cache && method === 'GET') {
-        localStorage.setItem(cacheKey, JSON.stringify({
-          data: responseData,
-          timestamp: Date.now()
-        }));
-      }
-
-      setState(prev => ({ ...prev, data: responseData, loading: false }));
-      onSuccess?.(responseData);
-      retryCountRef.current = 0;
-
-      return responseData;
-
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message;
-
-      // Tentar novamente se ainda há tentativas
-      if (retryAttempt < retry) {
-        retryCountRef.current = retryAttempt + 1;
-        setTimeout(() => {
-          makeRequest(retryAttempt + 1);
-        }, retryDelay * Math.pow(2, retryAttempt)); // Backoff exponencial
-        return;
-      }
-
-      setState(prev => ({ 
-        ...prev, 
-        error: errorMessage, 
-        loading: false 
-      }));
-      onError?.(error);
-      retryCountRef.current = 0;
-    }
-  }, [url, method, data, headers, cache, retry, retryDelay, cacheKey, onSuccess, onError]);
-
-  // Função para refazer a requisição
-  const refetch = useCallback(() => {
-    retryCountRef.current = 0;
-    makeRequest(0);
-  }, [makeRequest]);
-
-  // Função para limpar cache
-  const clearCache = useCallback(() => {
-    if (cache && method === 'GET') {
-      localStorage.removeItem(cacheKey);
-    }
-  }, [cache, method, cacheKey]);
-
-  // Executar requisição quando dependências mudarem
-  useEffect(() => {
-    makeRequest(0);
-  }, [makeRequest]);
-
-  return {
-    ...state,
-    refetch,
-    clearCache,
-    retryCount: retryCountRef.current
-  };
 };
 
-export default useApi;
+export default Settings;
 
-// 2. Usar no projeto de contatos (app/page.js)
-import { useCallback, useMemo, useState } from "react";
-import useApi from './hooks/useApi';
+// app/page.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
 import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 import FilterInput from "./components/FilterInput";
-import Statistcs from "./components/Statistcs";
+import Statistics from "./components/Statistics";
+import ConnectionStatus from "./components/ConnectionStatus";
+import ThemeToggle from "./components/ThemeToggle";
+import Settings from "./components/Settings";
+import { ContactsProvider } from "./contexts/ContactsContext";
+import { useContactsContext } from "./contexts/ContactsContext";
+import { useTheme } from "./hooks/useTheme";
+import { useFilter } from "./hooks/useFilter";
+import { useStatistics } from "./hooks/useStatistics";
+import { useState } from "react";
 
-const HomePage = () => {
-  const [filter, setFilter] = useState('');
-
-  // Usar hook useApi para carregar contatos
-  const { 
-    data: contacts = [], 
-    loading, 
-    error, 
-    refetch 
-  } = useApi('https://68d96d1b90a75154f0da61ae.mockapi.io/contacts', {
-    onSuccess: (data) => {
-      console.log('Contatos carregados:', data);
-    },
-    onError: (error) => {
-      console.error('Erro ao carregar contatos:', error);
-    }
-  });
-
-  // Lista filtrada otimizada
-  const filteredContacts = useMemo(() => {
-    if (!filter.trim()) {
-      return contacts;
-    }
-    
-    return contacts.filter(contact =>
-      contact.nome.toLowerCase().includes(filter.toLowerCase()) ||
-      contact.email.toLowerCase().includes(filter.toLowerCase()) ||
-      contact.telefone.includes(filter)
-    );
-  }, [contacts, filter]);
-
-  // Estatísticas memoizadas
-  const stats = useMemo(() => {
-    const total = contacts.length;
-    const comEmail = contacts.filter(c => c.email).length;
-    const comTelefone = contacts.filter(c => c.telefone).length;
-    
-    return {
-      total,
-      comEmail,
-      comTelefone,
-      semEmail: total - comEmail,
-      semTelefone: total - comTelefone
-    };
-  }, [contacts]);
-
-  // Handlers
-  const handleSubmit = useCallback((newContact) => {
-    // Aqui você faria uma requisição POST para adicionar o contato
-    console.log('Adicionar contato:', newContact);
-    refetch(); // Recarregar dados
-  }, [refetch]);
-
-  const handleRemove = useCallback((id) => {
-    // Aqui você faria uma requisição DELETE para remover o contato
-    console.log('Remover contato:', id);
-    refetch(); // Recarregar dados
-  }, [refetch]);
-
-  const handleFilterChange = useCallback((value) => {
-    setFilter(value);
-  }, []);
-
-  if (loading) {
-    return (
-      &lt;div className="min-h-screen bg-gray-200 p-6 flex items-center justify-center"&gt;
-        &lt;div className="text-center"&gt;
-          &lt;i className="fas fa-spinner fa-spin text-4xl text-blue-600"&gt;&lt;/i&gt;
-          &lt;p className="mt-4 text-lg"&gt;Carregando contatos...&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    );
-  }
-
-  if (error) {
-    return (
-      &lt;div className="min-h-screen bg-gray-200 p-6 flex items-center justify-center"&gt;
-        &lt;div className="text-center"&gt;
-          &lt;i className="fas fa-exclamation-circle text-4xl text-red-600"&gt;&lt;/i&gt;
-          &lt;p className="mt-4 text-lg text-red-600"&gt;{error}&lt;/p&gt;
-          &lt;button 
-            onClick={refetch}
-            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          &gt;
-            Tentar Novamente
-          &lt;/button&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    );
-  }
+const ContactsPage = () => {
+  const contactsData = useContactsContext();
+  const { isDark } = useTheme();
+  const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
+  const stats = useStatistics(contactsData.contacts);
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
-    &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+    &lt;div className={`min-h-screen p-6 transition-colors ${
+      isDark ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-900'
+    }`}&gt;
       &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
         &lt;header className="flex items-center justify-between"&gt;
-          &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+          &lt;h1 className="text-2xl font-bold"&gt;Cadastro de Contatos&lt;/h1&gt;
           &lt;div className="flex items-center space-x-4"&gt;
-            &lt;FilterInput value={filter} onChange={handleFilterChange} /&gt;
+            &lt;FilterInput 
+              value={filter} 
+              onChange={handleFilterChange} 
+            /&gt;
+            &lt;ConnectionStatus /&gt;
+            &lt;ThemeToggle /&gt;
             &lt;button
-              onClick={refetch}
-              className="text-blue-600 hover:text-blue-800"
-              title="Recarregar dados"
+              onClick={() => setShowSettings(!showSettings)}
+              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              title="Configurações"
             &gt;
-              &lt;i className="fas fa-sync-alt"&gt;&lt;/i&gt;
+              ⚙️
             &lt;/button&gt;
           &lt;/div&gt;
         &lt;/header&gt;
 
-        &lt;ContactForm onAdd={handleSubmit} /&gt;
-        &lt;ContactList items={filteredContacts} onRemove={handleRemove} /&gt;
-        &lt;Statistcs stats={stats} /&gt;
+        {showSettings && (
+          &lt;Settings /&gt;
+        )}
+
+        &lt;ContactForm /&gt;
+
+        {contactsData.loading && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2"&gt;Carregando contatos...&lt;/p&gt;
+          &lt;/div&gt;
+        )}
+
+        {contactsData.error && (
+          &lt;div className="text-center py-8"&gt;
+            &lt;i className="fas fa-exclamation-circle text-2xl text-red-600"&gt;&lt;/i&gt;
+            &lt;p className="mt-2 text-red-600"&gt;{contactsData.error}&lt;/p&gt;
+            &lt;button 
+              onClick={contactsData.loadContacts}
+              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            &gt;
+              Tentar Novamente
+            &lt;/button&gt;
+          &lt;/div&gt;
+        )}
+
+        {!contactsData.loading && !contactsData.error && (
+          &lt;ContactList 
+            items={filteredContacts} 
+            onRemove={contactsData.removeContact} 
+          /&gt;
+        )}
+
+        &lt;Statistics stats={stats} /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   );
 };
 
-export default HomePage;
-
-// 3. Exemplo de uso com diferentes endpoints
-const Dashboard = () => {
-  // Carregar usuários
-  const { data: users, loading: usersLoading } = useApi('https://jsonplaceholder.typicode.com/users');
-  
-  // Carregar posts
-  const { data: posts, loading: postsLoading } = useApi('https://jsonplaceholder.typicode.com/posts');
-  
-  // Carregar TODOs
-  const { data: todos, loading: todosLoading } = useApi('https://jsonplaceholder.typicode.com/todos');
-
-  const loading = usersLoading || postsLoading || todosLoading;
-
-  if (loading) {
-    return &lt;div&gt;Carregando...&lt;/div&gt;;
-  }
-
+const HomePage = () => {
   return (
-    &lt;div className="p-6"&gt;
-      &lt;h1 className="text-2xl font-bold mb-6"&gt;Dashboard&lt;/h1&gt;
-      &lt;div className="grid grid-cols-3 gap-6"&gt;
-        &lt;div className="bg-white p-4 rounded shadow"&gt;
-          &lt;h3 className="text-lg font-semibold"&gt;Usuários&lt;/h3&gt;
-          &lt;p className="text-3xl font-bold text-blue-600"&gt;{users?.length || 0}&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className="bg-white p-4 rounded shadow"&gt;
-          &lt;h3 className="text-lg font-semibold"&gt;Posts&lt;/h3&gt;
-          &lt;p className="text-3xl font-bold text-green-600"&gt;{posts?.length || 0}&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className="bg-white p-4 rounded shadow"&gt;
-          &lt;h3 className="text-lg font-semibold"&gt;TODOs&lt;/h3&gt;
-          &lt;p className="text-3xl font-bold text-purple-600"&gt;{todos?.length || 0}&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+    &lt;ContactsProvider&gt;
+      &lt;ContactsPage /&gt;
+    &lt;/ContactsProvider&gt;
   );
-};</code></pre>
+};
+
+export default HomePage;</code></pre>
       </details>
     </div>
   </section>
 
-  <!-- 8. Próximos Passos -->
+  <!-- 8. Resumo Final -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-arrow-right"></i> 8. Próximos Passos
+      <i class="fas fa-check-circle"></i> 8. Resumo Final
     </h3>
-
     <div class="card mb-4">
       <div class="card-body">
-        <h4>8.1 Melhorias Futuras</h4>
+        <h4>O que foi Mantido da Aula Anterior (React 8)</h4>
+        <ul>
+          <li>
+            ✅ <strong>Integração com MockAPI:</strong> axios configurado e
+            funcionando
+          </li>
+          <li>
+            ✅ <strong>Cache Service:</strong> Sistema de cache com expiração
+            (utils/cache.js)
+          </li>
+          <li>
+            ✅ <strong>Sincronização Online/Offline:</strong> Detecção
+            automática e sincronização
+          </li>
+          <li>
+            ✅ <strong>Estados de UI:</strong> Loading, erro e indicador offline
+          </li>
+          <li>
+            ✅ <strong>Componente ConnectionStatus:</strong> Indicador visual de
+            conexão
+          </li>
+          <li>
+            ✅ <strong>Otimizações:</strong> useMemo, useCallback, useRef
+            mantidos
+          </li>
+          <li>
+            ✅ <strong>Componente Statistics:</strong> Separado e funcionando
+          </li>
+          <li>
+            ✅ <strong>Página de Detalhes:</strong> Busca da API com fallback
+            offline
+          </li>
+          <li>
+            ✅ <strong>Exclusão de Contatos:</strong> Funcionando com API e
+            offline
+          </li>
+          <li>✅ <strong>Filtros:</strong> Busca em tempo real otimizada</li>
+        </ul>
+
+        <h4>O que foi Adicionado Nesta Aula (React 9)</h4>
+        <ul>
+          <li>
+            🆕 <strong>ContactsContext:</strong> Estado global para contatos,
+            loading, erro, isOffline
+          </li>
+          <li>
+            🆕 <strong>useContactsContext:</strong> Hook para acessar o Context
+          </li>
+          <li>
+            🆕 <strong>useFilter:</strong> Hook customizado para gerenciar
+            filtros
+          </li>
+          <li>
+            🆕 <strong>useStatistics:</strong> Hook customizado para calcular
+            estatísticas
+          </li>
+          <li>
+            🆕 <strong>useConnectionStatus:</strong> Hook para status de conexão
+          </li>
+          <li>
+            🆕 <strong>Organização:</strong> Pastas contexts/ e hooks/ para
+            melhor estrutura
+          </li>
+          <li>
+            🆕 <strong>Refatoração:</strong> Componentes usam Context em vez de
+            props
+          </li>
+          <li>
+            🆕 <strong>Eliminação de Props Drilling:</strong> Dados acessíveis
+            globalmente
+          </li>
+        </ul>
+
+        <h4>Benefícios da Refatoração</h4>
+        <ul>
+          <li>
+            ✅ <strong>Código mais limpo:</strong> Menos props, mais
+            legibilidade
+          </li>
+          <li>
+            ✅ <strong>Separação de responsabilidades:</strong> Lógica separada
+            da apresentação
+          </li>
+          <li>
+            ✅ <strong>Reutilização:</strong> Hooks podem ser usados em outros
+            componentes
+          </li>
+          <li>
+            ✅ <strong>Testabilidade:</strong> Hooks podem ser testados
+            isoladamente
+          </li>
+          <li>
+            ✅ <strong>Manutenibilidade:</strong> Mudanças centralizadas no
+            Context
+          </li>
+          <li>
+            ✅ <strong>Performance:</strong> Menos re-renders desnecessários
+          </li>
+          <li>
+            ✅ <strong>Escalabilidade:</strong> Fácil adicionar novos estados
+            globais
+          </li>
+        </ul>
+
+        <h4>Estrutura Final do Projeto</h4>
+        <pre><code class="language-plaintext">app/
+├── page.js                    # Página principal (refatorada com Context)
+├── layout.js                  # Layout compartilhado
+├── globals.css                # Estilos globais
+├── contact/[id]/page.js       # Página de detalhes
+├── components/
+│   ├── ContactForm.jsx        # Formulário (usa Context)
+│   ├── ContactList.jsx        # Lista de contatos
+│   ├── ContactItem.jsx        # Item individual (usa Context)
+│   ├── FilterInput.jsx        # Campo de filtro
+│   ├── Statistics.jsx         # Estatísticas
+│   └── ConnectionStatus.jsx   # Status de conexão (usa Hook)
+├── contexts/                  # Contexts para estado global
+│   └── ContactsContext.js     # Context de contatos (com toda lógica da aula 8)
+├── hooks/                     # Hooks customizados
+│   ├── useFilter.js           # Hook para filtros
+│   ├── useStatistics.js       # Hook para estatísticas
+│   └── useConnectionStatus.js # Hook para status de conexão
+└── utils/
+    ├── api.js                 # Configuração do axios (mantido)
+    └── cache.js               # Serviço de cache (mantido)</code></pre>
+
+        <h4>Próximos Passos</h4>
         <ul>
           <li>
             🔮 <strong>React Query:</strong> Para cache e sincronização de dados
+            mais avançada
           </li>
           <li>
             🔮 <strong>Zustand:</strong> Para gerenciamento de estado mais
@@ -1268,23 +2177,22 @@ const Dashboard = () => {
           <li>
             🔮 <strong>React Hook Form:</strong> Para formulários mais robustos
           </li>
-        </ul>
-
-        <h4>8.2 Padrões Avançados</h4>
-        <ul>
           <li>
             🔮 <strong>Compound Components:</strong> Componentes compostos
-          </li>
-          <li>🔮 <strong>Render Props:</strong> Padrão de renderização</li>
-          <li>
-            🔮 <strong>Higher-Order Components:</strong> Componentes de alta
-            ordem
           </li>
           <li>
             🔮 <strong>Custom Hooks Library:</strong> Biblioteca de hooks
             reutilizáveis
           </li>
         </ul>
+
+        <div class="alert alert-success">
+          <strong>Parabéns!</strong> Você agora sabe como usar useContext e
+          hooks customizados para organizar melhor aplicações React, mantendo
+          todas as funcionalidades avançadas como API, cache offline e
+          sincronização automática. Essas são habilidades essenciais para
+          desenvolvimento de aplicações modernas e escaláveis!
+        </div>
       </div>
     </div>
   </section>
