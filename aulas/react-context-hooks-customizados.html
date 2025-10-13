@@ -210,13 +210,10 @@ export const useContactsContext = () => {
 
 // 3. Provider Component com toda a lógica da aula anterior
 export const ContactsProvider = ({ children }) => {
-  // ✅ MANTER: Estados existentes do projeto da aula 8
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOffline, setIsOffline] = useState(false);
-
-  // ✅ MANTER: Carregamento com cache service + API + cleanup
   const loadContacts = useCallback(async () => {
     let isMounted = true;
 
@@ -267,7 +264,6 @@ export const ContactsProvider = ({ children }) => {
     }
   }, []);
 
-  // ✅ MANTER: Adicionar contato com API + fallback offline
   const addContact = useCallback(async (newContact) => {
     try {
       // Tentar salvar via API primeiro
@@ -296,7 +292,6 @@ export const ContactsProvider = ({ children }) => {
     }
   }, []);
 
-  // ✅ MANTER: Remover contato com API + fallback offline
   const removeContact = useCallback(async (id) => {
     try {
       // Tentar excluir via API primeiro
@@ -321,7 +316,6 @@ export const ContactsProvider = ({ children }) => {
     }
   }, []);
 
-  // ✅ MANTER: Sincronização online/offline
   useEffect(() => {
     const syncPendingContacts = async () => {
       try {
@@ -565,13 +559,15 @@ import Statistics from "./components/Statistics";
 import ConnectionStatus from "./components/ConnectionStatus";
 import { ContactsProvider } from "./contexts/ContactsContext";
 import { useContactsContext } from "./contexts/ContactsContext";
+// 🆕 ADICIONAR: Imports dos hooks customizados (novos arquivos)
 import { useFilter } from "./hooks/useFilter";
 import { useStatistics } from "./hooks/useStatistics";
 
 // Componente interno que usa os hooks
 const ContactsPage = () => {
-  // ✅ MANTER: Usar Context em vez de props
+  // 🆕 MODIFICAR: Usar Context em vez de props (antes recebia via props)
   const contactsData = useContactsContext();
+  // 🆕 ADICIONAR: Usar hooks customizados (antes era lógica inline)
   const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
   const stats = useStatistics(contactsData.contacts);
 
@@ -585,12 +581,12 @@ const ContactsPage = () => {
               value={filter} 
               onChange={handleFilterChange} 
             /&gt;
-            {/* ✅ MANTER: ConnectionStatus da aula anterior */}
+            {/* ✅ MANTER: ConnectionStatus da aula anterior (agora usa hook customizado) */}
             &lt;ConnectionStatus /&gt;
           &lt;/div&gt;
         &lt;/header&gt;
 
-        {/* ✅ MANTER: ContactForm sem props - usa Context */}
+        {/* 🆕 MODIFICAR: ContactForm sem props - usa Context (antes recebia via props) */}
         &lt;ContactForm /&gt;
 
         {/* ✅ MANTER: Estados de loading e erro */}
@@ -614,7 +610,7 @@ const ContactsPage = () => {
           &lt;/div&gt;
         )}
 
-        {/* ✅ MANTER: Renderização condicional */}
+        {/* ✅ MANTER: Renderização condicional (lógica mantida da aula anterior) */}
         {!contactsData.loading && !contactsData.error && (
           &lt;ContactList 
             items={filteredContacts} 
@@ -622,7 +618,7 @@ const ContactsPage = () => {
           /&gt;
         )}
 
-        {/* ✅ MANTER: Statistics separado */}
+        {/* ✅ MANTER: Statistics separado (componente mantido da aula anterior) */}
         &lt;Statistics stats={stats} /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -662,13 +658,13 @@ import { useEffect, useRef, useState } from "react";
 import { useContactsContext } from "../contexts/ContactsContext";
 
 const ContactForm = () => {
-  // ✅ MANTER: Estados do formulário
+  // ✅ MANTER: Estados do formulário (mantidos da aula anterior)
   const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const nomeInputRef = useRef(null);
   
-  // ✅ MANTER: Usar Context em vez de props
+  // 🆕 MODIFICAR: Usar Context em vez de props (antes recebia via props)
   const { addContact } = useContactsContext();
 
   // ✅ MANTER: Foco automático da aula anterior
@@ -696,10 +692,10 @@ const ContactForm = () => {
       setLoading(true);
       setError(null);
 
-      // ✅ MANTER: Usar addContact do Context (que já tem API + fallback)
+      // 🆕 MODIFICAR: Usar addContact do Context (antes era função local)
       await addContact(form);
       setForm({ nome: "", email: "", telefone: "" });
-      // ✅ MANTER: Focar novamente no campo nome após adicionar
+      // ✅ MANTER: Focar novamente no campo nome após adicionar (mantido da aula anterior)
       nomeInputRef.current?.focus();
       
     } catch (err) {
@@ -775,12 +771,12 @@ import { memo } from 'react';
 import { useContactsContext } from '../contexts/ContactsContext';
 
 const ContactItem = memo(({ contact }) => {
-  // ✅ MANTER: Usar Context em vez de props
+  // 🆕 MODIFICAR: Usar Context em vez de props (antes recebia via props)
   const { removeContact } = useContactsContext();
 
   const handleRemove = async () => {
     try {
-      // ✅ MANTER: Usar removeContact do Context (que já tem API + fallback)
+      // 🆕 MODIFICAR: Usar removeContact do Context (antes era função local)
       await removeContact(contact.id);
     } catch (err) {
       console.error('Erro ao remover contato:', err);
@@ -835,7 +831,7 @@ const ContactDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     
-    // ✅ MANTER: Usar Context em vez de buscar diretamente da API
+    // 🆕 MODIFICAR: Usar Context em vez de buscar diretamente da API (antes fazia requisição direta)
     const { contacts, loadContacts } = useContactsContext();
 
     useEffect(() => {
@@ -844,7 +840,7 @@ const ContactDetailPage = () => {
                 setLoading(true);
                 setError(null);
                 
-                // ✅ MANTER: Buscar contato da lista do Context primeiro
+                // 🆕 MODIFICAR: Buscar contato da lista do Context primeiro (antes fazia requisição à API)
                 const foundContact = contacts.find(c => c.id === parseInt(params.id));
                 
                 if (foundContact) {
@@ -1026,9 +1022,11 @@ export default ContactDetailPage;</code></pre>
         <p>Vamos refatorar o ConnectionStatus para usar o hook customizado:</p>
 
         <pre><code class="language-jsx">// components/ConnectionStatus.jsx (MODIFICAR ARQUIVO EXISTENTE)
+// 🆕 ADICIONAR: Import do hook customizado (novo arquivo)
 import { useConnectionStatus } from '../hooks/useConnectionStatus';
 
 const ConnectionStatus = () => {
+  // 🆕 MODIFICAR: Usar hook customizado (antes era lógica inline)
   const { isOnline, showStatus } = useConnectionStatus();
 
   return (
@@ -1466,11 +1464,13 @@ import Statistics from "./components/Statistics";
 import ConnectionStatus from "./components/ConnectionStatus";
 import { ContactsProvider } from "./contexts/ContactsContext";
 import { useContactsContext } from "./contexts/ContactsContext";
+// 🆕 ADICIONAR: Imports dos hooks customizados (novos arquivos)
 import { useFilter } from "./hooks/useFilter";
 import { useStatistics } from "./hooks/useStatistics";
 
 const ContactsPage = () => {
   const contactsData = useContactsContext();
+  // 🆕 ADICIONAR: Usar hooks customizados (antes era lógica inline)
   const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
   const stats = useStatistics(contactsData.contacts);
 
@@ -1599,9 +1599,11 @@ export const useTheme = () => {
 };
 
 // components/ThemeToggle.jsx (NOVO ARQUIVO)
+// 🆕 ADICIONAR: Import do hook customizado (novo arquivo)
 import { useTheme } from '../hooks/useTheme';
 
 const ThemeToggle = () => {
+  // 🆕 ADICIONAR: Usar hook customizado (novo arquivo)
   const { theme, toggleTheme } = useTheme();
 
   return (
