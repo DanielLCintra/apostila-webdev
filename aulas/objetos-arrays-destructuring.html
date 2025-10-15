@@ -457,10 +457,277 @@ exibirDetalhes(tarefaObj);
     </div>
   </section>
 
-  <!-- Seção 4: Exercícios Práticos -->
+  <!-- Seção 4: Matrizes (Arrays Bidimensionais) -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 4. Exercícios Práticos
+      <i class="fas fa-th"></i> 4. Matrizes (Arrays Bidimensionais)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Matrizes são arrays de arrays, criando estruturas bidimensionais que permitem organizar 
+          dados em linhas e colunas. São fundamentais para representar dados tabulares, mapas, 
+          coordenadas espaciais e muito mais.
+        </p>
+
+        <!-- Criação e Acesso a Matrizes -->
+        <div class="code-header">Criação e Acesso a Matrizes</div>
+        <pre><code>// Matriz 3x3 (tabuleiro de jogo da velha)
+const tabuleiro = [
+  ['X', 'O', 'X'],
+  ['O', 'X', 'O'],
+  ['X', 'O', 'X']
+];
+console.log("Tabuleiro:", tabuleiro);
+console.log("Posição (1,1):", tabuleiro[1][1]);
+
+// Matriz de notas de múltiplos alunos
+const notasAlunos = [
+  [8.5, 7.2, 9.1],  // Aluno 1
+  [6.8, 8.0, 7.5],  // Aluno 2
+  [9.2, 8.8, 9.0]   // Aluno 3
+];
+console.log("Notas dos alunos:", notasAlunos);
+console.log("Nota do aluno 2, prova 1:", notasAlunos[1][0]);
+
+// Matriz de pixels (imagem 2x2)
+const imagem = [
+  [[255, 0, 0], [0, 255, 0]],    // Linha 1: vermelho, verde
+  [[0, 0, 255], [255, 255, 0]]   // Linha 2: azul, amarelo
+];
+console.log("Pixel (0,0):", imagem[0][0]); // Vermelho
+console.log("Pixel (1,1):", imagem[1][1]); // Amarelo
+</code></pre>
+
+        <blockquote>
+          <p>
+            <strong>Matrizes</strong> são arrays de arrays, criando uma estrutura bidimensional. 
+            Acessamos elementos usando dois índices: <code>matriz[linha][coluna]</code>. 
+            O primeiro índice representa a linha e o segundo a coluna.
+          </p>
+        </blockquote>
+
+        <!-- Operações com Matrizes -->
+        <div class="code-header">Operações Básicas com Matrizes</div>
+        <pre><code>// Função para exibir uma matriz de forma organizada
+function exibirMatriz(matriz, titulo = "Matriz") {
+  console.log(`\n${titulo}:`);
+  matriz.forEach((linha, i) => {
+    console.log(`Linha ${i}: [${linha.join(', ')}]`);
+  });
+}
+
+// Matriz de exemplo
+const matriz = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9]
+];
+exibirMatriz(matriz, "Matriz Original");
+
+// Percorrendo todos os elementos da matriz
+console.log("\nPercorrendo todos os elementos:");
+matriz.forEach((linha, i) => {
+  linha.forEach((elemento, j) => {
+    console.log(`Posição [${i}][${j}]: ${elemento}`);
+  });
+});
+
+// Encontrando o maior valor na matriz
+let maiorValor = matriz[0][0];
+let posicaoMaior = [0, 0];
+
+matriz.forEach((linha, i) => {
+  linha.forEach((elemento, j) => {
+    if (elemento > maiorValor) {
+      maiorValor = elemento;
+      posicaoMaior = [i, j];
+    }
+  });
+});
+
+console.log(`\nMaior valor: ${maiorValor} na posição [${posicaoMaior[0]}][${posicaoMaior[1]}]`);
+
+// Calculando a soma de cada linha
+const somasLinhas = matriz.map(linha => 
+  linha.reduce((soma, elemento) => soma + elemento, 0)
+);
+console.log("Somas das linhas:", somasLinhas);
+
+// Calculando a soma de cada coluna
+const somasColunas = [];
+for (let j = 0; j < matriz[0].length; j++) {
+  let somaColuna = 0;
+  for (let i = 0; i < matriz.length; i++) {
+    somaColuna += matriz[i][j];
+  }
+  somasColunas.push(somaColuna);
+}
+console.log("Somas das colunas:", somasColunas);
+</code></pre>
+
+        <!-- Matrizes Irregulares -->
+        <div class="code-header">Matrizes Irregulares</div>
+        <pre><code>// Matriz irregular (linhas com tamanhos diferentes)
+const matrizIrregular = [
+  [1, 2, 3],
+  [4, 5],
+  [6, 7, 8, 9, 10]
+];
+
+console.log("Matriz irregular:");
+matrizIrregular.forEach((linha, i) => {
+  console.log(`Linha ${i} (${linha.length} elementos): [${linha.join(', ')}]`);
+});
+
+// Função para verificar se uma matriz é regular
+function isMatrizRegular(matriz) {
+  if (matriz.length === 0) return true;
+  
+  const primeiraLinhaTamanho = matriz[0].length;
+  return matriz.every(linha => linha.length === primeiraLinhaTamanho);
+}
+
+console.log("É matriz regular?", isMatrizRegular(matrizIrregular)); // false
+console.log("É matriz regular?", isMatrizRegular(matriz)); // true
+</code></pre>
+
+        <!-- Aplicações Práticas -->
+        <div class="code-header">Aplicações Práticas</div>
+        <pre><code>// Sistema de coordenadas para um jogo
+const mapa = [
+  ['🌲', '🌲', '🏔️', '🌲'],
+  ['🌲', '🏠', '🌲', '🌲'],
+  ['🌲', '🌲', '🌲', '🏪'],
+  ['🌲', '🌲', '🌲', '🌲']
+];
+
+function exibirMapa(mapa) {
+  console.log("\nMapa do jogo:");
+  mapa.forEach(linha => {
+    console.log(linha.join(' '));
+  });
+}
+
+function encontrarElemento(mapa, elemento) {
+  for (let i = 0; i < mapa.length; i++) {
+    for (let j = 0; j < mapa[i].length; j++) {
+      if (mapa[i][j] === elemento) {
+        return [i, j];
+      }
+    }
+  }
+  return null;
+}
+
+exibirMapa(mapa);
+console.log("Posição da casa:", encontrarElemento(mapa, '🏠'));
+console.log("Posição da loja:", encontrarElemento(mapa, '🏪'));
+
+// Matriz de temperaturas por cidade e mês
+const temperaturas = [
+  // Jan, Fev, Mar, Abr
+  [25, 27, 26, 24],  // São Paulo
+  [30, 32, 31, 29],  // Rio de Janeiro
+  [22, 24, 23, 21]   // Curitiba
+];
+
+const cidades = ['São Paulo', 'Rio de Janeiro', 'Curitiba'];
+const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril'];
+
+// Encontrar a temperatura mais alta
+let tempMaxima = temperaturas[0][0];
+let cidadeTempMax = 0;
+let mesTempMax = 0;
+
+temperaturas.forEach((cidade, i) => {
+  cidade.forEach((temp, j) => {
+    if (temp > tempMaxima) {
+      tempMaxima = temp;
+      cidadeTempMax = i;
+      mesTempMax = j;
+    }
+  });
+});
+
+console.log(`\nTemperatura mais alta: ${tempMaxima}°C em ${cidades[cidadeTempMax]} no mês de ${meses[mesTempMax]}`);
+</code></pre>
+
+        <blockquote>
+          <p>
+            <strong>Aplicações práticas</strong> de matrizes incluem mapas de jogos, 
+            dados tabulares, processamento de imagens, e qualquer situação onde 
+            precisamos organizar dados em linhas e colunas.
+          </p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 5: Arrays Multidimensionais -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-cubes"></i> 5. Arrays Multidimensionais
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Em JavaScript, arrays podem ter <strong>1 ou mais dimensões</strong>, dependendo do contexto e da complexidade dos dados que você precisa organizar. 
+          A dimensionalidade é determinada pela estrutura aninhada dos arrays.
+        </p>
+
+        <div class="code-header">Dimensionalidade dos Arrays</div>
+        <pre><code>// Array unidimensional (1D) - uma lista simples
+const notas = [8.5, 7.2, 9.1, 6.8];
+
+// Array bidimensional (2D) - tabela/matriz
+const tabuleiro = [
+  ['X', 'O', 'X'],
+  ['O', 'X', 'O'],
+  ['X', 'O', 'X']
+];
+
+// Array tridimensional (3D) - cubo de dados
+const cubo = [
+  [ // Camada 0
+    [1, 2, 3],
+    [4, 5, 6]
+  ],
+  [ // Camada 1
+    [7, 8, 9],
+    [10, 11, 12]
+  ]
+];
+
+console.log("Elemento 3D:", cubo[1][0][2]); // 9
+</code></pre>
+
+        <blockquote>
+          <p>
+            <strong>Dimensionalidade</strong> é definida pela profundidade de aninhamento dos arrays. 
+            Arrays unidimensionais são listas simples, bidimensionais formam tabelas, 
+            tridimensionais criam estruturas cúbicas, e assim por diante. 
+            A escolha da dimensionalidade depende da natureza dos dados e do problema a ser resolvido.
+          </p>
+        </blockquote>
+
+        <p>
+          <strong>Quando usar cada dimensionalidade:</strong>
+        </p>
+        <ul>
+          <li><strong>1D:</strong> Listas, sequências, coordenadas simples</li>
+          <li><strong>2D:</strong> Tabelas, mapas, imagens, dados tabulares</li>
+          <li><strong>3D:</strong> Volumes, dados temporais, cubos de dados</li>
+          <li><strong>4D+:</strong> Dados científicos, simulações complexas, machine learning</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 6: Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 6. Exercícios Práticos
     </h3>
 
     <!-- Exercício 1: Listar Tarefas -->
@@ -672,27 +939,249 @@ console.log("Tarefas agrupadas:", agruparPorStatus(tarefasStatus));
 </code></pre>
       </details>
     </div>
+
+    <!-- Exercício 8: Trabalhar com Arrays -->
+    <div class="desafio">
+      <h4>Exercício 8: Trabalhar com Arrays</h4>
+      <p>
+        Crie uma função <code>calcularEstatisticas</code> que receba um array de números 
+        e retorne um objeto com a média, o maior valor, o menor valor e a soma.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function calcularEstatisticas(numeros) {
+  if (numeros.length === 0) {
+    return { media: 0, maior: 0, menor: 0, soma: 0 };
+  }
+  
+  const soma = numeros.reduce((acc, num) => acc + num, 0);
+  const media = soma / numeros.length;
+  const maior = Math.max(...numeros);
+  const menor = Math.min(...numeros);
+  
+  return { media, maior, menor, soma };
+}
+
+const notas = [8.5, 7.2, 9.1, 6.8, 8.0];
+const stats = calcularEstatisticas(notas);
+console.log("Estatísticas das notas:", stats);
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 9: Manipular Matrizes -->
+    <div class="desafio">
+      <h4>Exercício 9: Manipular Matrizes</h4>
+      <p>
+        Crie uma função <code>transporMatriz</code> que receba uma matriz e retorne 
+        sua transposta (trocar linhas por colunas).
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function transporMatriz(matriz) {
+  if (matriz.length === 0) return [];
+  
+  const linhas = matriz.length;
+  const colunas = matriz[0].length;
+  const transposta = [];
+  
+  for (let j = 0; j < colunas; j++) {
+    transposta[j] = [];
+    for (let i = 0; i < linhas; i++) {
+      transposta[j][i] = matriz[i][j];
+    }
+  }
+  
+  return transposta;
+}
+
+const matriz = [
+  [1, 2, 3],
+  [4, 5, 6]
+];
+
+console.log("Matriz original:", matriz);
+console.log("Matriz transposta:", transporMatriz(matriz));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 10: Sistema de Coordenadas -->
+    <div class="desafio">
+      <h4>Exercício 10: Sistema de Coordenadas</h4>
+      <p>
+        Crie uma função <code>calcularDistancia</code> que receba dois arrays de 
+        coordenadas (x, y) e calcule a distância euclidiana entre eles.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function calcularDistancia(ponto1, ponto2) {
+  const [x1, y1] = ponto1;
+  const [x2, y2] = ponto2;
+  
+  const deltaX = x2 - x1;
+  const deltaY = y2 - y1;
+  
+  return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+}
+
+const pontoA = [0, 0];
+const pontoB = [3, 4];
+const distancia = calcularDistancia(pontoA, pontoB);
+
+console.log(`Distância entre ${pontoA} e ${pontoB}: ${distancia.toFixed(2)}`);
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 11: Tabuleiro de Jogo -->
+    <div class="desafio">
+      <h4>Exercício 11: Tabuleiro de Jogo</h4>
+      <p>
+        Crie uma função <code>verificarVitoria</code> que receba um tabuleiro 3x3 
+        e retorne 'X', 'O' ou null dependendo de quem ganhou o jogo da velha.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function verificarVitoria(tabuleiro) {
+  // Verificar linhas
+  for (let i = 0; i < 3; i++) {
+    if (tabuleiro[i][0] === tabuleiro[i][1] && tabuleiro[i][1] === tabuleiro[i][2]) {
+      if (tabuleiro[i][0] !== '') return tabuleiro[i][0];
+    }
+  }
+  
+  // Verificar colunas
+  for (let j = 0; j < 3; j++) {
+    if (tabuleiro[0][j] === tabuleiro[1][j] && tabuleiro[1][j] === tabuleiro[2][j]) {
+      if (tabuleiro[0][j] !== '') return tabuleiro[0][j];
+    }
+  }
+  
+  // Verificar diagonais
+  if (tabuleiro[0][0] === tabuleiro[1][1] && tabuleiro[1][1] === tabuleiro[2][2]) {
+    if (tabuleiro[0][0] !== '') return tabuleiro[0][0];
+  }
+  
+  if (tabuleiro[0][2] === tabuleiro[1][1] && tabuleiro[1][1] === tabuleiro[2][0]) {
+    if (tabuleiro[0][2] !== '') return tabuleiro[0][2];
+  }
+  
+  return null; // Ninguém ganhou
+}
+
+const tabuleiro = [
+  ['X', 'O', 'X'],
+  ['O', 'X', 'O'],
+  ['X', 'O', 'X']
+];
+
+console.log("Vencedor:", verificarVitoria(tabuleiro));
+</code></pre>
+      </details>
+    </div>
+
+    <!-- Exercício 12: Matriz de Temperaturas -->
+    <div class="desafio">
+      <h4>Exercício 12: Matriz de Temperaturas</h4>
+      <p>
+        Crie uma função <code>analisarTemperaturas</code> que receba uma matriz de 
+        temperaturas (cidades x meses) e retorne estatísticas por cidade e por mês.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Resolução</div>
+        <pre><code>function analisarTemperaturas(temperaturas, cidades, meses) {
+  const resultado = {
+    porCidade: {},
+    porMes: {},
+    geral: { media: 0, maxima: -Infinity, minima: Infinity }
+  };
+  
+  let somaTotal = 0;
+  let totalElementos = 0;
+  
+  // Análise por cidade
+  cidades.forEach((cidade, i) => {
+    const tempsCidade = temperaturas[i];
+    const media = tempsCidade.reduce((soma, temp) => soma + temp, 0) / tempsCidade.length;
+    const maxima = Math.max(...tempsCidade);
+    const minima = Math.min(...tempsCidade);
+    
+    resultado.porCidade[cidade] = { media, maxima, minima };
+    
+    // Atualizar estatísticas gerais
+    tempsCidade.forEach(temp => {
+      somaTotal += temp;
+      totalElementos++;
+      if (temp > resultado.geral.maxima) resultado.geral.maxima = temp;
+      if (temp < resultado.geral.minima) resultado.geral.minima = temp;
+    });
+  });
+  
+  // Análise por mês
+  meses.forEach((mes, j) => {
+    const tempsMes = temperaturas.map(cidade => cidade[j]);
+    const media = tempsMes.reduce((soma, temp) => soma + temp, 0) / tempsMes.length;
+    const maxima = Math.max(...tempsMes);
+    const minima = Math.min(...tempsMes);
+    
+    resultado.porMes[mes] = { media, maxima, minima };
+  });
+  
+  resultado.geral.media = somaTotal / totalElementos;
+  
+  return resultado;
+}
+
+const temperaturas = [
+  [25, 27, 26, 24],  // São Paulo
+  [30, 32, 31, 29],  // Rio de Janeiro
+  [22, 24, 23, 21]   // Curitiba
+];
+
+const cidades = ['São Paulo', 'Rio de Janeiro', 'Curitiba'];
+const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril'];
+
+console.log("Análise de temperaturas:", analisarTemperaturas(temperaturas, cidades, meses));
+</code></pre>
+      </details>
+    </div>
   </section>
 
   <!-- CONCLUSÃO -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-check-circle"></i> 5. Conclusão
+      <i class="fas fa-check-circle"></i> 7. Conclusão
     </h3>
     <div class="card mb-4">
       <div class="card-body">
         <p>
-          Nesta aula, você aprofundou seus conhecimentos sobre arrays e objetos,
-          explorando os principais métodos de manipulação e iteração, e aprendeu
-          a utilizar a desestruturação para extrair dados de forma concisa.
-          Esses conceitos são essenciais para organizar e transformar
-          informações, preparando você para desenvolver aplicações dinâmicas no
-          TaskMaster.
+          Nesta aula, você aprofundou seus conhecimentos sobre estruturas de dados em JavaScript, 
+          explorando arrays e objetos com seus principais métodos de manipulação e iteração. 
+          Aprendeu a utilizar a desestruturação para extrair dados de forma concisa e elegante, 
+          descobriu como trabalhar com matrizes (arrays bidimensionais) e compreendeu que arrays 
+          podem ter 1 ou mais dimensões dependendo do contexto e complexidade dos dados.
         </p>
         <p>
-          Pratique os exercícios para consolidar o entendimento e fique atento
-          aos detalhes de cada método, pois eles serão a base para operações
-          mais avançadas.
+          Os conceitos abordados incluem:
+        </p>
+        <ul>
+          <li><strong>Arrays:</strong> Criação, manipulação e métodos essenciais (forEach, map, filter, reduce)</li>
+          <li><strong>Objetos:</strong> Propriedades, métodos e iteração com for...in</li>
+          <li><strong>Destructuring:</strong> Extração de dados de arrays e objetos de forma eficiente</li>
+          <li><strong>Matrizes:</strong> Arrays bidimensionais para dados tabulares, mapas e estruturas complexas</li>
+          <li><strong>Arrays Multidimensionais:</strong> Estruturas de 1D a nD dependendo do contexto e complexidade dos dados</li>
+        </ul>
+        <p>
+          Esses conceitos são fundamentais para organizar e transformar informações, preparando você 
+          para desenvolver aplicações dinâmicas e eficientes. Pratique os exercícios para consolidar 
+          o entendimento e fique atento aos detalhes de cada método, pois eles serão a base para 
+          operações mais avançadas no desenvolvimento web.
         </p>
       </div>
     </div>
@@ -781,3 +1270,4 @@ console.log("Tarefas agrupadas:", agruparPorStatus(tarefasStatus));
     }
   </style>
 </article>
+

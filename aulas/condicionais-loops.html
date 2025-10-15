@@ -8,12 +8,23 @@
   <!-- INTRODUÇÃO -->
   <div class="intro-box mb-5">
     <p>
-      Nesta aula, focaremos em estruturas fundamentais de controle de fluxo em
-      JavaScript, incluindo condicionais (if/else e switch) e loops (for, while,
-      do/while), que permitem executar blocos de código de forma seletiva ou
-      repetitiva. Ao final, haverá exercícios práticos para consolidar o
-      aprendizado.
+      <strong>🚀 Domine o controle total do seu código JavaScript!</strong>
     </p>
+    <p>
+      Nesta aula você aprenderá as estruturas fundamentais que transformam
+      código estático em lógica dinâmica e inteligente. Condicionais e loops são
+      os pilares que permitem criar programas que tomam decisões e executam
+      tarefas repetitivas de forma eficiente.
+    </p>
+    <ul>
+      <li>
+        ✅ Estruturas condicionais (if/else, switch) para tomada de decisões
+      </li>
+      <li>✅ Loops (for, while, do/while) para repetição de código</li>
+      <li>✅ Operadores lógicos e comparações avançadas</li>
+      <li>✅ Padrões comuns e boas práticas</li>
+      <li>✅ Exercícios práticos com soluções detalhadas</li>
+    </ul>
   </div>
 
   <blockquote>
@@ -23,10 +34,64 @@
     </p>
   </blockquote>
 
-  <!-- 1. ESTRUTURAS CONDICIONAIS (IF/ELSE) -->
+  <!-- 1. OPERADORES LÓGICOS E COMPARAÇÕES -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-code-branch"></i> 1. Estruturas Condicionais (if / else)
+      <i class="fas fa-equals"></i> 1. Operadores Lógicos e Comparações
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>
+          Antes de aprender condicionais, é essencial dominar os operadores que
+          permitem fazer comparações e combinar condições.
+        </p>
+
+        <h4>Operadores de Comparação</h4>
+        <div class="code-header">Operadores básicos</div>
+        <pre><code>let a = 5, b = 10;
+
+console.log(a == b);   // false (igualdade)
+console.log(a === b);  // false (igualdade estrita)
+console.log(a != b);   // true (diferente)
+console.log(a !== b);  // true (diferente estrito)
+console.log(a < b);    // true (menor que)
+console.log(a > b);    // false (maior que)
+console.log(a <= b);   // true (menor ou igual)
+console.log(a >= b);   // false (maior ou igual)</code></pre>
+
+        <h4>Operadores Lógicos</h4>
+        <div class="code-header">AND, OR e NOT</div>
+        <pre><code>let idade = 25;
+let temCarteira = true;
+
+// AND (&&) - ambas condições devem ser verdadeiras
+if (idade >= 18 && temCarteira) {
+  console.log("Pode dirigir");
+}
+
+// OR (||) - pelo menos uma condição deve ser verdadeira
+if (idade < 18 || !temCarteira) {
+  console.log("Não pode dirigir");
+}
+
+// NOT (!) - inverte o valor booleano
+if (!temCarteira) {
+  console.log("Precisa de carteira");
+}</code></pre>
+
+        <div class="alert alert-info">
+          <strong>Dica:</strong> Use <code>===</code> e <code>!==</code> em vez
+          de <code>==</code> e <code>!=</code> para comparações mais seguras que
+          verificam tipo e valor.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. ESTRUTURAS CONDICIONAIS (IF/ELSE) -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code-branch"></i> 2. Estruturas Condicionais (if / else)
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -66,10 +131,10 @@ if (prioridade === 3) {
     </div>
   </section>
 
-  <!-- 2. SWITCH CASE -->
+  <!-- 3. SWITCH CASE -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-toggle-on"></i> 2. Switch Case
+      <i class="fas fa-toggle-on"></i> 3. Switch Case
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -102,10 +167,10 @@ switch (diaSemana) {
     </div>
   </section>
 
-  <!-- 3. LOOPS (FOR, WHILE, DO/WHILE) -->
+  <!-- 4. LOOPS (FOR, WHILE, DO/WHILE) -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-sync-alt"></i> 3. Loops (for, while, do/while)
+      <i class="fas fa-sync-alt"></i> 4. Loops (for, while, do/while)
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -146,14 +211,48 @@ do {
           Ao contrário do <code>while</code>, o <code>do/while</code> executa o
           bloco ao menos uma vez antes de verificar a condição.
         </p>
+
+        <h4>Loops Avançados</h4>
+        <div class="code-header">for...in (itera sobre propriedades)</div>
+        <pre><code>let pessoa = { nome: "João", idade: 30, cidade: "São Paulo" };
+
+for (let propriedade in pessoa) {
+  console.log(propriedade + ": " + pessoa[propriedade]);
+}
+// nome: João
+// idade: 30
+// cidade: São Paulo</code></pre>
+
+        <div class="code-header">for...of (itera sobre valores)</div>
+        <pre><code>let frutas = ["maçã", "banana", "laranja"];
+
+for (let fruta of frutas) {
+  console.log(fruta);
+}
+// maçã
+// banana
+// laranja</code></pre>
+
+        <div class="code-header">break e continue</div>
+        <pre><code>// break - sai do loop completamente
+for (let i = 0; i < 10; i++) {
+  if (i === 5) break;
+  console.log(i); // 0, 1, 2, 3, 4
+}
+
+// continue - pula para a próxima iteração
+for (let i = 0; i < 10; i++) {
+  if (i % 2 === 0) continue;
+  console.log(i); // 1, 3, 5, 7, 9 (apenas ímpares)
+}</code></pre>
       </div>
     </div>
   </section>
 
-  <!-- 4. EXERCÍCIOS PRÁTICOS -->
+  <!-- 5. EXERCÍCIOS PRÁTICOS -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 4. Exercícios Práticos
+      <i class="fas fa-chalkboard-teacher"></i> 5. Exercícios Práticos
     </h3>
 
     <!-- EXERCICIO 1 -->
@@ -316,28 +415,117 @@ switch (operador) {
 }</code></pre>
       </details>
     </div>
+
+    <!-- EXERCICIO 7 -->
+    <div class="desafio">
+      <h4>Exercício 7: Sistema de Notas Escolares</h4>
+      <p>
+        Crie um sistema que receba uma nota (0-10) e calcule a média de 3 notas.
+        Use condicionais para determinar o conceito:
+      </p>
+      <ul>
+        <li>A (9-10): Excelente</li>
+        <li>B (7-8.9): Bom</li>
+        <li>C (5-6.9): Regular</li>
+        <li>D (3-4.9): Insuficiente</li>
+        <li>F (0-2.9): Reprovado</li>
+      </ul>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let nota1 = 8.5;
+let nota2 = 7.0;
+let nota3 = 9.2;
+
+let media = (nota1 + nota2 + nota3) / 3;
+
+console.log("Média:", media.toFixed(1));
+
+if (media >= 9) {
+  console.log("Conceito: A - Excelente");
+} else if (media >= 7) {
+  console.log("Conceito: B - Bom");
+} else if (media >= 5) {
+  console.log("Conceito: C - Regular");
+} else if (media >= 3) {
+  console.log("Conceito: D - Insuficiente");
+} else {
+  console.log("Conceito: F - Reprovado");
+}</code></pre>
+      </details>
+    </div>
+
+    <!-- EXERCICIO 8 -->
+    <div class="desafio">
+      <h4>Exercício 8: Tabuada Interativa</h4>
+      <p>
+        Crie um programa que gere a tabuada de um número usando diferentes tipos
+        de loops. Compare os resultados.
+      </p>
+      <details>
+        <summary>Ver solução</summary>
+        <div class="code-header">Exemplo de Resolução</div>
+        <pre><code>let numero = 7;
+
+console.log("Tabuada do " + numero + " (usando for):");
+for (let i = 1; i <= 10; i++) {
+  console.log(numero + " x " + i + " = " + (numero * i));
+}
+
+console.log("\nTabuada do " + numero + " (usando while):");
+let contador = 1;
+while (contador <= 10) {
+  console.log(numero + " x " + contador + " = " + (numero * contador));
+  contador++;
+}</code></pre>
+      </details>
+    </div>
   </section>
 
-  <!-- 5. CONCLUSÃO -->
+  <!-- 6. CONCLUSÃO -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-check-circle"></i> 5. Conclusão
+      <i class="fas fa-check-circle"></i> 6. Conclusão
     </h3>
     <div class="card mb-4">
       <div class="card-body">
+        <h4>O que você aprendeu:</h4>
+        <ul>
+          <li>
+            ✅ <strong>Operadores lógicos:</strong> Como fazer comparações e
+            combinar condições
+          </li>
+          <li>
+            ✅ <strong>Condicionais:</strong> if/else e switch para tomada de
+            decisões
+          </li>
+          <li>
+            ✅ <strong>Loops básicos:</strong> for, while e do/while para
+            repetição
+          </li>
+          <li>
+            ✅ <strong>Loops avançados:</strong> for...in, for...of e controle
+            com break/continue
+          </li>
+          <li>
+            ✅ <strong>Padrões práticos:</strong> Validações, cálculos e
+            iterações
+          </li>
+        </ul>
+
+        <h4>Próximos passos:</h4>
         <p>
-          Nesta aula, vimos como o fluxo de um programa é controlado por
-          condicionais (<code>if/else</code>, <code>switch</code>) e loops
-          (<code>for</code>, <code>while</code>, <code>do/while</code>). Dominar
-          esses conceitos é fundamental para criar lógicas que reflitam as
-          regras de negócio do seu aplicativo e manipulem dados de forma
-          estruturada.
+          Com essas ferramentas, você já pode criar lógicas complexas e
+          interativas. Na próxima aula, exploraremos <strong>funções</strong>,
+          que permitem organizar e reutilizar seu código de forma ainda mais
+          eficiente.
         </p>
-        <p>
-          A seguir, aprofundaremos ainda mais os recursos de JavaScript,
-          preparando o terreno para a criação de aplicações completas e
-          interativas.
-        </p>
+
+        <div class="alert alert-success">
+          <strong>Parabéns!</strong> Você dominou os fundamentos do controle de
+          fluxo em JavaScript. Essas são habilidades essenciais que você usará
+          em todos os seus projetos futuros!
+        </div>
       </div>
     </div>
   </section>
@@ -486,6 +674,45 @@ switch (operador) {
 
     .lesson-content p {
       line-height: 1.6;
+    }
+
+    /* ----------------------------------
+       ALERTAS E DICAS
+    ---------------------------------- */
+    .alert {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid transparent;
+      border-radius: var(--border-radius);
+    }
+
+    .alert-info {
+      color: #0c5460;
+      background-color: #d1ecf1;
+      border-color: #bee5eb;
+    }
+
+    .alert-success {
+      color: #155724;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+
+    .code-header {
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border-top-left-radius: var(--border-radius);
+      border-top-right-radius: var(--border-radius);
+      margin-bottom: 0;
+    }
+
+    .code-header + pre {
+      margin-top: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
     }
   </style>
 </article>
