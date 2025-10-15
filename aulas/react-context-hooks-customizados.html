@@ -4,78 +4,23 @@
 
   <div class="intro-box mb-5">
     <p>
-      Nesta aula vamos refatorar nosso projeto de contatos da aula anterior (API
-      com axios e useEffect) para usar
-      <strong>useContext</strong> para gerenciamento de estado global e criar
-      <strong>hooks customizados</strong> para organizar melhor a lógica da
-      aplicação. Vamos manter toda a funcionalidade existente (API, cache
-      offline, sincronização) e melhorar a organização do código.
+      <strong
+        >🚀 Transforme seu código React em uma arquitetura profissional!</strong
+      >
     </p>
-    <ul>
-      <li>
-        ✅ Refatorar projeto existente mantendo integração com MockAPI e cache
-        offline
-      </li>
-      <li>
-        ✅ Criar ContactsContext para estado global (lista, loading, erro,
-        isOffline)
-      </li>
-      <li>
-        ✅ Extrair lógica para hooks customizados (useContacts, useFilter,
-        useStatistics)
-      </li>
-      <li>✅ Manter nos componentes apenas layout e chamada dos hooks</li>
-      <li>✅ Organizar pastas (contexts/, hooks/, components/, utils/)</li>
-      <li>
-        ✅ Preservar funcionalidades: API, localStorage, sincronização
-        online/offline
-      </li>
-    </ul>
+    <p>
+      Nesta aula vamos refatorar nosso projeto de contatos para usar
+      <strong>useContext</strong> e <strong>hooks customizados</strong>,
+      eliminando o prop drilling e criando uma estrutura de código mais limpa e
+      organizada. Mantemos todas as funcionalidades avançadas (API, cache
+      offline, sincronização) e ganhamos em manutenibilidade e escalabilidade.
+    </p>
   </div>
 
   <div class="alert alert-info">
-    <strong>Pré-requisito:</strong> Esta aula continua o projeto da aula
-    anterior "React – Consumo de API com axios e useEffect". Certifique-se de
-    ter o projeto funcionando com:
-    <ul>
-      <li>✅ Integração com MockAPI.io usando axios</li>
-      <li>✅ Estados de loading, erro e indicador offline</li>
-      <li>✅ Cache service com expiração (utils/cache.js)</li>
-      <li>✅ Sincronização automática online/offline</li>
-      <li>✅ Componente ConnectionStatus</li>
-      <li>✅ Otimizações com useMemo, useCallback, useRef</li>
-      <li>✅ Componente Statistics separado</li>
-      <li>✅ Página de detalhes com busca da API e fallback offline</li>
-      <li>✅ Exclusão de contatos funcionando com API e offline</li>
-    </ul>
-  </div>
-
-  <div class="alert alert-success">
-    <strong>Estratégia de Refatoração:</strong> Vamos refatorar o projeto
-    existente de forma incremental:
-    <ol>
-      <li>
-        ✅ <strong>Manter tudo que já funciona:</strong> API, cache,
-        sincronização, otimizações
-      </li>
-      <li>
-        ✅ <strong>Criar Context:</strong> ContactsContext para estado global
-      </li>
-      <li>
-        ✅ <strong>Extrair hooks:</strong> useContacts, useFilter, useStatistics
-      </li>
-      <li>
-        ✅ <strong>Refatorar componentes:</strong> Usar Context em vez de props
-      </li>
-      <li>
-        ✅ <strong>Organizar pastas:</strong> contexts/, hooks/, components/,
-        utils/
-      </li>
-      <li>
-        ✅ <strong>Testar funcionalidades:</strong> Garantir que tudo continua
-        funcionando
-      </li>
-    </ol>
+    <strong>Pré-requisito:</strong> Projeto da aula anterior "React – Consumo de
+    API com axios e useEffect" funcionando com MockAPI, cache offline e
+    sincronização.
   </div>
 
   <!-- 1. Introdução ao useContext -->
@@ -93,6 +38,17 @@
           componentes. É ideal para dados globais como estado da aplicação,
           tema, autenticação, etc.
         </p>
+
+        <div class="text-center mb-4">
+          <img
+            src="assets/images/use_context.webp"
+            alt="Representação visual do useContext"
+            class="img-fluid rounded shadow"
+          />
+          <p class="text-muted mt-2">
+            <small>Representação visual de como o useContext funciona</small>
+          </p>
+        </div>
 
         <h4>1.2 Por que usar Context?</h4>
         <ul>
@@ -136,56 +92,54 @@
 
     <div class="card mb-4">
       <div class="card-body">
-        <h4>2.1 Estado Atual do Projeto (Aula 8)</h4>
+        <h4>2.1 Evolução da Estrutura do Projeto</h4>
         <p>
-          Vamos partir da estrutura atual que já está funcionando com API e
-          cache:
+          Vamos partir da estrutura atual da aula anterior e evoluir para uma
+          organização com Context e hooks customizados:
         </p>
 
         <pre><code class="language-plaintext">app/
-├── page.js                    # Página principal (com API + cache + sincronização)
-├── layout.js                  # Layout compartilhado
-├── globals.css                # Estilos globais
-├── contact/[id]/page.js       # Página de detalhes
+├── page.js                    # ✅ MODIFICAR: Página principal (refatorada com Context)
+├── layout.js                  # ✅ MODIFICAR: Layout compartilhado (com ContactsProvider)
+├── globals.css                # ✅ MANTER: Estilos globais
+├── contact/[id]/page.js       # ✅ MODIFICAR: Página de detalhes (usa useContactDetail)
 ├── components/
-│   ├── ContactForm.jsx        # Formulário (useRef + API)
-│   ├── ContactList.jsx        # Lista de contatos
-│   ├── ContactItem.jsx        # Item individual (memo + navegação)
-│   ├── FilterInput.jsx        # Campo de filtro (useRef)
-│   ├── Statistics.jsx         # Estatísticas (separado)
-│   └── ConnectionStatus.jsx   # Status de conexão
-├── utils/
-│   ├── api.js                 # Configuração do axios
-│   └── cache.js               # Serviço de cache com expiração
-└── contexts/                  # 🆕 NOVA PASTA para Context
-    └── ContactsContext.js     # Context para estado global</code></pre>
-
-        <h4>2.2 Nova Estrutura com Context e Hooks</h4>
-        <p>Vamos evoluir para uma estrutura mais organizada:</p>
-
-        <pre><code class="language-plaintext">app/
-├── page.js                    # Página principal (refatorada com Context)
-├── layout.js                  # Layout compartilhado
-├── globals.css                # Estilos globais
-├── contact/[id]/page.js       # Página de detalhes
-├── components/
-│   ├── ContactForm.jsx        # Formulário (usa Context)
-│   ├── ContactList.jsx        # Lista de contatos
-│   ├── ContactItem.jsx        # Item individual (usa Context)
-│   ├── FilterInput.jsx        # Campo de filtro
-│   ├── Statistics.jsx         # Estatísticas
-│   └── ConnectionStatus.jsx   # Status de conexão
-├── contexts/                  # Contexts para estado global
-│   └── ContactsContext.js     # Context de contatos
+│   ├── ContactForm.jsx        # ✅ MODIFICAR: Formulário (usa useForm)
+│   ├── ContactList.jsx        # ✅ MANTER: Lista de contatos
+│   ├── ContactItem.jsx        # ✅ MODIFICAR: Item individual (usa useForm)
+│   ├── FilterInput.jsx        # ✅ MANTER: Campo de filtro
+│   ├── Statistics.jsx         # ✅ MANTER: Estatísticas
+│   └── ConnectionStatus.jsx   # ✅ MODIFICAR: Status de conexão (usa useConnectionStatus)
+├── contexts/                  # 🆕 NOVA PASTA para Context
+│   └── ContactsContext.js     # 🆕 NOVO: Context de contatos (com getContact)
 ├── hooks/                     # 🆕 NOVA PASTA para hooks customizados
-│   ├── useContacts.js         # Hook para gerenciar contatos
-│   ├── useFilter.js           # Hook para filtros
-│   └── useStatistics.js       # Hook para estatísticas
+│   ├── useFilter.js           # 🆕 NOVO: Hook para filtros
+│   ├── useStatistics.js       # 🆕 NOVO: Hook para estatísticas
+│   ├── useConnectionStatus.js # 🆕 NOVO: Hook para status de conexão
+│   ├── useContactDetail.js    # 🆕 NOVO: Hook para buscar contato específico
+│   └── useForm.js             # 🆕 NOVO: Hook para gerenciar formulários
 └── utils/
-    ├── api.js                 # Configuração do axios (mantido)
-    └── cache.js               # Serviço de cache (mantido)</code></pre>
+    ├── api.js                 # ✅ MANTER: Configuração do axios
+    └── cache.js               # ✅ MANTER: Serviço de cache com expiração</code></pre>
 
-        <h4>2.3 Criando o Context</h4>
+        <div class="alert alert-info">
+          <strong>Legenda:</strong>
+          <ul>
+            <li>
+              ✅ <strong>MANTER:</strong> Arquivos que existiam na aula anterior
+              e permanecem inalterados
+            </li>
+            <li>
+              ✅ <strong>MODIFICAR:</strong> Arquivos que existiam na aula
+              anterior mas precisam ser atualizados
+            </li>
+            <li>
+              🆕 <strong>NOVO:</strong> Arquivos e pastas criados nesta aula
+            </li>
+          </ul>
+        </div>
+
+        <h4>2.2 Criando o Context</h4>
         <p>
           Vamos criar um Context que encapsula toda a lógica de contatos da aula
           anterior:
@@ -208,12 +162,13 @@ export const useContactsContext = () => {
   return context;
 };
 
-// 3. Provider Component com toda a lógica da aula anterior
+// 3. Provider Component
 export const ContactsProvider = ({ children }) => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOffline, setIsOffline] = useState(false);
+  
   const loadContacts = useCallback(async () => {
     let isMounted = true;
 
@@ -390,6 +345,31 @@ export const ContactsProvider = ({ children }) => {
     };
   }, [contacts]);
 
+  // Buscar contato específico por ID
+  const getContact = useCallback(async (id) => {
+    try {
+      // Primeiro, tentar buscar da API
+      try {
+        const response = await api.get(`/contacts/${id}`);
+        return response.data;
+      } catch (apiError) {
+        // Se API falhar, buscar do cache local
+        console.log('API offline, buscando do cache local');
+        const cachedContacts = cacheService.get();
+        if (cachedContacts) {
+          const foundContact = cachedContacts.find(c => c.id === parseInt(id));
+          if (foundContact) {
+            return foundContact;
+          }
+        }
+        throw new Error('Contato não encontrado');
+      }
+    } catch (err) {
+      console.error('Erro ao buscar contato:', err);
+      throw err;
+    }
+  }, []);
+
   // Carregar contatos na inicialização
   useEffect(() => {
     loadContacts();
@@ -403,7 +383,8 @@ export const ContactsProvider = ({ children }) => {
     isOffline,
     addContact,
     removeContact,
-    loadContacts
+    loadContacts,
+    getContact
   };
 
   return (
@@ -423,6 +404,21 @@ export default ContactsContext;</code></pre>
     <h3 class="section-title with-icon">
       <i class="fas fa-hook"></i> 3. Hooks Customizados
     </h3>
+
+    <div style="text-align: center; margin-bottom: 2rem; width: 100%">
+      <img
+        src="assets/images/react_hooks.jpeg"
+        alt="Selo Homem Aranha de Qualidade - React Hooks"
+        class="rounded shadow"
+        style="
+          max-width: 600px;
+          width: 100%;
+          height: auto;
+          display: block;
+          margin: 0 auto;
+        "
+      />
+    </div>
 
     <div class="card mb-4">
       <div class="card-body">
@@ -487,7 +483,122 @@ export const useStatistics = (contacts) => {
   return stats;
 };</code></pre>
 
-        <h4>3.3 useConnectionStatus - Status de Conexão</h4>
+        <h4>3.3 useContactDetail - Busca de Contato Específico</h4>
+        <p>Hook para buscar um contato específico por ID, usando o Context:</p>
+
+        <pre><code class="language-jsx">// hooks/useContactDetail.js (NOVO ARQUIVO)
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { useContactsContext } from '../contexts/ContactsContext';
+
+export const useContactDetail = () => {
+    const params = useParams();
+    const { getContact } = useContactsContext();
+    const [contact, setContact] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchContact = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const contactData = await getContact(params.id);
+                setContact(contactData);
+            } catch (err) {
+                console.error('Erro ao buscar contato:', err);
+                setError(err.message || 'Erro ao carregar contato');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (params.id) {
+            fetchContact();
+        }
+    }, [params.id, getContact]);
+
+    return {
+        contact,
+        loading,
+        error
+    };
+};</code></pre>
+
+        <h4>3.4 useForm - Gerenciamento de Formulários</h4>
+        <p>
+          Hook para gerenciar formulários, extraído da lógica do ContactForm:
+        </p>
+
+        <pre><code class="language-jsx">// hooks/useForm.js (NOVO ARQUIVO)
+import { useEffect, useRef, useState } from "react";
+import { useContactsContext } from "../contexts/ContactsContext";
+import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
+
+export const useForm = () => {
+    const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const nomeInputRef = useRef(null);
+
+    const { addContact, removeContact, contacts, loadContacts } = useContactsContext();
+
+    useEffect(() => {
+        nomeInputRef.current?.focus();
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            console.log('ContactForm desmontado');
+        };
+    }, []);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!form.nome.trim()) return; // Validação simples
+
+        try {
+            setLoading(true);
+            setError(null);
+
+            await addContact(form);
+            setForm({ nome: "", email: "", telefone: "" });
+            nomeInputRef.current?.focus();
+
+        } catch (err) {
+            setError('Erro ao adicionar contato');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRemove = async (id) => {
+        try {
+            await removeContact(id);
+        } catch (err) {
+            console.error('Erro ao remover contato:', err);
+        }
+    };
+
+    return {
+        form,
+        loading,
+        error,
+        handleChange,
+        handleSubmit,
+        nomeInputRef,
+        handleRemove
+    };
+}</code></pre>
+
+        <h4>3.5 useConnectionStatus - Status de Conexão</h4>
         <p>
           Hook para gerenciar o status de conexão, extraído da aula anterior:
         </p>
@@ -550,24 +661,43 @@ export const useConnectionStatus = () => {
           todas as funcionalidades da aula anterior:
         </p>
 
+        <pre><code class="language-jsx">// app/layout.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
+import "./globals.css";
+import { ContactsProvider } from "./contexts/ContactsContext";
+
+export default function RootLayout({ children }) {
+  return (
+    &lt;html lang="en"&gt;
+      &lt;body&gt;
+        &lt;ContactsProvider&gt;
+          {children}
+        &lt;/ContactsProvider&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+
         <pre><code class="language-jsx">// app/page.js (MODIFICAR ARQUIVO EXISTENTE)
 "use client";
+
+//Components
 import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 import FilterInput from "./components/FilterInput";
-import Statistics from "./components/Statistics";
+import Statistcs from "./components/Statistcs";
 import ConnectionStatus from "./components/ConnectionStatus";
-import { ContactsProvider } from "./contexts/ContactsContext";
-import { useContactsContext } from "./contexts/ContactsContext";
-// 🆕 ADICIONAR: Imports dos hooks customizados (novos arquivos)
+
+//Hooks
 import { useFilter } from "./hooks/useFilter";
 import { useStatistics } from "./hooks/useStatistics";
 
-// Componente interno que usa os hooks
-const ContactsPage = () => {
-  // 🆕 MODIFICAR: Usar Context em vez de props (antes recebia via props)
+//Contexts
+import { useContactsContext } from "./contexts/ContactsContext";
+
+const HomePage = () => {
+  // Usar Context em vez de props
   const contactsData = useContactsContext();
-  // 🆕 ADICIONAR: Usar hooks customizados (antes era lógica inline)
   const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
   const stats = useStatistics(contactsData.contacts);
 
@@ -577,19 +707,17 @@ const ContactsPage = () => {
         &lt;header className="flex items-center justify-between"&gt;
           &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
           &lt;div className="flex items-center space-x-4"&gt;
-            &lt;FilterInput 
-              value={filter} 
-              onChange={handleFilterChange} 
+            &lt;FilterInput
+              value={filter}
+              onChange={handleFilterChange}
             /&gt;
-            {/* ✅ MANTER: ConnectionStatus da aula anterior (agora usa hook customizado) */}
             &lt;ConnectionStatus /&gt;
           &lt;/div&gt;
         &lt;/header&gt;
 
-        {/* 🆕 MODIFICAR: ContactForm sem props - usa Context (antes recebia via props) */}
         &lt;ContactForm /&gt;
 
-        {/* ✅ MANTER: Estados de loading e erro */}
+        {/* Estados de loading e erro mantidos da aula anterior */}
         {contactsData.loading && (
           &lt;div className="text-center py-8"&gt;
             &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
@@ -601,7 +729,7 @@ const ContactsPage = () => {
           &lt;div className="text-center py-8"&gt;
             &lt;i className="fas fa-exclamation-circle text-2xl text-red-600"&gt;&lt;/i&gt;
             &lt;p className="mt-2 text-red-600"&gt;{contactsData.error}&lt;/p&gt;
-            &lt;button 
+            &lt;button
               onClick={contactsData.loadContacts}
               className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             &gt;
@@ -610,27 +738,17 @@ const ContactsPage = () => {
           &lt;/div&gt;
         )}
 
-        {/* ✅ MANTER: Renderização condicional (lógica mantida da aula anterior) */}
+        {/* Renderização condicional mantida da aula anterior */}
         {!contactsData.loading && !contactsData.error && (
-          &lt;ContactList 
-            items={filteredContacts} 
-            onRemove={contactsData.removeContact} 
+          &lt;ContactList
+            items={filteredContacts}
+            onRemove={contactsData.removeContact}
           /&gt;
         )}
 
-        {/* ✅ MANTER: Statistics separado (componente mantido da aula anterior) */}
-        &lt;Statistics stats={stats} /&gt;
+        &lt;Statistcs stats={stats} /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-  );
-};
-
-// Componente principal com Provider
-const HomePage = () => {
-  return (
-    &lt;ContactsProvider&gt;
-      &lt;ContactsPage /&gt;
-    &lt;/ContactsProvider&gt;
   );
 };
 
@@ -647,229 +765,126 @@ export default HomePage;</code></pre>
 
     <div class="card mb-4">
       <div class="card-body">
-        <h4>5.1 ContactForm com Context</h4>
+        <h4>5.1 ContactForm com Hook Customizado</h4>
         <p>
-          Vamos refatorar o ContactForm para usar Context, mantendo todas as
-          funcionalidades da aula anterior:
+          Vamos refatorar o ContactForm para usar o hook useForm, mantendo todas
+          as funcionalidades da aula anterior:
         </p>
 
         <pre><code class="language-jsx">// components/ContactForm.jsx (MODIFICAR ARQUIVO EXISTENTE)
-import { useEffect, useRef, useState } from "react";
-import { useContactsContext } from "../contexts/ContactsContext";
+import { useForm } from "../hooks/useForm";
 
 const ContactForm = () => {
-  // ✅ MANTER: Estados do formulário (mantidos da aula anterior)
-  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const nomeInputRef = useRef(null);
-  
-  // 🆕 MODIFICAR: Usar Context em vez de props (antes recebia via props)
-  const { addContact } = useContactsContext();
+    const { form, loading, error, handleChange, handleSubmit, nomeInputRef } = useForm();
 
-  // ✅ MANTER: Foco automático da aula anterior
-  useEffect(() => {
-    nomeInputRef.current?.focus();
-  }, []);
+    return (
+        &lt;form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4"&gt;
+            &lt;div&gt;
+                &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Nome&lt;/label&gt;
+                &lt;input
+                    ref={nomeInputRef}
+                    name="nome"
+                    className="w-full border rounded px-3 py-2 text-gray-900"
+                    value={form.nome}
+                    onChange={handleChange}
+                    required
+                /&gt;
+            &lt;/div&gt;
 
-  // ✅ MANTER: Cleanup opcional para evitar memory leaks
-  useEffect(() => {
-    return () => {
-      console.log('ContactForm desmontado');
-    };
-  }, []);
+            &lt;div&gt;
+                &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Email&lt;/label&gt;
+                &lt;input
+                    name="email"
+                    type="email"
+                    className="w-full border rounded px-3 py-2 text-gray-900"
+                    value={form.email}
+                    onChange={handleChange}
+                /&gt;
+            &lt;/div&gt;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+            &lt;div&gt;
+                &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Telefone&lt;/label&gt;
+                &lt;input
+                    name="telefone"
+                    className="w-full border rounded px-3 py-2 text-gray-900"
+                    value={form.telefone}
+                    onChange={handleChange}
+                /&gt;
+            &lt;/div&gt;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!form.nome.trim()) return; // Validação simples
+            {error && (
+                &lt;div className="text-red-600 text-sm"&gt;{error}&lt;/div&gt;
+            )}
 
-    try {
-      setLoading(true);
-      setError(null);
-
-      // 🆕 MODIFICAR: Usar addContact do Context (antes era função local)
-      await addContact(form);
-      setForm({ nome: "", email: "", telefone: "" });
-      // ✅ MANTER: Focar novamente no campo nome após adicionar (mantido da aula anterior)
-      nomeInputRef.current?.focus();
-      
-    } catch (err) {
-      setError('Erro ao adicionar contato');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    &lt;form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 space-y-4"&gt;
-      &lt;div&gt;
-        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Nome&lt;/label&gt;
-        &lt;input
-          ref={nomeInputRef}
-          name="nome"
-          className="w-full border rounded px-3 py-2 text-gray-900"
-          value={form.nome}
-          onChange={handleChange}
-          required
-        /&gt;
-      &lt;/div&gt;
-
-      &lt;div&gt;
-        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Email&lt;/label&gt;
-        &lt;input
-          name="email"
-          type="email"
-          className="w-full border rounded px-3 py-2 text-gray-900"
-          value={form.email}
-          onChange={handleChange}
-        /&gt;
-      &lt;/div&gt;
-
-      &lt;div&gt;
-        &lt;label className="block text-sm font-medium mb-1 text-gray-700"&gt;Telefone&lt;/label&gt;
-        &lt;input
-          name="telefone"
-          className="w-full border rounded px-3 py-2 text-gray-900"
-          value={form.telefone}
-          onChange={handleChange}
-        /&gt;
-      &lt;/div&gt;
-
-      {/* ✅ MANTER: Feedback de erro */}
-      {error && (
-        &lt;div className="text-red-600 text-sm"&gt;{error}&lt;/div&gt;
-      )}
-
-      {/* ✅ MANTER: Botão com estado de loading */}
-      &lt;button 
-        type="submit" 
-        disabled={loading}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
-      &gt;
-        {loading ? 'Salvando...' : 'Adicionar Contato'}
-      &lt;/button&gt;
-    &lt;/form&gt;
-  );
+            &lt;button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
+            &gt;
+                {loading ? 'Salvando...' : 'Adicionar Contato'}
+            &lt;/button&gt;
+        &lt;/form&gt;
+    );
 };
 
 export default ContactForm;</code></pre>
 
-        <h4>5.2 ContactItem com Context</h4>
+        <h4>5.2 ContactItem com Hook Customizado</h4>
         <p>
-          Vamos refatorar o ContactItem para usar Context, mantendo memo e
-          navegação:
+          Vamos refatorar o ContactItem para usar o hook useForm, mantendo memo
+          e navegação:
         </p>
 
         <pre><code class="language-jsx">// components/ContactItem.jsx (MODIFICAR ARQUIVO EXISTENTE)
 import Link from 'next/link';
 import { memo } from 'react';
-import { useContactsContext } from '../contexts/ContactsContext';
+import { useForm } from '../hooks/useForm';
 
 const ContactItem = memo(({ contact }) => {
-  // 🆕 MODIFICAR: Usar Context em vez de props (antes recebia via props)
-  const { removeContact } = useContactsContext();
+    const { handleRemove } = useForm();
 
-  const handleRemove = async () => {
-    try {
-      // 🆕 MODIFICAR: Usar removeContact do Context (antes era função local)
-      await removeContact(contact.id);
-    } catch (err) {
-      console.error('Erro ao remover contato:', err);
-    }
-  };
-
-  return (
-    &lt;li className="p-4 flex items-center justify-between"&gt;
-      &lt;div&gt;
-        {/* ✅ MANTER: Navegação para página de detalhes */}
-        &lt;Link
-          href={`/contact/${contact.id}`}
-          className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
-        &gt;
-          {contact.nome}
-        &lt;/Link&gt;
-        &lt;p className="text-sm text-gray-600"&gt;
-          {contact.email} • {contact.telefone}
-        &lt;/p&gt;
-      &lt;/div&gt;
-      &lt;button
-        onClick={handleRemove}
-        className="text-red-600 hover:text-red-700 px-2 py-1 rounded"
-      &gt;
-        Excluir
-      &lt;/button&gt;
-    &lt;/li&gt;
-  );
+    return (
+        &lt;li className="p-4 flex items-center justify-between"&gt;
+            &lt;div&gt;
+                &lt;Link
+                    href={`/contact/${contact.id}`}
+                    className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
+                &gt;
+                    {contact.nome}
+                &lt;/Link&gt;
+                &lt;p className="text-sm text-gray-600"&gt;
+                    {contact.email} • {contact.telefone}
+                &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;button
+                onClick={() =&gt; handleRemove(contact.id)}
+                className="text-red-600 hover:text-red-700 px-2 py-1 rounded cursor-pointer"
+            &gt;
+                Excluir
+            &lt;/button&gt;
+        &lt;/li&gt;
+    );
 });
 
 ContactItem.displayName = 'ContactItem';
+
 export default ContactItem;</code></pre>
 
-        <h4>5.3 Página de Detalhes com Context</h4>
+        <h4>5.3 Página de Detalhes com Hook Customizado</h4>
         <p>
-          Vamos refatorar a página de detalhes para usar Context em vez de
-          buscar diretamente da API, mantendo todas as funcionalidades da aula
-          anterior:
+          Vamos refatorar a página de detalhes para usar o hook
+          useContactDetail, mantendo todas as funcionalidades da aula anterior:
         </p>
 
         <pre><code class="language-jsx">// app/contact/[id]/page.js (MODIFICAR ARQUIVO EXISTENTE)
 "use client";
 
-import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from "react";
-import { useContactsContext } from '../../contexts/ContactsContext';
+import { useRouter } from 'next/navigation';
+import { useContactDetail } from '../../hooks/useContactDetail';
 
 const ContactDetailPage = () => {
-    const params = useParams();
     const router = useRouter();
-    const [contact, setContact] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    
-    // 🆕 MODIFICAR: Usar Context em vez de buscar diretamente da API (antes fazia requisição direta)
-    const { contacts, loadContacts } = useContactsContext();
-
-    useEffect(() => {
-        const fetchContact = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-                
-                // 🆕 MODIFICAR: Buscar contato da lista do Context primeiro (antes fazia requisição à API)
-                const foundContact = contacts.find(c => c.id === parseInt(params.id));
-                
-                if (foundContact) {
-                    setContact(foundContact);
-                } else {
-                    // Se não encontrar no Context, tentar recarregar contatos
-                    console.log('Contato não encontrado no Context, recarregando...');
-                    await loadContacts();
-                    
-                    // Tentar novamente após recarregar
-                    const updatedContacts = contacts; // Será atualizado pelo Context
-                    const retryContact = updatedContacts.find(c => c.id === parseInt(params.id));
-                    
-                    if (retryContact) {
-                        setContact(retryContact);
-                    } else {
-                        setError('Contato não encontrado');
-                    }
-                }
-            } catch (err) {
-                console.error('Erro ao buscar contato:', err);
-                setError('Erro ao carregar contato');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchContact();
-    }, [params.id, contacts, loadContacts]);
+    const { contact, loading, error } = useContactDetail();
 
     if (loading) {
         return (
@@ -932,6 +947,11 @@ const ContactDetailPage = () => {
 
                     &lt;div className="space-y-4"&gt;
                         &lt;div&gt;
+                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;ID&lt;/label&gt;
+                            &lt;p className="text-gray-500 text-sm"&gt;{contact.id}&lt;/p&gt;
+                        &lt;/div&gt;
+
+                        &lt;div&gt;
                             &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Nome&lt;/label&gt;
                             &lt;p className="text-gray-900 text-lg"&gt;{contact.nome}&lt;/p&gt;
                         &lt;/div&gt;
@@ -960,28 +980,6 @@ const ContactDetailPage = () => {
                                     &lt;span className="text-gray-500"&gt;Não informado&lt;/span&gt;
                                 )}
                             &lt;/p&gt;
-                        &lt;/div&gt;
-
-                        &lt;div&gt;
-                            &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;ID&lt;/label&gt;
-                            &lt;p className="text-gray-500 text-sm"&gt;{contact.id}&lt;/p&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-
-                    &lt;div className="mt-8 pt-6 border-t border-gray-200"&gt;
-                        &lt;div className="flex space-x-4"&gt;
-                            &lt;button
-                                onClick={() =&gt; router.push('/')}
-                                className="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                            &gt;
-                                Ver Todos os Contatos
-                            &lt;/button&gt;
-                            &lt;button
-                                onClick={() =&gt; router.back()}
-                                className="flex-1 bg-gray-100 text-gray-900 px-4 py-2 rounded hover:bg-gray-200"
-                            &gt;
-                                Voltar
-                            &lt;/button&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
                 &lt;/div&gt;
@@ -1018,34 +1016,30 @@ export default ContactDetailPage;</code></pre>
           </ul>
         </div>
 
-        <h4>5.4 ConnectionStatus com Hook</h4>
+        <h4>5.4 ConnectionStatus com Hook Customizado</h4>
         <p>Vamos refatorar o ConnectionStatus para usar o hook customizado:</p>
 
         <pre><code class="language-jsx">// components/ConnectionStatus.jsx (MODIFICAR ARQUIVO EXISTENTE)
-// 🆕 ADICIONAR: Import do hook customizado (novo arquivo)
-import { useConnectionStatus } from '../hooks/useConnectionStatus';
+import { useConnectionStatus } from "../hooks/useConnectionStatus";
 
 const ConnectionStatus = () => {
-  // 🆕 MODIFICAR: Usar hook customizado (antes era lógica inline)
-  const { isOnline, showStatus } = useConnectionStatus();
+    const { isOnline, showStatus } = useConnectionStatus();
 
-  return (
-    &lt;div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm transition-all duration-300 ${
-      isOnline 
-        ? 'bg-green-100 text-green-800' 
-        : 'bg-orange-100 text-orange-800'
-    }`}&gt;
-      &lt;div className={`w-2 h-2 rounded-full ${
-        isOnline ? 'bg-green-500' : 'bg-orange-500'
-      }`}&gt;&lt;/div&gt;
-      &lt;span&gt;
-        {isOnline ? 'Online' : 'Offline'}
-      &lt;/span&gt;
-      {isOnline && showStatus && (
-        &lt;span className="text-xs"&gt;✓ Sincronizado&lt;/span&gt;
-      )}
-    &lt;/div&gt;
-  );
+    return (
+        &lt;div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm transition-all duration-300 ${isOnline
+            ? 'bg-green-100 text-green-800'
+            : 'bg-orange-100 text-orange-800'
+            }`}&gt;
+            &lt;div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-orange-500'
+                }`}&gt;&lt;/div&gt;
+            &lt;span&gt;
+                {isOnline ? 'Online' : 'Offline'}
+            &lt;/span&gt;
+            {isOnline && showStatus && (
+                &lt;span className="text-xs"&gt;✓ Sincronizado&lt;/span&gt;
+            )}
+        &lt;/div&gt;
+    );
 };
 
 export default ConnectionStatus;</code></pre>
@@ -1091,7 +1085,7 @@ const HomePage = () => {
 
 // Componente interno
 const ContactsPage = () => {
-  const contactsData = useContacts();
+  const contactsData = useContactsContext();
   const { filteredContacts } = useFilter(contactsData.contacts);
   const stats = useStatistics(contactsData.contacts);
   
@@ -1154,10 +1148,12 @@ const ContactsPage = () => {
         <li>Criar ContactsContext com toda a lógica de contatos</li>
         <li>
           Criar hooks customizados (useFilter, useStatistics,
-          useConnectionStatus)
+          useConnectionStatus, useContactDetail, useForm)
         </li>
-        <li>Refatorar componentes para usar Context em vez de props</li>
-        <li>Refatorar página de detalhes para usar Context</li>
+        <li>
+          Refatorar componentes para usar hooks customizados em vez de props
+        </li>
+        <li>Refatorar página de detalhes para usar useContactDetail</li>
         <li>Organizar pastas (contexts/, hooks/, components/, utils/)</li>
         <li>Testar que todas as funcionalidades continuam funcionando</li>
       </ol>
@@ -1464,13 +1460,11 @@ import Statistics from "./components/Statistics";
 import ConnectionStatus from "./components/ConnectionStatus";
 import { ContactsProvider } from "./contexts/ContactsContext";
 import { useContactsContext } from "./contexts/ContactsContext";
-// 🆕 ADICIONAR: Imports dos hooks customizados (novos arquivos)
 import { useFilter } from "./hooks/useFilter";
 import { useStatistics } from "./hooks/useStatistics";
 
 const ContactsPage = () => {
   const contactsData = useContactsContext();
-  // 🆕 ADICIONAR: Usar hooks customizados (antes era lógica inline)
   const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
   const stats = useStatistics(contactsData.contacts);
 
@@ -1599,11 +1593,9 @@ export const useTheme = () => {
 };
 
 // components/ThemeToggle.jsx (NOVO ARQUIVO)
-// 🆕 ADICIONAR: Import do hook customizado (novo arquivo)
 import { useTheme } from '../hooks/useTheme';
 
 const ThemeToggle = () => {
-  // 🆕 ADICIONAR: Usar hook customizado (novo arquivo)
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -2096,12 +2088,24 @@ export default HomePage;</code></pre>
             🆕 <strong>useConnectionStatus:</strong> Hook para status de conexão
           </li>
           <li>
+            🆕 <strong>useContactDetail:</strong> Hook para buscar contato
+            específico por ID
+          </li>
+          <li>
+            🆕 <strong>useForm:</strong> Hook para gerenciar formulários e
+            remoção de contatos
+          </li>
+          <li>
+            🆕 <strong>getContact:</strong> Função no Context para buscar
+            contato específico
+          </li>
+          <li>
             🆕 <strong>Organização:</strong> Pastas contexts/ e hooks/ para
             melhor estrutura
           </li>
           <li>
-            🆕 <strong>Refatoração:</strong> Componentes usam Context em vez de
-            props
+            🆕 <strong>Refatoração:</strong> Componentes usam hooks customizados
+            em vez de props
           </li>
           <li>
             🆕 <strong>Eliminação de Props Drilling:</strong> Dados acessíveis
@@ -2143,22 +2147,24 @@ export default HomePage;</code></pre>
         <h4>Estrutura Final do Projeto</h4>
         <pre><code class="language-plaintext">app/
 ├── page.js                    # Página principal (refatorada com Context)
-├── layout.js                  # Layout compartilhado
+├── layout.js                  # Layout compartilhado (com ContactsProvider)
 ├── globals.css                # Estilos globais
-├── contact/[id]/page.js       # Página de detalhes
+├── contact/[id]/page.js       # Página de detalhes (usa useContactDetail)
 ├── components/
-│   ├── ContactForm.jsx        # Formulário (usa Context)
+│   ├── ContactForm.jsx        # Formulário (usa useForm)
 │   ├── ContactList.jsx        # Lista de contatos
-│   ├── ContactItem.jsx        # Item individual (usa Context)
+│   ├── ContactItem.jsx        # Item individual (usa useForm)
 │   ├── FilterInput.jsx        # Campo de filtro
 │   ├── Statistics.jsx         # Estatísticas
-│   └── ConnectionStatus.jsx   # Status de conexão (usa Hook)
+│   └── ConnectionStatus.jsx   # Status de conexão (usa useConnectionStatus)
 ├── contexts/                  # Contexts para estado global
-│   └── ContactsContext.js     # Context de contatos (com toda lógica da aula 8)
+│   └── ContactsContext.js     # Context de contatos (com getContact)
 ├── hooks/                     # Hooks customizados
 │   ├── useFilter.js           # Hook para filtros
 │   ├── useStatistics.js       # Hook para estatísticas
-│   └── useConnectionStatus.js # Hook para status de conexão
+│   ├── useConnectionStatus.js # Hook para status de conexão
+│   ├── useContactDetail.js    # Hook para buscar contato específico
+│   └── useForm.js             # Hook para gerenciar formulários
 └── utils/
     ├── api.js                 # Configuração do axios (mantido)
     └── cache.js               # Serviço de cache (mantido)</code></pre>
