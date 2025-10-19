@@ -1,0 +1,2238 @@
+<!-- ==================== Aula React 10 - Login e Proteção de Rotas ==================== -->
+<article class="lesson-content">
+  <h2>
+    <i class="fab fa-react"></i> React – Login e Proteção de Rotas (Projeto de
+    Contatos)
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      <strong
+        >🔐 Transforme seu projeto React em uma aplicação profissional com
+        autenticação!</strong
+      >
+    </p>
+    <p>
+      Nesta aula vamos implementar um sistema completo de autenticação e
+      proteção de rotas no nosso projeto de contatos. Você aprenderá a criar um
+      sistema de login mockado, gerenciar sessões com localStorage, proteger
+      rotas e implementar funcionalidades de logout, tudo integrado com o
+      sistema existente de Context e hooks customizados.
+    </p>
+  </div>
+
+  <blockquote>
+    <p>
+      "A autenticação é a porta de entrada para aplicações seguras e
+      profissionais." - OWASP Security Team
+    </p>
+  </blockquote>
+
+  <div class="alert alert-info">
+    <strong>Pré-requisito:</strong> Projeto da aula anterior "React – useContext
+    e Hooks Customizados" funcionando com Context, hooks customizados, API,
+    cache offline e sincronização.
+  </div>
+
+  <!-- Objetivos -->
+  <div class="objetivos-box mb-4">
+    <h3><i class="fas fa-target"></i> Objetivos</h3>
+    <ul>
+      <li>Implementar tela de login com validação "mockada" (sem backend)</li>
+      <li>Armazenar sessão (ex.: token fictício no localStorage) e logout</li>
+      <li>
+        Proteger rota da página principal (guard com Context + useRouter ou
+        middleware)
+      </li>
+      <li>Exibir feedbacks de erro e redirecionamentos pós-login</li>
+      <li>Integrar sistema de autenticação com funcionalidades existentes</li>
+    </ul>
+  </div>
+
+  <!-- 1. Estrutura do Projeto -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-folder-tree"></i> 1. Estrutura do Projeto
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>1.1 Arquivos que serão criados/modificados</h4>
+        <p>
+          Vamos expandir nosso projeto de contatos com sistema de autenticação,
+          mantendo todas as funcionalidades existentes:
+        </p>
+
+        <pre><code class="language-plaintext">app/
+├── page.js                    # ✅ MODIFICAR: Redireciona para login ou dashboard
+├── layout.js                  # ✅ MODIFICAR: Layout com AuthProvider
+├── globals.css                # ✅ MANTER: Estilos globais
+├── login/
+│   └── page.js                # 🆕 NOVA: Página de login
+├── dashboard/
+│   └── page.js                # 🆕 NOVA: Página principal protegida (contatos)
+├── contact/[id]/page.js       # ✅ MODIFICAR: Página de detalhes protegida
+├── components/
+│   ├── ContactForm.jsx        # ✅ MANTER: Formulário de contato
+│   ├── ContactList.jsx        # ✅ MANTER: Lista de contatos
+│   ├── ContactItem.jsx        # ✅ MANTER: Item individual de contato
+│   ├── FilterInput.jsx        # ✅ MANTER: Campo de filtro
+│   ├── Statistics.jsx         # ✅ MANTER: Estatísticas
+│   ├── ConnectionStatus.jsx   # ✅ MANTER: Status de conexão
+│   ├── LoginForm.jsx          # 🆕 NOVO: Formulário de login
+│   ├── ProtectedRoute.jsx     # 🆕 NOVO: Componente de proteção de rotas
+│   └── LoadingSpinner.jsx     # 🆕 NOVO: Spinner de carregamento
+├── contexts/
+│   ├── ContactsContext.js     # ✅ MANTER: Context de contatos existente
+│   └── AuthContext.js         # 🆕 NOVO: Context de autenticação
+├── hooks/
+│   ├── useFilter.js           # ✅ MANTER: Hook para filtros
+│   ├── useStatistics.js       # ✅ MANTER: Hook para estatísticas
+│   ├── useConnectionStatus.js # ✅ MANTER: Hook para status de conexão
+│   ├── useContactDetail.js    # ✅ MANTER: Hook para buscar contato específico
+│   ├── useForm.js             # ✅ MANTER: Hook para gerenciar formulários
+│   └── useAuth.js             # 🆕 NOVO: Hook para autenticação
+└── utils/
+    ├── api.js                 # ✅ MANTER: Configuração do axios
+    └── cache.js               # ✅ MANTER: Serviço de cache com expiração</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Context de Autenticação -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-shield-alt"></i> 2. Context de Autenticação
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>2.1 AuthContext</h4>
+        <p>
+          Vamos criar um contexto para gerenciar o estado de autenticação
+          globalmente:
+        </p>
+
+        <pre><code class="language-jsx">// contexts/AuthContext.js (NOVO ARQUIVO)
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+
+// 1. Criar o Context
+const AuthContext = createContext();
+
+// 2. Hook para usar o Context
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuthContext deve ser usado dentro de AuthProvider');
+  }
+  return context;
+};
+
+// 3. Provider Component
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Verificar autenticação ao carregar
+  useEffect(() => {
+    const checkAuth = () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        const userData = localStorage.getItem('userData');
+        
+        if (token && userData) {
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);
+        }
+      } catch (err) {
+        console.error('Erro ao verificar autenticação:', err);
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userData');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  // Função de login mockada
+  const login = useCallback(async (email, password) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Usuários válidos para teste
+      const validUsers = [
+        { email: 'admin@contatos.com', password: '123456', name: 'Administrador' },
+        { email: 'user@contatos.com', password: 'senha123', name: 'Usuário Teste' },
+        { email: 'demo@contatos.com', password: 'demo123', name: 'Usuário Demo' }
+      ];
+
+      const user = validUsers.find(u => u.email === email && u.password === password);
+
+      if (!user) {
+        throw new Error('Email ou senha incorretos');
+      }
+
+      // Gerar token fictício
+      const token = `token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      // Salvar no localStorage
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('userData', JSON.stringify({
+        id: user.email.split('@')[0],
+        name: user.name,
+        email: user.email
+      }));
+
+      setUser({
+        id: user.email.split('@')[0],
+        name: user.name,
+        email: user.email
+      });
+
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Função de logout
+  const logout = useCallback(() => {
+    try {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
+      setUser(null);
+      setError(null);
+    } catch (err) {
+      console.error('Erro ao fazer logout:', err);
+    }
+  }, []);
+
+  const isAuthenticated = !!user;
+
+  const value = {
+    user,
+    loading,
+    error,
+    isAuthenticated,
+    login,
+    logout,
+    setError
+  };
+
+  return (
+    &lt;AuthContext.Provider value={value}&gt;
+      {children}
+    &lt;/AuthContext.Provider&gt;
+  );
+};
+
+export default AuthContext;</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>2.2 Hook useAuth</h4>
+        <p>
+          Vamos criar um hook customizado para facilitar o uso do AuthContext:
+        </p>
+
+        <pre><code class="language-jsx">// hooks/useAuth.js (NOVO ARQUIVO)
+import { useAuthContext } from '../contexts/AuthContext';
+
+export const useAuth = () => {
+  const authContext = useAuthContext();
+  
+  return {
+    ...authContext,
+    // Função para verificar permissões (expandível para roles)
+    canAccess: (requiredRole = null) => {
+      if (!authContext.isAuthenticated) return false;
+      if (!requiredRole) return true;
+      // Aqui podemos implementar lógica de roles no futuro
+      return true;
+    }
+  };
+};</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Componente de Login -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-sign-in-alt"></i> 3. Componente de Login
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>3.1 Formulário de Login</h4>
+        <p>
+          Vamos criar um formulário de login com validação e feedbacks visuais:
+        </p>
+
+        <div class="text-center mb-4">
+          <img
+            src="assets/images/contatos_login.png"
+            alt="Tela de login do sistema de contatos"
+            class="img-fluid rounded shadow"
+          />
+          <p class="text-muted mt-2">
+            <small>Tela de login que implementaremos</small>
+          </p>
+        </div>
+
+        <pre><code class="language-jsx">// components/LoginForm.jsx (NOVO ARQUIVO)
+import { useState, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { useRouter } from 'next/navigation';
+
+const LoginForm = () => {
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({});
+  const { login, loading, error, setError } = useAuth();
+  const router = useRouter();
+
+  // Limpar erro quando o usuário começar a digitar
+  useEffect(() => {
+    if (error) {
+      setError(null);
+    }
+  }, [form.email, form.password, error, setError]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    
+    // Limpar erro do campo específico
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validação de email
+    if (!form.email.trim()) {
+      newErrors.email = 'Email é obrigatório';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = 'Email inválido';
+    }
+
+    // Validação de senha
+    if (!form.password.trim()) {
+      newErrors.password = 'Senha é obrigatória';
+    } else if (form.password.length < 6) {
+      newErrors.password = 'Senha deve ter pelo menos 6 caracteres';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+
+    try {
+      await login(form.email, form.password);
+      // Redirecionar para dashboard após login bem-sucedido
+      router.push('/dashboard');
+    } catch (err) {
+      // Erro já é tratado no AuthContext
+      console.error('Erro no login:', err);
+    }
+  };
+
+  return (
+    &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"&gt;
+      &lt;div className="max-w-md w-full space-y-8"&gt;
+        &lt;div&gt;
+          &lt;h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900"&gt;
+            Entrar na sua conta
+          &lt;/h2&gt;
+          &lt;p className="mt-2 text-center text-sm text-gray-600"&gt;
+            Acesse o sistema de contatos
+          &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;form className="mt-8 space-y-6" onSubmit={handleSubmit}&gt;
+          &lt;div className="space-y-4"&gt;
+            &lt;div&gt;
+              &lt;label htmlFor="email" className="block text-sm font-medium text-gray-700"&gt;
+                Email
+              &lt;/label&gt;
+              &lt;input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
+                  errors.email ? 'border-red-300' : 'border-gray-300'
+                } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                placeholder="seu@email.com"
+                value={form.email}
+                onChange={handleChange}
+                disabled={loading}
+              /&gt;
+              {errors.email && (
+                &lt;p className="mt-1 text-sm text-red-600"&gt;{errors.email}&lt;/p&gt;
+              )}
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label htmlFor="password" className="block text-sm font-medium text-gray-700"&gt;
+                Senha
+              &lt;/label&gt;
+              &lt;input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
+                  errors.password ? 'border-red-300' : 'border-gray-300'
+                } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                placeholder="Sua senha"
+                value={form.password}
+                onChange={handleChange}
+                disabled={loading}
+              /&gt;
+              {errors.password && (
+                &lt;p className="mt-1 text-sm text-red-600"&gt;{errors.password}&lt;/p&gt;
+              )}
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          {/* Erro geral */}
+          {error && (
+            &lt;div className="bg-red-50 border border-red-200 rounded-md p-4"&gt;
+              &lt;div className="flex"&gt;
+                &lt;div className="flex-shrink-0"&gt;
+                  &lt;i className="fas fa-exclamation-circle text-red-400"&gt;&lt;/i&gt;
+                &lt;/div&gt;
+                &lt;div className="ml-3"&gt;
+                  &lt;p className="text-sm text-red-800"&gt;{error}&lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          )}
+
+          &lt;div&gt;
+            &lt;button
+              type="submit"
+              disabled={loading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            &gt;
+              {loading ? (
+                &lt;&gt;
+                  &lt;i className="fas fa-spinner fa-spin mr-2"&gt;&lt;/i&gt;
+                  Entrando...
+                &lt;/&gt;
+              ) : (
+                'Entrar'
+              )}
+            &lt;/button&gt;
+          &lt;/div&gt;
+
+          {/* Credenciais de teste */}
+          &lt;div className="mt-6 bg-blue-50 border border-blue-200 rounded-md p-4"&gt;
+            &lt;h3 className="text-sm font-medium text-blue-800 mb-2"&gt;
+              Credenciais de teste:
+            &lt;/h3&gt;
+            &lt;div className="text-xs text-blue-700 space-y-1"&gt;
+              &lt;p&gt;&lt;strong&gt;Admin:&lt;/strong&gt; admin@contatos.com / 123456&lt;/p&gt;
+              &lt;p&gt;&lt;strong&gt;Usuário:&lt;/strong&gt; user@contatos.com / senha123&lt;/p&gt;
+              &lt;p&gt;&lt;strong&gt;Demo:&lt;/strong&gt; demo@contatos.com / demo123&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default LoginForm;</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>3.2 Página de Login</h4>
+        <p>Vamos criar a página de login que usa o formulário:</p>
+
+        <pre><code class="language-jsx">// app/login/page.js (NOVO ARQUIVO)
+"use client";
+
+import LoginForm from '../components/LoginForm';
+
+const LoginPage = () => {
+  return &lt;LoginForm /&gt;;
+};
+
+export default LoginPage;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Proteção de Rotas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-lock"></i> 4. Proteção de Rotas
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>4.1 Componente ProtectedRoute</h4>
+        <p>
+          Vamos criar um componente para proteger rotas que requerem
+          autenticação:
+        </p>
+
+        <pre><code class="language-jsx">// components/ProtectedRoute.jsx (NOVO ARQUIVO)
+import { useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import { useRouter } from 'next/navigation';
+
+const ProtectedRoute = ({ children, fallback = null }) => {
+  const { isAuthenticated, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [isAuthenticated, loading, router]);
+
+  // Mostrar loading enquanto verifica autenticação
+  if (loading) {
+    return (
+      &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center"&gt;
+        &lt;div className="text-center"&gt;
+          &lt;i className="fas fa-spinner fa-spin text-3xl text-blue-600 mb-4"&gt;&lt;/i&gt;
+          &lt;p className="text-gray-600"&gt;Verificando autenticação...&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  // Se não autenticado, retornar fallback ou null
+  if (!isAuthenticated) {
+    return fallback || null;
+  }
+
+  // Renderizar conteúdo protegido
+  return children;
+};
+
+export default ProtectedRoute;</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>4.2 Página Dashboard Protegida</h4>
+        <p>
+          Vamos criar a página principal protegida que contém nosso sistema de
+          contatos:
+        </p>
+
+        <pre><code class="language-jsx">// app/dashboard/page.js (NOVO ARQUIVO)
+"use client";
+
+import ContactForm from "../components/ContactForm";
+import ContactList from "../components/ContactList";
+import FilterInput from "../components/FilterInput";
+import Statistics from "../components/Statistics";
+import ConnectionStatus from "../components/ConnectionStatus";
+import ProtectedRoute from "../components/ProtectedRoute";
+import { useFilter } from "../hooks/useFilter";
+import { useStatistics } from "../hooks/useStatistics";
+import { useAuth } from "../hooks/useAuth";
+import { useContactsContext } from "../contexts/ContactsContext";
+
+const DashboardPage = () => {
+  const { user, logout } = useAuth();
+  const contactsData = useContactsContext();
+  const { filter, filteredContacts, handleFilterChange } = useFilter(contactsData.contacts);
+  const stats = useStatistics(contactsData.contacts);
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  return (
+    &lt;ProtectedRoute&gt;
+      &lt;div className="min-h-screen bg-gray-200 p-6"&gt;
+        &lt;div className="max-w-3xl mx-auto space-y-6"&gt;
+          &lt;header className="flex items-center justify-between"&gt;
+            &lt;div&gt;
+              &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Cadastro de Contatos&lt;/h1&gt;
+              &lt;p className="text-sm text-gray-600"&gt;Bem-vindo, {user?.name}!&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div className="flex items-center space-x-4"&gt;
+              &lt;FilterInput
+                value={filter}
+                onChange={handleFilterChange}
+              /&gt;
+              &lt;ConnectionStatus /&gt;
+              &lt;button
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm"
+              &gt;
+                &lt;i className="fas fa-sign-out-alt mr-2"&gt;&lt;/i&gt;
+                Sair
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/header&gt;
+
+          &lt;ContactForm /&gt;
+
+          {/* Estados de loading e erro mantidos da aula anterior */}
+          {contactsData.loading && (
+            &lt;div className="text-center py-8"&gt;
+              &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600"&gt;&lt;/i&gt;
+              &lt;p className="mt-2"&gt;Carregando contatos...&lt;/p&gt;
+            &lt;/div&gt;
+          )}
+
+          {contactsData.error && (
+            &lt;div className="text-center py-8"&gt;
+              &lt;i className="fas fa-exclamation-circle text-2xl text-red-600"&gt;&lt;/i&gt;
+              &lt;p className="mt-2 text-red-600"&gt;{contactsData.error}&lt;/p&gt;
+              &lt;button
+                onClick={contactsData.loadContacts}
+                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              &gt;
+                Tentar Novamente
+              &lt;/button&gt;
+            &lt;/div&gt;
+          )}
+
+          {/* Renderização condicional mantida da aula anterior */}
+          {!contactsData.loading && !contactsData.error && (
+            &lt;ContactList
+              items={filteredContacts}
+              onRemove={contactsData.removeContact}
+            /&gt;
+          )}
+
+          &lt;Statistics stats={stats} /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/ProtectedRoute&gt;
+  );
+};
+
+export default DashboardPage;</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>4.3 Página Principal com Redirecionamento</h4>
+        <p>
+          Vamos atualizar a página principal para redirecionar baseado no estado
+          de autenticação:
+        </p>
+
+        <pre><code class="language-jsx">// app/page.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
+
+import { useEffect } from 'react';
+import { useAuth } from './hooks/useAuth';
+import { useRouter } from 'next/navigation';
+
+const HomePage = () => {
+  const { isAuthenticated, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading) {
+      if (isAuthenticated) {
+        router.push('/dashboard');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [isAuthenticated, loading, router]);
+
+  // Mostrar loading enquanto verifica autenticação
+  if (loading) {
+    return (
+      &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center"&gt;
+        &lt;div className="text-center"&gt;
+          &lt;i className="fas fa-spinner fa-spin text-3xl text-blue-600 mb-4"&gt;&lt;/i&gt;
+          &lt;p className="text-gray-600"&gt;Carregando aplicação...&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return null;
+};
+
+export default HomePage;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Atualizando o Layout -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-layer-group"></i> 5. Atualizando o Layout
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>5.1 Layout com AuthProvider</h4>
+        <p>
+          Vamos atualizar o layout para incluir o AuthProvider junto com o
+          ContactsProvider:
+        </p>
+
+        <pre><code class="language-jsx">// app/layout.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
+import "./globals.css";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ContactsProvider } from "./contexts/ContactsContext";
+
+export default function RootLayout({ children }) {
+  return (
+    &lt;html lang="pt-BR"&gt;
+      &lt;body&gt;
+        &lt;AuthProvider&gt;
+          &lt;ContactsProvider&gt;
+            {children}
+          &lt;/ContactsProvider&gt;
+        &lt;/AuthProvider&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>5.2 Componente LoadingSpinner</h4>
+        <p>Vamos criar um componente reutilizável para loading:</p>
+
+        <pre><code class="language-jsx">// components/LoadingSpinner.jsx (NOVO ARQUIVO)
+const LoadingSpinner = ({ message = "Carregando...", size = "text-3xl" }) => {
+  return (
+    &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center"&gt;
+      &lt;div className="text-center"&gt;
+        &lt;i className={`fas fa-spinner fa-spin ${size} text-blue-600 mb-4`}&gt;&lt;/i&gt;
+        &lt;p className="text-gray-600"&gt;{message}&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default LoadingSpinner;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Protegendo Páginas Existentes -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-shield-virus"></i> 6. Protegendo Páginas Existentes
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>6.1 Página de Detalhes Protegida</h4>
+        <p>
+          Vamos atualizar a página de detalhes para também ser protegida e
+          incluir informações do usuário:
+        </p>
+
+        <pre><code class="language-jsx">// app/contact/[id]/page.js (MODIFICAR ARQUIVO EXISTENTE)
+"use client";
+
+import { useRouter } from 'next/navigation';
+import { useContactDetail } from '../hooks/useContactDetail';
+import { useAuth } from '../hooks/useAuth';
+import ProtectedRoute from '../components/ProtectedRoute';
+
+const ContactDetailPage = () => {
+  const router = useRouter();
+  const { user } = useAuth();
+  const { contact, loading, error } = useContactDetail();
+
+  if (loading) {
+    return (
+        &lt;ProtectedRoute&gt;
+        &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+          &lt;div className="max-w-2xl mx-auto"&gt;
+            &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+              &lt;div className="flex items-center justify-center"&gt;
+                &lt;i className="fas fa-spinner fa-spin text-2xl text-blue-600 mr-3"&gt;&lt;/i&gt;
+                &lt;p className="text-gray-600"&gt;Carregando contato...&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/ProtectedRoute&gt;
+    );
+  }
+
+  if (error || !contact) {
+    return (
+      &lt;ProtectedRoute&gt;
+        &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+          &lt;div className="max-w-2xl mx-auto"&gt;
+            &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+              &lt;div className="flex items-center justify-between mb-6"&gt;
+                &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Erro&lt;/h1&gt;
+                &lt;button
+                  onClick={() =&gt; router.back()}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded"
+                &gt;
+                  ← Voltar
+                &lt;/button&gt;
+              &lt;/div&gt;
+              &lt;div className="text-center"&gt;
+                &lt;i className="fas fa-exclamation-circle text-3xl text-red-600 mb-4"&gt;&lt;/i&gt;
+                &lt;p className="text-gray-600"&gt;{error || 'Contato não encontrado'}&lt;/p&gt;
+                &lt;button
+                  onClick={() =&gt; router.push('/dashboard')}
+                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                &gt;
+                  Ir para Lista de Contatos
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/ProtectedRoute&gt;
+    );
+  }
+
+  return (
+    &lt;ProtectedRoute&gt;
+      &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+        &lt;div className="max-w-2xl mx-auto"&gt;
+          &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+            &lt;div className="flex items-center justify-between mb-6"&gt;
+              &lt;div&gt;
+                &lt;h1 className="text-2xl font-bold text-gray-900"&gt;Detalhes do Contato&lt;/h1&gt;
+                &lt;p className="text-sm text-gray-600"&gt;Visualizado por: {user?.name}&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button
+                onClick={() =&gt; router.back()}
+                className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded"
+              &gt;
+                ← Voltar
+              &lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;div className="space-y-4"&gt;
+              &lt;div&gt;
+                &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;ID&lt;/label&gt;
+                &lt;p className="text-gray-500 text-sm"&gt;{contact.id}&lt;/p&gt;
+              &lt;/div&gt;
+
+              &lt;div&gt;
+                &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Nome&lt;/label&gt;
+                &lt;p className="text-gray-900 text-lg"&gt;{contact.nome}&lt;/p&gt;
+              &lt;/div&gt;
+
+              &lt;div&gt;
+                &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Email&lt;/label&gt;
+                &lt;p className="text-gray-900"&gt;
+                  {contact.email ? (
+                    &lt;a href={`mailto:${contact.email}`} className="text-blue-600 hover:underline"&gt;
+                      {contact.email}
+                    &lt;/a&gt;
+                  ) : (
+                    &lt;span className="text-gray-500"&gt;Não informado&lt;/span&gt;
+                  )}
+                &lt;/p&gt;
+              &lt;/div&gt;
+
+              &lt;div&gt;
+                &lt;label className="block text-sm font-medium text-gray-700 mb-1"&gt;Telefone&lt;/label&gt;
+                &lt;p className="text-gray-900"&gt;
+                  {contact.telefone ? (
+                    &lt;a href={`tel:${contact.telefone}`} className="text-blue-600 hover:underline"&gt;
+                      {contact.telefone}
+                    &lt;/a&gt;
+                  ) : (
+                    &lt;span className="text-gray-500"&gt;Não informado&lt;/span&gt;
+                  )}
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/ProtectedRoute&gt;
+  );
+};
+
+export default ContactDetailPage;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Quiz de Verificação -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-question-circle"></i> 7. Quiz de Verificação
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>Teste seus conhecimentos</h4>
+        <p>
+          Responda as perguntas abaixo para verificar se você compreendeu os
+          conceitos da aula:
+        </p>
+
+        <div class="quiz-container">
+          <div class="quiz-question mb-4">
+            <h5>1. Qual é a principal função do AuthContext?</h5>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q1"
+                id="q1a"
+                value="a"
+              />
+              <label class="form-check-label" for="q1a">
+                A) Gerenciar estado de autenticação globalmente
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q1"
+                id="q1b"
+                value="b"
+              />
+              <label class="form-check-label" for="q1b">
+                B) Criar componentes de login
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q1"
+                id="q1c"
+                value="c"
+              />
+              <label class="form-check-label" for="q1c">
+                C) Proteger rotas automaticamente
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q1"
+                id="q1d"
+                value="d"
+              />
+              <label class="form-check-label" for="q1d">
+                D) Validar formulários
+              </label>
+            </div>
+          </div>
+
+          <div class="quiz-question mb-4">
+            <h5>
+              2. O que acontece quando um usuário não autenticado tenta acessar
+              uma rota protegida?
+            </h5>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q2"
+                id="q2a"
+                value="a"
+              />
+              <label class="form-check-label" for="q2a">
+                A) A página é exibida normalmente
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q2"
+                id="q2b"
+                value="b"
+              />
+              <label class="form-check-label" for="q2b">
+                B) É redirecionado para a página de login
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q2"
+                id="q2c"
+                value="c"
+              />
+              <label class="form-check-label" for="q2c">
+                C) Recebe uma mensagem de erro
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q2"
+                id="q2d"
+                value="d"
+              />
+              <label class="form-check-label" for="q2d">
+                D) A aplicação trava
+              </label>
+            </div>
+          </div>
+
+          <div class="quiz-question mb-4">
+            <h5>
+              3. Onde são armazenados os dados de autenticação no nosso sistema?
+            </h5>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q3"
+                id="q3a"
+                value="a"
+              />
+              <label class="form-check-label" for="q3a">
+                A) No sessionStorage
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q3"
+                id="q3b"
+                value="b"
+              />
+              <label class="form-check-label" for="q3b">
+                B) No localStorage
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q3"
+                id="q3c"
+                value="c"
+              />
+              <label class="form-check-label" for="q3c">
+                C) No estado do componente
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q3"
+                id="q3d"
+                value="d"
+              />
+              <label class="form-check-label" for="q3d"> D) Em cookies </label>
+            </div>
+          </div>
+
+          <div class="quiz-question mb-4">
+            <h5>
+              4. Qual hook customizado criamos para facilitar o uso do
+              AuthContext?
+            </h5>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q4"
+                id="q4a"
+                value="a"
+              />
+              <label class="form-check-label" for="q4a"> A) useLogin </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q4"
+                id="q4b"
+                value="b"
+              />
+              <label class="form-check-label" for="q4b"> B) useAuth </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q4"
+                id="q4c"
+                value="c"
+              />
+              <label class="form-check-label" for="q4c">
+                C) useAuthContext
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q4"
+                id="q4d"
+                value="d"
+              />
+              <label class="form-check-label" for="q4d"> D) useUser </label>
+            </div>
+          </div>
+
+          <div class="quiz-question mb-4">
+            <h5>5. O que acontece quando o usuário faz logout?</h5>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q5"
+                id="q5a"
+                value="a"
+              />
+              <label class="form-check-label" for="q5a">
+                A) Apenas o estado é limpo
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q5"
+                id="q5b"
+                value="b"
+              />
+              <label class="form-check-label" for="q5b">
+                B) O localStorage é limpo e o usuário é redirecionado
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q5"
+                id="q5c"
+                value="c"
+              />
+              <label class="form-check-label" for="q5c">
+                C) Apenas o token é removido
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="q5"
+                id="q5d"
+                value="d"
+              />
+              <label class="form-check-label" for="q5d">
+                D) A aplicação é recarregada
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="checkQuiz()">
+            Verificar Respostas
+          </button>
+          <div id="quiz-result" class="mt-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios Práticos
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Sistema de Recuperação de Senha</h4>
+      <p>
+        <strong>Objetivo:</strong> Implementar um sistema de recuperação de
+        senha com validação por email.
+      </p>
+      <ol>
+        <li>Criar página "Esqueci minha senha" com formulário de email</li>
+        <li>Implementar validação de email e feedback visual</li>
+        <li>
+          Criar hook customizado `usePasswordRecovery` para gerenciar estado
+        </li>
+        <li>Simular envio de email com loading e confirmação</li>
+        <li>Adicionar link "Esqueci minha senha" na página de login</li>
+        <li>Criar página de confirmação após envio do email</li>
+        <li>Implementar página de redefinição de senha com token</li>
+        <li>
+          Adicionar validação de senha forte (mínimo 8 caracteres, maiúscula,
+          número)
+        </li>
+      </ol>
+
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// hooks/usePasswordRecovery.js (NOVO ARQUIVO)
+import { useState, useCallback } from 'react';
+
+export const usePasswordRecovery = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const sendRecoveryEmail = useCallback(async (email) => {
+    try {
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Simular validação de email
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        throw new Error('Email inválido');
+      }
+
+      // Simular envio de email
+      setSuccess(true);
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const resetPassword = useCallback(async (token, newPassword) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Validação de senha forte
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
+      if (!passwordRegex.test(newPassword)) {
+        throw new Error('Senha deve ter pelo menos 8 caracteres, uma maiúscula e um número');
+      }
+
+      // Simular reset de senha
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return {
+    loading,
+    error,
+    success,
+    sendRecoveryEmail,
+    resetPassword,
+    setError
+  };
+};
+
+// components/ForgotPasswordForm.jsx (NOVO ARQUIVO)
+import { useState } from 'react';
+import { usePasswordRecovery } from '../hooks/usePasswordRecovery';
+
+const ForgotPasswordForm = () => {
+  const [email, setEmail] = useState('');
+  const { loading, error, success, sendRecoveryEmail, setError } = usePasswordRecovery();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await sendRecoveryEmail(email);
+    } catch (err) {
+      console.error('Erro ao enviar email:', err);
+    }
+  };
+
+  if (success) {
+    return (
+      &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4"&gt;
+        &lt;div className="max-w-md w-full space-y-8"&gt;
+          &lt;div className="text-center"&gt;
+            &lt;i className="fas fa-check-circle text-4xl text-green-600 mb-4"&gt;&lt;/i&gt;
+            &lt;h2 className="text-2xl font-bold text-gray-900"&gt;Email Enviado!&lt;/h2&gt;
+            &lt;p className="mt-2 text-gray-600"&gt;
+              Enviamos um link de recuperação para {email}
+            &lt;/p&gt;
+            &lt;a href="/login" className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"&gt;
+              Voltar ao Login
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4"&gt;
+      &lt;div className="max-w-md w-full space-y-8"&gt;
+        &lt;div&gt;
+          &lt;h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900"&gt;
+            Esqueci minha senha
+          &lt;/h2&gt;
+          &lt;p className="mt-2 text-center text-sm text-gray-600"&gt;
+            Digite seu email para receber um link de recuperação
+          &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;form className="mt-8 space-y-6" onSubmit={handleSubmit}&gt;
+          &lt;div&gt;
+            &lt;label htmlFor="email" className="block text-sm font-medium text-gray-700"&gt;
+              Email
+            &lt;/label&gt;
+            &lt;input
+              id="email"
+              name="email"
+              type="email"
+              required
+              className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (error) setError(null);
+              }}
+              disabled={loading}
+            /&gt;
+          &lt;/div&gt;
+
+          {error && (
+            &lt;div className="bg-red-50 border border-red-200 rounded-md p-4"&gt;
+              &lt;p className="text-sm text-red-800"&gt;{error}&lt;/p&gt;
+            &lt;/div&gt;
+          )}
+
+          &lt;div&gt;
+            &lt;button
+              type="submit"
+              disabled={loading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            &gt;
+              {loading ? (
+                &lt;&gt;
+                  &lt;i className="fas fa-spinner fa-spin mr-2"&gt;&lt;/i&gt;
+                  Enviando...
+                &lt;/&gt;
+              ) : (
+                'Enviar Link de Recuperação'
+              )}
+            &lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;div className="text-center"&gt;
+            &lt;a href="/login" className="text-blue-600 hover:text-blue-500"&gt;
+              ← Voltar ao Login
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default ForgotPasswordForm;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Sistema de Perfil de Usuário</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar um sistema completo de gerenciamento de
+        perfil do usuário.
+      </p>
+      <ol>
+        <li>Criar página de perfil do usuário com informações editáveis</li>
+        <li>Implementar upload de foto de perfil (simulado)</li>
+        <li>Criar formulário de edição de dados pessoais</li>
+        <li>Adicionar validação de dados e feedback visual</li>
+        <li>Implementar mudança de senha com confirmação</li>
+        <li>Criar hook customizado `useProfile` para gerenciar estado</li>
+        <li>Adicionar histórico de atividades do usuário</li>
+        <li>Implementar preferências de notificação</li>
+      </ol>
+
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// hooks/useProfile.js (NOVO ARQUIVO)
+import { useState, useCallback } from 'react';
+import { useAuth } from './useAuth';
+
+export const useProfile = () => {
+  const { user, logout } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const updateProfile = useCallback(async (profileData) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Simular atualização de perfil
+      console.log('Perfil atualizado:', profileData);
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const changePassword = useCallback(async (currentPassword, newPassword) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Validação básica
+      if (newPassword.length < 6) {
+        throw new Error('Nova senha deve ter pelo menos 6 caracteres');
+      }
+
+      console.log('Senha alterada com sucesso');
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return {
+    user,
+    loading,
+    error,
+    updateProfile,
+    changePassword,
+    logout,
+    setError
+  };
+};
+
+// components/ProfilePage.jsx (NOVO ARQUIVO)
+import { useState } from 'react';
+import { useProfile } from '../hooks/useProfile';
+import ProtectedRoute from './ProtectedRoute';
+
+const ProfilePage = () => {
+  const { user, loading, error, updateProfile, changePassword, setError } = useProfile();
+  const [activeTab, setActiveTab] = useState('profile');
+  const [profileForm, setProfileForm] = useState({
+    name: user?.name || '',
+    email: user?.email || ''
+  });
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await updateProfile(profileForm);
+      alert('Perfil atualizado com sucesso!');
+    } catch (err) {
+      console.error('Erro ao atualizar perfil:', err);
+    }
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+        throw new Error('Senhas não coincidem');
+      }
+      
+      await changePassword(passwordForm.currentPassword, passwordForm.newPassword);
+      alert('Senha alterada com sucesso!');
+      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (err) {
+      console.error('Erro ao alterar senha:', err);
+    }
+  };
+
+  return (
+    &lt;ProtectedRoute&gt;
+      &lt;div className="min-h-screen bg-gray-50 p-6"&gt;
+        &lt;div className="max-w-2xl mx-auto"&gt;
+          &lt;div className="bg-white shadow rounded-lg p-6"&gt;
+            &lt;h1 className="text-2xl font-bold text-gray-900 mb-6"&gt;Meu Perfil&lt;/h1&gt;
+            
+            {/* Tabs */}
+            &lt;div className="border-b border-gray-200 mb-6"&gt;
+              &lt;nav className="-mb-px flex space-x-8"&gt;
+                &lt;button
+                  onClick={() => setActiveTab('profile')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'profile' 
+                      ? 'border-blue-500 text-blue-600' 
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                &gt;
+                  Informações Pessoais
+                &lt;/button&gt;
+                &lt;button
+                  onClick={() => setActiveTab('password')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'password' 
+                      ? 'border-blue-500 text-blue-600' 
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                &gt;
+                  Alterar Senha
+                &lt;/button&gt;
+              &lt;/nav&gt;
+            &lt;/div&gt;
+
+            {/* Profile Tab */}
+            {activeTab === 'profile' && (
+              &lt;form onSubmit={handleProfileSubmit} className="space-y-4"&gt;
+                &lt;div&gt;
+                  &lt;label className="block text-sm font-medium text-gray-700"&gt;Nome&lt;/label&gt;
+                  &lt;input
+                    type="text"
+                    value={profileForm.name}
+                    onChange={(e) => setProfileForm({...profileForm, name: e.target.value})}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  /&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;label className="block text-sm font-medium text-gray-700"&gt;Email&lt;/label&gt;
+                  &lt;input
+                    type="email"
+                    value={profileForm.email}
+                    onChange={(e) => setProfileForm({...profileForm, email: e.target.value})}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  /&gt;
+                &lt;/div&gt;
+                &lt;button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+                &gt;
+                  {loading ? 'Salvando...' : 'Salvar Alterações'}
+                &lt;/button&gt;
+              &lt;/form&gt;
+            )}
+
+            {/* Password Tab */}
+            {activeTab === 'password' && (
+              &lt;form onSubmit={handlePasswordSubmit} className="space-y-4"&gt;
+                &lt;div&gt;
+                  &lt;label className="block text-sm font-medium text-gray-700"&gt;Senha Atual&lt;/label&gt;
+                  &lt;input
+                    type="password"
+                    value={passwordForm.currentPassword}
+                    onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  /&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;label className="block text-sm font-medium text-gray-700"&gt;Nova Senha&lt;/label&gt;
+                  &lt;input
+                    type="password"
+                    value={passwordForm.newPassword}
+                    onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  /&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;label className="block text-sm font-medium text-gray-700"&gt;Confirmar Nova Senha&lt;/label&gt;
+                  &lt;input
+                    type="password"
+                    value={passwordForm.confirmPassword}
+                    onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  /&gt;
+                &lt;/div&gt;
+                &lt;button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+                &gt;
+                  {loading ? 'Alterando...' : 'Alterar Senha'}
+                &lt;/button&gt;
+              &lt;/form&gt;
+            )}
+
+            {error && (
+              &lt;div className="mt-4 bg-red-50 border border-red-200 rounded-md p-4"&gt;
+                &lt;p className="text-sm text-red-800"&gt;{error}&lt;/p&gt;
+              &lt;/div&gt;
+            )}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/ProtectedRoute&gt;
+  );
+};
+
+export default ProfilePage;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Sistema de Controle de Acesso por Roles</h4>
+      <p>
+        <strong>Objetivo:</strong> Implementar controle de acesso baseado em
+        roles/perfis de usuário.
+      </p>
+      <ol>
+        <li>
+          Expandir AuthContext para incluir sistema de roles (admin, user,
+          guest)
+        </li>
+        <li>
+          Criar componente `PermissionGate` para controlar acesso a
+          funcionalidades
+        </li>
+        <li>Implementar diferentes níveis de acesso para operações CRUD</li>
+        <li>Criar página de administração apenas para admins</li>
+        <li>Implementar middleware de autorização em rotas</li>
+        <li>Criar hook `usePermissions` para verificar permissões</li>
+        <li>Adicionar interface para gerenciar roles de usuários</li>
+        <li>Implementar logs de auditoria para ações administrativas</li>
+      </ol>
+
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// components/PermissionGate.jsx (NOVO ARQUIVO)
+import { useAuth } from '../hooks/useAuth';
+
+const PermissionGate = ({ 
+  children, 
+  role, 
+  roles, 
+  fallback = null 
+}) => {
+  const { user, isAuthenticated } = useAuth();
+
+  const hasPermission = () => {
+    if (!isAuthenticated) return false;
+    
+    // Se não especificar role, apenas verifica se está autenticado
+    if (!role && !roles) return true;
+    
+    // Verifica role específico
+    if (role && user?.role === role) return true;
+    
+    // Verifica múltiplas roles
+    if (roles && roles.includes(user?.role)) return true;
+    
+    return false;
+  };
+
+  return hasPermission() ? children : fallback;
+};
+
+export default PermissionGate;
+
+// Exemplo de uso no AuthContext expandido:
+const AuthProvider = ({ children }) => {
+  // ... código existente ...
+  
+  // Adicionar role ao usuário
+  const login = useCallback(async (email, password) => {
+    // ... código existente ...
+    
+    const userRole = email.includes('admin') ? 'admin' : 'user';
+    
+    setUser({
+      id: user.email.split('@')[0],
+      name: user.name,
+      email: user.email,
+      role: userRole // Adicionar role
+    });
+    
+    // ... resto do código ...
+  }, []);
+
+  // ... resto do código ...
+};
+
+// Exemplo de uso em componentes:
+const AdminPanel = () => {
+  return (
+    &lt;PermissionGate role="admin" fallback={&lt;div&gt;Acesso negado&lt;/div&gt;}&gt;
+      &lt;div&gt;
+        &lt;h1&gt;Painel Administrativo&lt;/h1&gt;
+        &lt;p&gt;Conteúdo apenas para administradores&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/PermissionGate&gt;
+  );
+};
+
+const UserActions = () => {
+  return (
+    &lt;PermissionGate roles={['admin', 'user']}&gt;
+      &lt;div&gt;
+        &lt;button&gt;Ação disponível para admins e usuários&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/PermissionGate&gt;
+  );
+};</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 4: Sistema de Sessões e Timeout</h4>
+      <p>
+        <strong>Objetivo:</strong> Implementar controle de sessão com timeout
+        automático e renovação.
+      </p>
+      <ol>
+        <li>Implementar timeout de sessão configurável</li>
+        <li>Criar modal de aviso antes do logout automático</li>
+        <li>Implementar renovação automática de token</li>
+        <li>Adicionar opção "Lembrar-me" no login</li>
+        <li>Criar hook `useSessionTimeout` para gerenciar timeout</li>
+        <li>Implementar logout automático por inatividade</li>
+        <li>Adicionar contador regressivo visual</li>
+        <li>Criar sistema de sessões múltiplas</li>
+      </ol>
+
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// hooks/useSessionTimeout.js (NOVO ARQUIVO)
+import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from './useAuth';
+
+export const useSessionTimeout = (timeoutMinutes = 30) => {
+  const { logout } = useAuth();
+  const [timeLeft, setTimeLeft] = useState(timeoutMinutes * 60);
+  const [showWarning, setShowWarning] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+
+  const resetTimer = useCallback(() => {
+    setTimeLeft(timeoutMinutes * 60);
+    setShowWarning(false);
+    setIsActive(true);
+  }, [timeoutMinutes]);
+
+  const logoutUser = useCallback(() => {
+    logout();
+  }, [logout]);
+
+  useEffect(() => {
+    let interval;
+
+    if (isActive && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 60 && !showWarning) {
+            setShowWarning(true);
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else if (timeLeft === 0) {
+      logoutUser();
+    }
+
+    return () => clearInterval(interval);
+  }, [isActive, timeLeft, showWarning, logoutUser]);
+
+  // Detectar atividade do usuário
+  useEffect(() => {
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+    
+    const resetTimerOnActivity = () => {
+      if (isActive) {
+        resetTimer();
+      }
+    };
+
+    events.forEach(event => {
+      document.addEventListener(event, resetTimerOnActivity, true);
+    });
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, resetTimerOnActivity, true);
+      });
+    };
+  }, [isActive, resetTimer]);
+
+  const extendSession = () => {
+    resetTimer();
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return {
+    timeLeft,
+    showWarning,
+    isActive,
+    extendSession,
+    formatTime,
+    resetTimer
+  };
+};
+
+// components/SessionTimeoutModal.jsx (NOVO ARQUIVO)
+import { useSessionTimeout } from '../hooks/useSessionTimeout';
+
+const SessionTimeoutModal = () => {
+  const { timeLeft, showWarning, extendSession, formatTime } = useSessionTimeout(30);
+
+  if (!showWarning) return null;
+
+  return (
+    &lt;div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"&gt;
+      &lt;div className="bg-white rounded-lg p-6 max-w-md w-full mx-4"&gt;
+        &lt;div className="text-center"&gt;
+          &lt;i className="fas fa-clock text-4xl text-yellow-500 mb-4"&gt;&lt;/i&gt;
+          &lt;h2 className="text-xl font-bold text-gray-900 mb-2"&gt;
+            Sessão Expirando
+          &lt;/h2&gt;
+          &lt;p className="text-gray-600 mb-4"&gt;
+            Sua sessão expirará em {formatTime(timeLeft)}. 
+            Clique em "Continuar" para manter a sessão ativa.
+          &lt;/p&gt;
+          &lt;div className="flex space-x-4"&gt;
+            &lt;button
+              onClick={extendSession}
+              className="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            &gt;
+              Continuar
+            &lt;/button&gt;
+            &lt;button
+              onClick={() => window.location.reload()}
+              className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+            &gt;
+              Recarregar
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default SessionTimeoutModal;</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 5: Sistema de Notificações e Feedback</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar sistema completo de notificações para o
+        usuário.
+      </p>
+      <ol>
+        <li>
+          Criar componente `NotificationCenter` para centralizar notificações
+        </li>
+        <li>
+          Implementar diferentes tipos de notificação (success, error, warning,
+          info)
+        </li>
+        <li>Criar hook `useNotifications` para gerenciar estado</li>
+        <li>Implementar notificações toast com animações</li>
+        <li>Adicionar notificações push simuladas</li>
+        <li>Criar sistema de preferências de notificação</li>
+        <li>Implementar histórico de notificações</li>
+        <li>
+          Adicionar notificações de sistema (login, logout, mudanças de perfil)
+        </li>
+      </ol>
+
+      <details class="solucao">
+        <summary>Mostrar solução</summary>
+        <pre><code class="language-jsx">// hooks/useNotifications.js (NOVO ARQUIVO)
+import { useState, useCallback } from 'react';
+
+export const useNotifications = () => {
+  const [notifications, setNotifications] = useState([]);
+
+  const addNotification = useCallback((notification) => {
+    const id = Date.now() + Math.random();
+    const newNotification = {
+      id,
+      type: notification.type || 'info',
+      title: notification.title,
+      message: notification.message,
+      duration: notification.duration || 5000,
+      timestamp: new Date()
+    };
+
+    setNotifications(prev => [...prev, newNotification]);
+
+    // Auto remove após duration
+    setTimeout(() => {
+      removeNotification(id);
+    }, newNotification.duration);
+
+    return id;
+  }, []);
+
+  const removeNotification = useCallback((id) => {
+    setNotifications(prev => prev.filter(notif => notif.id !== id));
+  }, []);
+
+  const clearAll = useCallback(() => {
+    setNotifications([]);
+  }, []);
+
+  return {
+    notifications,
+    addNotification,
+    removeNotification,
+    clearAll
+  };
+};
+
+// components/NotificationCenter.jsx (NOVO ARQUIVO)
+import { useNotifications } from '../hooks/useNotifications';
+
+const NotificationCenter = () => {
+  const { notifications, removeNotification, clearAll } = useNotifications();
+
+  const getIconClass = (type) => {
+    switch (type) {
+      case 'success': return 'fas fa-check-circle text-green-500';
+      case 'error': return 'fas fa-exclamation-circle text-red-500';
+      case 'warning': return 'fas fa-exclamation-triangle text-yellow-500';
+      default: return 'fas fa-info-circle text-blue-500';
+    }
+  };
+
+  const getBgClass = (type) => {
+    switch (type) {
+      case 'success': return 'bg-green-50 border-green-200';
+      case 'error': return 'bg-red-50 border-red-200';
+      case 'warning': return 'bg-yellow-50 border-yellow-200';
+      default: return 'bg-blue-50 border-blue-200';
+    }
+  };
+
+  if (notifications.length === 0) return null;
+
+  return (
+    &lt;div className="fixed top-4 right-4 z-50 space-y-2 max-w-sm"&gt;
+      {notifications.length > 1 && (
+        &lt;button
+          onClick={clearAll}
+          className="text-xs text-gray-500 hover:text-gray-700"
+        &gt;
+          Limpar todas
+        &lt;/button&gt;
+      )}
+      
+      {notifications.map(notification => (
+        &lt;div
+          key={notification.id}
+          className={`${getBgClass(notification.type)} border rounded-lg p-4 shadow-lg transform transition-all duration-300 ease-in-out`}
+        &gt;
+          &lt;div className="flex items-start"&gt;
+            &lt;i className={`${getIconClass(notification.type)} mt-0.5 mr-3`}&gt;&lt;/i&gt;
+            &lt;div className="flex-1"&gt;
+              &lt;h4 className="text-sm font-medium text-gray-900"&gt;
+                {notification.title}
+              &lt;/h4&gt;
+              &lt;p className="text-sm text-gray-600 mt-1"&gt;
+                {notification.message}
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;button
+              onClick={() => removeNotification(notification.id)}
+              className="text-gray-400 hover:text-gray-600 ml-2"
+            &gt;
+              &lt;i className="fas fa-times"&gt;&lt;/i&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+};
+
+export default NotificationCenter;
+
+// Exemplo de uso em componentes:
+const LoginForm = () => {
+  const { addNotification } = useNotifications();
+  
+  const handleLogin = async () => {
+    try {
+      // ... lógica de login ...
+      addNotification({
+        type: 'success',
+        title: 'Login realizado!',
+        message: 'Bem-vindo de volta!',
+        duration: 3000
+      });
+    } catch (error) {
+      addNotification({
+        type: 'error',
+        title: 'Erro no login',
+        message: 'Verifique suas credenciais',
+        duration: 5000
+      });
+    }
+  };
+  
+  // ... resto do componente ...
+};</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- 9. Resumo Final -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 9. Resumo Final
+    </h3>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>O que implementamos</h4>
+        <ul>
+          <li>
+            ✅ <strong>Sistema de Autenticação:</strong> Login mockado com
+            validação e feedbacks
+          </li>
+          <li>
+            ✅ <strong>Gerenciamento de Sessão:</strong> Armazenamento seguro no
+            localStorage
+          </li>
+          <li>
+            ✅ <strong>Proteção de Rotas:</strong> Componente ProtectedRoute
+            para controlar acesso
+          </li>
+          <li>
+            ✅ <strong>Context Global:</strong> AuthContext para gerenciar
+            estado de autenticação
+          </li>
+          <li>
+            ✅ <strong>Hook Customizado:</strong> useAuth para facilitar uso do
+            contexto
+          </li>
+          <li>
+            ✅ <strong>Integração Completa:</strong> Sistema funcionando com
+            todas as funcionalidades existentes
+          </li>
+          <li>
+            ✅ <strong>UX/UI:</strong> Interface intuitiva com loading, erros e
+            feedbacks visuais
+          </li>
+          <li>
+            ✅ <strong>Logout:</strong> Funcionalidade completa de logout com
+            limpeza de dados
+          </li>
+        </ul>
+
+        <h4>Benefícios do Sistema</h4>
+        <ul>
+          <li>
+            ✅ <strong>Segurança:</strong> Rotas protegidas e dados seguros no
+            localStorage
+          </li>
+          <li>
+            ✅ <strong>Escalabilidade:</strong> Fácil adicionar novos usuários e
+            roles
+          </li>
+          <li>
+            ✅ <strong>Manutenibilidade:</strong> Lógica de autenticação
+            centralizada no Context
+          </li>
+          <li>
+            ✅ <strong>Flexibilidade:</strong> Sistema mockado permite
+            desenvolvimento sem backend
+          </li>
+          <li>
+            ✅ <strong>Integração:</strong> Funciona perfeitamente com todas as
+            funcionalidades existentes
+          </li>
+        </ul>
+
+        <h4>Estrutura Final do Projeto</h4>
+        <pre><code class="language-plaintext">app/
+├── page.js                    # Redireciona para login ou dashboard
+├── layout.js                  # Layout com AuthProvider + ContactsProvider
+├── login/
+│   └── page.js                # Página de login
+├── dashboard/
+│   └── page.js                # Página principal protegida (contatos)
+├── contact/[id]/page.js       # Página de detalhes protegida
+├── components/
+│   ├── LoginForm.jsx          # Formulário de login
+│   ├── ProtectedRoute.jsx     # Componente de proteção de rotas
+│   ├── LoadingSpinner.jsx     # Spinner de carregamento
+│   ├── ContactForm.jsx        # Formulário de contato (mantido)
+│   ├── ContactList.jsx        # Lista de contatos (mantido)
+│   ├── ContactItem.jsx        # Item de contato (mantido)
+│   ├── FilterInput.jsx        # Campo de filtro (mantido)
+│   ├── Statistics.jsx         # Estatísticas (mantido)
+│   └── ConnectionStatus.jsx   # Status de conexão (mantido)
+├── contexts/
+│   ├── ContactsContext.js     # Context de contatos (mantido)
+│   └── AuthContext.js         # Context de autenticação (novo)
+├── hooks/
+│   ├── useFilter.js           # Hook para filtros (mantido)
+│   ├── useStatistics.js       # Hook para estatísticas (mantido)
+│   ├── useConnectionStatus.js # Hook para status de conexão (mantido)
+│   ├── useContactDetail.js    # Hook para buscar contato específico (mantido)
+│   ├── useForm.js             # Hook para gerenciar formulários (mantido)
+│   └── useAuth.js             # Hook para autenticação (novo)
+└── utils/
+    ├── api.js                 # Configuração do axios (mantido)
+    └── cache.js               # Serviço de cache (mantido)</code></pre>
+
+        <h4>Fluxo de Autenticação</h4>
+        <ol>
+          <li>
+            <strong>Usuário acessa a aplicação</strong> → Redirecionado para
+            /login
+          </li>
+          <li>
+            <strong>Usuário faz login</strong> → Credenciais validadas e token
+            gerado
+          </li>
+          <li>
+            <strong>Dados salvos no localStorage</strong> → Token e dados do
+            usuário
+          </li>
+          <li>
+            <strong>Redirecionamento para /dashboard</strong> → Acesso ao
+            sistema de contatos
+          </li>
+          <li>
+            <strong>Navegação protegida</strong> → Todas as rotas verificam
+            autenticação
+          </li>
+          <li>
+            <strong>Logout</strong> → Limpeza de dados e redirecionamento para
+            login
+          </li>
+        </ol>
+
+        <div class="alert alert-success">
+          <h5><i class="fas fa-star"></i> Parabéns!</h5>
+          <p>
+            Você implementou com sucesso um sistema completo de autenticação e
+            proteção de rotas! O projeto agora possui login, logout, proteção de
+            rotas e integração perfeita com todas as funcionalidades existentes
+            do sistema de contatos.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<script>
+  // Função para verificar respostas do quiz
+  function checkQuiz() {
+    const answers = {
+      q1: "a", // AuthContext gerencia estado de autenticação globalmente
+      q2: "b", // Redirecionado para login
+      q3: "b", // localStorage
+      q4: "b", // useAuth
+      q5: "b", // localStorage limpo e redirecionado
+    };
+
+    let correct = 0;
+    let total = Object.keys(answers).length;
+
+    // Verificar cada pergunta
+    Object.keys(answers).forEach((questionId) => {
+      const selectedAnswer = document.querySelector(
+        `input[name="${questionId}"]:checked`
+      );
+      if (selectedAnswer && selectedAnswer.value === answers[questionId]) {
+        correct++;
+        // Destacar resposta correta
+        selectedAnswer.parentElement.classList.add("text-success");
+      } else if (selectedAnswer) {
+        // Destacar resposta incorreta
+        selectedAnswer.parentElement.classList.add("text-danger");
+      }
+
+      // Destacar resposta correta mesmo se não foi selecionada
+      const correctAnswer = document.querySelector(
+        `input[name="${questionId}"][value="${answers[questionId]}"]`
+      );
+      if (correctAnswer && !correctAnswer.checked) {
+        correctAnswer.parentElement.classList.add("text-success");
+      }
+    });
+
+    // Mostrar resultado
+    const resultDiv = document.getElementById("quiz-result");
+    const percentage = Math.round((correct / total) * 100);
+
+    let resultClass = "alert-success";
+    let resultMessage = `Parabéns! Você acertou ${correct} de ${total} perguntas (${percentage}%).`;
+
+    if (percentage < 60) {
+      resultClass = "alert-warning";
+      resultMessage = `Você acertou ${correct} de ${total} perguntas (${percentage}%). Revise o conteúdo da aula.`;
+    } else if (percentage < 80) {
+      resultClass = "alert-info";
+      resultMessage = `Bom trabalho! Você acertou ${correct} de ${total} perguntas (${percentage}%).`;
+    }
+
+    resultDiv.innerHTML = `
+    <div class="alert ${resultClass}">
+      <strong>Resultado:</strong> ${resultMessage}
+    </div>
+  `;
+  }
+</script>
