@@ -685,5 +685,6 @@ details[open] summary {
 .text-secondary { color: var(--secondary-color); }
 .text-accent { color: var(--accent-color); }
 .text-success { color: var(--success-color); }
+.text-danger { color: var(--accent-color); }
 .text-warning { color: var(--warning-color); }
 .text-muted { color: var(--gray-600); }

@@ -1,0 +1,550 @@
+/* ========== ESTILOS ESPECÍFICOS DAS AULAS CYBERPUNK ========== */
+
+/* ========== INTRO BOX CYBERPUNK ========== */
+.intro-box {
+  background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 0 20px var(--box-shadow);
+}
+
+.intro-box p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  color: var(--gray-700);
+}
+
+.intro-box strong {
+  color: var(--primary-color);
+  text-shadow: var(--neon-glow);
+  font-family: var(--font-cyberpunk-display);
+}
+
+.intro-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.intro-box li {
+  background: var(--white);
+  border-left: 4px solid var(--accent-color);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0 8px 8px 0;
+  transition: var(--transition-glow);
+  font-family: var(--font-cyberpunk);
+}
+
+.intro-box li:hover {
+  background: var(--accent-color-light);
+  box-shadow: 0 0 10px var(--box-shadow);
+}
+
+/* ========== SECTION TITLES CYBERPUNK ========== */
+.section-title {
+  color: var(--primary-color);
+  font-family: var(--font-cyberpunk-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.section-title.with-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title.with-icon i {
+  color: var(--accent-color);
+  text-shadow: var(--neon-glow-blue);
+  font-size: 1.2em;
+}
+
+/* ========== ALERTS CYBERPUNK ========== */
+.alert {
+  border: 2px solid;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  font-family: var(--font-cyberpunk);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, var(--info-color-light) 0%, rgba(0, 255, 255, 0.05) 100%);
+  border-color: var(--info-color);
+  color: var(--info-color);
+}
+
+.alert-success {
+  background: linear-gradient(135deg, var(--success-color-light) 0%, rgba(0, 255, 0, 0.05) 100%);
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, var(--warning-color-light) 0%, rgba(255, 102, 0, 0.05) 100%);
+  border-color: var(--warning-color);
+  color: var(--warning-color);
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(255, 0, 255, 0.05) 100%);
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+}
+
+/* ========== CARDS CYBERPUNK ========== */
+.card-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--neon-purple) 100%);
+  color: var(--cyber-black);
+  padding: 1rem 1.5rem;
+  font-family: var(--font-cyberpunk-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.card-body {
+  padding: 1.5rem;
+  background: var(--white);
+}
+
+/* ========== BUTTONS CYBERPUNK ========== */
+.btn {
+  font-family: var(--font-cyberpunk);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 2px solid;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition-glow);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: var(--cyber-black);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: var(--primary-color);
+  box-shadow: var(--neon-glow-purple);
+  text-shadow: var(--neon-glow-purple);
+}
+
+.btn-secondary {
+  background: var(--accent-color);
+  color: var(--cyber-black);
+  border-color: var(--accent-color);
+}
+
+.btn-secondary:hover {
+  background: transparent;
+  color: var(--accent-color);
+  box-shadow: var(--neon-glow-blue);
+  text-shadow: var(--neon-glow-blue);
+}
+
+/* ========== FORMS CYBERPUNK ========== */
+.form-control {
+  background: var(--gray-100);
+  border: 2px solid var(--gray-300);
+  color: var(--gray-900);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-family: var(--font-cyberpunk);
+  transition: var(--transition-glow);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: var(--neon-glow-blue);
+  background: var(--white);
+}
+
+/* ========== QUIZ CYBERPUNK ========== */
+.quiz-container {
+  background: var(--white);
+  border: 2px solid var(--accent-color);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 1rem 0;
+  box-shadow: 0 0 20px var(--box-shadow);
+}
+
+.quiz-question {
+  background: var(--gray-100);
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.quiz-question h5 {
+  color: var(--primary-color);
+  font-family: var(--font-cyberpunk-display);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-check {
+  margin-bottom: 0.75rem;
+}
+
+.form-check-input {
+  accent-color: var(--primary-color);
+}
+
+.form-check-label {
+  color: var(--gray-700);
+  font-family: var(--font-cyberpunk);
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+/* ========== SOLUÇÕES COM COLLAPSE CYBERPUNK ========== */
+.solucao {
+  margin-top: 1rem;
+}
+
+.solucao summary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--neon-purple) 100%);
+  color: var(--cyber-black);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-cyberpunk);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: var(--transition-glow);
+  border: 1px solid var(--accent-color);
+}
+
+.solucao summary:hover {
+  box-shadow: var(--neon-glow-purple);
+  transform: scale(1.02);
+}
+
+.solucao pre {
+  margin-top: 1rem;
+  background: var(--cyber-black);
+  border: 2px solid var(--neon-green);
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow-x: auto;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+/* ========== FEATURE LISTS CYBERPUNK ========== */
+.feature-list {
+  list-style: none;
+  padding: 0;
+}
+
+.feature-list li {
+  background: var(--gray-100);
+  border-left: 4px solid var(--accent-color);
+  padding: 1rem 1.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0 8px 8px 0;
+  transition: var(--transition-glow);
+  font-family: var(--font-cyberpunk);
+}
+
+.feature-list li:hover {
+  background: var(--accent-color-light);
+  box-shadow: 0 0 10px var(--box-shadow);
+}
+
+/* ========== EDITOR RECOMMENDATION CYBERPUNK ========== */
+.editor-recommendation {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--gray-100);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 15px var(--box-shadow);
+}
+
+.editor-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid var(--accent-color);
+}
+
+.editor-recommendation h5 {
+  color: var(--primary-color);
+  font-family: var(--font-cyberpunk-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+/* ========== PROGRESS BARS CYBERPUNK ========== */
+.progress {
+  background: var(--gray-200);
+  border-radius: 8px;
+  height: 20px;
+  overflow: hidden;
+  border: 1px solid var(--accent-color);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  height: 100%;
+  transition: width 0.3s ease;
+  box-shadow: var(--neon-glow-blue);
+}
+
+/* ========== BADGES CYBERPUNK ========== */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 4px;
+  font-family: var(--font-cyberpunk);
+}
+
+.badge-primary {
+  background: var(--neon-blue);
+  color: var(--cyber-black);
+}
+
+.badge-secondary {
+  background: var(--neon-purple);
+  color: var(--cyber-white);
+}
+
+.badge-success {
+  background: var(--neon-green);
+  color: var(--cyber-black);
+}
+
+.badge-warning {
+  background: var(--neon-orange);
+  color: var(--cyber-black);
+}
+
+/* ========== TOOLTIPS CYBERPUNK ========== */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background: var(--cyber-black);
+  color: var(--neon-green);
+  text-align: center;
+  border-radius: 6px;
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-family: var(--font-cyberpunk);
+  font-size: 0.875rem;
+  border: 1px solid var(--neon-green);
+  box-shadow: var(--neon-glow-green);
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ========== LOADING SPINNER CYBERPUNK ========== */
+.spinner {
+  border: 3px solid var(--gray-200);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ========== MODAL CYBERPUNK ========== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  background: var(--white);
+  margin: 5% auto;
+  padding: 2rem;
+  border: 2px solid var(--accent-color);
+  border-radius: 12px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 0 30px var(--box-shadow);
+}
+
+.close {
+  color: var(--accent-color);
+  float: right;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-glow);
+}
+
+.close:hover {
+  text-shadow: var(--neon-glow-blue);
+}
+
+/* ========== SCROLLBAR CYBERPUNK ========== */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-200);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+  box-shadow: var(--neon-glow-blue);
+}
+
+/* ========== ANIMATIONS CYBERPUNK ========== */
+@keyframes neon-pulse {
+  0%, 100% {
+    text-shadow: var(--neon-glow);
+  }
+  50% {
+    text-shadow: 0 0 20px currentColor, 0 0 30px currentColor, 0 0 40px currentColor;
+  }
+}
+
+.neon-pulse {
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+/* ========== THEME TOGGLE BUTTON ========== */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: var(--primary-color);
+  color: var(--cyber-black);
+  border: 2px solid var(--accent-color);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: var(--neon-glow-blue);
+  transition: var(--transition-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px var(--accent-color);
+  background: var(--accent-color);
+  color: var(--cyber-black);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+/* ========== PRINT STYLES ========== */
+@media print {
+  .theme-toggle,
+  .toggle-menu {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .card {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+  
+  nav {
+    display: none !important;
+  }
+}
+
+/* ========== CLASSES UTILITÁRIAS ADICIONAIS ========== */
+.text-error {
+  color: var(--neon-pink);
+  font-weight: 600;
+}
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.img-contain {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.text-center-container {
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}

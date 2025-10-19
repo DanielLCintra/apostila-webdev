@@ -905,272 +905,58 @@ export default ContactDetailPage;</code></pre>
           conceitos da aula:
         </p>
 
-        <div class="quiz-container">
-          <div class="quiz-question mb-4">
-            <h5>1. Qual é a principal função do AuthContext?</h5>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q1"
-                id="q1a"
-                value="a"
-              />
-              <label class="form-check-label" for="q1a">
-                A) Gerenciar estado de autenticação globalmente
-              </label>
+        <ol>
+          <li class="mb-3">
+            Qual é a principal função do AuthContext?
+            <div>
+              a) Gerenciar estado de autenticação globalmente &nbsp; b) Criar
+              componentes de login &nbsp; c) Proteger rotas automaticamente
+              &nbsp; d) Validar formulários
             </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q1"
-                id="q1b"
-                value="b"
-              />
-              <label class="form-check-label" for="q1b">
-                B) Criar componentes de login
-              </label>
+          </li>
+          <li class="mb-3">
+            O que acontece quando um usuário não autenticado tenta acessar uma
+            rota protegida?
+            <div>
+              a) A página é exibida normalmente &nbsp; b) É redirecionado para a
+              página de login &nbsp; c) Recebe uma mensagem de erro &nbsp; d) A
+              aplicação trava
             </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q1"
-                id="q1c"
-                value="c"
-              />
-              <label class="form-check-label" for="q1c">
-                C) Proteger rotas automaticamente
-              </label>
+          </li>
+          <li class="mb-3">
+            Onde são armazenados os dados de autenticação no nosso sistema?
+            <div>
+              a) No sessionStorage &nbsp; b) No localStorage &nbsp; c) No estado
+              do componente &nbsp; d) Em cookies
             </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q1"
-                id="q1d"
-                value="d"
-              />
-              <label class="form-check-label" for="q1d">
-                D) Validar formulários
-              </label>
+          </li>
+          <li class="mb-3">
+            Qual hook customizado criamos para facilitar o uso do AuthContext?
+            <div>
+              a) useLogin &nbsp; b) useAuth &nbsp; c) useAuthContext &nbsp; d)
+              useUser
             </div>
-          </div>
+          </li>
+          <li class="mb-3">
+            O que acontece quando o usuário faz logout?
+            <div>
+              a) Apenas o estado é limpo &nbsp; b) O localStorage é limpo e o
+              usuário é redirecionado &nbsp; c) Apenas o token é removido &nbsp;
+              d) A aplicação é recarregada
+            </div>
+          </li>
+        </ol>
 
-          <div class="quiz-question mb-4">
-            <h5>
-              2. O que acontece quando um usuário não autenticado tenta acessar
-              uma rota protegida?
-            </h5>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q2"
-                id="q2a"
-                value="a"
-              />
-              <label class="form-check-label" for="q2a">
-                A) A página é exibida normalmente
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q2"
-                id="q2b"
-                value="b"
-              />
-              <label class="form-check-label" for="q2b">
-                B) É redirecionado para a página de login
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q2"
-                id="q2c"
-                value="c"
-              />
-              <label class="form-check-label" for="q2c">
-                C) Recebe uma mensagem de erro
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q2"
-                id="q2d"
-                value="d"
-              />
-              <label class="form-check-label" for="q2d">
-                D) A aplicação trava
-              </label>
-            </div>
-          </div>
-
-          <div class="quiz-question mb-4">
-            <h5>
-              3. Onde são armazenados os dados de autenticação no nosso sistema?
-            </h5>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q3"
-                id="q3a"
-                value="a"
-              />
-              <label class="form-check-label" for="q3a">
-                A) No sessionStorage
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q3"
-                id="q3b"
-                value="b"
-              />
-              <label class="form-check-label" for="q3b">
-                B) No localStorage
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q3"
-                id="q3c"
-                value="c"
-              />
-              <label class="form-check-label" for="q3c">
-                C) No estado do componente
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q3"
-                id="q3d"
-                value="d"
-              />
-              <label class="form-check-label" for="q3d"> D) Em cookies </label>
-            </div>
-          </div>
-
-          <div class="quiz-question mb-4">
-            <h5>
-              4. Qual hook customizado criamos para facilitar o uso do
-              AuthContext?
-            </h5>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q4"
-                id="q4a"
-                value="a"
-              />
-              <label class="form-check-label" for="q4a"> A) useLogin </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q4"
-                id="q4b"
-                value="b"
-              />
-              <label class="form-check-label" for="q4b"> B) useAuth </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q4"
-                id="q4c"
-                value="c"
-              />
-              <label class="form-check-label" for="q4c">
-                C) useAuthContext
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q4"
-                id="q4d"
-                value="d"
-              />
-              <label class="form-check-label" for="q4d"> D) useUser </label>
-            </div>
-          </div>
-
-          <div class="quiz-question mb-4">
-            <h5>5. O que acontece quando o usuário faz logout?</h5>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q5"
-                id="q5a"
-                value="a"
-              />
-              <label class="form-check-label" for="q5a">
-                A) Apenas o estado é limpo
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q5"
-                id="q5b"
-                value="b"
-              />
-              <label class="form-check-label" for="q5b">
-                B) O localStorage é limpo e o usuário é redirecionado
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q5"
-                id="q5c"
-                value="c"
-              />
-              <label class="form-check-label" for="q5c">
-                C) Apenas o token é removido
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="q5"
-                id="q5d"
-                value="d"
-              />
-              <label class="form-check-label" for="q5d">
-                D) A aplicação é recarregada
-              </label>
-            </div>
-          </div>
-
-          <button class="btn btn-primary" onclick="checkQuiz()">
-            Verificar Respostas
-          </button>
-          <div id="quiz-result" class="mt-3"></div>
-        </div>
+        <details class="solucao">
+          <summary>Mostrar gabarito</summary>
+          <ol>
+            <li>a) Gerenciar estado de autenticação globalmente</li>
+            <li>b) É redirecionado para a página de login</li>
+            <li>b) No localStorage</li>
+            <li>b) useAuth</li>
+            <li>b) O localStorage é limpo e o usuário é redirecionado</li>
+          </ol>
+        </details>
       </div>
     </div>
   </section>
@@ -2176,63 +1962,3 @@ const LoginForm = () => {
     </div>
   </section>
 </article>
-
-<script>
-  // Função para verificar respostas do quiz
-  function checkQuiz() {
-    const answers = {
-      q1: "a", // AuthContext gerencia estado de autenticação globalmente
-      q2: "b", // Redirecionado para login
-      q3: "b", // localStorage
-      q4: "b", // useAuth
-      q5: "b", // localStorage limpo e redirecionado
-    };
-
-    let correct = 0;
-    let total = Object.keys(answers).length;
-
-    // Verificar cada pergunta
-    Object.keys(answers).forEach((questionId) => {
-      const selectedAnswer = document.querySelector(
-        `input[name="${questionId}"]:checked`
-      );
-      if (selectedAnswer && selectedAnswer.value === answers[questionId]) {
-        correct++;
-        // Destacar resposta correta
-        selectedAnswer.parentElement.classList.add("text-success");
-      } else if (selectedAnswer) {
-        // Destacar resposta incorreta
-        selectedAnswer.parentElement.classList.add("text-danger");
-      }
-
-      // Destacar resposta correta mesmo se não foi selecionada
-      const correctAnswer = document.querySelector(
-        `input[name="${questionId}"][value="${answers[questionId]}"]`
-      );
-      if (correctAnswer && !correctAnswer.checked) {
-        correctAnswer.parentElement.classList.add("text-success");
-      }
-    });
-
-    // Mostrar resultado
-    const resultDiv = document.getElementById("quiz-result");
-    const percentage = Math.round((correct / total) * 100);
-
-    let resultClass = "alert-success";
-    let resultMessage = `Parabéns! Você acertou ${correct} de ${total} perguntas (${percentage}%).`;
-
-    if (percentage < 60) {
-      resultClass = "alert-warning";
-      resultMessage = `Você acertou ${correct} de ${total} perguntas (${percentage}%). Revise o conteúdo da aula.`;
-    } else if (percentage < 80) {
-      resultClass = "alert-info";
-      resultMessage = `Bom trabalho! Você acertou ${correct} de ${total} perguntas (${percentage}%).`;
-    }
-
-    resultDiv.innerHTML = `
-    <div class="alert ${resultClass}">
-      <strong>Resultado:</strong> ${resultMessage}
-    </div>
-  `;
-  }
-</script>
