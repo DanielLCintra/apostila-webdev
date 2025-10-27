@@ -115,6 +115,7 @@
 
         <pre><code class="language-jsx">// contexts/AuthContext.js (NOVO ARQUIVO)
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import api from '../utils/api';
 
 // 1. Criar o Context
 const AuthContext = createContext();

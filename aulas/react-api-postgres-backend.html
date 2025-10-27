@@ -258,42 +258,46 @@ export {
 
         <h5>📁 Arquivo: app/lib/migrate.js</h5>
         <pre><code class="language-js">// app/lib/migrate.js
-require('dotenv').config({ path: '.env.local' });
-const { Pool } = require('pg');
+import dotenv from 'dotenv';
+import pkg from 'pg';
+const { Pool } = pkg;
+
+// Load .env.local file
+dotenv.config({ path: '.env.local' });
 
 async function runMigrations() {
-  try {
-    console.log('🔄 Iniciando migrations...');
+    try {
+        console.log('🔄 Iniciando migrations...');
 
-    // Conectar ao banco de dados padrão para criar o banco se não existir
-    const adminUrl = process.env.DATABASE_URL.replace(process.env.DB_NAME, 'postgres');
-    const adminPool = new Pool({
-        connectionString: adminUrl,
-        ssl: {
-            rejectUnauthorized: false
+        // Conectar ao banco de dados padrão para criar o banco se não existir
+        const adminUrl = process.env.DATABASE_URL.replace(process.env.DB_NAME, 'postgres');
+        const adminPool = new Pool({
+            connectionString: adminUrl,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+
+        // Verificar e criar o banco de dados
+        const dbCheck = await adminPool.query(
+            `SELECT 1 FROM pg_database WHERE datname = $1`,
+            [process.env.DB_NAME]
+        );
+
+        if (dbCheck.rows.length === 0) {
+            await adminPool.query(`CREATE DATABASE ${process.env.DB_NAME}`);
+            console.log(`✅ Banco de dados ${process.env.DB_NAME} criado`);
+        } else {
+            console.log(`ℹ️  Banco de dados ${process.env.DB_NAME} já existe`);
         }
-    });
 
-    // Verificar e criar o banco de dados
-    const dbCheck = await adminPool.query(
-        `SELECT 1 FROM pg_database WHERE datname = $1`,
-        [process.env.DB_NAME]
-    );
+        await adminPool.end();
 
-    if (dbCheck.rows.length === 0) {
-        await adminPool.query(`CREATE DATABASE ${process.env.DB_NAME}`);
-        console.log(`✅ Banco de dados ${process.env.DB_NAME} criado`);
-    } else {
-        console.log(`ℹ️  Banco de dados ${process.env.DB_NAME} já existe`);
-    }
+        // Agora usar o pool normal para criar as tabelas
+        const { pool } = await import('./db.js');
 
-    await adminPool.end();
-
-    // Agora usar o pool normal para criar as tabelas
-    const { pool } = require('./db');
-
-    // Criar tabela users
-    await pool.query(`
+        // Criar tabela users
+        await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
@@ -303,22 +307,22 @@ async function runMigrations() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    console.log('✅ Tabela users criada');
+        console.log('✅ Tabela users criada');
 
-    // Verificar e adicionar campo email se não existir
-    const emailColumnCheck = await pool.query(`
+        // Verificar e adicionar campo email se não existir
+        const emailColumnCheck = await pool.query(`
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_name='users' AND column_name='email'
     `);
 
-    if (emailColumnCheck.rows.length === 0) {
-        await pool.query('ALTER TABLE users ADD COLUMN email VARCHAR(100) UNIQUE');
-        console.log('✅ Campo email adicionado à tabela users');
-    }
+        if (emailColumnCheck.rows.length === 0) {
+            await pool.query('ALTER TABLE users ADD COLUMN email VARCHAR(100) UNIQUE');
+            console.log('✅ Campo email adicionado à tabela users');
+        }
 
-    // Criar tabela contacts
-    await pool.query(`
+        // Criar tabela contacts
+        await pool.query(`
       CREATE TABLE IF NOT EXISTS contacts (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
@@ -327,36 +331,36 @@ async function runMigrations() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    console.log('✅ Tabela contacts criada');
+        console.log('✅ Tabela contacts criada');
 
-    // Inserir usuários de teste
-    const testUsers = [
-      { name: 'Administrador', email: 'admin@contatos.com', password: '123456', role: 'admin' },
-      { name: 'Usuário Teste', email: 'user@contatos.com', password: 'senha123', role: 'user' },
-      { name: 'Demo', email: 'demo@contatos.com', password: 'demo123', role: 'user' }
-    ];
+        // Inserir usuários de teste
+        const testUsers = [
+            { name: 'Administrador', email: 'admin@contatos.com', password: '123456', role: 'admin' },
+            { name: 'Usuário Teste', email: 'user@contatos.com', password: 'senha123', role: 'user' },
+            { name: 'Demo', email: 'demo@contatos.com', password: 'demo123', role: 'user' }
+        ];
 
-    for (const user of testUsers) {
-      const existingUser = await pool.query(
-        'SELECT id FROM users WHERE email = $1',
-        [user.email]
-      );
+        for (const user of testUsers) {
+            const existingUser = await pool.query(
+                'SELECT id FROM users WHERE email = $1',
+                [user.email]
+            );
 
-      if (existingUser.rows.length === 0) {
-        await pool.query(
-          'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4)',
-          [user.name, user.email, user.password, user.role]
-        );
-        console.log(`✅ Usuário ${user.name} (${user.email}) inserido`);
-      }
+            if (existingUser.rows.length === 0) {
+                await pool.query(
+                    'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4)',
+                    [user.name, user.email, user.password, user.role]
+                );
+                console.log(`✅ Usuário ${user.name} (${user.email}) inserido`);
+            }
+        }
+
+        console.log('🎉 Migrations concluídas com sucesso!');
+        process.exit(0);
+    } catch (err) {
+        console.error('❌ Erro nas migrations:', err);
+        process.exit(1);
     }
-
-    console.log('🎉 Migrations concluídas com sucesso!');
-    process.exit(0);
-  } catch (err) {
-    console.error('❌ Erro nas migrations:', err);
-    process.exit(1);
-  }
 }
 
 runMigrations();</code></pre>
@@ -372,6 +376,7 @@ runMigrations();</code></pre>
   "name": "contatos",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -384,7 +389,8 @@ runMigrations();</code></pre>
 
         <div class="alert alert-info mt-3">
           <strong>📝 O que fazemos:</strong> Adicionamos a linha
-          <code>"migrate": "node lib/migrate.js"</code> na seção de scripts.
+          <code>"type": "module"</code> para habilitar ES modules e a linha
+          <code>"migrate": "node app/lib/migrate.js"</code> na seção de scripts.
           Isso permite executar as migrations com um comando simples.
         </div>
 
@@ -427,14 +433,103 @@ npm run migrate</code></pre>
     </div>
   </section>
 
-  <!-- 4. Criar Endpoints de API -->
+  <!-- 4. Mudanças de Nomenclatura dos Campos -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-plug"></i> 4. Criar Endpoints de API
+      <i class="fas fa-exchange-alt"></i> 4. Mudanças de Nomenclatura dos Campos
     </h3>
     <div class="card mb-4">
       <div class="card-body">
-        <h4>4.1 Endpoint: Listar Todos os Contatos</h4>
+        <h4>⚠️ Importante: Campos Agora em Inglês</h4>
+        <p>
+          Nas versões anteriores do projeto, os campos de contato estavam em
+          português. Agora que estamos integrando com PostgreSQL e criando uma
+          API própria,
+          <strong>os campos foram padronizados para inglês</strong>:
+        </p>
+
+        <div class="alert alert-warning mt-3">
+          <strong>📝 Mudanças de Nomenclatura:</strong>
+          <ul class="mt-2">
+            <li><code>nome</code> → <code>name</code></li>
+            <li><code>telefone</code> → <code>telephone</code></li>
+            <li><code>email</code> → <code>email</code> (sem mudança)</li>
+          </ul>
+        </div>
+
+        <h5>Arquivos que precisam ser atualizados</h5>
+        <p>
+          Se você está migrando de uma versão anterior com campos em português,
+          estes arquivos precisam ser atualizados:
+        </p>
+
+        <ul>
+          <li>
+            <code>app/components/ContactForm.js</code> - Campos do formulário
+          </li>
+          <li>
+            <code>app/components/ContactItem.js</code> - Exibição de contato
+          </li>
+          <li><code>app/hooks/useForm.js</code> - Estado do formulário</li>
+          <li>
+            <code>app/hooks/useFilter.js</code> - Filtro por name e telephone
+          </li>
+          <li><code>app/hooks/useStatistics.js</code> - Estatísticas</li>
+          <li>
+            <code>app/contexts/ContactsContext.js</code> - Sincronização offline
+          </li>
+        </ul>
+
+        <div class="alert alert-info mt-3">
+          <strong>💡 Nota:</strong> Os arquivos de backend criados nesta aula
+          (route.js, migrate.js) já vêm com os nomes corretos em inglês, pois
+          foram criados do zero nesta aula.
+        </div>
+
+        <div class="alert alert-info mt-3">
+          <strong>💡 Dica:</strong> Se você está seguindo esta aula e já tinha
+          um projeto funcionando com campos em português, use "Find and Replace"
+          para atualizar todos os arquivos de uma vez. Busque por:
+          <ul class="mt-2">
+            <li><code>contact.nome</code> → <code>contact.name</code></li>
+            <li>
+              <code>contact.telefone</code> → <code>contact.telephone</code>
+            </li>
+            <li><code>nome:</code> → <code>name:</code> (em objetos)</li>
+            <li>
+              <code>telefone:</code> → <code>telephone:</code> (em objetos)
+            </li>
+          </ul>
+        </div>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Essa mudança é necessária porque:</strong>
+          <ul>
+            <li>A database usa campos em inglês (padrão da indústria)</li>
+            <li>Facilita integração com outros sistemas</li>
+            <li>Torna o código mais profissional e internacional</li>
+            <li>Evita problemas com caracteres especiais</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-warning mt-3">
+          <strong>⚠️ Atenção:</strong> Se você está seguindo esta aula do zero,
+          os arquivos já vêm com os nomes corretos em inglês. Esta seção serve
+          principalmente como referência para quem está migrando de uma versão
+          anterior do projeto.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Criar Endpoints de API -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-plug"></i> 5. Criar Endpoints de API
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>5.1 Endpoint: Listar Todos os Contatos</h4>
         <p>Crie o arquivo para listar todos os contatos:</p>
 
         <h5>📁 Arquivo: app/api/contacts/route.js</h5>
@@ -494,7 +589,7 @@ export async function POST(request) {
   }
 }</code></pre>
 
-        <h4>4.2 Endpoint: Operações em Contato Específico</h4>
+        <h4>5.2 Endpoint: Operações em Contato Específico</h4>
         <p>Crie o arquivo para operações em um contato específico:</p>
 
         <h5>📁 Arquivo: app/api/contacts/[id]/route.js</h5>
@@ -603,7 +698,7 @@ export async function DELETE(request, { params }) {
   }
 }</code></pre>
 
-        <h4>4.3 Endpoint: Login de Usuários</h4>
+        <h4>5.3 Endpoint: Login de Usuários</h4>
         <p>Crie o arquivo para autenticação:</p>
 
         <h5>📁 Arquivo: app/api/auth/login/route.js</h5>
@@ -679,7 +774,7 @@ export async function POST(request) {
           </ul>
         </div>
 
-        <h4>4.4 Endpoint: Health Check</h4>
+        <h4>5.4 Endpoint: Health Check</h4>
         <p>Crie um endpoint para verificar se a API está funcionando:</p>
 
         <h5>📁 Arquivo: app/api/health/route.js</h5>
@@ -700,21 +795,21 @@ export async function GET() {
     </div>
   </section>
 
-  <!-- 5. Testar os Endpoints -->
+  <!-- 6. Testar os Endpoints -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-vials"></i> 5. Testar os Endpoints
+      <i class="fas fa-vials"></i> 6. Testar os Endpoints
     </h3>
     <div class="card mb-4">
       <div class="card-body">
-        <h4>5.1 Iniciar o servidor</h4>
+        <h4>6.1 Iniciar o servidor</h4>
         <div class="code-header">Terminal</div>
         <pre><code class="language-bash">cd contatos
 npm run dev</code></pre>
 
         <p>O servidor estará rodando em <code>http://localhost:3000</code></p>
 
-        <h4>5.2 Testar Health Check</h4>
+        <h4>6.2 Testar Health Check</h4>
         <div class="code-header">Terminal</div>
         <pre><code class="language-bash">curl http://localhost:3000/api/health</code></pre>
 
@@ -727,7 +822,7 @@ npm run dev</code></pre>
 }</code></pre>
         </div>
 
-        <h4>5.3 Testar Login</h4>
+        <h4>6.3 Testar Login</h4>
         <div class="code-header">Terminal</div>
         <pre><code class="language-bash">curl -X POST http://localhost:3000/api/auth/login \
   -H "Content-Type: application/json" \
@@ -747,7 +842,7 @@ npm run dev</code></pre>
 }</code></pre>
         </div>
 
-        <h4>5.4 Testar CRUD de Contatos</h4>
+        <h4>6.4 Testar CRUD de Contatos</h4>
 
         <h5>a) Listar contatos (GET)</h5>
         <div class="code-header">Terminal</div>
@@ -779,7 +874,7 @@ npm run dev</code></pre>
           endpoints de forma mais visual.
         </div>
 
-        <h4>5.5 Importar Collection do Postman</h4>
+        <h4>6.5 Importar Collection do Postman</h4>
         <p>
           Para facilitar os testes, criamos uma collection completa do Postman
           com todos os endpoints:
@@ -803,7 +898,10 @@ npm run dev</code></pre>
           </li>
           <li>
             Abra o Postman no seu computador (baixe em
-            <a href="https://www.postman.com/downloads/" target="_blank"
+            <a
+              href="https://www.postman.com/downloads/"
+              target="_blank"
+              rel="noopener noreferrer"
               >postman.com</a
             >
             se não tiver)
@@ -854,14 +952,14 @@ npm run dev</code></pre>
     </div>
   </section>
 
-  <!-- 6. Adaptar Front-end para Nova API -->
+  <!-- 7. Adaptar Front-end para Nova API -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-sync-alt"></i> 6. Adaptar Front-end para Nova API
+      <i class="fas fa-sync-alt"></i> 7. Adaptar Front-end para Nova API
     </h3>
     <div class="card mb-4">
       <div class="card-body">
-        <h4>6.1 Atualizar arquivo api.js</h4>
+        <h4>7.1 Atualizar arquivo api.js</h4>
         <p>Vamos mudar o <code>baseURL</code> do axios para nossa API local:</p>
 
         <h5>📁 Arquivo: app/utils/api.js</h5>
@@ -911,7 +1009,7 @@ export default api;</code></pre>
           produção.
         </div>
 
-        <h4>6.2 Adaptar ContactsContext para Nova API</h4>
+        <h4>7.2 Adaptar ContactsContext para Nova API</h4>
         <p>A API que criamos retorna os dados em formato diferente:</p>
 
         <h5>📁 Arquivo: app/contexts/ContactsContext.js</h5>
@@ -933,52 +1031,206 @@ const apiContacts = response.data.data; // Array dentro de { success: true, data
 
         <pre><code class="language-js">// app/contexts/ContactsContext.js - Função loadContacts
 const loadContacts = useCallback(async () => {
-    try {
-        setLoading(true);
-        setError(null);
+    let isMounted = true;
 
-        const response = await api.get('/contacts');
-        
-        // 🆕 ADAPTAR: Extrair data.data ao invés de data
-        if (response.data.success) {
-            setContacts(response.data.data);
-            setIsOffline(false);
-        } else {
-            throw new Error(response.data.message);
+    try {
+        if (isMounted) {
+            setLoading(true);
+            setError(null);
+        }
+
+        // Verificar cache primeiro
+        const cachedContacts = cacheService.get();
+        if (cachedContacts && isMounted) {
+            setContacts(cachedContacts);
+            setLoading(false);
+        }
+
+        // Tentar carregar da API
+        try {
+            const response = await api.get('/contacts');
+            const apiContacts = response.data.data;
+
+            if (isMounted) {
+                // Salvar no cache service
+                cacheService.set(apiContacts);
+                setContacts(apiContacts);
+                setIsOffline(false);
+            }
+        } catch (apiError) {
+            // Se API falhar e não há cache, mostrar erro
+            if (isMounted) {
+                if (!cachedContacts) {
+                    setIsOffline(true);
+                    setError('Erro ao carregar contatos e sem cache disponível.');
+                } else {
+                    setIsOffline(true);
+                    console.log('API offline, usando cache');
+                }
+            }
         }
     } catch (err) {
-        console.error('Erro ao carregar contatos:', err);
-        setError('Erro ao carregar contatos');
-        setIsOffline(true);
+        if (isMounted) {
+            setError('Erro ao carregar contatos');
+        }
     } finally {
-        setLoading(false);
+        if (isMounted) {
+            setLoading(false);
+        }
     }
 }, []);</code></pre>
 
-        <h4>6.3 Adaptar addContact</h4>
+        <h4>7.3 Adaptar addContact</h4>
         <pre><code class="language-js">// app/contexts/ContactsContext.js - Função addContact
 const addContact = useCallback(async (newContact) => {
     try {
-        const response = await api.post('/contacts', newContact);
-        
-        // 🆕 ADAPTAR: Extrair data.data
-        if (response.data.success) {
+        // Tentar salvar via API primeiro
+        try {
+            const response = await api.post('/contacts', newContact);
+
             const contactWithId = response.data.data;
-            setContacts(prev => [...prev, contactWithId]);
+            setContacts(prev => {
+                const updated = [...prev, contactWithId];
+                cacheService.set(updated);
+                return updated;
+            });
             return contactWithId;
-        } else {
-            throw new Error(response.data.message);
+        } catch (apiError) {
+            // Se API falhar, salvar localmente
+            console.log('API offline, salvando localmente');
+            const contactWithId = { ...newContact, id: Date.now() };
+            setContacts(prev => {
+                const updated = [...prev, contactWithId];
+                cacheService.set(updated);
+                return updated;
+            });
+            return contactWithId;
         }
     } catch (err) {
-        console.error('Erro ao adicionar contato:', err);
         throw new Error('Erro ao adicionar contato');
     }
 }, []);</code></pre>
 
-        <h4>6.4 Adaptar AuthContext</h4>
+        <h4>7.4 Sincronização Offline com useEffect</h4>
+        <p>
+          Adicione um useEffect que sincroniza contatos salvos offline quando
+          voltar online:
+        </p>
+
+        <pre><code class="language-js">// app/contexts/ContactsContext.js - useEffect para sincronização
+useEffect(() => {
+    const syncPendingContacts = async () => {
+        try {
+            // Buscar contatos da API
+            const response = await api.get('/contacts');
+            const serverContacts = response.data.data;
+
+            // Buscar contatos locais
+            const localContacts = contacts;
+
+            // Encontrar contatos que existem localmente mas não no servidor
+            const pendingContacts = localContacts.filter(localContact => {
+                // Se o ID é um timestamp (salvo offline), precisa sincronizar
+                return typeof localContact.id === 'number' &&
+                    localContact.id > 1000000000000 && // Timestamp válido
+                    !serverContacts.some(serverContact =>
+                        serverContact.nome === localContact.nome &&
+                        serverContact.email === localContact.email &&
+                        serverContact.telefone === localContact.telefone
+                    );
+            });
+
+            // Enviar contatos pendentes para a API
+            for (const pendingContact of pendingContacts) {
+                try {
+                    const { id, ...contactData } = pendingContact;
+                    const response = await api.post('/contacts', contactData);
+
+                    // Atualizar o contato local com o ID da API
+                    setContacts(prev => prev.map(contact =>
+                        contact.id === pendingContact.id
+                            ? { ...contact, id: response.data.id }
+                            : contact
+                    ));
+
+                    console.log('Contato sincronizado:', contactData.nome);
+                } catch (err) {
+                    console.error('Erro ao sincronizar contato:', err);
+                }
+            }
+
+            // Atualizar com dados do servidor
+            setContacts(serverContacts);
+            cacheService.set(serverContacts);
+
+        } catch (err) {
+            console.error('Erro na sincronização:', err);
+        }
+    };
+
+    const handleOnline = () => {
+        setIsOffline(false);
+        console.log('Voltou online - sincronizando...');
+        syncPendingContacts();
+    };
+
+    const handleOffline = () => {
+        setIsOffline(true);
+        console.log('Ficou offline - usando cache local');
+    };
+
+    // Verificar status inicial
+    setIsOffline(!navigator.onLine);
+
+    // Adicionar listeners
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+    };
+}, [contacts]);</code></pre>
+
+        <h4>7.5 Adicionar função getContact</h4>
+        <p>
+          Adicione uma função para buscar um contato específico com fallback
+          offline:
+        </p>
+
+        <pre><code class="language-js">// app/contexts/ContactsContext.js - Função getContact
+// Buscar contato específico por ID
+const getContact = useCallback(async (id) => {
+    try {
+        // Primeiro, tentar buscar da API
+        try {
+            const response = await api.get(`/contacts/${id}`);
+            return response.data.data;
+        } catch (apiError) {
+            // Se API falhar, buscar do cache local
+            console.log('API offline, buscando do cache local');
+            const cachedContacts = cacheService.get();
+            if (cachedContacts) {
+                const foundContact = cachedContacts.find(c => c.id === parseInt(id));
+                if (foundContact) {
+                    return foundContact;
+                }
+            }
+            throw new Error('Contato não encontrado');
+        }
+    } catch (err) {
+        console.error('Erro ao buscar contato:', err);
+        throw err;
+    }
+}, []);</code></pre>
+
+        <h4>7.6 Adaptar AuthContext</h4>
         <p>Adapte o login para usar a nova API:</p>
 
-        <pre><code class="language-js">// app/contexts/AuthContext.js - Função login
+        <pre><code class="language-js">// app/contexts/AuthContext.js - Importar api
+import api from '../utils/api';
+
+// Função login
 const login = useCallback(async (email, password) => {
     try {
         setLoading(true);
@@ -1032,10 +1284,10 @@ const login = useCallback(async (email, password) => {
     </div>
   </section>
 
-  <!-- 7. Quiz -->
+  <!-- 8. Quiz -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-clipboard-check"></i> 7. Teste seus Conhecimentos (Quiz)
+      <i class="fas fa-clipboard-check"></i> 8. Teste seus Conhecimentos (Quiz)
     </h3>
     <div class="card mb-4">
       <div class="card-body">
@@ -1122,10 +1374,10 @@ const login = useCallback(async (email, password) => {
     </div>
   </section>
 
-  <!-- 8. Exercícios Práticos -->
+  <!-- 9. Exercícios Práticos -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-chalkboard-teacher"></i> 8. Exercícios Práticos
+      <i class="fas fa-chalkboard-teacher"></i> 9. Exercícios Práticos
     </h3>
 
     <div class="desafio">
@@ -1529,14 +1781,14 @@ export async function POST(request) {
     </div>
   </section>
 
-  <!-- 9. Deploy e Produção -->
+  <!-- 10. Deploy e Produção -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-rocket"></i> 9. Deploy e Produção
+      <i class="fas fa-rocket"></i> 10. Deploy e Produção
     </h3>
     <div class="card mb-4">
       <div class="card-body">
-        <h4>9.1 Variáveis de ambiente em produção</h4>
+        <h4>10.1 Variáveis de ambiente em produção</h4>
         <p>No Vercel, configure as variáveis de ambiente:</p>
 
         <ol>
@@ -1557,7 +1809,7 @@ export async function POST(request) {
           </li>
         </ol>
 
-        <h4>9.2 Adaptar baseURL para produção</h4>
+        <h4>10.2 Adaptar baseURL para produção</h4>
         <p>Crie uma variável de ambiente para a base da API:</p>
 
         <h5>📁 Arquivo: app/utils/api.js (versão produção)</h5>
@@ -1578,7 +1830,7 @@ const api = axios.create({
         <pre><code class="language-plaintext"># URL da API (usa a mesma do Next.js por ser full-stack)
 NEXT_PUBLIC_API_URL=https://seu-projeto.vercel.app/api</code></pre>
 
-        <h4>9.3 Deploy no Vercel</h4>
+        <h4>10.3 Deploy no Vercel</h4>
         <div class="code-header">Terminal</div>
         <pre><code class="language-bash"># Commit e push
 git add .
@@ -1601,10 +1853,10 @@ git push origin main
     </div>
   </section>
 
-  <!-- 10. Resumo e Conclusão -->
+  <!-- 11. Resumo e Conclusão -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-check-circle"></i> 10. Resumo e Conclusão
+      <i class="fas fa-check-circle"></i> 11. Resumo e Conclusão
     </h3>
     <div class="card mb-4">
       <div class="card-body">
