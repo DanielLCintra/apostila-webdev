@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 06 - Limpando e Modularizando</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 06 - Limpando e Modularizando</h1>
+            <p class="subtitle">DTOs, validações, tratamento de erros e organização</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <p>
+                        Nas <strong>Aulas 03, 04 e 05</strong>, você criou APIs REST com Spring Boot, aprendeu JPA 
+                        para persistir dados e como debugar e testar seu código. Agora vamos <strong>melhorar a qualidade 
+                        e organização</strong> do código usando DTOs, validações e tratamento de erros.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Spring Boot, JPA, Controllers, Services, Repositories, 
+                        testes básicos
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> DTOs (separar modelo de domínio da API), 
+                        Bean Validation, tratamento global de erros com @ControllerAdvice e como organizar melhor 
+                        seu código
+                    </p>
+                    <div class="tip-box">
+                        <strong>💡 Por que isso é importante?</strong> Até agora você provavelmente está retornando 
+                        entidades JPA diretamente nos controllers. Isso funciona, mas não é uma boa prática. 
+                        Vamos aprender a fazer do jeito certo!
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📦 DTOs (Data Transfer Objects)</h2>
+                
+                <div class="concept-box">
+                    <h3>Por que usar DTOs?</h3>
+                    <ul>
+                        <li>Separar modelo de domínio da API</li>
+                        <li>Controlar quais dados são expostos</li>
+                        <li>Evitar expor campos internos (como IDs de relacionamento)</li>
+                        <li>Facilitar versionamento da API</li>
+                        <li>Permitir diferentes representações para entrada e saída</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Criando DTOs</h3>
+                    <p><strong>Importante:</strong> Para usar as anotações de validação, você precisa adicionar a dependência <code>spring-boot-starter-validation</code> (veja seção de Validações abaixo) e importar as anotações.</p>
+                    <div class="code-block">
+<pre>package com.exemplo.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+// DTO para criação (entrada)
+public record CriarUsuarioDTO(
+    @NotBlank(message = "Nome é obrigatório")
+    @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
+    String nome,
+    
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Email inválido")
+    String email
+) {}
+
+// DTO para resposta (saída)
+public record UsuarioResponseDTO(
+    Long id,
+    String nome,
+    String email,
+    LocalDateTime dataCriacao
+) {
+    public static UsuarioResponseDTO from(Usuario usuario) {
+        return new UsuarioResponseDTO(
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getEmail(),
+            usuario.getDataCriacao()
+        );
+    }
+}
+
+// DTO para atualização
+public record AtualizarUsuarioDTO(
+    @Size(min = 3, max = 100)
+    String nome,
+    
+    @Email
+    String email
+) {}
+
+// DTO para resposta (saída) - não precisa validações
+public record UsuarioResponseDTO(
+    Long id,
+    String nome,
+    String email,
+    LocalDateTime dataCriacao
+) {
+    // Método estático para converter de Entidade para DTO
+    public static UsuarioResponseDTO from(Usuario usuario) {
+        return new UsuarioResponseDTO(
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getEmail(),
+            usuario.getDataCriacao()
+        );
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Usando DTOs no Controller</h3>
+                    <p><strong>Importante:</strong> Use <code>@Valid</code> nos parâmetros <code>@RequestBody</code> para ativar as validações. Sem isso, as anotações de validação não funcionam!</p>
+                    <div class="code-block">
+<pre>package com.exemplo.controller;
+
+import com.exemplo.dto.CriarUsuarioDTO;
+import com.exemplo.dto.UsuarioResponseDTO;
+import com.exemplo.service.UsuarioService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+    
+    private final UsuarioService usuarioService;
+    
+    // Injeção via construtor (boa prática)
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+    
+    @PostMapping
+    public ResponseEntity&lt;UsuarioResponseDTO&gt; criar(
+            @Valid @RequestBody CriarUsuarioDTO dto) {
+        // @Valid ativa as validações do Bean Validation
+        // Se validação falhar, retorna 400 Bad Request automaticamente
+        Usuario usuario = new Usuario(dto.nome(), dto.email());
+        Usuario usuarioSalvo = usuarioService.criar(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(UsuarioResponseDTO.from(usuarioSalvo));
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;UsuarioResponseDTO&gt; buscar(@PathVariable Long id) {
+        Usuario usuario = usuarioService.buscarPorId(id)
+            .orElseThrow(() -&gt; new RuntimeException("Usuário não encontrado"));
+        return ResponseEntity.ok(UsuarioResponseDTO.from(usuario));
+    }
+}</pre>
+                    </div>
+                    <div class="tip-box">
+                        <strong>💡 Por que @Valid é importante?</strong> Sem <code>@Valid</code>, o Spring não executa as validações definidas nas anotações. 
+                        Sempre use <code>@Valid</code> em parâmetros <code>@RequestBody</code> que têm anotações de validação.
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Validações com Bean Validation</h2>
+                
+                <div class="step-box">
+                    <h3>1. Adicionar Dependência</h3>
+                    <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Anotações de Validação</h3>
+                    <p><strong>Importante:</strong> As anotações de validação vêm do pacote <code>jakarta.validation.constraints</code> (ou <code>javax.validation.constraints</code> em versões antigas do Spring Boot).</p>
+                    <div class="code-block">
+<pre>package com.exemplo.dto;
+
+import jakarta.validation.constraints.*;
+
+public record CriarTarefaDTO(
+    @NotBlank(message = "Título é obrigatório")
+    @Size(min = 3, max = 200, message = "Título deve ter entre 3 e 200 caracteres")
+    String titulo,
+    
+    @Size(max = 1000, message = "Descrição não pode ter mais de 1000 caracteres")
+    String descricao,
+    
+    @NotNull(message = "Data de vencimento é obrigatória")
+    @Future(message = "Data de vencimento deve ser no futuro")
+    LocalDateTime dataVencimento,
+    
+    @Min(value = 1, message = "Prioridade deve ser entre 1 e 5")
+    @Max(value = 5, message = "Prioridade deve ser entre 1 e 5")
+    Integer prioridade
+) {}</pre>
+                    </div>
+                    <div class="tip-box">
+                        <strong>💡 Spring Boot 3.x:</strong> Use <code>jakarta.validation</code> (não <code>javax.validation</code>). 
+                        Se você estiver usando Spring Boot 2.x, use <code>javax.validation</code>.
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Anotações Mais Comuns</h3>
+                    <ul>
+                        <li><code>@NotNull</code> - Não pode ser null</li>
+                        <li><code>@NotBlank</code> - Não pode ser null, vazio ou só espaços (String)</li>
+                        <li><code>@NotEmpty</code> - Não pode ser null ou vazio</li>
+                        <li><code>@Size(min, max)</code> - Tamanho de String/Collection</li>
+                        <li><code>@Min</code>, <code>@Max</code> - Valores numéricos</li>
+                        <li><code>@Email</code> - Formato de email válido</li>
+                        <li><code>@Past</code>, <code>@Future</code> - Datas</li>
+                        <li><code>@Pattern</code> - Regex</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🛡️ Tratamento Global de Erros</h2>
+                
+                <div class="concept-box">
+                    <h3>@ControllerAdvice - Handler Global</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    
+    // Trata erros de validação
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleValidationErrors(
+            MethodArgumentNotValidException ex) {
+        
+        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();
+        ex.getBindingResult().getAllErrors().forEach((error) -&gt; {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        
+        Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("errors", errors);
+        
+        return ResponseEntity.badRequest().body(response);
+    }
+    
+    // Trata exceções genéricas
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleRuntimeException(
+            RuntimeException ex) {
+        
+        Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("message", ex.getMessage());
+        
+        return ResponseEntity.badRequest().body(response);
+    }
+    
+    // Trata recursos não encontrados
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleResourceNotFound(
+            ResourceNotFoundException ex) {
+        
+        Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("message", ex.getMessage());
+        
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Exceção Customizada</h3>
+                    <div class="code-block">
+<pre>public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+    
+    public ResourceNotFoundException(String resource, Long id) {
+        super(String.format("%s com id %d não encontrado", resource, id));
+    }
+}
+
+// Uso no Service
+public Usuario buscarPorId(Long id) {
+    return usuarioRepository.findById(id)
+        .orElseThrow(() -&gt; new ResourceNotFoundException("Usuário", id));
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📁 Organização de Pastas</h2>
+                
+                <div class="concept-box">
+                    <h3>Estrutura Recomendada</h3>
+                    <div class="code-block">
+<pre>src/main/java/com/exemplo/
+├── controller/          # Controllers REST
+│   └── UsuarioController.java
+├── service/             # Lógica de negócio
+│   └── UsuarioService.java
+├── repository/          # Acesso a dados
+│   └── UsuarioRepository.java
+├── entity/              # Entidades JPA
+│   └── Usuario.java
+├── dto/                 # Data Transfer Objects
+│   ├── request/
+│   │   └── CriarUsuarioDTO.java
+│   └── response/
+│       └── UsuarioResponseDTO.java
+├── exception/           # Exceções customizadas
+│   ├── GlobalExceptionHandler.java
+│   └── ResourceNotFoundException.java
+└── config/              # Configurações
+    └── AppConfig.java</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ Bean Configuration</h2>
+                
+                <div class="concept-box">
+                    <h3>@Configuration e @Bean</h3>
+                    <p>Use <code>@Configuration</code> para definir beans customizados.</p>
+                    
+                    <div class="code-block">
+<pre>package com.exemplo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
+public class AppConfig {
+    
+    // Bean para RestTemplate (cliente HTTP)
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+    
+    // Bean para ObjectMapper customizado
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Quando usar @Bean:</strong>
+                    <ul>
+                        <li>Configurar bibliotecas de terceiros</li>
+                        <li>Criar objetos complexos que precisam de configuração</li>
+                        <li>Definir beans que serão injetados em múltiplos lugares</li>
+                        <li>Configurar componentes que não são suas classes</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 06</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Entendeu por que usar DTOs (separar domínio da API)</li>
+                        <li>✅ Criou DTOs de request e response usando Records</li>
+                        <li>✅ Adicionou dependência spring-boot-starter-validation</li>
+                        <li>✅ Usou anotações de validação (@NotBlank, @Email, @Size)</li>
+                        <li>✅ Usou @Valid nos controllers para ativar validações</li>
+                        <li>✅ Criou GlobalExceptionHandler com @ControllerAdvice</li>
+                        <li>✅ Tratou MethodArgumentNotValidException</li>
+                        <li>✅ Organizou pastas (controller, service, dto, exception)</li>
+                        <li>✅ Entendeu a diferença entre entidade JPA e DTO</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>💡 Boas Práticas</h2>
+                
+                <div class="tip-box">
+                    <ul>
+                        <li><strong>Use DTOs:</strong> Nunca exponha entidades JPA diretamente</li>
+                        <li><strong>Valide na entrada:</strong> Use <code>@Valid</code> em todos os DTOs de entrada</li>
+                        <li><strong>Trate erros globalmente:</strong> Use <code>@ControllerAdvice</code> para centralizar tratamento</li>
+                        <li><strong>Organize por camadas:</strong> Separe controller, service, repository, dto</li>
+                        <li><strong>Use records para DTOs:</strong> Reduz boilerplate e garante imutabilidade</li>
+                        <li><strong>Mensagens de erro claras:</strong> Ajudam desenvolvedores frontend</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧠 Exercício Prático</h2>
+                <div class="challenge-box">
+                    <h3>Refatorar Projeto com DTOs e Validações</h3>
+                    <p><strong>Objetivo:</strong> Aplicar todas as práticas aprendidas.</p>
+                    
+                    <h4>Tarefas:</h4>
+                    <ol>
+                        <li>Crie DTOs de request e response para sua entidade principal</li>
+                        <li>Adicione validações nos DTOs de entrada</li>
+                        <li>Implemente <code>@ControllerAdvice</code> para tratamento global</li>
+                        <li>Crie exceções customizadas (ResourceNotFoundException, etc.)</li>
+                        <li>Reorganize pastas seguindo a estrutura recomendada</li>
+                        <li>Teste validações enviando dados inválidos via Postman</li>
+                    </ol>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-05.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-07.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

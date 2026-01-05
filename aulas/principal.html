@@ -16,6 +16,7 @@
         <a
           href="https://github.com/DanielLCintra/apostila-webdev"
           target="_blank"
+          rel="noopener noreferrer"
           class="btn btn-secondary ml-2"
         >
           <i class="fab fa-github"></i> Ver no GitHub
@@ -134,6 +135,7 @@
         <a
           href="https://github.com/DanielLCintra/apostila-webdev"
           target="_blank"
+          rel="noopener noreferrer"
           class="btn btn-primary"
         >
           <i class="fab fa-github"></i> Ver Repositório no GitHub
@@ -144,7 +146,97 @@
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-book"></i> Bibliografia Recomendada
+      <i class="fas fa-tv"></i> Canal DevFast
+    </h3>
+    <div class="card p-4 devfast-highlight">
+      <div class="devfast-content">
+        <div class="devfast-header">
+          <img
+            src="assets/images/devfast-logo.png.jpeg"
+            alt="Logo DevFast"
+            class="devfast-logo"
+          />
+          <div>
+            <h4 class="mb-2">📺 DevFast - Seu Canal de Desenvolvimento Web</h4>
+            <p class="lead-text">
+              Acompanhe tutoriais práticos, dicas e técnicas para aprimorar suas
+              habilidades de programação. Conteúdo atualizado regularmente com
+              foco em desenvolvimento web moderno.
+            </p>
+            <a
+              href="https://www.youtube.com/@DevFastOficial"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-primary mt-3"
+            >
+              <i class="fab fa-youtube"></i> Inscreva-se no Canal
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-book"></i> 📖 Livro DevFast – "Do Zero ao Dev"
+    </h3>
+    <div class="card p-4 book-highlight">
+      <div class="book-main-preview mb-4">
+        <img
+          src="assets/images/CAPA LIVRO DEVFAST final.jpg"
+          alt="Livro DevFast - Do Zero ao Dev"
+          class="book-main-cover"
+        />
+        <div>
+          <p class="lead-text">
+            Agora o livro oficial do DevFast está disponível! Você pode escolher
+            entre a versão física ou digital:
+          </p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2">
+        <div class="book-link-card">
+          <h4>📘 Versão Física</h4>
+          <p class="text-muted mb-3">
+            Livro físico disponível na UIClap. Perfeito para quem prefere ter o
+            material em mãos!
+          </p>
+          <a
+            href="https://loja.uiclap.com/titulo/ua138321/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+          >
+            <i class="fas fa-shopping-cart"></i> Comprar Versão Física
+          </a>
+        </div>
+        <div class="book-link-card">
+          <h4>💻 Versão Digital</h4>
+          <p class="text-muted mb-3">
+            Versão digital disponível na Amazon. Leia em qualquer dispositivo!
+          </p>
+          <a
+            href="https://www.amazon.com.br/dp/B0D7YGH5T9"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary"
+          >
+            <i class="fab fa-amazon"></i> Comprar Versão Digital
+          </a>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a href="?page=bibliografia" class="btn btn-secondary">
+          Ver Bibliografia Completa <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-book"></i> Outros Livros Recomendados
     </h3>
     <div class="grid grid-cols-2">
       <div class="card">
@@ -181,11 +273,6 @@
         </div>
       </div>
     </div>
-    <div class="text-center mt-3">
-      <a href="?page=bibliografia" class="btn btn-secondary">
-        Ver Bibliografia Completa <i class="fas fa-external-link-alt"></i>
-      </a>
-    </div>
   </section>
 
   <section class="author-note mt-5">
@@ -199,6 +286,20 @@
       </p>
       <footer>— Prof. Daniel Loureiro Cintra</footer>
     </blockquote>
+  </section>
+
+  <section class="mt-5 mb-5">
+    <div class="card p-4 text-center">
+      <h4 class="mb-3">
+        <i class="fab fa-java"></i> Curso de Java + Spring + Hexagonal
+      </h4>
+      <p class="text-muted mb-3">
+        Aprenda Java, Spring Framework e Arquitetura Hexagonal em 14 dias!
+      </p>
+      <a href="/apostila-java" class="btn btn-outline">
+        <i class="fab fa-java"></i> Acessar Curso de Java
+      </a>
+    </div>
   </section>
 </article>
 
@@ -410,6 +511,74 @@
     font-style: normal;
   }
 
+  .devfast-highlight {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--white);
+    border: none;
+  }
+
+  .devfast-highlight .lead-text {
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .devfast-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .devfast-header {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .devfast-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .devfast-header h4 {
+    color: var(--white);
+    margin-top: 0;
+  }
+
+  .book-highlight {
+    border-left: 5px solid var(--primary-color);
+    background-color: var(--gray-50);
+  }
+
+  .book-main-preview {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .book-main-cover {
+    width: 150px;
+    height: 210px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--box-shadow-md);
+    flex-shrink: 0;
+  }
+
+  .book-link-card {
+    padding: 1.5rem;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+  }
+
+  .book-link-card h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+  }
+
   @media (max-width: 992px) {
     .grid-cols-3 {
       grid-template-columns: repeat(2, 1fr);
@@ -433,6 +602,25 @@
     }
 
     .book-thumbnail {
+      margin-bottom: 1rem;
+    }
+
+    .devfast-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .devfast-logo {
+      margin-bottom: 1rem;
+    }
+
+    .book-main-preview {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .book-main-cover {
       margin-bottom: 1rem;
     }
   }

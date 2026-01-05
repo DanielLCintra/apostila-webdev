@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 08 - Arquitetura Hexagonal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 08 - Conceito de Arquitetura Hexagonal</h1>
+            <p class="subtitle">Domínio, ports, adapters e separação de responsabilidades</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <p>
+                        Nas <strong>Aulas 03 a 07</strong>, você aprendeu Spring Boot, JPA, DTOs, validações, Docker 
+                        e Swagger. Você já tem uma API funcional! Mas agora vamos aprender uma <strong>arquitetura 
+                        profissional</strong> que vai tornar seu código muito mais organizado, testável e fácil de manter.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Spring Boot, Controllers, Services, Repositories, 
+                        DTOs, JPA, Dependency Injection
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Arquitetura Hexagonal (Ports and Adapters), 
+                        separação entre domínio e infraestrutura, como organizar código profissional e por que isso 
+                        é importante em projetos reais
+                    </p>
+                    <div class="tip-box">
+                        <strong>💡 Mudança de mentalidade:</strong> Até agora, você misturava lógica de negócio com 
+                        código de infraestrutura (JPA, Spring). A Arquitetura Hexagonal vai te ensinar a separar isso, 
+                        tornando seu código muito mais profissional e testável.
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🏛️ O que é Arquitetura Hexagonal?</h2>
+                
+                <div class="concept-box">
+                    <h3>Também conhecida como Ports and Adapters</h3>
+                    <p>Arquitetura Hexagonal (criada por Alistair Cockburn) isola a lógica de negócio do mundo externo, 
+                    tornando a aplicação independente de frameworks, bancos de dados, interfaces de usuário, etc.</p>
+                    
+                    <ul>
+                        <li><strong>Domínio no centro:</strong> Regras de negócio puras, sem dependências externas</li>
+                        <li><strong>Ports:</strong> Interfaces que definem contratos (entrada e saída)</li>
+                        <li><strong>Adapters:</strong> Implementações concretas dos ports</li>
+                        <li><strong>Inversão de dependência:</strong> Camadas externas dependem do domínio, não o contrário</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Benefícios</h3>
+                    <ul>
+                        <li>✅ Testabilidade: Domínio pode ser testado isoladamente</li>
+                        <li>✅ Flexibilidade: Trocar banco de dados sem afetar regras de negócio</li>
+                        <li>✅ Manutenibilidade: Código organizado e fácil de entender</li>
+                        <li>✅ Escalabilidade: Fácil adicionar novos adapters (novas interfaces)</li>
+                        <li>✅ Independência: Não acoplado a frameworks específicos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📐 Estrutura das Camadas</h2>
+                
+                <div class="concept-box">
+                    <h3>1. Domínio (Domain)</h3>
+                    <p><strong>Regras de negócio puras</strong> - sem dependências externas</p>
+                    <div class="code-block">
+<pre>package com.exemplo.domain;
+
+// Entidade de domínio (sem anotações JPA)
+public class Task {
+    private Long id;
+    private String titulo;
+    private String descricao;
+    private boolean concluida;
+    
+    // Construtor
+    public Task(String titulo, String descricao) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.concluida = false;
+    }
+    
+    // Regras de negócio
+    public void marcarComoConcluida() {
+        if (this.concluida) {
+            throw new IllegalStateException("Tarefa já está concluída");
+        }
+        this.concluida = true;
+    }
+    
+    public void atualizarTitulo(String novoTitulo) {
+        if (novoTitulo == null || novoTitulo.isBlank()) {
+            throw new IllegalArgumentException("Título não pode ser vazio");
+        }
+        this.titulo = novoTitulo;
+    }
+    
+    // Getters
+    public Long getId() { return id; }
+    public String getTitulo() { return titulo; }
+    // ...
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>2. Application - Ports (Interfaces)</h3>
+                    <p><strong>Contratos</strong> que definem como o mundo externo interage com o domínio</p>
+                    
+                    <h4>Ports de Entrada (Inbound - Use Cases)</h4>
+                    <div class="code-block">
+<pre>package com.exemplo.application.port.in;
+
+import com.exemplo.domain.Task;
+
+public interface CreateTaskUseCase {
+    Task criar(CriarTaskCommand command);
+}
+
+public interface ListTasksUseCase {
+    List&lt;Task&gt; listar();
+}
+
+public interface CompleteTaskUseCase {
+    void completar(Long taskId);
+}</pre>
+                    </div>
+
+                    <h4>Ports de Saída (Outbound - Repositories)</h4>
+                    <div class="code-block">
+<pre>package com.exemplo.application.port.out;
+
+import com.exemplo.domain.Task;
+import java.util.Optional;
+
+public interface TaskRepositoryPort {
+    Task salvar(Task task);
+    Optional&lt;Task&gt; buscarPorId(Long id);
+    List&lt;Task&gt; listar();
+    void deletar(Long id);
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>3. Application - Services (Implementação dos Use Cases)</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.application.service;
+
+import com.exemplo.application.port.in.CreateTaskUseCase;
+import com.exemplo.application.port.in.CriarTaskCommand;
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+
+@Service
+public class CreateTaskService implements CreateTaskUseCase {
+    
+    private final TaskRepositoryPort repository;
+    
+    public CreateTaskService(TaskRepositoryPort repository) {
+        this.repository = repository;
+    }
+    
+    @Override
+    public Task criar(CriarTaskCommand command) {
+        // Criar entidade de domínio
+        Task task = new Task(command.titulo(), command.descricao());
+        
+        // Salvar via port (não sabe se é JPA, MongoDB, etc)
+        return repository.salvar(task);
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>4. Infrastructure - Adapters (Implementações)</h3>
+                    <p><strong>Implementações concretas</strong> dos ports</p>
+                    
+                    <h4>Adapter de Persistência (JPA)</h4>
+                    <div class="code-block">
+<pre>package com.exemplo.infrastructure.persistence;
+
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+import com.exemplo.infrastructure.persistence.entity.TaskEntity;
+import com.exemplo.infrastructure.persistence.mapper.TaskMapper;
+
+@Repository
+public class JpaTaskRepositoryAdapter implements TaskRepositoryPort {
+    
+    private final TaskJpaRepository jpaRepository;
+    private final TaskMapper mapper;
+    
+    @Override
+    public Task salvar(Task task) {
+        TaskEntity entity = mapper.toEntity(task);
+        TaskEntity saved = jpaRepository.save(entity);
+        return mapper.toDomain(saved);
+    }
+    
+    @Override
+    public Optional&lt;Task&gt; buscarPorId(Long id) {
+        return jpaRepository.findById(id)
+            .map(mapper::toDomain);
+    }
+    // ...
+}</pre>
+                    </div>
+
+                    <h4>Adapter de Entrada (Controller)</h4>
+                    <div class="code-block">
+<pre>package com.exemplo.adapters.in.web;
+
+import com.exemplo.application.port.in.CreateTaskUseCase;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/tasks")
+public class TaskController {
+    
+    private final CreateTaskUseCase createTaskUseCase;
+    
+    @PostMapping
+    public ResponseEntity&lt;TaskResponseDTO&gt; criar(@RequestBody CriarTaskDTO dto) {
+        CriarTaskCommand command = new CriarTaskCommand(dto.titulo(), dto.descricao());
+        Task task = createTaskUseCase.criar(command);
+        return ResponseEntity.ok(TaskResponseDTO.from(task));
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📁 Estrutura de Pastas Completa</h2>
+                
+                <div class="code-block">
+<pre>src/main/java/com/exemplo/
+├── domain/                      # Domínio puro
+│   └── Task.java
+│
+├── application/
+│   ├── port/
+│   │   ├── in/                  # Ports de entrada (Use Cases)
+│   │   │   ├── CreateTaskUseCase.java
+│   │   │   └── ListTasksUseCase.java
+│   │   └── out/                 # Ports de saída (Repositories)
+│   │       └── TaskRepositoryPort.java
+│   ├── service/                 # Implementação dos Use Cases
+│   │   ├── CreateTaskService.java
+│   │   └── ListTasksService.java
+│   └── command/                 # Commands e DTOs de aplicação
+│       └── CriarTaskCommand.java
+│
+└── infrastructure/
+    ├── persistence/             # Adapter de persistência
+    │   ├── entity/
+    │   │   └── TaskEntity.java
+    │   ├── repository/
+    │   │   ├── TaskJpaRepository.java
+    │   │   └── JpaTaskRepositoryAdapter.java
+    │   └── mapper/
+    │       └── TaskMapper.java
+    │
+    └── adapters/
+        └── in/
+            └── web/              # Adapter de entrada (Controller)
+                ├── TaskController.java
+                └── dto/
+                    ├── CriarTaskDTO.java
+                    └── TaskResponseDTO.java</pre>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔄 Fluxo de Dados</h2>
+                
+                <div class="concept-box">
+                    <h3>Exemplo: Criar Tarefa</h3>
+                    <ol>
+                        <li><strong>Controller</strong> recebe requisição HTTP</li>
+                        <li><strong>Controller</strong> converte DTO → Command</li>
+                        <li><strong>Controller</strong> chama <code>CreateTaskUseCase</code> (port)</li>
+                        <li><strong>Service</strong> implementa a lógica do use case</li>
+                        <li><strong>Service</strong> cria entidade de <strong>domínio</strong></li>
+                        <li><strong>Service</strong> chama <code>TaskRepositoryPort</code> (port)</li>
+                        <li><strong>Adapter JPA</strong> implementa o port</li>
+                        <li><strong>Adapter</strong> converte domínio → entidade JPA</li>
+                        <li><strong>Adapter</strong> salva no banco via JpaRepository</li>
+                        <li>Retorno segue o caminho inverso</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧠 Mini-Desafio</h2>
+                <div class="challenge-box">
+                    <h3>Desafio: Criar Interfaces de Ports</h3>
+                    <p><strong>Objetivo:</strong> Definir os contratos da arquitetura hexagonal.</p>
+                    
+                    <h4>Requisitos:</h4>
+                    <ol>
+                        <li>Crie a entidade de domínio <code>Task</code> (sem anotações JPA) no pacote <code>domain</code></li>
+                        <li>Crie o port de saída <code>TaskRepositoryPort</code> no pacote <code>application.port.out</code> com métodos:
+                            <ul>
+                                <li><code>Task salvar(Task task)</code></li>
+                                <li><code>Optional&lt;Task&gt; buscarPorId(Long id)</code></li>
+                                <li><code>List&lt;Task&gt; listar()</code></li>
+                            </ul>
+                        </li>
+                        <li>Crie o port de entrada <code>CreateTaskUseCase</code> no pacote <code>application.port.in</code> com método:
+                            <ul>
+                                <li><code>Task criar(CriarTaskCommand command)</code></li>
+                            </ul>
+                        </li>
+                        <li>Crie o record <code>CriarTaskCommand</code> no pacote <code>application.command</code></li>
+                        <li>Organize as pastas seguindo a estrutura hexagonal mostrada na aula</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 08</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Entendeu o conceito de Arquitetura Hexagonal</li>
+                        <li>✅ Entendeu a diferença entre Domain, Application e Infrastructure</li>
+                        <li>✅ Entendeu o que são Ports (Inbound e Outbound)</li>
+                        <li>✅ Entendeu o que são Adapters</li>
+                        <li>✅ Entendeu o princípio de Inversão de Dependência</li>
+                        <li>✅ Entendeu por que separar domínio de infraestrutura</li>
+                        <li>✅ Criou estrutura de pastas hexagonal</li>
+                        <li>✅ Criou entidade de domínio pura (sem JPA)</li>
+                        <li>✅ Criou interfaces de ports (inbound e outbound)</li>
+                        <li>✅ Completou o mini-desafio de criar interfaces</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>👉 Recursos Adicionais</h2>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>👉 Recursos Adicionais</h2>
+                <div class="resources-box">
+                    <a href="https://www.youtube.com/results?search_query=Hexagonal+Architecture+in+Spring+Boot+Tech+Primers" target="_blank" class="resource-link">
+                        🎥 Hexagonal Architecture in Spring Boot – Tech Primers (YouTube)
+                    </a>
+                    <a href="https://alistair.cockburn.us/hexagonal-architecture/" target="_blank" class="resource-link">
+                        📖 Artigo Original - Alistair Cockburn
+                    </a>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-07.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-09.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

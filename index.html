@@ -332,8 +332,30 @@
           }
         });
 
+      // Função para verificar e redirecionar rotas especiais
+      function handleSpecialRoutes() {
+        const pathname = window.location.pathname;
+        
+        // Se a rota for /apostila-java, redirecionar para a apostila de Java
+        if (pathname.endsWith('/apostila-java') || pathname.endsWith('/apostila-java/')) {
+          // Construir o caminho relativo para a apostila de Java
+          // Remove /apostila-java do final e adiciona /apostila-java/index.html
+          const basePath = pathname.replace(/\/apostila-java\/?$/, '');
+          const javaPath = (basePath || '') + '/apostila-java/index.html';
+          window.location.replace(javaPath);
+          return true;
+        }
+        
+        return false;
+      }
+
       // Carregar conteúdo inicial quando a página é carregada
       document.addEventListener("DOMContentLoaded", function () {
+        // Verificar rotas especiais primeiro
+        if (handleSpecialRoutes()) {
+          return; // Se redirecionou, não continuar
+        }
+        
         // Verificar se há uma página específica na URL
         const pageParam = getUrlParameter("page");
         if (pageParam) {
@@ -362,6 +384,11 @@
 
       // Lidar com navegação do histórico do navegador
       window.addEventListener("popstate", function (event) {
+        // Verificar rotas especiais primeiro
+        if (handleSpecialRoutes()) {
+          return;
+        }
+        
         if (event.state && event.state.page) {
           loadContent(event.state.page);
         } else {

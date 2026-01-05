@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 14 - Revisão e Projeto Final</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 14 - Revisão e Projeto Final</h1>
+            <p class="subtitle">API completa "Tasks" com todas as práticas aprendidas</p>
+        </header>
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando TODAS as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <h3>Parabéns! Você chegou ao projeto final! 🎉</h3>
+                    <p>
+                        Nas <strong>13 aulas anteriores</strong>, você construiu uma base sólida de conhecimento. 
+                        Agora vamos <strong>aplicar TUDO</strong> que você aprendeu em um projeto completo e profissional.
+                    </p>
+                    
+                    <h4>📖 Revisão Rápida do que Você Aprendeu:</h4>
+                    <ul>
+                        <li><strong>Aula 01:</strong> Sintaxe Java moderna, classes, métodos, collections, Stream API</li>
+                        <li><strong>Aula 02:</strong> OOP (encapsulamento, herança, interfaces, exceptions)</li>
+                        <li><strong>Aula 03:</strong> Spring Boot, Controllers, Services, Dependency Injection</li>
+                        <li><strong>Aula 04:</strong> JPA, Entidades, Repositories, H2 Database</li>
+                        <li><strong>Aula 05:</strong> Debug, testes unitários e de integração</li>
+                        <li><strong>Aula 06:</strong> DTOs, Bean Validation, tratamento de erros</li>
+                        <li><strong>Aula 07:</strong> Docker, Dockerfile, Swagger/OpenAPI</li>
+                        <li><strong>Aula 08:</strong> Arquitetura Hexagonal (conceitos)</li>
+                        <li><strong>Aula 09:</strong> Arquitetura Hexagonal (implementação)</li>
+                        <li><strong>Aula 10:</strong> Spring IoC avançado, beans, qualifiers</li>
+                        <li><strong>Aula 11:</strong> Logging, Spring Actuator, observabilidade</li>
+                        <li><strong>Aula 12:</strong> PostgreSQL, Docker Compose, profiles</li>
+                        <li><strong>Aula 13:</strong> Spring Security, JWT, autenticação</li>
+                    </ul>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Este projeto vai usar:</strong> Arquitetura Hexagonal, DTOs, Validações, PostgreSQL, 
+                        Docker, Swagger, Testes, Logs, Actuator, e muito mais! Se você esquecer algo, não se preocupe - 
+                        vamos revisar durante a implementação.
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🎯 Projeto Final: API "Tasks" Completa</h2>
+                <div class="concept-box">
+                    <h3>O que vamos construir?</h3>
+                    <p>Nesta aula final, vamos construir uma <strong>API REST completa de gerenciamento de tarefas</strong> aplicando <strong>TODOS</strong> os conceitos aprendidos nas 13 aulas anteriores.</p>
+                </div>
+            </section>
+            <section class="section">
+                <h2>📋 Requisitos do Projeto</h2>
+                <div class="challenge-box">
+                    <h3>Funcionalidades Obrigatórias</h3>
+                    <ol>
+                        <li><strong>CRUD Completo:</strong> POST, GET, PUT, DELETE, PATCH /tasks</li>
+                        <li><strong>Arquitetura Hexagonal:</strong> Domain, Application, Infrastructure</li>
+                        <li><strong>DTOs e Validações:</strong> Request/Response DTOs com Bean Validation</li>
+                        <li><strong>PostgreSQL:</strong> Banco de dados real</li>
+                        <li><strong>Docker:</strong> Dockerfile + docker-compose.yml</li>
+                        <li><strong>Swagger:</strong> Documentação da API</li>
+                        <li><strong>Testes:</strong> Testes de integração</li>
+                        <li><strong>Logs e Actuator:</strong> Observabilidade</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🚀 Passo 1: Spring Initializr - Passo a Passo Completo</h2>
+                
+                <div class="step-box">
+                    <h3>1.1 Acessar e Configurar</h3>
+                    <ol>
+                        <li>Acesse: <a href="https://start.spring.io" target="_blank"><strong>https://start.spring.io</strong></a></li>
+                        <li><strong>Project:</strong> Selecione <strong>Maven</strong></li>
+                        <li><strong>Language:</strong> Selecione <strong>Java</strong></li>
+                        <li><strong>Spring Boot:</strong> Selecione <strong>3.2.0</strong> (ou mais recente estável)</li>
+                        <li><strong>Project Metadata:</strong>
+                            <ul>
+                                <li>Group: <code>com.exemplo</code></li>
+                                <li>Artifact: <code>tasks-api</code></li>
+                                <li>Name: <code>tasks-api</code></li>
+                                <li>Description: <code>API de Gerenciamento de Tarefas</code></li>
+                                <li>Package name: <code>com.exemplo</code></li>
+                                <li>Packaging: <strong>Jar</strong></li>
+                                <li>Java: <strong>17</strong></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>1.2 Adicionar Dependências</h3>
+                    <p>Clique em "Add Dependencies" e adicione uma por uma:</p>
+                    <ol>
+                        <li><strong>Spring Web</strong> - Para APIs REST</li>
+                        <li><strong>Spring Data JPA</strong> - Para persistência</li>
+                        <li><strong>PostgreSQL Driver</strong> - Driver do banco</li>
+                        <li><strong>Spring Boot DevTools</strong> - Reload automático</li>
+                        <li><strong>Validation</strong> - Bean Validation</li>
+                        <li><strong>Spring Boot Actuator</strong> - Health checks</li>
+                        <li><strong>SpringDoc OpenAPI</strong> - Swagger (se não encontrar, adicione depois no pom.xml)</li>
+                    </ol>
+                    <p>Após adicionar todas, clique em <strong>"Generate"</strong> e baixe o ZIP.</p>
+                </div>
+
+                <div class="step-box">
+                    <h3>1.3 Extrair e Abrir no IntelliJ</h3>
+                    <ol>
+                        <li>Extraia o ZIP baixado</li>
+                        <li>Abra IntelliJ IDEA</li>
+                        <li>File → Open → Selecione a pasta extraída</li>
+                        <li>Aguarde o download das dependências (pode levar alguns minutos)</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>1.4 Adicionar SpringDoc OpenAPI (se necessário)</h3>
+                    <p>Se não encontrou "SpringDoc OpenAPI" no Initializr, adicione no <code>pom.xml</code> dentro de <code>&lt;dependencies&gt;</code>:</p>
+                    <div class="code-block">
+                        <pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
+    &lt;artifactId&gt;springdoc-openapi-starter-webmvc-ui&lt;/artifactId&gt;
+    &lt;version&gt;2.2.0&lt;/version&gt;
+&lt;/dependency&gt;
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📁 Passo 2: Criar Estrutura Hexagonal</h2>
+                <div class="step-box">
+                    <h3>2.1 Estrutura de Pastas</h3>
+                    <p>Crie os seguintes packages no IntelliJ (clique direito em <code>com.exemplo</code> → New → Package):</p>
+                    <div class="code-block">
+                        <pre>
+src/main/java/com/exemplo/
+├── domain/
+├── application/
+│   ├── port/
+│   │   ├── in/
+│   │   └── out/
+│   ├── service/
+│   └── command/
+└── infrastructure/
+    ├── persistence/
+    │   ├── entity/
+    │   ├── repository/
+    │   └── mapper/
+    ├── adapters/
+    │   └── in/
+    │       └── web/
+    │           └── dto/
+    ├── exception/
+    └── config/
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>💻 Passo 3: Implementar Domínio</h2>
+                <div class="step-box">
+                    <h3>3.1 Task.java (Domínio Puro)</h3>
+                    <p>Crie <code>domain/Task.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.domain;
+
+import java.time.LocalDateTime;
+
+public class Task {
+    private Long id;
+    private String titulo;
+    private String descricao;
+    private boolean concluida;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
+    
+    public Task(String titulo, String descricao) {
+        if (titulo == null || titulo.isBlank()) {
+            throw new IllegalArgumentException("Título é obrigatório");
+        }
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.concluida = false;
+        this.dataCriacao = LocalDateTime.now();
+        this.dataAtualizacao = LocalDateTime.now();
+    }
+    
+    public Task(Long id, String titulo, String descricao, 
+                boolean concluida, LocalDateTime dataCriacao, 
+                LocalDateTime dataAtualizacao) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.concluida = concluida;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
+    }
+    
+    public void marcarComoConcluida() {
+        if (this.concluida) {
+            throw new IllegalStateException("Tarefa já está concluída");
+        }
+        this.concluida = true;
+        this.dataAtualizacao = LocalDateTime.now();
+    }
+    
+    public void atualizarTitulo(String novoTitulo) {
+        if (novoTitulo == null || novoTitulo.isBlank()) {
+            throw new IllegalArgumentException("Título não pode ser vazio");
+        }
+        this.titulo = novoTitulo;
+        this.dataAtualizacao = LocalDateTime.now();
+    }
+    
+    // Getters
+    public Long getId() { return id; }
+    public String getTitulo() { return titulo; }
+    public String getDescricao() { return descricao; }
+    public boolean isConcluida() { return concluida; }
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public LocalDateTime getDataAtualizacao() { return dataAtualizacao; }
+}
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔌 Passo 4: Implementar Ports</h2>
+                <div class="step-box">
+                    <h3>4.1 TaskRepositoryPort</h3>
+                    <p>Crie <code>application/port/out/TaskRepositoryPort.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.application.port.out;
+
+import com.exemplo.domain.Task;
+import java.util.List;
+import java.util.Optional;
+
+public interface TaskRepositoryPort {
+    Task salvar(Task task);
+    Optional&lt;Task&gt; buscarPorId(Long id);
+    List&lt;Task&gt; listar();
+    void deletar(Long id);
+    boolean existePorId(Long id);
+}
+                        </pre>
+                    </div>
+                </div>
+                <div class="step-box">
+                    <h3>4.2 Use Cases (Ports de Entrada)</h3>
+                    <p>Crie as interfaces em <code>application/port/in/</code>:</p>
+                    <div class="code-block">
+                        <pre>
+// CreateTaskUseCase.java
+package com.exemplo.application.port.in;
+import com.exemplo.application.command.CreateTaskCommand;
+import com.exemplo.domain.Task;
+public interface CreateTaskUseCase {
+    Task criar(CreateTaskCommand command);
+}
+
+// ListTasksUseCase.java
+package com.exemplo.application.port.in;
+import com.exemplo.domain.Task;
+import java.util.List;
+public interface ListTasksUseCase {
+    List&lt;Task&gt; listar();
+}
+
+// GetTaskByIdUseCase.java
+package com.exemplo.application.port.in;
+import com.exemplo.domain.Task;
+import java.util.Optional;
+public interface GetTaskByIdUseCase {
+    Optional&lt;Task&gt; buscarPorId(Long id);
+}
+
+// UpdateTaskUseCase.java
+package com.exemplo.application.port.in;
+import com.exemplo.domain.Task;
+public interface UpdateTaskUseCase {
+    Task atualizar(Long id, String titulo, String descricao);
+}
+
+// DeleteTaskUseCase.java
+package com.exemplo.application.port.in;
+public interface DeleteTaskUseCase {
+    void deletar(Long id);
+}
+
+// CompleteTaskUseCase.java
+package com.exemplo.application.port.in;
+import com.exemplo.domain.Task;
+public interface CompleteTaskUseCase {
+    Task completar(Long id);
+}
+                        </pre>
+                    </div>
+                </div>
+                <div class="step-box">
+                    <h3>4.3 CreateTaskCommand</h3>
+                    <p>Crie <code>application/command/CreateTaskCommand.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.application.command;
+
+public record CreateTaskCommand(String titulo, String descricao) {
+    public CreateTaskCommand {
+        if (titulo == null || titulo.isBlank()) {
+            throw new IllegalArgumentException("Título é obrigatório");
+        }
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ Passo 5: Implementar Services</h2>
+                <div class="step-box">
+                    <h3>5.1 CreateTaskService</h3>
+                    <p>Crie <code>application/service/CreateTaskService.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.application.service;
+
+import com.exemplo.application.command.CreateTaskCommand;
+import com.exemplo.application.port.in.CreateTaskUseCase;
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CreateTaskService implements CreateTaskUseCase {
+    private final TaskRepositoryPort repository;
+    
+    public CreateTaskService(TaskRepositoryPort repository) {
+        this.repository = repository;
+    }
+    
+    @Override
+    public Task criar(CreateTaskCommand command) {
+        Task task = new Task(command.titulo(), command.descricao());
+        return repository.salvar(task);
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>5.2 ListTasksService</h3>
+                    <p>Crie <code>application/service/ListTasksService.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.application.service;
+
+import com.exemplo.application.port.in.ListTasksUseCase;
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ListTasksService implements ListTasksUseCase {
+    private final TaskRepositoryPort repository;
+    
+    public ListTasksService(TaskRepositoryPort repository) {
+        this.repository = repository;
+    }
+    
+    @Override
+    public List&lt;Task&gt; listar() {
+        return repository.listar();
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>5.3 GetTaskByIdService</h3>
+                    <p>Crie <code>application/service/GetTaskByIdService.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.application.service;
+
+import com.exemplo.application.port.in.GetTaskByIdUseCase;
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class GetTaskByIdService implements GetTaskByIdUseCase {
+    private final TaskRepositoryPort repository;
+    
+    public GetTaskByIdService(TaskRepositoryPort repository) {
+        this.repository = repository;
+    }
+    
+    @Override
+    public Optional&lt;Task&gt; buscarPorId(Long id) {
+        return repository.buscarPorId(id);
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>5.4 UpdateTaskService</h3>
+                    <p>Crie <code>application/service/UpdateTaskService.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.application.service;
+
+import com.exemplo.application.port.in.UpdateTaskUseCase;
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+import com.exemplo.infrastructure.exception.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UpdateTaskService implements UpdateTaskUseCase {
+    private final TaskRepositoryPort repository;
+    
+    public UpdateTaskService(TaskRepositoryPort repository) {
+        this.repository = repository;
+    }
+    
+    @Override
+    public Task atualizar(Long id, String titulo, String descricao) {
+        Task task = repository.buscarPorId(id)
+            .orElseThrow(() -&gt; new ResourceNotFoundException("Task", id));
+        
+        task.atualizarTitulo(titulo);
+        if (descricao != null) {
+            task.atualizarDescricao(descricao);
+        }
+        
+        return repository.salvar(task);
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>5.5 DeleteTaskService</h3>
+                    <p>Crie <code>application/service/DeleteTaskService.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.application.service;
+
+import com.exemplo.application.port.in.DeleteTaskUseCase;
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.infrastructure.exception.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class DeleteTaskService implements DeleteTaskUseCase {
+    private final TaskRepositoryPort repository;
+    
+    public DeleteTaskService(TaskRepositoryPort repository) {
+        this.repository = repository;
+    }
+    
+    @Override
+    public void deletar(Long id) {
+        if (!repository.existePorId(id)) {
+            throw new ResourceNotFoundException("Task", id);
+        }
+        repository.deletar(id);
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>5.6 CompleteTaskService</h3>
+                    <p>Crie <code>application/service/CompleteTaskService.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.application.service;
+
+import com.exemplo.application.port.in.CompleteTaskUseCase;
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+import com.exemplo.infrastructure.exception.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CompleteTaskService implements CompleteTaskUseCase {
+    private final TaskRepositoryPort repository;
+    
+    public CompleteTaskService(TaskRepositoryPort repository) {
+        this.repository = repository;
+    }
+    
+    @Override
+    public Task completar(Long id) {
+        Task task = repository.buscarPorId(id)
+            .orElseThrow(() -&gt; new ResourceNotFoundException("Task", id));
+        
+        task.marcarComoConcluida();
+        return repository.salvar(task);
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🗄️ Passo 6: Implementar Infrastructure (JPA)</h2>
+                <div class="step-box">
+                    <h3>6.1 TaskEntity</h3>
+                    <p>Crie <code>infrastructure/persistence/entity/TaskEntity.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.persistence.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "tasks")
+public class TaskEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false, length = 200)
+    private String titulo;
+    
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
+    
+    @Column(nullable = false)
+    private boolean concluida;
+    
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime dataCriacao;
+    
+    @Column(nullable = false)
+    private LocalDateTime dataAtualizacao;
+    
+    public TaskEntity() {
+    }
+    
+    public TaskEntity(Long id, String titulo, String descricao, 
+                     boolean concluida, LocalDateTime dataCriacao, 
+                     LocalDateTime dataAtualizacao) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.concluida = concluida;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
+    }
+    
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+    
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    
+    public boolean isConcluida() { return concluida; }
+    public void setConcluida(boolean concluida) { this.concluida = concluida; }
+    
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
+    
+    public LocalDateTime getDataAtualizacao() { return dataAtualizacao; }
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) { this.dataAtualizacao = dataAtualizacao; }
+}
+                        </pre>
+                    </div>
+                </div>
+                <div class="step-box">
+                    <h3>6.2 TaskJpaRepository</h3>
+                    <p>Crie <code>infrastructure/persistence/repository/TaskJpaRepository.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.persistence.repository;
+
+import com.exemplo.infrastructure.persistence.entity.TaskEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TaskJpaRepository extends JpaRepository&lt;TaskEntity, Long&gt; {
+}
+                        </pre>
+                    </div>
+                </div>
+                <div class="step-box">
+                    <h3>6.3 TaskMapper</h3>
+                    <p>Crie <code>infrastructure/persistence/mapper/TaskMapper.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.persistence.mapper;
+
+import com.exemplo.domain.Task;
+import com.exemplo.infrastructure.persistence.entity.TaskEntity;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TaskMapper {
+    public TaskEntity toEntity(Task task) {
+        return new TaskEntity(
+            task.getId(),
+            task.getTitulo(),
+            task.getDescricao(),
+            task.isConcluida(),
+            task.getDataCriacao(),
+            task.getDataAtualizacao()
+        );
+    }
+    
+    public Task toDomain(TaskEntity entity) {
+        return new Task(
+            entity.getId(),
+            entity.getTitulo(),
+            entity.getDescricao(),
+            entity.isConcluida(),
+            entity.getDataCriacao(),
+            entity.getDataAtualizacao()
+        );
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>6.4 JpaTaskRepositoryAdapter</h3>
+                    <p>Crie <code>infrastructure/persistence/repository/JpaTaskRepositoryAdapter.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.persistence.repository;
+
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+import com.exemplo.infrastructure.persistence.entity.TaskEntity;
+import com.exemplo.infrastructure.persistence.mapper.TaskMapper;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Repository
+public class JpaTaskRepositoryAdapter implements TaskRepositoryPort {
+    private final TaskJpaRepository jpaRepository;
+    private final TaskMapper mapper;
+    
+    public JpaTaskRepositoryAdapter(TaskJpaRepository jpaRepository, TaskMapper mapper) {
+        this.jpaRepository = jpaRepository;
+        this.mapper = mapper;
+    }
+    
+    @Override
+    public Task salvar(Task task) {
+        TaskEntity entity = mapper.toEntity(task);
+        TaskEntity saved = jpaRepository.save(entity);
+        return mapper.toDomain(saved);
+    }
+    
+    @Override
+    public Optional&lt;Task&gt; buscarPorId(Long id) {
+        return jpaRepository.findById(id).map(mapper::toDomain);
+    }
+    
+    @Override
+    public List&lt;Task&gt; listar() {
+        return jpaRepository.findAll().stream()
+            .map(mapper::toDomain)
+            .collect(Collectors.toList());
+    }
+    
+    @Override
+    public void deletar(Long id) {
+        jpaRepository.deleteById(id);
+    }
+    
+    @Override
+    public boolean existePorId(Long id) {
+        return jpaRepository.existsById(id);
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🌐 Passo 7: Implementar Controllers e DTOs</h2>
+                <div class="step-box">
+                    <h3>7.1 CreateTaskRequestDTO</h3>
+                    <p>Crie <code>infrastructure/adapters/in/web/dto/CreateTaskRequestDTO.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.adapters.in.web.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record CreateTaskRequestDTO(
+    @NotBlank(message = "Título é obrigatório")
+    @Size(min = 3, max = 200, message = "Título deve ter entre 3 e 200 caracteres")
+    String titulo,
+    
+    @Size(max = 1000, message = "Descrição não pode ter mais de 1000 caracteres")
+    String descricao
+) {}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>7.2 UpdateTaskRequestDTO</h3>
+                    <p>Crie <code>infrastructure/adapters/in/web/dto/UpdateTaskRequestDTO.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.adapters.in.web.dto;
+
+import jakarta.validation.constraints.Size;
+
+public record UpdateTaskRequestDTO(
+    @Size(min = 3, max = 200)
+    String titulo,
+    
+    @Size(max = 1000)
+    String descricao
+) {}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>7.3 TaskResponseDTO</h3>
+                    <p>Crie <code>infrastructure/adapters/in/web/dto/TaskResponseDTO.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.adapters.in.web.dto;
+
+import com.exemplo.domain.Task;
+import java.time.LocalDateTime;
+
+public record TaskResponseDTO(
+    Long id,
+    String titulo,
+    String descricao,
+    boolean concluida,
+    LocalDateTime dataCriacao,
+    LocalDateTime dataAtualizacao
+) {
+    public static TaskResponseDTO from(Task task) {
+        return new TaskResponseDTO(
+            task.getId(),
+            task.getTitulo(),
+            task.getDescricao(),
+            task.isConcluida(),
+            task.getDataCriacao(),
+            task.getDataAtualizacao()
+        );
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>7.4 TaskController Completo</h3>
+                    <p>Crie <code>infrastructure/adapters/in/web/TaskController.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.adapters.in.web;
+
+import com.exemplo.application.command.CreateTaskCommand;
+import com.exemplo.application.port.in.*;
+import com.exemplo.domain.Task;
+import com.exemplo.infrastructure.adapters.in.web.dto.*;
+import com.exemplo.infrastructure.exception.ResourceNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/tasks")
+@Tag(name = "Tasks", description = "Endpoints para gerenciamento de tarefas")
+public class TaskController {
+    private final CreateTaskUseCase createTaskUseCase;
+    private final ListTasksUseCase listTasksUseCase;
+    private final GetTaskByIdUseCase getTaskByIdUseCase;
+    private final UpdateTaskUseCase updateTaskUseCase;
+    private final DeleteTaskUseCase deleteTaskUseCase;
+    private final CompleteTaskUseCase completeTaskUseCase;
+    
+    public TaskController(
+            CreateTaskUseCase createTaskUseCase,
+            ListTasksUseCase listTasksUseCase,
+            GetTaskByIdUseCase getTaskByIdUseCase,
+            UpdateTaskUseCase updateTaskUseCase,
+            DeleteTaskUseCase deleteTaskUseCase,
+            CompleteTaskUseCase completeTaskUseCase) {
+        this.createTaskUseCase = createTaskUseCase;
+        this.listTasksUseCase = listTasksUseCase;
+        this.getTaskByIdUseCase = getTaskByIdUseCase;
+        this.updateTaskUseCase = updateTaskUseCase;
+        this.deleteTaskUseCase = deleteTaskUseCase;
+        this.completeTaskUseCase = completeTaskUseCase;
+    }
+    
+    @PostMapping
+    @Operation(summary = "Criar tarefa")
+    public ResponseEntity&lt;TaskResponseDTO&gt; criar(@Valid @RequestBody CreateTaskRequestDTO dto) {
+        CreateTaskCommand command = new CreateTaskCommand(dto.titulo(), dto.descricao());
+        Task task = createTaskUseCase.criar(command);
+        return ResponseEntity.status(HttpStatus.CREATED).body(TaskResponseDTO.from(task));
+    }
+    
+    @GetMapping
+    @Operation(summary = "Listar tarefas")
+    public ResponseEntity&lt;List&lt;TaskResponseDTO&gt;&gt; listar() {
+        List&lt;Task&gt; tasks = listTasksUseCase.listar();
+        List&lt;TaskResponseDTO&gt; dtos = tasks.stream().map(TaskResponseDTO::from).toList();
+        return ResponseEntity.ok(dtos);
+    }
+    
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar tarefa por ID")
+    public ResponseEntity&lt;TaskResponseDTO&gt; buscarPorId(@PathVariable Long id) {
+        Task task = getTaskByIdUseCase.buscarPorId(id)
+            .orElseThrow(() -&gt; new ResourceNotFoundException("Task", id));
+        return ResponseEntity.ok(TaskResponseDTO.from(task));
+    }
+    
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar tarefa")
+    public ResponseEntity&lt;TaskResponseDTO&gt; atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateTaskRequestDTO dto) {
+        Task task = updateTaskUseCase.atualizar(id, dto.titulo(), dto.descricao());
+        return ResponseEntity.ok(TaskResponseDTO.from(task));
+    }
+    
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Deletar tarefa")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Long id) {
+        deleteTaskUseCase.deletar(id);
+    }
+    
+    @PatchMapping("/{id}/complete")
+    @Operation(summary = "Completar tarefa")
+    public ResponseEntity&lt;TaskResponseDTO&gt; completar(@PathVariable Long id) {
+        Task task = completeTaskUseCase.completar(id);
+        return ResponseEntity.ok(TaskResponseDTO.from(task));
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🛡️ Passo 8: Tratamento de Erros</h2>
+                <div class="step-box">
+                    <h3>8.1 ResourceNotFoundException</h3>
+                    <p>Crie <code>infrastructure/exception/ResourceNotFoundException.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.exception;
+
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+    
+    public ResourceNotFoundException(String resource, Long id) {
+        super(String.format("%s com id %d não encontrado", resource, id));
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>8.2 GlobalExceptionHandler</h3>
+                    <p>Crie <code>infrastructure/exception/GlobalExceptionHandler.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleResourceNotFound(
+            ResourceNotFoundException ex) {
+        Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Not Found");
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+    
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleValidationErrors(
+            MethodArgumentNotValidException ex) {
+        Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();
+        ex.getBindingResult().getAllErrors().forEach((error) -&gt; {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        
+        Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("error", "Validation Error");
+        response.put("errors", errors);
+        return ResponseEntity.badRequest().body(response);
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ Passo 9: Configurações</h2>
+                <div class="step-box">
+                    <h3>9.1 application.properties</h3>
+                    <p>Configure em <code>src/main/resources/application.properties</code>:</p>
+                    <div class="code-block">
+                        <pre>
+server.port=8080
+spring.datasource.url=jdbc:postgresql://localhost:5432/tasksdb
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+management.endpoints.web.exposure.include=health,info
+springdoc.api-docs.path=/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+                        </pre>
+                    </div>
+                </div>
+                <div class="step-box">
+                    <h3>9.2 SwaggerConfig</h3>
+                    <p>Crie <code>infrastructure/config/SwaggerConfig.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SwaggerConfig {
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+            .info(new Info()
+                .title("Tasks API")
+                .version("1.0.0")
+                .description("API REST para gerenciamento de tarefas"));
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🐳 Passo 10: Docker</h2>
+                <div class="step-box">
+                    <h3>10.1 Dockerfile</h3>
+                    <p>Crie <code>Dockerfile</code> na raiz:</p>
+                    <div class="code-block">
+                        <pre>
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+                        </pre>
+                    </div>
+                </div>
+                <div class="step-box">
+                    <h3>10.2 docker-compose.yml</h3>
+                    <p>Crie <code>docker-compose.yml</code> na raiz:</p>
+                    <div class="code-block">
+                        <pre>
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: tasksdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tasksdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+                        </pre>
+                    </div>
+                </div>
+                <div class="step-box">
+                    <h3>10.3 Executar</h3>
+                    <div class="code-block">
+                        <pre>
+docker-compose up --build
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧪 Passo 11: Testes</h2>
+                <div class="step-box">
+                    <h3>11.1 Teste de Integração</h3>
+                    <p>Crie <code>src/test/java/com/exemplo/infrastructure/adapters/in/web/TaskControllerTest.java</code>:</p>
+                    <div class="code-block">
+                        <pre>
+package com.exemplo.infrastructure.adapters.in.web;
+
+import com.exemplo.infrastructure.persistence.entity.TaskEntity;
+import com.exemplo.infrastructure.persistence.repository.TaskJpaRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional
+class TaskControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private TaskJpaRepository repository;
+    @Autowired
+    private ObjectMapper objectMapper;
+    
+    @BeforeEach
+    void setUp() {
+        repository.deleteAll();
+    }
+    
+    @Test
+    void deveCriarTask() throws Exception {
+        String json = """
+            {
+                "titulo": "Nova Tarefa",
+                "descricao": "Descrição da tarefa"
+            }
+            """;
+        
+        mockMvc.perform(post("/tasks")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.titulo").value("Nova Tarefa"))
+            .andExpect(jsonPath("$.concluida").value(false));
+    }
+    
+    @Test
+    void deveListarTasks() throws Exception {
+        TaskEntity entity = new TaskEntity();
+        entity.setTitulo("Tarefa Teste");
+        entity.setDescricao("Descrição");
+        entity.setConcluida(false);
+        repository.save(entity);
+        
+        mockMvc.perform(get("/tasks"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$[0].titulo").value("Tarefa Teste"));
+    }
+    
+    @Test
+    void deveDeletarTask() throws Exception {
+        TaskEntity entity = new TaskEntity();
+        entity.setTitulo("Tarefa para deletar");
+        entity.setConcluida(false);
+        TaskEntity saved = repository.save(entity);
+        
+        mockMvc.perform(delete("/tasks/" + saved.getId()))
+            .andExpect(status().isNoContent());
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📝 Passo 12: Executar e Testar - Guia Completo</h2>
+                
+                <div class="step-box">
+                    <h3>12.1 Preparar Banco de Dados PostgreSQL (Local)</h3>
+                    <p>Se você vai executar localmente (sem Docker), precisa ter PostgreSQL instalado:</p>
+                    
+                    <h4>Instalar PostgreSQL:</h4>
+                    <ul>
+                        <li><strong>Windows/Mac:</strong> Baixe em <a href="https://www.postgresql.org/download" target="_blank">postgresql.org</a></li>
+                        <li><strong>Linux:</strong> <code>sudo apt install postgresql postgresql-contrib</code></li>
+                    </ul>
+
+                    <h4>Criar Banco de Dados:</h4>
+                    <ol>
+                        <li>Abra o terminal</li>
+                        <li>Conecte no PostgreSQL:
+                            <div class="code-block">
+                                <pre>
+# Linux/Mac
+psql -U postgres
+
+# Windows (Prompt de Comando)
+psql -U postgres
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Digite a senha do PostgreSQL (que você configurou na instalação)</li>
+                        <li>Crie o banco:
+                            <div class="code-block">
+                                <pre>
+CREATE DATABASE tasksdb;
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Verifique se foi criado:
+                            <div class="code-block">
+                                <pre>
+\l
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Saia: <code>\q</code></li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>12.2 Executar Localmente (sem Docker)</h3>
+                    <ol>
+                        <li>Certifique-se de que PostgreSQL está rodando:
+                            <div class="code-block">
+                                <pre>
+# Verificar se está rodando
+# Linux/Mac
+sudo systemctl status postgresql
+
+# Windows: Verifique no Gerenciador de Serviços
+                                </pre>
+                            </div>
+                        </li>
+                        <li>No IntelliJ IDEA:
+                            <ul>
+                                <li>Abra o arquivo <code>TasksApiApplication.java</code></li>
+                                <li>Clique no ícone de play (▶️) ao lado do método <code>main</code></li>
+                                <li>Ou use: Run → Run 'TasksApiApplication'</li>
+                            </ul>
+                        </li>
+                        <li>Ou no terminal (na raiz do projeto):
+                            <div class="code-block">
+                                <pre>
+mvn spring-boot:run
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Aguarde a inicialização (você verá logs no console)</li>
+                        <li>Quando ver "Started TasksApiApplication", a aplicação está rodando</li>
+                        <li>Acesse: <code>http://localhost:8080/swagger-ui.html</code></li>
+                    </ol>
+
+                    <div class="tip-box">
+                        <strong>💡 Verificar se está funcionando:</strong>
+                        <ul>
+                            <li>Acesse: <code>http://localhost:8080/actuator/health</code></li>
+                            <li>Deve retornar: <code>{"status":"UP"}</code></li>
+                            <li>Se retornar erro, verifique os logs no console</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>12.3 Executar com Docker Compose (Recomendado)</h3>
+                    <p>Docker Compose é mais fácil porque cria o banco automaticamente:</p>
+                    
+                    <h4>Pré-requisitos:</h4>
+                    <ul>
+                        <li>Docker instalado e rodando</li>
+                        <li>Docker Compose instalado (vem com Docker Desktop)</li>
+                    </ul>
+
+                    <h4>Passo a Passo:</h4>
+                    <ol>
+                        <li>Abra o terminal na raiz do projeto (onde está o <code>docker-compose.yml</code>)</li>
+                        <li>Execute:
+                            <div class="code-block">
+                                <pre>
+# Build e subir todos os serviços
+docker-compose up --build
+
+# Ou em background (detached mode)
+docker-compose up --build -d
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Aguarde alguns minutos:
+                            <ul>
+                                <li>Docker baixa a imagem do PostgreSQL</li>
+                                <li>Docker builda sua aplicação</li>
+                                <li>PostgreSQL inicia</li>
+                                <li>Sua aplicação inicia e conecta no banco</li>
+                            </ul>
+                        </li>
+                        <li>Você verá logs de ambos os containers</li>
+                        <li>Quando ver "Started TasksApiApplication", está pronto</li>
+                        <li>Acesse: <code>http://localhost:8080/swagger-ui.html</code></li>
+                    </ol>
+
+                    <h4>Comandos Úteis do Docker Compose:</h4>
+                    <div class="code-block">
+                        <pre>
+# Ver logs
+docker-compose logs -f app
+
+# Ver logs do PostgreSQL
+docker-compose logs -f postgres
+
+# Parar serviços
+docker-compose down
+
+# Parar e remover volumes (limpar dados)
+docker-compose down -v
+
+# Rebuild forçado
+docker-compose up --build --force-recreate
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>12.4 Testar Endpoints via Swagger</h3>
+                    <ol>
+                        <li>Acesse: <code>http://localhost:8080/swagger-ui.html</code></li>
+                        <li>Você verá a interface do Swagger com todos os endpoints</li>
+                        <li>Teste cada endpoint:
+                            <ul>
+                                <li><strong>POST /tasks:</strong>
+                                    <ol>
+                                        <li>Clique em "POST /tasks"</li>
+                                        <li>Clique em "Try it out"</li>
+                                        <li>Edite o JSON de exemplo:
+                                            <div class="code-block">
+                                                <pre>
+{
+  "titulo": "Minha primeira tarefa",
+  "descricao": "Esta é uma tarefa de teste"
+}
+                                                </pre>
+                                            </div>
+                                        </li>
+                                        <li>Clique em "Execute"</li>
+                                        <li>Veja a resposta (deve retornar 201 Created com a tarefa criada)</li>
+                                        <li>Anote o <code>id</code> retornado para usar nos próximos testes</li>
+                                    </ol>
+                                </li>
+                                <li><strong>GET /tasks:</strong>
+                                    <ol>
+                                        <li>Clique em "GET /tasks"</li>
+                                        <li>Clique em "Try it out" → "Execute"</li>
+                                        <li>Deve retornar lista com a tarefa criada</li>
+                                    </ol>
+                                </li>
+                                <li><strong>GET /tasks/{id}:</strong>
+                                    <ol>
+                                        <li>Use o ID da tarefa criada</li>
+                                        <li>Execute e veja os detalhes</li>
+                                    </ol>
+                                </li>
+                                <li><strong>PATCH /tasks/{id}/complete:</strong>
+                                    <ol>
+                                        <li>Use o ID da tarefa</li>
+                                        <li>Execute</li>
+                                        <li>Verifique que <code>concluida</code> mudou para <code>true</code></li>
+                                    </ol>
+                                </li>
+                                <li><strong>PUT /tasks/{id}:</strong>
+                                    <ol>
+                                        <li>Atualize título e descrição</li>
+                                        <li>Execute e verifique a atualização</li>
+                                    </ol>
+                                </li>
+                                <li><strong>DELETE /tasks/{id}:</strong>
+                                    <ol>
+                                        <li>Delete a tarefa</li>
+                                        <li>Deve retornar 204 No Content</li>
+                                        <li>Teste GET novamente - não deve encontrar</li>
+                                    </ol>
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>12.5 Testar Validações</h3>
+                    <p>Teste se as validações estão funcionando:</p>
+                    <ol>
+                        <li>No Swagger, teste POST /tasks com dados inválidos:
+                            <div class="code-block">
+                                <pre>
+{
+  "titulo": "",  // Título vazio (deve dar erro)
+  "descricao": "Teste"
+}
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Execute e verifique:
+                            <ul>
+                                <li>Deve retornar 400 Bad Request</li>
+                                <li>Deve mostrar mensagem de erro: "Título é obrigatório"</li>
+                            </ul>
+                        </li>
+                        <li>Teste com título muito curto:
+                            <div class="code-block">
+                                <pre>
+{
+  "titulo": "AB",  // Menos de 3 caracteres
+  "descricao": "Teste"
+}
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Deve retornar erro de validação</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>12.6 Verificar Health Check</h3>
+                    <ol>
+                        <li>Acesse: <code>http://localhost:8080/actuator/health</code></li>
+                        <li>Deve retornar: <code>{"status":"UP"}</code></li>
+                        <li>Se retornar "DOWN", verifique os logs</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>12.7 Executar Testes</h3>
+                    <ol>
+                        <li>No IntelliJ: Clique direito no projeto → Run All Tests</li>
+                        <li>Ou no terminal:
+                            <div class="code-block">
+                                <pre>
+mvn test
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Todos os testes devem passar (verde)</li>
+                        <li>Se algum falhar, verifique o erro e corrija</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist Final</h2>
+                <div class="challenge-box">
+                    <h3>Verifique se tudo está funcionando:</h3>
+                    <ul>
+                        <li>✅ Projeto criado no Spring Initializr com todas as dependências</li>
+                        <li>✅ Estrutura hexagonal implementada (domain, application, infrastructure)</li>
+                        <li>✅ Domínio puro sem dependências de framework</li>
+                        <li>✅ Ports (interfaces) bem definidos</li>
+                        <li>✅ Services implementando use cases</li>
+                        <li>✅ Adapters JPA e Web implementados</li>
+                        <li>✅ DTOs com validações</li>
+                        <li>✅ Tratamento global de erros</li>
+                        <li>✅ Swagger configurado e acessível em /swagger-ui.html</li>
+                        <li>✅ PostgreSQL configurado</li>
+                        <li>✅ Dockerfile criado</li>
+                        <li>✅ docker-compose.yml funcionando</li>
+                        <li>✅ Testes de integração passando</li>
+                        <li>✅ Logs configurados</li>
+                        <li>✅ Spring Actuator funcionando em /actuator/health</li>
+                        <li>✅ Todos os endpoints CRUD funcionando</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🎓 Revisão dos Conceitos Aplicados</h2>
+                <div class="concept-box">
+                    <h3>O que você aplicou neste projeto:</h3>
+                    <ul>
+                        <li>✅ <strong>Arquitetura Hexagonal:</strong> Separação clara entre domínio, aplicação e infraestrutura</li>
+                        <li>✅ <strong>Inversão de Dependência:</strong> Domínio não depende de frameworks</li>
+                        <li>✅ <strong>Spring Boot:</strong> Framework para criar APIs REST</li>
+                        <li>✅ <strong>JPA:</strong> Persistência de dados</li>
+                        <li>✅ <strong>DTOs:</strong> Separação entre modelo de domínio e API</li>
+                        <li>✅ <strong>Validações:</strong> Bean Validation para validar entrada</li>
+                        <li>✅ <strong>Tratamento de Erros:</strong> @ControllerAdvice para erros globais</li>
+                        <li>✅ <strong>Testes:</strong> Testes de integração com MockMvc</li>
+                        <li>✅ <strong>Docker:</strong> Containerização da aplicação</li>
+                        <li>✅ <strong>Docker Compose:</strong> Orquestração de containers</li>
+                        <li>✅ <strong>Swagger:</strong> Documentação automática da API</li>
+                        <li>✅ <strong>Logs:</strong> Logging estruturado</li>
+                        <li>✅ <strong>Observabilidade:</strong> Spring Actuator para health checks</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🎉 Parabéns!</h2>
+                <p style="text-align: center; padding: 20px;">
+                    Você completou o <strong>Plano Intensivo de 2 Semanas</strong>! 🎊
+                </p>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-13.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>

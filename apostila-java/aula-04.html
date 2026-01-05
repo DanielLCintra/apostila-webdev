@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 04 - Spring Boot + JPA</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 04 - Spring Boot + JPA</h1>
+            <p class="subtitle">Entidades, repositórios, H2 Database e queries</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com a Aula Anterior</h2>
+                <div class="concept-box">
+                    <p>
+                        Na <strong>Aula 03</strong>, você criou sua primeira API REST com Spring Boot, usando Controllers 
+                        e Services. Mas os dados ainda eram apenas em memória (listas). Agora vamos aprender a 
+                        <strong>persistir dados em um banco de dados</strong> usando JPA!
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Spring Boot, Controllers, Services, Dependency Injection, 
+                        anotações (@RestController, @Service, @Autowired)
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> JPA, Entidades, Repositories, H2 Database, 
+                        mapeamento objeto-relacional e como conectar sua API a um banco de dados
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📚 O que é JPA? (Para Iniciantes)</h2>
+                
+                <div class="concept-box">
+                    <h3>JPA - Java Persistence API</h3>
+                    <p>
+                        <strong>JPA</strong> é uma especificação Java para mapear objetos Java para tabelas de banco de dados. 
+                        É uma forma de trabalhar com banco de dados usando objetos Java ao invés de escrever SQL manualmente.
+                    </p>
+                    
+                    <h4>Como funciona?</h4>
+                    <ul>
+                        <li><strong>Você cria classes Java</strong> que representam tabelas do banco</li>
+                        <li><strong>JPA mapeia automaticamente</strong> objetos Java ↔ tabelas SQL</li>
+                        <li><strong>Você usa métodos Java</strong> e o JPA gera SQL automaticamente</li>
+                        <li><strong>Hibernate</strong> é a implementação mais popular de JPA</li>
+                    </ul>
+
+                    <div class="tip-box">
+                        <strong>💡 Analogia:</strong> JPA é como um "tradutor" entre Java e SQL. 
+                        Você fala em Java, ele traduz para SQL e executa no banco.
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Spring Data JPA</h3>
+                    <p>
+                        <strong>Spring Data JPA</strong> é uma camada adicional do Spring que simplifica ainda mais o uso de JPA:
+                    </p>
+                    <ul>
+                        <li><strong>Repositórios automáticos:</strong> Cria implementações de repositórios automaticamente</li>
+                        <li><strong>Queries derivadas:</strong> Cria queries SQL baseado no nome do método</li>
+                        <li><strong>Menos código:</strong> Você escreve interfaces, Spring implementa</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>H2 Database - Banco em Memória</h3>
+                    <p>
+                        <strong>H2</strong> é um banco de dados Java que roda em memória (RAM). 
+                        É perfeito para desenvolvimento e testes porque:
+                    </p>
+                    <ul>
+                        <li>✅ Não precisa instalar banco de dados separado</li>
+                        <li>✅ Roda dentro da aplicação Java</li>
+                        <li>✅ Dados são perdidos quando a aplicação para (útil para testes)</li>
+                        <li>✅ Muito rápido</li>
+                        <li>✅ Interface web para ver os dados (H2 Console)</li>
+                    </ul>
+                    
+                    <div class="tip-box">
+                        <strong>⚠️ Importante:</strong> H2 é para desenvolvimento. Em produção, você usará PostgreSQL, MySQL, etc.
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📦 Adicionando Dependências</h2>
+                
+                <div class="step-box">
+                    <h3>Opção 1: Adicionar via Spring Initializr (Recomendado)</h3>
+                    <ol>
+                        <li>Se você ainda não criou o projeto, acesse <a href="https://start.spring.io" target="_blank">start.spring.io</a></li>
+                        <li>Na seção de dependências, adicione:
+                            <ul>
+                                <li><strong>Spring Data JPA</strong> - Para trabalhar com banco de dados</li>
+                                <li><strong>H2 Database</strong> - Banco em memória para desenvolvimento</li>
+                            </ul>
+                        </li>
+                        <li>Gere o projeto novamente</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>Opção 2: Adicionar Manualmente no pom.xml</h3>
+                    <p>Se você já tem um projeto Spring Boot, edite o arquivo <code>pom.xml</code>:</p>
+                    <ol>
+                        <li>Abra o arquivo <code>pom.xml</code> na raiz do projeto</li>
+                        <li>Encontre a tag <code>&lt;dependencies&gt;</code></li>
+                        <li>Adicione dentro dela:
+                            <div class="code-block">
+                                <pre>
+&lt;dependencies&gt;
+    &lt;!-- Suas dependências existentes --&gt;
+    
+    &lt;!-- Spring Data JPA --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    
+    &lt;!-- H2 Database (banco em memória) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+        &lt;artifactId&gt;h2&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Salve o arquivo</li>
+                        <li>O IntelliJ vai detectar a mudança e baixar as dependências automaticamente</li>
+                        <li>Se não baixar automaticamente, clique direito no projeto → Maven → Reload Project</li>
+                    </ol>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 O que acontece quando você adiciona dependências?</strong>
+                    <ul>
+                        <li>Maven baixa as bibliotecas da internet</li>
+                        <li>As bibliotecas são armazenadas localmente (cache do Maven)</li>
+                        <li>Seu projeto pode usar essas bibliotecas</li>
+                        <li>Você pode ver o progresso no IntelliJ (barra de progresso no canto inferior)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🗄️ Criando Entidades JPA</h2>
+                
+                <div class="concept-box">
+                    <h3>@Entity - Mapeamento Objeto-Relacional</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "usuarios")  // Nome da tabela no banco
+public class Usuario {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false, length = 100)
+    private String nome;
+    
+    @Column(unique = true, nullable = false)
+    private String email;
+    
+    private LocalDateTime dataCriacao;
+    
+    // Construtor padrão (obrigatório para JPA)
+    public Usuario() {
+    }
+    
+    // Construtor com parâmetros
+    public Usuario(String nome, String email) {
+        this.nome = nome;
+        this.email = email;
+        this.dataCriacao = LocalDateTime.now();
+    }
+    
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public void setDataCriacao(LocalDateTime dataCriacao) { 
+        this.dataCriacao = dataCriacao; 
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Anotações JPA Principais</h3>
+                    <ul>
+                        <li><code>@Entity</code> - Marca a classe como entidade JPA</li>
+                        <li><code>@Table</code> - Define nome da tabela (opcional)</li>
+                        <li><code>@Id</code> - Marca a chave primária</li>
+                        <li><code>@GeneratedValue</code> - Geração automática de ID</li>
+                        <li><code>@Column</code> - Define propriedades da coluna</li>
+                        <li><code>@OneToMany</code>, <code>@ManyToOne</code> - Relacionamentos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📚 Criando Repositórios</h2>
+                
+                <div class="concept-box">
+                    <h3>JpaRepository - Interface Mágica</h3>
+                    <p>Spring Data JPA fornece implementação automática de repositórios.</p>
+                    
+                    <div class="code-block">
+<pre>package com.exemplo.repository;
+
+import com.exemplo.entity.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UsuarioRepository extends JpaRepository&lt;Usuario, Long&gt; {
+    // JpaRepository já fornece:
+    // - save(entity)
+    // - findById(id)
+    // - findAll()
+    // - deleteById(id)
+    // - count()
+    // - existsById(id)
+    // E muito mais!
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Queries Derivadas (Query Methods)</h3>
+                    <p>Spring Data JPA cria queries automaticamente baseado no nome do método.</p>
+                    
+                    <div class="code-block">
+<pre>@Repository
+public interface UsuarioRepository extends JpaRepository&lt;Usuario, Long&gt; {
+    
+    // Buscar por email
+    Optional&lt;Usuario&gt; findByEmail(String email);
+    
+    // Buscar por nome (case insensitive)
+    List&lt;Usuario&gt; findByNomeIgnoreCase(String nome);
+    
+    // Buscar por nome contendo texto
+    List&lt;Usuario&gt; findByNomeContaining(String texto);
+    
+    // Buscar por data de criação após uma data
+    List&lt;Usuario&gt; findByDataCriacaoAfter(LocalDateTime data);
+    
+    // Buscar por nome E email
+    Optional&lt;Usuario&gt; findByNomeAndEmail(String nome, String email);
+    
+    // Contar por nome
+    long countByNome(String nome);
+    
+    // Existe por email
+    boolean existsByEmail(String email);
+}</pre>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Convenções de Nomenclatura:</strong>
+                    <ul>
+                        <li><code>findBy</code> - busca</li>
+                        <li><code>countBy</code> - conta</li>
+                        <li><code>existsBy</code> - verifica existência</li>
+                        <li><code>deleteBy</code> - deleta</li>
+                        <li>Use <code>And</code>, <code>Or</code> para múltiplas condições</li>
+                        <li>Use <code>IgnoreCase</code>, <code>Containing</code>, <code>Like</code> para strings</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔍 Queries Customizadas</h2>
+                
+                <div class="concept-box">
+                    <h3>@Query - JPQL e SQL Nativo</h3>
+                    <div class="code-block">
+<pre>@Repository
+public interface UsuarioRepository extends JpaRepository&lt;Usuario, Long&gt; {
+    
+    // JPQL (Java Persistence Query Language)
+    @Query("SELECT u FROM Usuario u WHERE u.nome LIKE %:nome%")
+    List&lt;Usuario&gt; buscarPorNome(@Param("nome") String nome);
+    
+    // JPQL com ordenação
+    @Query("SELECT u FROM Usuario u ORDER BY u.dataCriacao DESC")
+    List&lt;Usuario&gt; buscarTodosOrdenados();
+    
+    // SQL Nativo
+    @Query(value = "SELECT * FROM usuarios WHERE email = :email", 
+           nativeQuery = true)
+    Optional&lt;Usuario&gt; buscarPorEmailNativo(@Param("email") String email);
+    
+    // Query com projeção (apenas alguns campos)
+    @Query("SELECT u.nome, u.email FROM Usuario u")
+    List&lt;Object[]&gt; buscarNomesEEmails();
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ Configuração do H2 Database</h2>
+                
+                <div class="concept-box">
+                    <h3>application.properties</h3>
+                    <div class="code-block">
+<pre># H2 Database Configuration
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# H2 Console (acessar via browser)
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# JPA Configuration
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>2. Acessar H2 Console</h3>
+                    <ol>
+                        <li>Inicie a aplicação</li>
+                        <li>Acesse: <code>http://localhost:8080/h2-console</code></li>
+                        <li>JDBC URL: <code>jdbc:h2:mem:testdb</code></li>
+                        <li>User: <code>sa</code></li>
+                        <li>Password: (deixe vazio)</li>
+                        <li>Execute: <code>SELECT * FROM usuarios;</code></li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔗 Usando Repository no Service</h2>
+                
+                <div class="concept-box">
+                    <h3>Service com JPA Repository</h3>
+                    <div class="code-block">
+<pre>@Service
+public class UsuarioService {
+    
+    private final UsuarioRepository usuarioRepository;
+    
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+    
+    public List&lt;Usuario&gt; listarTodos() {
+        return usuarioRepository.findAll();
+    }
+    
+    public Optional&lt;Usuario&gt; buscarPorId(Long id) {
+        return usuarioRepository.findById(id);
+    }
+    
+    public Usuario criar(Usuario usuario) {
+        // Verificar se email já existe
+        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+            throw new IllegalArgumentException("Email já cadastrado");
+        }
+        return usuarioRepository.save(usuario);
+    }
+    
+    public Usuario atualizar(Long id, Usuario usuarioAtualizado) {
+        return usuarioRepository.findById(id)
+            .map(usuario -&gt; {
+                usuario.setNome(usuarioAtualizado.getNome());
+                usuario.setEmail(usuarioAtualizado.getEmail());
+                return usuarioRepository.save(usuario);
+            })
+            .orElseThrow(() -&gt; new RuntimeException("Usuário não encontrado"));
+    }
+    
+    public void deletar(Long id) {
+        usuarioRepository.deleteById(id);
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧠 Mini-Desafio</h2>
+                <div class="challenge-box">
+                    <h3>Desafio: CRUD /tasks Persistente no H2</h3>
+                    <p><strong>Objetivo:</strong> Implementar CRUD completo de tarefas com persistência.</p>
+                    
+                    <h4>Requisitos:</h4>
+                    <ol>
+                        <li>Crie entidade <code>Task</code> com: id, titulo, descricao, concluida, dataCriacao</li>
+                        <li>Use anotações JPA: @Entity, @Id, @GeneratedValue, @Column</li>
+                        <li>Crie <code>TaskRepository</code> estendendo JpaRepository&lt;Task, Long&gt;</li>
+                        <li>Adicione métodos de query:
+                            <ul>
+                                <li><code>findByConcluida(boolean concluida)</code></li>
+                                <li><code>findByTituloContaining(String texto)</code></li>
+                            </ul>
+                        </li>
+                        <li>Crie <code>TaskService</code> com lógica de negócio</li>
+                        <li>Crie <code>TaskController</code> com endpoints CRUD</li>
+                        <li>Configure H2 no application.properties</li>
+                        <li>Teste acessando H2 Console em /h2-console</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 04</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Entendeu o que é JPA e Spring Data JPA</li>
+                        <li>✅ Adicionou dependências Spring Data JPA e H2</li>
+                        <li>✅ Criou uma entidade com @Entity, @Id, @GeneratedValue</li>
+                        <li>✅ Criou um Repository estendendo JpaRepository</li>
+                        <li>✅ Configurou H2 no application.properties</li>
+                        <li>✅ Acessou H2 Console e viu os dados</li>
+                        <li>✅ Usou o Repository no Service</li>
+                        <li>✅ Criou métodos de query derivados (findBy...)</li>
+                        <li>✅ Completou o mini-desafio do CRUD /tasks</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>👉 Recursos Adicionais</h2>
+                <div class="resources-box">
+                    <a href="https://www.youtube.com/results?search_query=Spring+Boot+JPA+CRUD+Java+Brains" target="_blank" class="resource-link">
+                        🎥 Spring Boot + JPA CRUD – Java Brains (YouTube)
+                    </a>
+                    <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/" target="_blank" class="resource-link">
+                        📖 Spring Data JPA Documentation
+                    </a>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-03.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-05.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

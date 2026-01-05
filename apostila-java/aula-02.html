@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aula 02 - Orientação a Objetos Moderna</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="index.html" class="back-link">← Voltar ao Menu</a>
+        <h1>Aula 02 - Orientação a Objetos Moderna</h1>
+        <p class="subtitle">
+          Encapsulamento, herança, interfaces, imutabilidade e exceptions
+        </p>
+      </header>
+
+      <div class="content">
+        <section class="section">
+          <h2>📚 Conectando com a Aula Anterior</h2>
+          <div class="concept-box">
+            <p>
+              Na <strong>Aula 01</strong>, você aprendeu os fundamentos do Java:
+              classes, métodos, packages, collections e Stream API. Agora vamos
+              aprofundar em <strong>Orientação a Objetos</strong>, aplicando os
+              conceitos que você já conhece para criar código mais organizado e
+              reutilizável.
+            </p>
+            <p>
+              <strong>O que você já sabe:</strong> Classes, métodos,
+              construtores, packages, imports
+            </p>
+            <p>
+              <strong>O que vamos aprender agora:</strong> Encapsulamento,
+              herança, interfaces, polimorfismo, tratamento de exceções e
+              imutabilidade
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🔒 Encapsulamento</h2>
+
+          <div class="concept-box">
+            <h3>O que é Encapsulamento?</h3>
+            <p>
+              Encapsulamento é o princípio de esconder os detalhes internos de
+              uma classe e expor apenas o que é necessário através de métodos
+              públicos.
+            </p>
+
+            <div class="code-block">
+              <pre>
+public class ContaBancaria {
+    // Atributos privados (encapsulados)
+    private double saldo;
+    private String numeroConta;
+    
+    // Construtor
+    public ContaBancaria(String numeroConta, double saldoInicial) {
+        this.numeroConta = numeroConta;
+        this.saldo = saldoInicial;
+    }
+    
+    // Métodos públicos (interface)
+    public void depositar(double valor) {
+        if (valor > 0) {
+            this.saldo += valor;
+        }
+    }
+    
+    public boolean sacar(double valor) {
+        if (valor > 0 && valor <= saldo) {
+            this.saldo -= valor;
+            return true;
+        }
+        return false;
+    }
+    
+    public double getSaldo() {
+        return saldo;
+    }
+    
+    // Saldo não pode ser alterado diretamente (proteção)
+}</pre
+              >
+            </div>
+          </div>
+
+          <div class="tip-box">
+            <strong>💡 Regra de Ouro:</strong> Torne os atributos privados e
+            forneça acesso controlado através de métodos públicos. Isso permite
+            validar e controlar como os dados são acessados e modificados.
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🏗️ Construtores</h2>
+
+          <div class="concept-box">
+            <h3>Construtores Padrão e Personalizados</h3>
+            <div class="code-block">
+              <pre>
+public class Pessoa {
+    private String nome;
+    private int idade;
+    
+    // Construtor padrão (sem parâmetros)
+    public Pessoa() {
+        this.nome = "Sem nome";
+        this.idade = 0;
+    }
+    
+    // Construtor personalizado
+    public Pessoa(String nome, int idade) {
+        this.nome = nome;
+        this.idade = idade;
+    }
+    
+    // Construtor que chama outro (this)
+    public Pessoa(String nome) {
+        this(nome, 0);  // Chama o construtor acima
+    }
+}
+
+// Uso
+Pessoa p1 = new Pessoa();              // Construtor padrão
+Pessoa p2 = new Pessoa("João", 25);    // Construtor personalizado
+Pessoa p3 = new Pessoa("Maria");       // Construtor com um parâmetro</pre
+              >
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>👨‍👩‍👧‍👦 Herança</h2>
+
+          <div class="concept-box">
+            <h3>Herança em Java</h3>
+            <p>
+              Herança permite criar uma nova classe baseada em uma classe
+              existente, reutilizando código e criando hierarquias.
+            </p>
+
+            <div class="code-block">
+              <pre>
+// Classe base (superclasse)
+public class Veiculo {
+    protected String marca;
+    protected int ano;
+    
+    public Veiculo(String marca, int ano) {
+        this.marca = marca;
+        this.ano = ano;
+    }
+    
+    public void acelerar() {
+        System.out.println("Veículo acelerando...");
+    }
+}
+
+// Classe derivada (subclasse)
+public class Carro extends Veiculo {
+    private int portas;
+    
+    public Carro(String marca, int ano, int portas) {
+        super(marca, ano);  // Chama construtor da superclasse
+        this.portas = portas;
+    }
+    
+    @Override
+    public void acelerar() {
+        System.out.println("Carro acelerando rapidamente!");
+    }
+    
+    public void abrirPorta() {
+        System.out.println("Porta aberta");
+    }
+}
+
+// Uso
+Carro carro = new Carro("Toyota", 2023, 4);
+carro.acelerar();  // Usa método sobrescrito
+carro.abrirPorta();  // Método específico do Carro</pre
+              >
+            </div>
+          </div>
+
+          <div class="tip-box">
+            <strong>💡 Palavras-chave:</strong>
+            <ul>
+              <li><code>extends</code> - define herança</li>
+              <li><code>super</code> - referencia a superclasse</li>
+              <li><code>@Override</code> - indica sobrescrita de método</li>
+              <li><code>protected</code> - visível para subclasses</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🔌 Interfaces</h2>
+
+          <div class="concept-box">
+            <h3>Interfaces e Contratos</h3>
+            <p>
+              Interfaces definem contratos que as classes devem implementar.
+              Java permite múltiplas interfaces.
+            </p>
+
+            <div class="code-block">
+              <pre>
+// Interface define contrato
+public interface Pagavel {
+    double calcularPagamento();
+    void processarPagamento();
+}
+
+// Classe implementa interface
+public class Funcionario implements Pagavel {
+    private String nome;
+    private double salario;
+    
+    public Funcionario(String nome, double salario) {
+        this.nome = nome;
+        this.salario = salario;
+    }
+    
+    @Override
+    public double calcularPagamento() {
+        return salario;
+    }
+    
+    @Override
+    public void processarPagamento() {
+        System.out.println("Pagando " + nome + ": R$ " + calcularPagamento());
+    }
+}
+
+// Interface moderna (Java 8+) - pode ter métodos default
+public interface Calculavel {
+    double calcular();
+    
+    // Método default (implementação padrão)
+    default void imprimir() {
+        System.out.println("Resultado: " + calcular());
+    }
+}</pre
+              >
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🛡️ Imutabilidade e Records</h2>
+
+          <div class="concept-box">
+            <h3>Records - Classes Imutáveis Modernas</h3>
+            <p>
+              Records (Java 14+) são classes imutáveis que reduzem boilerplate.
+              Perfeitos para value objects.
+            </p>
+
+            <div class="code-block">
+              <pre>
+// Record (imutável por padrão)
+public record Endereco(String rua, String cidade, String cep) {
+    // Pode adicionar métodos
+    public boolean ehValido() {
+        return rua != null && !rua.isEmpty() && 
+               cidade != null && !cidade.isEmpty();
+    }
+    
+    // Pode adicionar construtor compacto para validação
+    public Endereco {
+        if (rua == null || rua.isBlank()) {
+            throw new IllegalArgumentException("Rua não pode ser vazia");
+        }
+    }
+}
+
+// Uso
+Endereco endereco = new Endereco("Rua A", "São Paulo", "01234-567");
+System.out.println(endereco.rua());  // getter automático
+System.out.println(endereco);        // toString automático
+
+// Comparação automática
+Endereco endereco2 = new Endereco("Rua A", "São Paulo", "01234-567");
+System.out.println(endereco.equals(endereco2));  // true (equals automático)</pre
+              >
+            </div>
+          </div>
+
+          <div class="tip-box">
+            <strong>💡 Quando usar Records:</strong>
+            <ul>
+              <li>DTOs (Data Transfer Objects)</li>
+              <li>Value Objects</li>
+              <li>Classes que apenas carregam dados</li>
+              <li>Quando imutabilidade é desejada</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>⚠️ Exceptions (Checked vs Unchecked)</h2>
+
+          <div class="concept-box">
+            <h3>Tipos de Exceptions</h3>
+
+            <h4>Checked Exceptions</h4>
+            <p>
+              Devem ser tratadas ou declaradas. Herdam de
+              <code>Exception</code> (exceto RuntimeException).
+            </p>
+
+            <div class="code-block">
+              <pre>
+// Checked Exception - deve ser tratada
+public void lerArquivo(String caminho) throws IOException {
+    FileReader reader = new FileReader(caminho);
+    // ...
+}
+
+// Uso - obrigatório tratar
+try {
+    lerArquivo("arquivo.txt");
+} catch (IOException e) {
+    System.out.println("Erro ao ler arquivo: " + e.getMessage());
+}</pre
+              >
+            </div>
+
+            <h4>Unchecked Exceptions</h4>
+            <p>
+              Não precisam ser declaradas. Herdam de
+              <code>RuntimeException</code>.
+            </p>
+
+            <div class="code-block">
+              <pre>
+// Unchecked Exception - não precisa declarar
+public int dividir(int a, int b) {
+    if (b == 0) {
+        throw new IllegalArgumentException("Divisor não pode ser zero");
+    }
+    return a / b;
+}
+
+// Uso - tratamento opcional
+int resultado = dividir(10, 2);  // OK
+int erro = dividir(10, 0);        // Lança IllegalArgumentException</pre
+              >
+            </div>
+          </div>
+
+          <div class="concept-box">
+            <h3>Tratamento de Exceptions</h3>
+            <div class="code-block">
+              <pre>
+public class ExemploException {
+    public void exemplo() {
+        try {
+            // Código que pode lançar exception
+            int resultado = 10 / 0;
+        } catch (ArithmeticException e) {
+            // Trata exception específica
+            System.out.println("Erro de divisão: " + e.getMessage());
+        } catch (Exception e) {
+            // Trata qualquer outra exception
+            System.out.println("Erro genérico: " + e.getMessage());
+        } finally {
+            // Sempre executa (opcional)
+            System.out.println("Finalizando...");
+        }
+    }
+    
+    // Try-with-resources (Java 7+)
+    public void lerArquivo(String caminho) {
+        try (FileReader reader = new FileReader(caminho)) {
+            // reader é fechado automaticamente
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre
+              >
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>💡 Boas Práticas</h2>
+
+          <div class="tip-box">
+            <ul>
+              <li>
+                <strong>Encapsulamento:</strong> Sempre use private para
+                atributos e forneça getters/setters quando necessário
+              </li>
+              <li>
+                <strong>Herança:</strong> Use quando há relação "é um" (Carro é
+                um Veiculo). Prefira composição quando possível
+              </li>
+              <li>
+                <strong>Interfaces:</strong> Use para definir contratos e
+                permitir polimorfismo
+              </li>
+              <li>
+                <strong>Records:</strong> Use para classes imutáveis que apenas
+                carregam dados
+              </li>
+              <li>
+                <strong>Exceptions:</strong> Use checked para erros
+                recuperáveis, unchecked para erros de programação
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🧠 Mini-Desafio: Aplicando OOP</h2>
+          <div class="challenge-box">
+            <h3>Desafio: Sistema de Biblioteca</h3>
+            <p>
+              <strong>Objetivo:</strong> Criar um sistema de biblioteca
+              aplicando todos os conceitos de OOP aprendidos nesta aula.
+            </p>
+
+            <h4>Requisitos:</h4>
+            <ol>
+              <li>
+                <strong>Crie a classe base <code>ItemBiblioteca</code>:</strong>
+                <ul>
+                  <li>Atributos: id, titulo, autor, anoPublicacao</li>
+                  <li>Métodos: getters, setters (com encapsulamento)</li>
+                  <li>
+                    Método abstrato: <code>calcularMulta(int diasAtraso)</code>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Crie classes filhas:</strong>
+                <ul>
+                  <li>
+                    <code>Livro</code> (herda de ItemBiblioteca): atributo
+                    numeroPaginas, multa = R$ 2,00 por dia
+                  </li>
+                  <li>
+                    <code>Revista</code> (herda de ItemBiblioteca): atributo
+                    numeroEdicao, multa = R$ 1,50 por dia
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Crie a interface <code>Emprestavel</code>:</strong>
+                <ul>
+                  <li>
+                    Métodos: <code>emprestar()</code>, <code>devolver()</code>
+                  </li>
+                  <li>Ambas as classes devem implementar esta interface</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Crie um Record <code>Emprestimo</code>:</strong>
+                <ul>
+                  <li>
+                    Campos: item (ItemBiblioteca), dataEmprestimo, dataDevolucao
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Crie a classe <code>Biblioteca</code>:</strong>
+                <ul>
+                  <li>Use uma List para armazenar itens</li>
+                  <li>Métodos: adicionarItem, buscarPorTitulo, listarTodos</li>
+                  <li>Use Stream API (da Aula 01) para buscar</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Tratamento de Exceções:</strong>
+                <ul>
+                  <li>
+                    Crie exceção customizada
+                    <code>ItemNaoEncontradoException</code>
+                  </li>
+                  <li>Lance quando item não for encontrado</li>
+                </ul>
+              </li>
+            </ol>
+
+            <h4>Exemplo de Uso:</h4>
+            <div class="code-block">
+              <pre>
+Biblioteca biblioteca = new Biblioteca();
+
+Livro livro = new Livro(1L, "Java Completo", "João Silva", 2023, 500);
+Revista revista = new Revista(2L, "Tech Magazine", "Editora Tech", 2024, 15);
+
+biblioteca.adicionarItem(livro);
+biblioteca.adicionarItem(revista);
+
+// Buscar usando Stream API
+ItemBiblioteca encontrado = biblioteca.buscarPorTitulo("Java");
+
+// Calcular multa
+double multa = encontrado.calcularMulta(5); // 5 dias de atraso
+System.out.println("Multa: R$ " + multa);
+              </pre>
+            </div>
+
+            <h4>Dicas:</h4>
+            <ul>
+              <li>Use <code>abstract</code> na classe base</li>
+              <li>Use <code>@Override</code> nos métodos sobrescritos</li>
+              <li>
+                Use <code>protected</code> para atributos acessíveis às
+                subclasses
+              </li>
+              <li>
+                Use <code>final</code> para métodos que não devem ser
+                sobrescritos
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>✅ Checklist da Aula 02</h2>
+          <div class="challenge-box">
+            <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+            <ul>
+              <li>
+                ✅ Entendeu encapsulamento e criou classes com atributos
+                privados
+              </li>
+              <li>✅ Criou classes com herança usando <code>extends</code></li>
+              <li>✅ Implementou interfaces usando <code>implements</code></li>
+              <li>✅ Usou Records para classes imutáveis</li>
+              <li>✅ Tratou exceções com try-catch</li>
+              <li>✅ Criou exceções customizadas</li>
+              <li>✅ Completou o mini-desafio da biblioteca</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>👉 Recursos Adicionais</h2>
+          <div class="resources-box">
+            <a
+              href="https://www.youtube.com/results?search_query=Java+OOP+in+1+Hour+Bro+Code"
+              target="_blank"
+              class="resource-link"
+            >
+              🎥 Java OOP in 1 Hour – Bro Code
+            </a>
+            <a
+              href="https://www.baeldung.com/java-inheritance"
+              target="_blank"
+              class="resource-link"
+            >
+              📚 Baeldung - Java Inheritance Guide
+            </a>
+          </div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="aula-01.html" class="nav-link">← Aula Anterior</a>
+          <a href="index.html" class="nav-link">Menu Principal</a>
+          <a href="aula-03.html" class="nav-link">Próxima Aula →</a>
+        </nav>
+      </div>
+    </div>
+  </body>
+</html>

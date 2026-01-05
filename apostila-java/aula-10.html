@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 10 - Inversão de Dependência e Beans</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 10 - Inversão de Dependência e Beans</h1>
+            <p class="subtitle">Spring IoC, dependency injection avançado</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <p>
+                        Na <strong>Aula 09</strong>, você implementou a Arquitetura Hexagonal na prática. Agora vamos 
+                        <strong>aprofundar no Spring IoC e Dependency Injection</strong>, entendendo como o Spring 
+                        gerencia beans e como você pode configurar isso de forma avançada.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Arquitetura Hexagonal, @Service, @Repository, @Autowired, 
+                        Dependency Injection básico
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Como o Spring IoC funciona por baixo dos panos, 
+                        como configurar beans manualmente, qualifiers, profiles, e como ter controle total sobre 
+                        a injeção de dependências
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔄 Inversão de Controle (IoC)</h2>
+                
+                <div class="concept-box">
+                    <h3>O que é IoC?</h3>
+                    <p>Inversão de Controle é um princípio onde o controle de criação e gerenciamento de objetos 
+                    é invertido - em vez de você criar objetos, o framework (Spring) cria e gerencia para você.</p>
+                    
+                    <ul>
+                        <li><strong>Sem IoC:</strong> Você cria objetos manualmente com <code>new</code></li>
+                        <li><strong>Com IoC:</strong> Spring cria e injeta objetos automaticamente</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Dependency Injection (DI)</h3>
+                    <p>DI é a implementação de IoC - dependências são injetadas em vez de criadas internamente.</p>
+                    
+                    <div class="code-block">
+<pre>// ❌ SEM Dependency Injection (acoplado)
+public class UsuarioService {
+    private UsuarioRepository repository = new UsuarioRepository();  // Criação manual
+}
+
+// ✅ COM Dependency Injection (desacoplado)
+public class UsuarioService {
+    private final UsuarioRepository repository;
+    
+    public UsuarioService(UsuarioRepository repository) {  // Injetado
+        this.repository = repository;
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🏷️ Anotações Spring</h2>
+                
+                <div class="concept-box">
+                    <h3>@Component e Derivadas</h3>
+                    <div class="code-block">
+<pre>// @Component - Componente genérico
+@Component
+public class MeuComponente {
+    // Spring gerencia este bean
+}
+
+// @Service - Para camada de serviço
+@Service
+public class UsuarioService {
+    // ...
+}
+
+// @Repository - Para camada de dados
+@Repository
+public class UsuarioRepository {
+    // ...
+}
+
+// @Controller - Para controllers web
+@Controller
+public class UsuarioController {
+    // ...
+}
+
+// @RestController = @Controller + @ResponseBody
+@RestController
+public class UsuarioApiController {
+    // ...
+}</pre>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Todas são especializações de @Component:</strong>
+                    <ul>
+                        <li><code>@Service</code>, <code>@Repository</code>, <code>@Controller</code> são semanticamente diferentes</li>
+                        <li>Funcionalmente, todas fazem a mesma coisa: registram o bean no Spring</li>
+                        <li>Use a anotação apropriada para melhor legibilidade</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ @Configuration e @Bean</h2>
+                
+                <div class="concept-box">
+                    <h3>Criando Beans Customizados</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
+public class AppConfig {
+    
+    @Bean
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        // Configurações adicionais
+        return restTemplate;
+    }
+    
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return mapper;
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Beans com Dependências</h3>
+                    <div class="code-block">
+<pre>@Configuration
+public class ServiceConfig {
+    
+    @Bean
+    public TaskRepositoryPort taskRepository(
+            TaskJpaRepository jpaRepository,
+            TaskMapper mapper) {
+        return new JpaTaskRepositoryAdapter(jpaRepository, mapper);
+    }
+    
+    @Bean
+    public CreateTaskUseCase createTaskUseCase(
+            TaskRepositoryPort repository) {
+        return new CreateTaskService(repository);
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔍 Como o Spring Cria Beans</h2>
+                
+                <div class="concept-box">
+                    <h3>Processo de Inicialização</h3>
+                    <ol>
+                        <li><strong>Component Scan:</strong> Spring escaneia pacotes em busca de <code>@Component</code></li>
+                        <li><strong>Criação:</strong> Spring cria instâncias dos beans</li>
+                        <li><strong>Injeção:</strong> Spring resolve e injeta dependências</li>
+                        <li><strong>Inicialização:</strong> Chama métodos <code>@PostConstruct</code></li>
+                        <li><strong>Pronto:</strong> Beans disponíveis para uso</li>
+                    </ol>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Escopo de Beans</h3>
+                    <div class="code-block">
+<pre>// Singleton (padrão) - uma instância por aplicação
+@Service
+@Scope("singleton")
+public class UsuarioService {
+    // ...
+}
+
+// Prototype - nova instância a cada injeção
+@Component
+@Scope("prototype")
+public class MeuComponente {
+    // ...
+}
+
+// Request - uma instância por requisição HTTP
+@Controller
+@Scope("request")
+public class MeuController {
+    // ...
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🐛 Debug do Fluxo de Injeção</h2>
+                
+                <div class="step-box">
+                    <h3>Como Acompanhar a Injeção</h3>
+                    <ol>
+                        <li>Coloque breakpoint no construtor do Controller</li>
+                        <li>Execute em modo Debug</li>
+                        <li>Observe a pilha de chamadas (Call Stack)</li>
+                        <li>Veja como Spring cria e injeta dependências</li>
+                    </ol>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Exemplo de Fluxo</h3>
+                    <div class="code-block">
+<pre>// 1. Spring inicia aplicação
+// 2. Encontra @RestController em TaskController
+// 3. Verifica dependências: CreateTaskUseCase
+// 4. Procura implementação: CreateTaskService
+// 5. Verifica dependências: TaskRepositoryPort
+// 6. Procura implementação: JpaTaskRepositoryAdapter
+// 7. Verifica dependências: TaskJpaRepository, TaskMapper
+// 8. Cria na ordem inversa:
+//    - TaskMapper
+//    - TaskJpaRepository (Spring Data JPA)
+//    - JpaTaskRepositoryAdapter
+//    - CreateTaskService
+//    - TaskController
+// 9. Injeta tudo e está pronto!</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>💡 Boas Práticas</h2>
+                
+                <div class="tip-box">
+                    <ul>
+                        <li><strong>Use injeção por construtor:</strong> Mais testável e explícito</li>
+                        <li><strong>Evite @Autowired em campos:</strong> Dificulta testes</li>
+                        <li><strong>Use interfaces:</strong> Facilita troca de implementações</li>
+                        <li><strong>@Configuration para beans complexos:</strong> Quando precisa de lógica de criação</li>
+                        <li><strong>Evite ciclos de dependência:</strong> A depende de B, B depende de A</li>
+                        <li><strong>Use @Qualifier:</strong> Quando há múltiplas implementações</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔧 @Qualifier - Múltiplas Implementações</h2>
+                
+                <div class="concept-box">
+                    <h3>Quando há várias implementações do mesmo port</h3>
+                    <div class="code-block">
+<pre>// Interface
+public interface TaskRepositoryPort {
+    // ...
+}
+
+// Implementação 1
+@Repository
+@Qualifier("jpa")
+public class JpaTaskRepositoryAdapter implements TaskRepositoryPort {
+    // ...
+}
+
+// Implementação 2
+@Repository
+@Qualifier("memory")
+public class InMemoryTaskRepositoryAdapter implements TaskRepositoryPort {
+    // ...
+}
+
+// Uso com @Qualifier
+@Service
+public class CreateTaskService {
+    private final TaskRepositoryPort repository;
+    
+    public CreateTaskService(
+            @Qualifier("jpa") TaskRepositoryPort repository) {
+        this.repository = repository;  // Injeta JpaTaskRepositoryAdapter
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 10</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Entendeu o que é IoC (Inversão de Controle)</li>
+                        <li>✅ Entendeu como o Spring gerencia beans</li>
+                        <li>✅ Entendeu a diferença entre @Component, @Service, @Repository, @Controller</li>
+                        <li>✅ Entendeu como usar @Qualifier para múltiplas implementações</li>
+                        <li>✅ Entendeu como usar @Profile para diferentes ambientes</li>
+                        <li>✅ Criou beans customizados com @Bean e @Configuration</li>
+                        <li>✅ Entendeu o ciclo de vida dos beans no Spring</li>
+                        <li>✅ Entendeu quando usar injeção via construtor vs campo</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>👉 Recursos Adicionais</h2>
+                <div class="resources-box">
+                    <a href="https://www.youtube.com/results?search_query=Spring+Dependency+Injection+Amigoscode" target="_blank" class="resource-link">
+                        🎥 Spring Dependency Injection – Amigoscode (YouTube)
+                    </a>
+                    <a href="https://www.baeldung.com/spring-injection-lookup" target="_blank" class="resource-link">
+                        📚 Baeldung - Spring Dependency Injection Guide
+                    </a>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-09.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-11.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,11 @@
+# Redirecionamento para apostila-java
+RewriteEngine On
+RewriteBase /
+
+# Se acessar /apostila-java, redirecionar para /apostila-java/index.html
+RewriteRule ^apostila-java/?$ apostila-java/index.html [L]
+
+# Permitir acesso direto aos arquivos
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+

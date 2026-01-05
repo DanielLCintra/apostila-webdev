@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 12 - Integração com Banco Externo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 12 - Integração com Banco Externo</h1>
+            <p class="subtitle">PostgreSQL, Docker Compose e profiles</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <p>
+                        Na <strong>Aula 04</strong>, você usou H2 (banco em memória) para aprender JPA. Na 
+                        <strong>Aula 07</strong>, você aprendeu Docker. Agora vamos <strong>combinar tudo</strong>: 
+                        usar PostgreSQL (banco real) com Docker Compose, e configurar profiles para diferentes ambientes.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> JPA, H2 Database, Docker básico, Spring Boot
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Como configurar PostgreSQL, como usar Docker 
+                        Compose para subir banco e aplicação juntos, como usar profiles (dev, prod), e como fazer 
+                        a transição de H2 para PostgreSQL
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🐘 Configurando PostgreSQL</h2>
+                
+                <div class="step-box">
+                    <h3>1. Adicionar Dependência</h3>
+                    <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>2. Configuração (application-dev.yml)</h3>
+                    <div class="code-block">
+<pre>spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/minhaapi
+    username: admin
+    password: senha123
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🐳 Docker Compose</h2>
+                
+                <div class="concept-box">
+                    <h3>Criar docker-compose.yml</h3>
+                    <div class="code-block">
+<pre>version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: minhaapi-postgres
+    environment:
+      POSTGRES_DB: minhaapi
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: senha123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: minhaapi-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/minhaapi
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: senha123
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>Comandos Docker Compose</h3>
+                    <div class="code-block">
+<pre># Subir todos os serviços
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f app
+
+# Parar serviços
+docker-compose down
+
+# Parar e remover volumes (limpar dados)
+docker-compose down -v
+
+# Rebuild e subir
+docker-compose up --build -d</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📝 Migrations com Flyway</h2>
+                
+                <div class="step-box">
+                    <h3>1. Adicionar Dependência</h3>
+                    <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.flywaydb&lt;/groupId&gt;
+    &lt;artifactId&gt;flyway-core&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>2. Criar Migrations</h3>
+                    <p>Crie arquivos SQL em <code>src/main/resources/db/migration/</code></p>
+                    
+                    <h4>V1__Create_tasks_table.sql</h4>
+                    <div class="code-block">
+<pre>CREATE TABLE tasks (
+    id BIGSERIAL PRIMARY KEY,
+    titulo VARCHAR(200) NOT NULL,
+    descricao TEXT,
+    concluida BOOLEAN DEFAULT FALSE,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_tasks_concluida ON tasks(concluida);</pre>
+                    </div>
+
+                    <h4>V2__Add_prioridade_to_tasks.sql</h4>
+                    <div class="code-block">
+<pre>ALTER TABLE tasks 
+ADD COLUMN prioridade INTEGER DEFAULT 1;
+
+CREATE INDEX idx_tasks_prioridade ON tasks(prioridade);</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>3. Configuração</h3>
+                    <div class="code-block">
+<pre>spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔧 Configuração por Ambiente</h2>
+                
+                <div class="concept-box">
+                    <h3>application-dev.yml</h3>
+                    <div class="code-block">
+<pre>spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/minhaapi_dev
+    username: admin
+    password: senha123
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>application-prod.yml</h3>
+                    <div class="code-block">
+<pre>spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Não cria/altera tabelas
+    show-sql: false</pre>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Variáveis de Ambiente:</strong> Em produção, use variáveis de ambiente 
+                    para credenciais sensíveis. Nunca commite senhas no código!
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧪 Testando Conexão</h2>
+                
+                <div class="concept-box">
+                    <h3>Verificar Conexão</h3>
+                    <div class="code-block">
+<pre>@SpringBootTest
+class DatabaseConnectionTest {
+    
+    @Autowired
+    private DataSource dataSource;
+    
+    @Test
+    void testConnection() throws SQLException {
+        try (Connection conn = dataSource.getConnection()) {
+            assertTrue(conn.isValid(1));
+            System.out.println("Conexão com banco OK!");
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 12</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Adicionou dependência do PostgreSQL ao projeto</li>
+                        <li>✅ Configurou application.yml com dados do PostgreSQL</li>
+                        <li>✅ Entendeu a diferença entre H2 e PostgreSQL</li>
+                        <li>✅ Criou docker-compose.yml com PostgreSQL</li>
+                        <li>✅ Executou docker-compose up e subiu o banco</li>
+                        <li>✅ Configurou profiles (dev, prod) no Spring Boot</li>
+                        <li>✅ Entendeu como usar @Profile para diferentes configurações</li>
+                        <li>✅ Testou a aplicação conectando ao PostgreSQL</li>
+                        <li>✅ Entendeu quando usar H2 (dev/test) vs PostgreSQL (prod)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>💡 Boas Práticas</h2>
+                
+                <div class="tip-box">
+                    <ul>
+                        <li><strong>Use migrations:</strong> Flyway ou Liquibase para versionar schema</li>
+                        <li><strong>Nunca use ddl-auto=create-drop em produção:</strong> Pode perder dados</li>
+                        <li><strong>Use connection pooling:</strong> HikariCP já vem configurado no Spring Boot</li>
+                        <li><strong>Configure timeouts:</strong> Evite conexões travadas</li>
+                        <li><strong>Use variáveis de ambiente:</strong> Para credenciais sensíveis</li>
+                        <li><strong>Backup regular:</strong> Configure backups automáticos do banco</li>
+                    </ul>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-11.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-13.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

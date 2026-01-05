@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 11 - Exceções, Logs e Observabilidade</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 11 - Exceções, Logs e Observabilidade</h1>
+            <p class="subtitle">Tratamento global de erros, logging e Spring Actuator</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <p>
+                        Na <strong>Aula 06</strong>, você aprendeu o básico de tratamento de erros com @ControllerAdvice. 
+                        Agora vamos <strong>aprofundar nisso</strong> e também aprender sobre <strong>logging</strong> e 
+                        <strong>observabilidade</strong>, essenciais para aplicações em produção.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> @ControllerAdvice básico, tratamento de exceções simples
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Tratamento avançado de exceções, logging profissional 
+                        com SLF4J, Spring Actuator para health checks e métricas, e como monitorar sua aplicação
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🛡️ @ControllerAdvice Avançado</h2>
+                
+                <div class="concept-box">
+                    <h3>Tratamento Global de Exceções</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleResourceNotFound(
+            ResourceNotFoundException ex) {
+        ErrorResponse error = ErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.NOT_FOUND.value())
+            .error("Not Found")
+            .message(ex.getMessage())
+            .path(getRequestPath())
+            .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleIllegalArgument(
+            IllegalArgumentException ex) {
+        ErrorResponse error = ErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.BAD_REQUEST.value())
+            .error("Bad Request")
+            .message(ex.getMessage())
+            .build();
+        return ResponseEntity.badRequest().body(error);
+    }
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleGenericException(
+            Exception ex) {
+        log.error("Erro não tratado", ex);
+        ErrorResponse error = ErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+            .error("Internal Server Error")
+            .message("Ocorreu um erro inesperado")
+            .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(error);
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📝 Logging com SLF4J</h2>
+                
+                <div class="step-box">
+                    <h3>SLF4J já está incluído no Spring Boot</h3>
+                    <p>Spring Boot usa Logback (implementação de SLF4J) por padrão.</p>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Usando @Slf4j (Lombok)</h3>
+                    <div class="code-block">
+<pre>import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class TaskService {
+    
+    public Task criar(CriarTaskCommand command) {
+        log.info("Criando nova tarefa: {}", command.titulo());
+        
+        try {
+            Task task = new Task(command.titulo(), command.descricao());
+            Task salva = repository.salvar(task);
+            log.debug("Tarefa criada com sucesso. ID: {}", salva.getId());
+            return salva;
+        } catch (Exception e) {
+            log.error("Erro ao criar tarefa: {}", command.titulo(), e);
+            throw e;
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Sem Lombok (usando Logger manual)</h3>
+                    <div class="code-block">
+<pre>import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Service
+public class TaskService {
+    
+    private static final Logger log = LoggerFactory.getLogger(TaskService.class);
+    
+    public Task criar(CriarTaskCommand command) {
+        log.info("Criando nova tarefa: {}", command.titulo());
+        // ...
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Níveis de Log</h3>
+                    <ul>
+                        <li><code>log.trace()</code> - Mais detalhado (desenvolvimento)</li>
+                        <li><code>log.debug()</code> - Informações de debug</li>
+                        <li><code>log.info()</code> - Informações gerais</li>
+                        <li><code>log.warn()</code> - Avisos</li>
+                        <li><code>log.error()</code> - Erros</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Configuração de Logs (application.properties)</h3>
+                    <div class="code-block">
+<pre># Nível de log por pacote
+logging.level.com.exemplo=DEBUG
+logging.level.org.springframework.web=INFO
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+
+# Formato de log
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+
+# Arquivo de log
+logging.file.name=logs/application.log
+logging.file.max-size=10MB
+logging.file.max-history=30</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📊 Spring Actuator - Observabilidade</h2>
+                
+                <div class="step-box">
+                    <h3>1. Adicionar Dependência</h3>
+                    <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>2. Configuração (application.properties)</h3>
+                    <div class="code-block">
+<pre># Habilitar endpoints
+management.endpoints.web.exposure.include=health,info,metrics,prometheus
+
+# Detalhes do health
+management.endpoint.health.show-details=when-authorized
+
+# Métricas customizadas
+management.metrics.export.prometheus.enabled=true</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>3. Endpoints Disponíveis</h3>
+                    <ul>
+                        <li><code>/actuator/health</code> - Status da aplicação</li>
+                        <li><code>/actuator/info</code> - Informações da aplicação</li>
+                        <li><code>/actuator/metrics</code> - Métricas da aplicação</li>
+                        <li><code>/actuator/prometheus</code> - Métricas no formato Prometheus</li>
+                        <li><code>/actuator/env</code> - Variáveis de ambiente</li>
+                        <li><code>/actuator/loggers</code> - Configuração de loggers</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h3>4. Health Check Customizado</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.health;
+
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.stereotype.Component;
+
+@Component
+public class DatabaseHealthIndicator implements HealthIndicator {
+    
+    private final TaskRepositoryPort repository;
+    
+    @Override
+    public Health health() {
+        try {
+            repository.listar();  // Testa conexão
+            return Health.up()
+                .withDetail("database", "Disponível")
+                .build();
+        } catch (Exception e) {
+            return Health.down()
+                .withDetail("database", "Indisponível")
+                .withException(e)
+                .build();
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ Profiles (Ambientes)</h2>
+                
+                <div class="concept-box">
+                    <h3>Criando Profiles</h3>
+                    <p>Profiles permitem diferentes configurações para diferentes ambientes.</p>
+                    
+                    <h4>application-dev.properties</h4>
+                    <div class="code-block">
+<pre># Desenvolvimento
+spring.datasource.url=jdbc:h2:mem:devdb
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=create-drop
+logging.level.com.exemplo=DEBUG</pre>
+                    </div>
+
+                    <h4>application-prod.properties</h4>
+                    <div class="code-block">
+<pre># Produção
+spring.datasource.url=jdbc:postgresql://localhost:5432/prod_db
+spring.jpa.show-sql=false
+spring.jpa.hibernate.ddl-auto=validate
+logging.level.com.exemplo=INFO</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Ativando Profiles</h3>
+                    <div class="code-block">
+<pre># Via application.properties
+spring.profiles.active=dev
+
+# Via variável de ambiente
+export SPRING_PROFILES_ACTIVE=prod
+
+# Via linha de comando
+java -jar app.jar --spring.profiles.active=prod
+
+# Múltiplos profiles
+spring.profiles.active=dev,debug</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Usando @Profile</h3>
+                    <div class="code-block">
+<pre>@Configuration
+@Profile("dev")
+public class DevConfig {
+    // Configurações apenas para desenvolvimento
+}
+
+@Configuration
+@Profile("prod")
+public class ProdConfig {
+    // Configurações apenas para produção
+}
+
+@Bean
+@Profile("!prod")  // Todos exceto produção
+public DataSource devDataSource() {
+    return new H2DataSource();
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 11</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Entendeu como usar @ControllerAdvice para tratamento global</li>
+                        <li>✅ Criou exceções customizadas</li>
+                        <li>✅ Tratou diferentes tipos de exceções (@ExceptionHandler)</li>
+                        <li>✅ Adicionou Spring Boot Actuator ao projeto</li>
+                        <li>✅ Configurou endpoints do Actuator (health, info, metrics)</li>
+                        <li>✅ Acessou /actuator/health e viu o status</li>
+                        <li>✅ Entendeu como usar logging com @Slf4j ou Logger</li>
+                        <li>✅ Configurou níveis de log (DEBUG, INFO, WARN, ERROR)</li>
+                        <li>✅ Entendeu a importância de observabilidade em produção</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>💡 Boas Práticas</h2>
+                
+                <div class="tip-box">
+                    <ul>
+                        <li><strong>Logs estruturados:</strong> Use formato JSON em produção</li>
+                        <li><strong>Não logue dados sensíveis:</strong> Senhas, tokens, etc.</li>
+                        <li><strong>Use níveis apropriados:</strong> ERROR para erros, INFO para eventos importantes</li>
+                        <li><strong>Health checks:</strong> Implemente para dependências críticas</li>
+                        <li><strong>Profiles:</strong> Separe configurações por ambiente</li>
+                        <li><strong>Tratamento de erros:</strong> Sempre retorne mensagens claras ao cliente</li>
+                    </ul>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-10.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-12.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

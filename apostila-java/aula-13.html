@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 13 - Segurança e JWT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 13 - Segurança e JWT</h1>
+            <p class="subtitle">Spring Security e autenticação JWT</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <p>
+                        Nas <strong>Aulas 01 a 12</strong>, você construiu APIs REST completas, mas elas estão 
+                        <strong>abertas para qualquer pessoa</strong>. Agora vamos aprender a <strong>proteger sua API</strong> 
+                        com autenticação e autorização usando Spring Security e JWT.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Spring Boot, Controllers, Services, JPA, Arquitetura Hexagonal, 
+                        Docker, PostgreSQL
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Spring Security, autenticação com JWT (JSON Web Tokens), 
+                        como proteger endpoints, como criar sistema de login, e como gerenciar sessões de usuário
+                    </p>
+                    <div class="tip-box">
+                        <strong>💡 Importante:</strong> Segurança é um tópico complexo. Vamos começar com o básico e 
+                        construir conhecimento progressivamente.
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔐 Spring Security 6</h2>
+                
+                <div class="step-box">
+                    <h3>1. Adicionar Dependências</h3>
+                    <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-api&lt;/artifactId&gt;
+    &lt;version&gt;0.11.5&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-impl&lt;/artifactId&gt;
+    &lt;version&gt;0.11.5&lt;/version&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-jackson&lt;/artifactId&gt;
+    &lt;version&gt;0.11.5&lt;/version&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🎫 JWT (JSON Web Token)</h2>
+                
+                <div class="concept-box">
+                    <h3>O que é JWT?</h3>
+                    <p>JWT é um padrão para autenticação stateless. O token contém informações do usuário 
+                    e é assinado digitalmente para garantir integridade.</p>
+                    
+                    <p><strong>Estrutura:</strong> header.payload.signature</p>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Service de JWT</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.security;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.function.Function;
+
+@Service
+public class JwtService {
+    
+    @Value("${jwt.secret}")
+    private String secret;
+    
+    @Value("${jwt.expiration}")
+    private Long expiration;
+    
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
+    
+    public String gerarToken(String username) {
+        return Jwts.builder()
+            .subject(username)
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + expiration))
+            .signWith(getSigningKey())
+            .compact();
+    }
+    
+    public String extrairUsername(String token) {
+        return extrairClaim(token, Claims::getSubject);
+    }
+    
+    public &lt;T&gt; T extrairClaim(String token, Function&lt;Claims, T&gt; claimsResolver) {
+        final Claims claims = extrairTodosClaims(token);
+        return claimsResolver.apply(claims);
+    }
+    
+    private Claims extrairTodosClaims(String token) {
+        return Jwts.parser()
+            .verifyWith(getSigningKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
+    
+    public boolean isTokenValido(String token) {
+        try {
+            extrairTodosClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔑 Configuração de Segurança</h2>
+                
+                <div class="concept-box">
+                    <h3>SecurityConfig</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+    
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -&gt; csrf.disable())
+            .authorizeHttpRequests(auth -&gt; auth
+                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/api-docs/**")
+                    .permitAll()
+                .anyRequest()
+                    .authenticated()
+            )
+            .sessionManagement(session -&gt; 
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🛡️ Filtro de Autenticação JWT</h2>
+                
+                <div class="concept-box">
+                    <h3>JwtAuthenticationFilter</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.security;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    
+    private final JwtService jwtService;
+    
+    public JwtAuthenticationFilter(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
+    
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
+        
+        final String authHeader = request.getHeader("Authorization");
+        
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
+        try {
+            final String jwt = authHeader.substring(7);
+            final String username = jwtService.extrairUsername(jwt);
+            
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (jwtService.isTokenValido(jwt)) {
+                    UsernamePasswordAuthenticationToken authToken = 
+                        new UsernamePasswordAuthenticationToken(
+                            username,
+                            null,
+                            new ArrayList&lt;&gt;()
+                        );
+                    authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Erro ao processar JWT", e);
+        }
+        
+        filterChain.doFilter(request, response);
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔐 Controller de Autenticação</h2>
+                
+                <div class="concept-box">
+                    <h3>AuthController</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.controller;
+
+import com.exemplo.security.JwtService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+    
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UsuarioService usuarioService;
+    
+    @PostMapping("/login")
+    public ResponseEntity&lt;AuthResponse&gt; login(@RequestBody LoginRequest request) {
+        // Autenticar usuário
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                request.username(),
+                request.password()
+            )
+        );
+        
+        // Buscar usuário
+        Usuario usuario = usuarioService.buscarPorUsername(request.username());
+        
+        // Gerar token
+        String token = jwtService.gerarToken(usuario.getUsername());
+        
+        return ResponseEntity.ok(new AuthResponse(token));
+    }
+    
+    @PostMapping("/register")
+    public ResponseEntity&lt;AuthResponse&gt; register(@RequestBody RegisterRequest request) {
+        // Criar usuário
+        Usuario usuario = usuarioService.criar(request);
+        
+        // Gerar token
+        String token = jwtService.gerarToken(usuario.getUsername());
+        
+        return ResponseEntity.ok(new AuthResponse(token));
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ Configuração (application.properties)</h2>
+                
+                <div class="code-block">
+<pre># JWT Configuration
+jwt.secret=minhaChaveSecretaSuperSeguraComPeloMenos256Bits
+jwt.expiration=86400000  # 24 horas em milissegundos</pre>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧪 Testando Autenticação</h2>
+                
+                <div class="step-box">
+                    <h3>1. Registrar Usuário</h3>
+                    <div class="code-block">
+<pre>POST /api/auth/register
+{
+  "username": "joao",
+  "password": "senha123",
+  "email": "joao@email.com"
+}
+
+Response:
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>2. Fazer Login</h3>
+                    <div class="code-block">
+<pre>POST /api/auth/login
+{
+  "username": "joao",
+  "password": "senha123"
+}
+
+Response:
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>3. Usar Token em Requisições</h3>
+                    <div class="code-block">
+<pre>GET /api/tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 13</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Adicionou Spring Security ao projeto</li>
+                        <li>✅ Entendeu o que é JWT e como funciona</li>
+                        <li>✅ Criou JwtService para gerar e validar tokens</li>
+                        <li>✅ Configurou SecurityConfig com filtros JWT</li>
+                        <li>✅ Criou endpoints de login e registro</li>
+                        <li>✅ Protegeu endpoints com autenticação</li>
+                        <li>✅ Testou login e recebeu token JWT</li>
+                        <li>✅ Testou acesso a endpoints protegidos com token</li>
+                        <li>✅ Entendeu a diferença entre autenticação e autorização</li>
+                        <li>✅ Configurou secret key e expiration do JWT</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>👉 Recursos Adicionais</h2>
+                <div class="resources-box">
+                    <a href="https://www.youtube.com/results?search_query=Spring+Boot+JWT+Authentication+Amigoscode" target="_blank" class="resource-link">
+                        🎥 Spring Boot JWT Authentication – Amigoscode (YouTube)
+                    </a>
+                    <a href="https://www.baeldung.com/spring-security-jwt" target="_blank" class="resource-link">
+                        📚 Baeldung - Spring Security JWT Guide
+                    </a>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-12.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-14.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

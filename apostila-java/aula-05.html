@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 05 - Debug e Testes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 05 - Debug e Testes</h1>
+            <p class="subtitle">Debug no IntelliJ, testes unitários e de integração</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com a Aula Anterior</h2>
+                <div class="concept-box">
+                    <p>
+                        Na <strong>Aula 04</strong>, você aprendeu a usar JPA para persistir dados. Agora que você 
+                        tem código mais complexo, é essencial saber <strong>debugar problemas</strong> e 
+                        <strong>testar seu código</strong> para garantir que funciona corretamente.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Spring Boot, JPA, Controllers, Services, Repositories
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Como usar o debugger do IntelliJ, como escrever 
+                        testes unitários e de integração, e como garantir que seu código funciona antes de colocar 
+                        em produção
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🐛 Debug no IntelliJ IDEA</h2>
+                
+                <div class="step-box">
+                    <h3>1. Configurando Breakpoints</h3>
+                    <ol>
+                        <li>Clique na margem esquerda do editor (ao lado do número da linha)</li>
+                        <li>Um círculo vermelho aparecerá - isso é um breakpoint</li>
+                        <li>Clique novamente para desabilitar</li>
+                        <li>Breakpoints condicionais: clique com botão direito → "More" → defina condição</li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>2. Executando em Modo Debug</h3>
+                    <ol>
+                        <li>Clique com botão direito na classe principal</li>
+                        <li>Selecione "Debug 'AplicacaoApplication'"</li>
+                        <li>Ou use o atalho: <code>Shift + F9</code></li>
+                        <li>A aplicação pausará nos breakpoints</li>
+                    </ol>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Ferramentas de Debug</h3>
+                    <ul>
+                        <li><strong>Step Over (F8):</strong> Executa linha atual e vai para próxima</li>
+                        <li><strong>Step Into (F7):</strong> Entra dentro de métodos chamados</li>
+                        <li><strong>Step Out (Shift+F8):</strong> Sai do método atual</li>
+                        <li><strong>Resume (F9):</strong> Continua execução até próximo breakpoint</li>
+                        <li><strong>Evaluate Expression:</strong> Executa código no contexto atual</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Evaluate Expression - Exemplo</h3>
+                    <div class="code-block">
+<pre>// Durante debug, pressione Alt+F8 ou clique em "Evaluate"
+// Você pode executar expressões como:
+
+usuario.getNome().toUpperCase()
+usuarioRepository.count()
+lista.stream().filter(u -&gt; u.getId() &gt; 10).count()
+
+// Útil para inspecionar valores e testar lógica</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧪 Introdução a Testes</h2>
+                
+                <div class="concept-box">
+                    <h3>Por que Testar?</h3>
+                    <ul>
+                        <li>Garantir que código funciona corretamente</li>
+                        <li>Detectar bugs antes de produção</li>
+                        <li>Facilitar refatoração com segurança</li>
+                        <li>Documentar comportamento esperado</li>
+                        <li>Melhorar design (código testável é melhor código)</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h3>Dependências de Teste (já incluídas no Spring Boot)</h3>
+                    <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+
+// Inclui:
+// - JUnit 5
+// - Mockito
+// - AssertJ
+// - Spring Test</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📝 Testes Unitários</h2>
+                
+                <div class="concept-box">
+                    <h3>Teste Simples de Service</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.service;
+
+import com.exemplo.entity.Usuario;
+import com.exemplo.repository.UsuarioRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class UsuarioServiceTest {
+    
+    @Mock
+    private UsuarioRepository usuarioRepository;
+    
+    @InjectMocks
+    private UsuarioService usuarioService;
+    
+    private Usuario usuario;
+    
+    @BeforeEach
+    void setUp() {
+        usuario = new Usuario("João", "joao@email.com");
+        usuario.setId(1L);
+    }
+    
+    @Test
+    void deveCriarUsuarioComSucesso() {
+        // Arrange (Preparar)
+        when(usuarioRepository.existsByEmail(anyString())).thenReturn(false);
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
+        
+        // Act (Executar)
+        Usuario resultado = usuarioService.criar(usuario);
+        
+        // Assert (Verificar)
+        assertNotNull(resultado);
+        assertEquals("João", resultado.getNome());
+        verify(usuarioRepository).save(any(Usuario.class));
+    }
+    
+    @Test
+    void deveLancarExcecaoQuandoEmailJaExiste() {
+        // Arrange
+        when(usuarioRepository.existsByEmail(anyString())).thenReturn(true);
+        
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -&gt; {
+            usuarioService.criar(usuario);
+        });
+        
+        verify(usuarioRepository, never()).save(any());
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Anotações Importantes</h3>
+                    <ul>
+                        <li><code>@Test</code> - Marca método como teste</li>
+                        <li><code>@BeforeEach</code> - Executa antes de cada teste</li>
+                        <li><code>@AfterEach</code> - Executa depois de cada teste</li>
+                        <li><code>@Mock</code> - Cria mock de dependência</li>
+                        <li><code>@InjectMocks</code> - Injeta mocks na classe testada</li>
+                        <li><code>@ExtendWith(MockitoExtension.class)</code> - Habilita Mockito</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔗 Testes de Integração</h2>
+                
+                <div class="concept-box">
+                    <h3>@SpringBootTest - Teste Completo</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.controller;
+
+import com.exemplo.entity.Usuario;
+import com.exemplo.repository.UsuarioRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Transactional  // Rollback após cada teste
+class UsuarioControllerTest {
+    
+    @Autowired
+    private MockMvc mockMvc;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
+    
+    @BeforeEach
+    void setUp() {
+        usuarioRepository.deleteAll();
+    }
+    
+    @Test
+    void deveCriarUsuario() throws Exception {
+        // Arrange
+        Usuario usuario = new Usuario("João", "joao@email.com");
+        
+        // Act & Assert
+        mockMvc.perform(post("/usuarios")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(usuario)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.nome").value("João"))
+            .andExpect(jsonPath("$.email").value("joao@email.com"));
+    }
+    
+    @Test
+    void deveListarUsuarios() throws Exception {
+        // Arrange
+        Usuario usuario = new Usuario("João", "joao@email.com");
+        usuarioRepository.save(usuario);
+        
+        // Act & Assert
+        mockMvc.perform(get("/usuarios"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$[0].nome").value("João"));
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>MockMvc - Testando Controllers</h3>
+                    <p>MockMvc simula requisições HTTP sem precisar subir servidor completo.</p>
+                    <ul>
+                        <li><code>mockMvc.perform()</code> - Simula requisição</li>
+                        <li><code>andExpect()</code> - Verifica resultado</li>
+                        <li><code>jsonPath()</code> - Acessa campos JSON</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🎯 Boas Práticas de Testes</h2>
+                
+                <div class="tip-box">
+                    <ul>
+                        <li><strong>AAA Pattern:</strong> Arrange (preparar), Act (executar), Assert (verificar)</li>
+                        <li><strong>Nomes descritivos:</strong> <code>deveCriarUsuarioQuandoDadosValidos()</code></li>
+                        <li><strong>Um teste, uma verificação:</strong> Evite múltiplos asserts não relacionados</li>
+                        <li><strong>Testes independentes:</strong> Cada teste deve poder rodar isoladamente</li>
+                        <li><strong>Use @Transactional:</strong> Para rollback automático em testes de integração</li>
+                        <li><strong>Mock apenas dependências externas:</strong> Não mocke a classe que está testando</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧠 Mini-Desafio</h2>
+                <div class="challenge-box">
+                    <h3>Desafio: 2 Testes de Integração</h3>
+                    <p><strong>Objetivo:</strong> Criar testes de integração para endpoints GET e POST.</p>
+                    
+                    <h4>Requisitos:</h4>
+                    <ol>
+                        <li>Crie <code>TaskControllerTest</code> com <code>@SpringBootTest</code></li>
+                        <li>Teste 1: GET /tasks
+                            <ul>
+                                <li>Deve retornar lista vazia quando não há tarefas</li>
+                                <li>Deve retornar lista com tarefas quando existem</li>
+                            </ul>
+                        </li>
+                        <li>Teste 2: POST /tasks
+                            <ul>
+                                <li>Deve criar tarefa com sucesso</li>
+                                <li>Deve retornar status 201 (Created)</li>
+                                <li>Deve retornar tarefa criada com ID</li>
+                            </ul>
+                        </li>
+                        <li>Use <code>@Transactional</code> para limpar dados após cada teste</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 05</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Aprendeu a usar breakpoints no IntelliJ</li>
+                        <li>✅ Executou aplicação em modo Debug</li>
+                        <li>✅ Usou Step Over, Step Into, Step Out</li>
+                        <li>✅ Usou Evaluate Expression para inspecionar valores</li>
+                        <li>✅ Entendeu a importância de testes</li>
+                        <li>✅ Criou testes unitários com JUnit 5</li>
+                        <li>✅ Usou Mockito para mockar dependências</li>
+                        <li>✅ Criou testes de integração com @SpringBootTest</li>
+                        <li>✅ Usou MockMvc para testar controllers</li>
+                        <li>✅ Entendeu a diferença entre testes unitários e de integração</li>
+                        <li>✅ Completou o mini-desafio de testes</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>👉 Recursos Adicionais</h2>
+                <div class="resources-box">
+                    <a href="https://www.youtube.com/results?search_query=Spring+Boot+Testing+Crash+Course+Amigoscode" target="_blank" class="resource-link">
+                        🎥 Spring Boot Testing Crash Course – Amigoscode (1h)
+                    </a>
+                    <a href="https://www.baeldung.com/spring-boot-testing" target="_blank" class="resource-link">
+                        📚 Baeldung - Spring Boot Testing Guide
+                    </a>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-04.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-06.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

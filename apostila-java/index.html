@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚀 Apostila Java + Spring + Hexagonal - 14 Dias</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+        --accent-color: #f59e0b;
+        --success-color: #10b981;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border-color: #e2e8f0;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: var(--text-primary);
+        line-height: 1.6;
+        padding: 20px;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        border-radius: 20px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+      }
+
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--secondary-color) 100%
+        );
+        color: white;
+        padding: 50px 40px;
+        text-align: center;
+      }
+
+      header h1 {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      header .subtitle {
+        font-size: 1.4rem;
+        opacity: 0.95;
+        margin-bottom: 10px;
+      }
+
+      .intro-section {
+        padding: 40px;
+        background: var(--bg-color);
+      }
+
+      .intro-section h2 {
+        color: var(--primary-color);
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+
+      .intro-section p {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        color: var(--text-secondary);
+      }
+
+      .objectives {
+        background: var(--card-bg);
+        padding: 30px 40px;
+        margin: 20px 40px;
+        border-radius: 12px;
+        border: 2px solid var(--border-color);
+      }
+
+      .objectives h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+      }
+
+      .objectives ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .objectives li {
+        padding: 12px 0;
+        padding-left: 35px;
+        position: relative;
+        font-size: 1.1rem;
+      }
+
+      .objectives li:before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--success-color);
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+
+      .menu-section {
+        padding: 40px;
+      }
+
+      .menu-section h2 {
+        color: var(--primary-color);
+        font-size: 2rem;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .week-menu {
+        margin-bottom: 40px;
+      }
+
+      .week-title {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--secondary-color) 100%
+        );
+        color: white;
+        padding: 20px 30px;
+        border-radius: 10px;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s;
+      }
+
+      .week-title:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .week-title .toggle-icon {
+        transition: transform 0.3s;
+      }
+
+      .week-title.collapsed .toggle-icon {
+        transform: rotate(-90deg);
+      }
+
+      .lessons-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .lesson-card {
+        background: var(--card-bg);
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+
+      .lesson-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary-color);
+      }
+
+      .lesson-card .lesson-number {
+        background: var(--primary-color);
+        color: white;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+      }
+
+      .lesson-card h3 {
+        color: var(--primary-color);
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+      }
+
+      .lesson-card p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      .tools-section {
+        background: var(--bg-color);
+        padding: 30px 40px;
+        margin: 30px 40px;
+        border-radius: 12px;
+        border: 2px solid var(--border-color);
+      }
+
+      .tools-section h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+      }
+
+      .tool-item {
+        background: var(--card-bg);
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-color);
+      }
+
+      .tool-item strong {
+        color: var(--secondary-color);
+      }
+
+      footer {
+        background: var(--bg-color);
+        padding: 30px 40px;
+        text-align: center;
+        color: var(--text-secondary);
+        border-top: 2px solid var(--border-color);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .downloads-section {
+        background: var(--bg-color);
+        padding: 40px;
+        margin: 30px 40px;
+        border-radius: 12px;
+        border: 2px solid var(--border-color);
+      }
+
+      .downloads-section h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+      }
+
+      .download-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .download-item {
+        background: var(--card-bg);
+        padding: 25px;
+        border-radius: 8px;
+        border: 2px solid var(--border-color);
+      }
+
+      .download-item h3 {
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+
+      .download-item p {
+        color: var(--text-secondary);
+        margin-bottom: 15px;
+        font-size: 0.95rem;
+      }
+
+      .download-btn {
+        display: inline-block;
+        background: var(--primary-color);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.2s;
+        font-weight: 500;
+      }
+
+      .download-btn:hover {
+        background: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+
+      .download-instructions {
+        background: var(--card-bg);
+        padding: 25px;
+        border-radius: 8px;
+        margin-top: 30px;
+        border-left: 4px solid var(--accent-color);
+      }
+
+      .download-instructions h3 {
+        color: var(--secondary-color);
+        margin-bottom: 15px;
+      }
+
+      .download-instructions ol {
+        margin-left: 25px;
+      }
+
+      .download-instructions li {
+        margin-bottom: 12px;
+        line-height: 1.8;
+        color: var(--text-secondary);
+      }
+
+      .download-instructions code {
+        background: var(--bg-color);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        color: var(--primary-color);
+      }
+
+      @media (max-width: 768px) {
+        header h1 {
+          font-size: 2rem;
+        }
+
+        .lessons-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .menu-section,
+        .intro-section,
+        .objectives,
+        .tools-section,
+        .downloads-section {
+          padding: 20px;
+          margin: 20px;
+        }
+
+        .download-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🚀 PLANO INTENSIVO DE 2 SEMANAS</h1>
+        <div class="subtitle">Java + Spring + Hexagonal Architecture</div>
+      </header>
+
+      <div class="intro-section">
+        <h2>📚 Sobre este Plano de Estudos</h2>
+        <p>
+          Este é um plano intensivo de 14 dias projetado para levar você do
+          básico ao avançado em Java, Spring Boot e Arquitetura Hexagonal. Cada
+          dia foi cuidadosamente estruturado para construir conhecimento
+          progressivamente, com teoria, prática e desafios.
+        </p>
+        <p>
+          <strong>Como usar esta apostila:</strong> Comece pela Aula 01 e siga
+          sequencialmente. Cada aula contém explicações detalhadas, exemplos de
+          código, recursos externos e mini-desafios para consolidar o
+          aprendizado.
+        </p>
+        <p>
+          <strong>Recomendação:</strong> Dedique pelo menos 4-6 horas por dia
+          para aproveitar ao máximo o conteúdo. Não pule etapas - cada conceito
+          é importante para os próximos.
+        </p>
+      </div>
+
+      <div class="objectives">
+        <h2>🎯 Objetivos do Curso</h2>
+        <ul>
+          <li>Dominar o Java moderno (11–21) no contexto de backend</li>
+          <li>Criar e depurar APIs REST com Spring Boot</li>
+          <li>Entender e aplicar arquitetura hexagonal na prática</li>
+          <li>Estar pronto pra mexer em código corporativo real</li>
+        </ul>
+      </div>
+
+      <div class="menu-section">
+        <h2>📖 Menu de Aulas</h2>
+
+        <!-- Semana 1 -->
+        <div class="week-menu">
+          <div class="week-title" onclick="toggleWeek('week1')">
+            <span>🗓️ Semana 1 – Java + Spring Boot Base</span>
+            <span class="toggle-icon">▼</span>
+          </div>
+          <div id="week1-content">
+            <div class="lessons-grid">
+              <a href="aula-01.html" class="lesson-card">
+                <div class="lesson-number">01</div>
+                <h3>Setup e Sintaxe Moderna</h3>
+                <p>
+                  Instalação, estrutura de projetos, classes, métodos, records,
+                  Stream API
+                </p>
+              </a>
+              <a href="aula-02.html" class="lesson-card">
+                <div class="lesson-number">02</div>
+                <h3>Orientação a Objetos Moderna</h3>
+                <p>
+                  Encapsulamento, herança, interfaces, imutabilidade, exceptions
+                </p>
+              </a>
+              <a href="aula-03.html" class="lesson-card">
+                <div class="lesson-number">03</div>
+                <h3>Entrando no Spring Boot</h3>
+                <p>
+                  Primeira API REST, controllers, services, dependency injection
+                </p>
+              </a>
+              <a href="aula-04.html" class="lesson-card">
+                <div class="lesson-number">04</div>
+                <h3>Spring Boot + JPA</h3>
+                <p>Entidades, repositórios, H2 Database, queries</p>
+              </a>
+              <a href="aula-05.html" class="lesson-card">
+                <div class="lesson-number">05</div>
+                <h3>Debug e Testes</h3>
+                <p>Debug no IntelliJ, testes unitários e de integração</p>
+              </a>
+              <a href="aula-06.html" class="lesson-card">
+                <div class="lesson-number">06</div>
+                <h3>Limpando e Modularizando</h3>
+                <p>DTOs, validações, tratamento de erros, organização</p>
+              </a>
+              <a href="aula-07.html" class="lesson-card">
+                <div class="lesson-number">07</div>
+                <h3>Docker + Swagger</h3>
+                <p>Containerização, documentação de API com Swagger</p>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Semana 2 -->
+        <div class="week-menu">
+          <div class="week-title" onclick="toggleWeek('week2')">
+            <span>🗓️ Semana 2 – Arquitetura Hexagonal e Boas Práticas</span>
+            <span class="toggle-icon">▼</span>
+          </div>
+          <div id="week2-content">
+            <div class="lessons-grid">
+              <a href="aula-08.html" class="lesson-card">
+                <div class="lesson-number">08</div>
+                <h3>Conceito de Arquitetura Hexagonal</h3>
+                <p>Domínio, ports, adapters, separação de responsabilidades</p>
+              </a>
+              <a href="aula-09.html" class="lesson-card">
+                <div class="lesson-number">09</div>
+                <h3>Ports and Adapters na Prática</h3>
+                <p>Implementação completa da arquitetura hexagonal</p>
+              </a>
+              <a href="aula-10.html" class="lesson-card">
+                <div class="lesson-number">10</div>
+                <h3>Inversão de Dependência e Beans</h3>
+                <p>Spring IoC, dependency injection avançado</p>
+              </a>
+              <a href="aula-11.html" class="lesson-card">
+                <div class="lesson-number">11</div>
+                <h3>Exceções, Logs e Observabilidade</h3>
+                <p>Tratamento global de erros, logging, Spring Actuator</p>
+              </a>
+              <a href="aula-12.html" class="lesson-card">
+                <div class="lesson-number">12</div>
+                <h3>Integração com Banco Externo</h3>
+                <p>PostgreSQL, Docker Compose, profiles</p>
+              </a>
+              <a href="aula-13.html" class="lesson-card">
+                <div class="lesson-number">13</div>
+                <h3>Segurança e JWT</h3>
+                <p>Spring Security, autenticação JWT</p>
+              </a>
+              <a href="aula-14.html" class="lesson-card">
+                <div class="lesson-number">14</div>
+                <h3>Revisão e Projeto Final</h3>
+                <p>API completa com todas as práticas aprendidas</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tools-section">
+        <h2>🧰 Ferramentas que Aceleram</h2>
+        <div class="tool-item">
+          <strong>Lombok</strong> – elimina getters/setters/constructors.
+        </div>
+        <div class="tool-item">
+          <strong>MapStruct</strong> – mapeia DTO ↔ entidade.
+        </div>
+        <div class="tool-item">
+          <strong>Spring Boot DevTools</strong> – reload automático.
+        </div>
+        <div class="tool-item">
+          <strong>Spring Boot Dashboard</strong> (VSCode/IntelliJ plugin).
+        </div>
+      </div>
+
+      <div class="downloads-section">
+        <h2>📥 Downloads e Recursos</h2>
+        <p style="margin-bottom: 20px; color: var(--text-secondary)">
+          Baixe os arquivos necessários para acompanhar as aulas:
+        </p>
+
+        <div class="download-grid">
+          <div class="download-item">
+            <h3>🚀 Gerador de Projetos</h3>
+            <p>Script para criar projetos Java/Maven rapidamente</p>
+            <a href="create-java-project.sh" download class="download-btn">
+              📥 Baixar create-java-project.sh
+            </a>
+          </div>
+
+          <div class="download-item">
+            <h3>📦 Template Spring Boot</h3>
+            <p>pom.xml pronto para projetos Spring Boot (Aula 03+)</p>
+            <a href="template-pom-spring.xml" download class="download-btn">
+              📥 Baixar template-pom-spring.xml
+            </a>
+          </div>
+
+          <div class="download-item">
+            <h3>🗄️ Template Spring Boot + JPA</h3>
+            <p>pom.xml pronto para projetos com JPA (Aula 04+)</p>
+            <a href="template-pom-jpa.xml" download class="download-btn">
+              📥 Baixar template-pom-jpa.xml
+            </a>
+          </div>
+        </div>
+
+        <div class="download-instructions">
+          <h3>📋 Como Usar os Downloads</h3>
+          <ol>
+            <li>
+              <strong>Gerador de Projetos:</strong> Baixe o script, dê permissão
+              de execução (<code>chmod +x create-java-project.sh</code>) e
+              execute para criar projetos rapidamente
+            </li>
+            <li>
+              <strong>Templates pom.xml:</strong> Use quando chegar nas aulas de
+              Spring Boot. Substitua o pom.xml do seu projeto pelo template
+              apropriado
+            </li>
+            <li>
+              <strong>Instruções detalhadas:</strong> Cada aula contém
+              explicações passo a passo de como usar esses arquivos
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <footer>
+        <p>
+          📚 Apostila criada para o plano intensivo de Java + Spring + Hexagonal
+          Architecture
+        </p>
+        <p style="margin-top: 10px; font-size: 0.9rem">Bons estudos! 🚀</p>
+      </footer>
+    </div>
+
+    <script>
+      function toggleWeek(weekId) {
+        const content = document.getElementById(`${weekId}-content`);
+        const title = event.currentTarget;
+        title.classList.toggle("collapsed");
+        content.classList.toggle("hidden");
+      }
+
+      // Expandir semanas por padrão
+      document.addEventListener("DOMContentLoaded", function () {
+        // Semanas já estão expandidas por padrão
+      });
+    </script>
+  </body>
+</html>
