@@ -91,6 +91,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -307,6 +308,41 @@
     </div>
   </section>
 
+  <!-- Seção: Ferramentas e Plataformas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-toolbox"></i> Ferramentas e Plataformas
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="platforms-grid">
+          <div class="platform-item">
+            <div class="platform-icon"><i class="fab fa-github"></i></div>
+            <div class="platform-title">GitHub</div>
+            <div class="platform-desc">Hospedagem e colaboração.</div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon"><i class="fab fa-gitlab"></i></div>
+            <div class="platform-title">GitLab</div>
+            <div class="platform-desc">Plataforma com CI/CD integrado.</div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon"><i class="fab fa-bitbucket"></i></div>
+            <div class="platform-title">Bitbucket</div>
+            <div class="platform-desc">Integração com produtos Atlassian.</div>
+          </div>
+          <div class="platform-item">
+            <div class="platform-icon"><i class="fas fa-desktop"></i></div>
+            <div class="platform-title">Interfaces Gráficas</div>
+            <div class="platform-desc">
+              GitKraken, SourceTree, GitHub Desktop, VSCode Git.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Seção: Começando com GitHub -->
   <section class="mb-5">
     <h3 class="section-title with-icon">
@@ -405,6 +441,77 @@
           </li>
           <li>Clique em "Create repository"</li>
         </ol>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção: Fluxo de Trabalho Básico -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-sync-alt"></i> Fluxo de Trabalho Básico
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <p>Um fluxo de trabalho típico com Git segue estes passos:</p>
+        <div class="workflow-steps">
+          <div class="workflow-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <div class="step-title">Verificar status</div>
+              <div class="step-code">git status</div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <div class="step-title">Atualizar repositório local</div>
+              <div class="step-code">git pull</div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <div class="step-title">Criar branch para nova feature</div>
+              <div class="step-code">
+                git checkout -b feature/nova-funcionalidade
+              </div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <div class="step-title">Fazer alterações nos arquivos</div>
+              <div class="step-code">Edição manual dos arquivos</div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <div class="step-title">Adicionar arquivos modificados</div>
+              <div class="step-code">git add .</div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">6</div>
+            <div class="step-content">
+              <div class="step-title">Commitar alterações</div>
+              <div class="step-code">
+                git commit -m "Implementa nova funcionalidade"
+              </div>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-number">7</div>
+            <div class="step-content">
+              <div class="step-title">Push para o remoto</div>
+              <div class="step-code">
+                git push origin feature/nova-funcionalidade
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -481,6 +588,7 @@
         <pre><code class="language-bash">git checkout nome-do-branch</code></pre>
         <div class="code-header">Criar e mudar para branch (atalho)</div>
         <pre><code class="language-bash">git checkout -b nome-do-branch</code></pre>
+
       </div>
     </div>
 
@@ -518,75 +626,6 @@ git commit -m "Resolução de conflitos"</code></pre>
         <pre><code class="language-bash">git pull origin nome-do-branch</code></pre>
         <div class="code-header">Listar remotos</div>
         <pre><code class="language-bash">git remote -v</code></pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- Seção: Fluxo de Trabalho Básico -->
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-sync-alt"></i> Fluxo de Trabalho Básico
-    </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <p>Um fluxo de trabalho típico com Git segue estes passos:</p>
-        <div class="workflow-steps">
-          <div class="workflow-step">
-            <div class="step-number">1</div>
-            <div class="step-content">
-              <div class="step-title">Verificar status</div>
-              <div class="step-code">git status</div>
-            </div>
-          </div>
-          <div class="workflow-step">
-            <div class="step-number">2</div>
-            <div class="step-content">
-              <div class="step-title">Atualizar repositório local</div>
-              <div class="step-code">git pull</div>
-            </div>
-          </div>
-          <div class="workflow-step">
-            <div class="step-number">3</div>
-            <div class="step-content">
-              <div class="step-title">Criar branch para nova feature</div>
-              <div class="step-code">
-                git checkout -b feature/nova-funcionalidade
-              </div>
-            </div>
-          </div>
-          <div class="workflow-step">
-            <div class="step-number">4</div>
-            <div class="step-content">
-              <div class="step-title">Fazer alterações nos arquivos</div>
-              <div class="step-code">Edição manual dos arquivos</div>
-            </div>
-          </div>
-          <div class="workflow-step">
-            <div class="step-number">5</div>
-            <div class="step-content">
-              <div class="step-title">Adicionar arquivos modificados</div>
-              <div class="step-code">git add .</div>
-            </div>
-          </div>
-          <div class="workflow-step">
-            <div class="step-number">6</div>
-            <div class="step-content">
-              <div class="step-title">Commitar alterações</div>
-              <div class="step-code">
-                git commit -m "Implementa nova funcionalidade"
-              </div>
-            </div>
-          </div>
-          <div class="workflow-step">
-            <div class="step-number">7</div>
-            <div class="step-content">
-              <div class="step-title">Push para o remoto</div>
-              <div class="step-code">
-                git push origin feature/nova-funcionalidade
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -635,41 +674,6 @@ Thumbs.db
 .vscode/
 *.sublime-project
 *.sublime-workspace</code></pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- Seção: Ferramentas e Plataformas -->
-  <section class="mb-5">
-    <h3 class="section-title with-icon">
-      <i class="fas fa-toolbox"></i> Ferramentas e Plataformas
-    </h3>
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="platforms-grid">
-          <div class="platform-item">
-            <div class="platform-icon"><i class="fab fa-github"></i></div>
-            <div class="platform-title">GitHub</div>
-            <div class="platform-desc">Hospedagem e colaboração.</div>
-          </div>
-          <div class="platform-item">
-            <div class="platform-icon"><i class="fab fa-gitlab"></i></div>
-            <div class="platform-title">GitLab</div>
-            <div class="platform-desc">Plataforma com CI/CD integrado.</div>
-          </div>
-          <div class="platform-item">
-            <div class="platform-icon"><i class="fab fa-bitbucket"></i></div>
-            <div class="platform-title">Bitbucket</div>
-            <div class="platform-desc">Integração com produtos Atlassian.</div>
-          </div>
-          <div class="platform-item">
-            <div class="platform-icon"><i class="fas fa-desktop"></i></div>
-            <div class="platform-title">Interfaces Gráficas</div>
-            <div class="platform-desc">
-              GitKraken, SourceTree, GitHub Desktop, VSCode Git.
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -777,16 +781,66 @@ git push -u origin feature/delete-task</code></pre>
     <div class="exercise-card">
       <h3>Exercício 1: Inicializar um repositório e criar o primeiro commit</h3>
       <p>
-        <strong>Objetivo:</strong> Praticar a criação de um repositório Git e o
-        primeiro commit.
+        <strong>Objetivo:</strong> Praticar, passo a passo, a criação de um
+        repositório Git e do primeiro commit, mesmo que você nunca tenha usado
+        o terminal antes.
       </p>
       <ol>
-        <li>Crie uma pasta para o projeto TaskMaster</li>
-        <li>Abra o terminal nesta pasta</li>
-        <li>Inicialize um repositório Git</li>
-        <li>Crie um arquivo README.md com uma breve descrição do projeto</li>
-        <li>Adicione o arquivo ao staging</li>
-        <li>Faça o commit com uma mensagem descritiva</li>
+        <li>
+          Crie uma pasta para o projeto <strong>TaskMaster</strong> no seu
+          computador (por exemplo, dentro de "Documentos"). Você pode:
+          <ul>
+            <li>Criar pelo explorador de arquivos (botão direito &gt; Nova pasta)</li>
+            <li>
+              Ou, se preferir terminal, usar o comando
+              <code>mkdir TaskMaster</code>
+            </li>
+          </ul>
+        </li>
+        <li>
+          Abra o terminal <strong>dentro dessa pasta</strong>:
+          <ul>
+            <li>
+              Navegue até a pasta TaskMaster no explorador de arquivos e use a
+              opção "Abrir no Terminal" (ou equivalente no seu sistema)
+            </li>
+            <li>
+              Ou, no terminal, vá até a pasta com
+              <code>cd TaskMaster</code>
+            </li>
+          </ul>
+        </li>
+        <li>
+          Inicialize um repositório Git nessa pasta digitando no terminal:
+          <code>git init</code> e pressionando <strong>Enter</strong>.
+          Isso cria a estrutura interna do Git para acompanhar seus arquivos.
+        </li>
+        <li>
+          Crie um arquivo <code>README.md</code> com uma breve descrição do
+          projeto. Você pode:
+          <ul>
+            <li>
+              Criar o arquivo manualmente em um editor de texto (VS Code,
+              Bloco de Notas, etc.) e salvar como <code>README.md</code> dentro
+              da pasta TaskMaster
+            </li>
+            <li>
+              Ou usar o comando no terminal:
+              <code>echo "# TaskMaster" &gt; README.md</code> e depois adicionar
+              mais linhas se quiser
+            </li>
+          </ul>
+        </li>
+        <li>
+          Adicione o arquivo ao <strong>staging</strong> (área onde ficam os
+          arquivos prontos para serem commitados) com o comando:
+          <code>git add README.md</code>
+        </li>
+        <li>
+          Faça o primeiro <strong>commit</strong> digitando:
+          <code>git commit -m "Adiciona arquivo README com descrição do projeto"</code>.
+          Essa mensagem deve <strong>explicar claramente</strong> o que foi feito.
+        </li>
       </ol>
       <details>
         <summary>Ver solução</summary>
@@ -807,20 +861,56 @@ git commit -m "Adiciona arquivo README com descrição do projeto"
     <div class="exercise-card">
       <h3>Exercício 2: Trabalhar com branches</h3>
       <p>
-        <strong>Objetivo:</strong> Praticar a criação e navegação entre
-        branches.
+        <strong>Objetivo:</strong> Entender, na prática, como criar um novo
+        branch, mudar de branch e voltar para o branch principal.
       </p>
       <ol>
-        <li>Partindo do repositório criado no exercício 1</li>
         <li>
-          Crie um arquivo <code>index.html</code> com uma estrutura básica
+          Partindo do repositório criado no exercício 1, confirme que você está
+          dentro da pasta <code>TaskMaster</code> no terminal usando
+          <code>pwd</code> (Linux/macOS) ou <code>cd</code> (Windows) para ver o
+          caminho atual.
         </li>
-        <li>Adicione e commit o arquivo</li>
-        <li>Crie um novo branch chamado <code>feature/estilo</code></li>
-        <li>Mude para este branch</li>
-        <li>Crie um arquivo <code>style.css</code> vazio</li>
-        <li>Adicione e commit o arquivo</li>
-        <li>Volte para o branch principal</li>
+        <li>
+          Crie um arquivo <code>index.html</code> com uma estrutura básica de
+          HTML. Você pode:
+          <ul>
+            <li>Abrir o editor (por exemplo, VS Code) e criar o arquivo</li>
+            <li>
+              Ou usar os comandos de exemplo que aparecem na solução deste
+              exercício
+            </li>
+          </ul>
+        </li>
+        <li>
+          Adicione o arquivo ao Git com <code>git add index.html</code> e crie
+          um commit com uma mensagem clara, por exemplo:
+          <code>git commit -m "Adiciona estrutura HTML básica"</code>.
+        </li>
+        <li>
+          Crie um novo branch chamado <code>feature/estilo</code> com o comando
+          <code>git branch feature/estilo</code>. Esse branch será usado para
+          adicionar estilos sem mexer diretamente no principal.
+        </li>
+        <li>
+          Mude para esse novo branch usando
+          <code>git checkout feature/estilo</code>. Agora, tudo o que você
+          alterar ficará registrado nesse branch.
+        </li>
+        <li>
+          Crie um arquivo <code>style.css</code> vazio (ou com pouco conteúdo)
+          para guardar os estilos do site.
+        </li>
+        <li>
+          Adicione o arquivo ao Git com <code>git add style.css</code> e faça
+          um commit com uma mensagem que explique o que foi feito.
+        </li>
+        <li>
+          Volte para o branch principal (geralmente <code>main</code>) usando
+          <code>git checkout main</code> e confirme com
+          <code>git branch</code> qual branch está ativo (ele aparece com um
+          asterisco <code>*</code>).
+        </li>
       </ol>
       <details>
         <summary>Ver solução</summary>
@@ -844,18 +934,40 @@ git checkout main
     <div class="exercise-card">
       <h3>Exercício 3: Merge de branches</h3>
       <p>
-        <strong>Objetivo:</strong> Praticar a combinação de mudanças usando
-        merge.
+        <strong>Objetivo:</strong> Ver, na prática, como juntar as mudanças de
+        um branch secundário (feature) no branch principal usando
+        <code>merge</code>.
       </p>
       <ol>
         <li>
-          No branch <code>feature/estilo</code>, adicione código CSS básico ao
-          <code>style.css</code>
+          No terminal, mude para o branch <code>feature/estilo</code> com
+          <code>git checkout feature/estilo</code>. Confirme com
+          <code>git branch</code> se o asterisco está nesse branch.
         </li>
-        <li>Adicione e commit as alterações</li>
-        <li>Volte para o branch principal</li>
         <li>
-          Faça merge do branch <code>feature/estilo</code> para o principal
+          Abra o arquivo <code>style.css</code> no editor e adicione código CSS
+          básico (por exemplo, mudar a fonte e a cor do título), como mostrado
+          na solução abaixo.
+        </li>
+        <li>
+          Salve o arquivo, volte ao terminal e execute
+          <code>git status</code> para ver que o arquivo foi modificado.
+        </li>
+        <li>
+          Adicione o arquivo modificado ao staging com
+          <code>git add style.css</code> e crie um commit com uma mensagem
+          explicando as mudanças, por exemplo:
+          <code>git commit -m "Adiciona estilos básicos"</code>.
+        </li>
+        <li>
+          Volte para o branch principal (<code>main</code>) com
+          <code>git checkout main</code>.
+        </li>
+        <li>
+          Faça o <strong>merge</strong> do branch
+          <code>feature/estilo</code> para o principal com:
+          <code>git merge feature/estilo</code>. Isso irá trazer as alterações
+          de estilo para o branch principal.
         </li>
       </ol>
       <details>
@@ -877,12 +989,38 @@ git merge feature/estilo
     <div class="exercise-card">
       <h3>Exercício 4: Configurar um repositório remoto</h3>
       <p>
-        <strong>Objetivo:</strong> Configurar e utilizar um repositório remoto.
+        <strong>Objetivo:</strong> Aprender a criar um repositório remoto no
+        GitHub e conectar o repositório local a ele, enviando seus commits para
+        a nuvem.
       </p>
       <ol>
-        <li>Crie um novo repositório no GitHub (sem inicializar com README)</li>
-        <li>Conecte seu repositório local ao remoto</li>
-        <li>Envie todos os commits para o repositório remoto</li>
+        <li>
+          Acesse o site do <strong>GitHub</strong> (crie uma conta se ainda não
+          tiver) e clique em <strong>"New repository"</strong> para criar um
+          novo repositório.
+        </li>
+        <li>
+          Dê um nome simples ao repositório (por exemplo,
+          <code>taskmaster</code>) e
+          <strong>não marque</strong> a opção de inicializar com
+          <code>README</code>, para evitar conflitos com o repositório local.
+        </li>
+        <li>
+          Após criar o repositório, o GitHub mostrará a URL. Copie a URL em
+          HTTPS (por exemplo,
+          <code>https://github.com/seu-usuario/taskmaster.git</code>).
+        </li>
+        <li>
+          No terminal, dentro da pasta <code>TaskMaster</code>, conecte seu
+          repositório local ao remoto com:
+          <code>git remote add origin SUA_URL_AQUI.git</code>, trocando
+          <code>SUA_URL_AQUI.git</code> pela URL que você copiou.
+        </li>
+        <li>
+          Envie todos os commits para o repositório remoto com:
+          <code>git push -u origin main</code>. Na primeira vez, o Git pode
+          pedir seu login/senha ou token do GitHub.
+        </li>
       </ol>
       <details>
         <summary>Ver solução</summary>
