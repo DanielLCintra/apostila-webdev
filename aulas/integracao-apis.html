@@ -355,7 +355,7 @@ document.getElementById("btn-buscar").onclick = function () {
   const username = document.getElementById("input-usuario").value.trim();
   const info = document.getElementById("info-usuario");
   if (!username) {
-    info.innerHTML = "&lt;span style='color:red'&gt;Digite um usuário!&lt;/span&gt;";
+    info.innerHTML = "&lt;span class=\"text-danger\"&gt;Digite um usuário!&lt;/span&gt;";
     return;
   }
   info.innerHTML = "Carregando...";
@@ -372,7 +372,7 @@ document.getElementById("btn-buscar").onclick = function () {
       `;
     })
     .catch(() =&gt; {
-      info.innerHTML = "&lt;span style='color:red'&gt;Usuário não encontrado!&lt;/span&gt;";
+      info.innerHTML = "&lt;span class=\"text-danger\"&gt;Usuário não encontrado!&lt;/span&gt;";
     });
 };
 &lt;/script&gt;</code></pre>

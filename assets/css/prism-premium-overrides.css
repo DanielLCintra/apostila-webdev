@@ -1,0 +1,118 @@
+/*
+ * Prism.js — tema Dracula (port oficial prism-themes).
+ * Carregar SEM outro tema Prism (ex.: prism-tomorrow); tipografia alinhada à apostila.
+ * Cores via :root em cyberpunk-override.css (--syntax-*).
+ */
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  font-family: var(--font-mono), ui-monospace, monospace !important;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  color: var(--syntax-fg) !important;
+  text-shadow: none !important;
+  font-size: 0.875rem !important;
+  line-height: 1.6 !important;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+}
+
+/*
+ * O normalizeLessonSyntax coloca language-* no <pre>. Não usar background:none no <pre>,
+ * senão no tema claro o bloco fica “vazado” (branco atrás). Só o <code> interno fica transparente.
+ */
+pre[class*="language-"] {
+  background: var(--syntax-bg) !important;
+}
+
+pre[class*="language-"] code {
+  font-family: inherit !important;
+}
+
+code[class*="language-"] {
+  background: none !important;
+}
+
+:not(pre) > code[class*="language-"] {
+  background: var(--syntax-bg) !important;
+  padding: 0.125em 0.35em !important;
+  border-radius: 6px !important;
+  white-space: normal !important;
+}
+
+.namespace {
+  opacity: 0.7;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--syntax-comment) !important;
+}
+
+.token.punctuation {
+  color: var(--syntax-fg) !important;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--syntax-pink) !important;
+}
+
+.token.boolean,
+.token.number {
+  color: var(--syntax-purple) !important;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: var(--syntax-green) !important;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+  color: var(--syntax-fg) !important;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name {
+  color: var(--syntax-yellow) !important;
+}
+
+.token.keyword {
+  color: var(--syntax-keyword) !important;
+}
+
+.token.regex,
+.token.important {
+  color: var(--syntax-orange) !important;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}

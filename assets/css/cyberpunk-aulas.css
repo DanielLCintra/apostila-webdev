@@ -1,534 +1,502 @@
-/* ========== ESTILOS ESPECÍFICOS DAS AULAS CYBERPUNK ========== */
+/* ========== Componentes das aulas (premium / sci-fi minimal) ========== */
 
-/* ========== INTRO BOX CYBERPUNK ========== */
 .intro-box {
-  background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
-  border: 2px solid var(--primary-color);
-  border-radius: 12px;
-  padding: 2rem;
-  margin: 2rem 0;
-  box-shadow: 0 0 20px var(--box-shadow);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--gray-100) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-surface-alt) 70%, transparent) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin: var(--space-6) 0;
+  box-shadow: var(--box-shadow);
 }
 
 .intro-box p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  margin-bottom: var(--space-4);
   color: var(--gray-700);
 }
 
 .intro-box strong {
   color: var(--primary-color);
-  text-shadow: var(--neon-glow);
-  font-family: var(--font-cyberpunk-display);
+  text-shadow: none;
+  font-family: inherit;
+  font-weight: 600;
 }
 
 .intro-box ul {
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: var(--space-4) 0;
 }
 
 .intro-box li {
-  background: var(--white);
-  border-left: 4px solid var(--accent-color);
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0 8px 8px 0;
-  transition: var(--transition-glow);
-  font-family: var(--font-cyberpunk);
+  background: color-mix(in srgb, var(--gray-100) 92%, transparent);
+  border-left: 3px solid var(--accent-color);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-family: var(--font-sans);
+  transition: border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
 }
 
 .intro-box li:hover {
-  background: var(--accent-color-light);
-  box-shadow: 0 0 10px var(--box-shadow);
+  background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+  box-shadow: var(--neon-glow);
 }
 
-/* ========== SECTION TITLES CYBERPUNK ========== */
 .section-title {
-  color: var(--primary-color);
-  font-family: var(--font-cyberpunk-display);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--primary-color);
+  color: var(--gray-900);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
 }
 
 .section-title.with-icon {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-3);
 }
 
 .section-title.with-icon i {
-  color: var(--accent-color);
-  text-shadow: var(--neon-glow-blue);
-  font-size: 1.2em;
+  color: var(--primary-color);
+  text-shadow: none;
+  font-size: 1.1em;
+  opacity: 0.92;
 }
 
-/* ========== ALERTS CYBERPUNK ========== */
 .alert {
-  border: 2px solid;
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
-  margin: 1rem 0;
-  font-family: var(--font-cyberpunk);
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin: var(--space-4) 0;
+  font-family: var(--font-sans);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 0.9375rem;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
 }
 
 .alert-info {
-  background: linear-gradient(135deg, var(--info-color-light) 0%, rgba(0, 255, 255, 0.05) 100%);
-  border-color: var(--info-color);
-  color: var(--info-color);
+  background: color-mix(in srgb, var(--info-color) 10%, transparent);
+  border-color: color-mix(in srgb, var(--info-color) 45%, transparent);
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .alert-info {
+  color: var(--color-text-secondary);
 }
 
 .alert-success {
-  background: linear-gradient(135deg, var(--success-color-light) 0%, rgba(0, 255, 0, 0.05) 100%);
-  border-color: var(--success-color);
-  color: var(--success-color);
+  background: color-mix(in srgb, var(--success-color) 10%, transparent);
+  border-color: color-mix(in srgb, var(--success-color) 45%, transparent);
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .alert-success {
+  color: var(--color-text-secondary);
 }
 
 .alert-warning {
-  background: linear-gradient(135deg, var(--warning-color-light) 0%, rgba(255, 102, 0, 0.05) 100%);
-  border-color: var(--warning-color);
-  color: var(--warning-color);
+  background: color-mix(in srgb, var(--warning-color) 10%, transparent);
+  border-color: color-mix(in srgb, var(--warning-color) 45%, transparent);
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .alert-warning {
+  color: var(--color-text-secondary);
 }
 
 .alert-danger {
-  background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(255, 0, 255, 0.05) 100%);
-  border-color: var(--neon-pink);
-  color: var(--neon-pink);
+  background: color-mix(in srgb, var(--neon-pink) 12%, transparent);
+  border-color: color-mix(in srgb, var(--neon-pink) 40%, transparent);
+  color: var(--gray-900);
 }
 
-/* ========== CARDS CYBERPUNK ========== */
+[data-theme="dark"] .alert-danger {
+  color: var(--color-text-secondary);
+}
+
 .card-header {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--neon-purple) 100%);
-  color: var(--cyber-black);
-  padding: 1rem 1.5rem;
-  font-family: var(--font-cyberpunk-display);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-bottom: 2px solid var(--accent-color);
+  background: linear-gradient(
+    92deg,
+    color-mix(in srgb, var(--color-primary-500) 18%, transparent) 0%,
+    color-mix(in srgb, var(--color-purple-500) 14%, transparent) 100%
+  );
+  color: var(--gray-900);
+  padding: var(--space-4) var(--space-5);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent);
+}
+
+[data-theme="dark"] .card-header {
+  color: var(--color-text-primary);
 }
 
 .card-body {
-  padding: 1.5rem;
+  padding: var(--space-5);
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+}
+
+[data-theme="light"] .card-body {
   background: var(--white);
 }
 
-/* ========== BUTTONS CYBERPUNK ========== */
+.card-footer {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid color-mix(in srgb, var(--gray-600) 14%, transparent);
+  background: color-mix(in srgb, var(--gray-100) 88%, transparent);
+}
+
+[data-theme="light"] .card-footer {
+  background: var(--gray-100);
+}
+
 .btn {
-  font-family: var(--font-cyberpunk);
+  font-family: var(--font-sans);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border: 2px solid;
-  border-radius: 4px;
-  padding: 0.75rem 1.5rem;
-  transition: var(--transition-glow);
+  font-size: 0.875rem;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.625rem 1.25rem;
+  transition: box-shadow var(--duration-base) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out);
   cursor: pointer;
   text-decoration: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
 }
 
 .btn-primary {
-  background: var(--primary-color);
-  color: var(--cyber-black);
-  border-color: var(--primary-color);
+  background: linear-gradient(180deg, var(--color-primary-400), var(--color-primary-600));
+  color: #042f2e;
+  border-color: color-mix(in srgb, var(--color-primary-400) 50%, transparent);
+  box-shadow: 0 2px 12px rgba(14, 165, 233, 0.25);
+}
+
+[data-theme="light"] .btn-primary {
+  color: var(--white);
 }
 
 .btn-primary:hover {
-  background: transparent;
-  color: var(--primary-color);
-  box-shadow: var(--neon-glow-purple);
-  text-shadow: var(--neon-glow-purple);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.35),
+    inset 0 1px 0 rgba(248, 250, 252, 0.2);
+  text-shadow: none;
 }
 
 .btn-secondary {
-  background: var(--accent-color);
-  color: var(--cyber-black);
-  border-color: var(--accent-color);
+  background: transparent;
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
 }
 
 .btn-secondary:hover {
-  background: transparent;
-  color: var(--accent-color);
-  box-shadow: var(--neon-glow-blue);
-  text-shadow: var(--neon-glow-blue);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  text-shadow: none;
+  transform: translateY(-1px);
 }
 
-/* ========== FORMS CYBERPUNK ========== */
+.btn-outline,
+.btn.btn-outline,
+.btn-outline-primary {
+  background: transparent;
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
+}
+
+.btn-outline:hover,
+.btn.btn-outline:hover {
+  border-color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+
+.btn-sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8125rem;
+}
+
 .form-control {
-  background: var(--gray-100);
-  border: 2px solid var(--gray-300);
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 35%, transparent);
   color: var(--gray-900);
-  padding: 0.75rem 1rem;
-  border-radius: 4px;
-  font-family: var(--font-cyberpunk);
-  transition: var(--transition-glow);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  transition: border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
 }
 
 .form-control:focus {
   outline: none;
-  border-color: var(--accent-color);
-  box-shadow: var(--neon-glow-blue);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 25%, transparent);
+  background: var(--gray-100);
+}
+
+[data-theme="light"] .form-control:focus {
   background: var(--white);
 }
 
-/* ========== QUIZ CYBERPUNK ========== */
 .quiz-container {
-  background: var(--white);
-  border: 2px solid var(--accent-color);
-  border-radius: 12px;
-  padding: 2rem;
-  margin: 1rem 0;
-  box-shadow: 0 0 20px var(--box-shadow);
+  background: color-mix(in srgb, var(--gray-100) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin: var(--space-5) 0;
+  box-shadow: var(--box-shadow);
 }
 
 .quiz-question {
-  background: var(--gray-100);
-  border: 1px solid var(--accent-color);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  background: color-mix(in srgb, var(--gray-100) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 16%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
 }
 
 .quiz-question h5 {
-  color: var(--primary-color);
-  font-family: var(--font-cyberpunk-display);
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.form-check {
-  margin-bottom: 0.75rem;
-}
-
-.form-check-input {
-  accent-color: var(--primary-color);
+  color: var(--gray-900);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-4);
+  text-transform: none;
 }
 
 .form-check-label {
   color: var(--gray-700);
-  font-family: var(--font-cyberpunk);
-  font-weight: 500;
-  margin-left: 0.5rem;
+  font-family: var(--font-sans);
+  font-weight: 450;
 }
 
-/* ========== SOLUÇÕES COM COLLAPSE CYBERPUNK ========== */
 .solucao {
-  margin-top: 1rem;
+  display: block;
+  margin-top: var(--space-4);
 }
 
 .solucao summary {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--neon-purple) 100%);
-  color: var(--cyber-black);
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  background: linear-gradient(
+    92deg,
+    color-mix(in srgb, var(--color-primary-500) 20%, transparent),
+    color-mix(in srgb, var(--color-purple-500) 14%, transparent)
+  );
+  color: var(--gray-900);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-family: var(--font-cyberpunk);
+  font-family: var(--font-sans);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: var(--transition-glow);
-  border: 1px solid var(--accent-color);
+  font-size: 0.9375rem;
+  text-transform: none;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
+  transition: box-shadow var(--duration-base) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+[data-theme="dark"] .solucao summary {
+  color: var(--color-text-primary);
 }
 
 .solucao summary:hover {
-  box-shadow: var(--neon-glow-purple);
-  transform: scale(1.02);
+  box-shadow: var(--neon-glow);
+  transform: none;
 }
 
 .solucao pre {
-  margin-top: 1rem;
-  background: var(--cyber-black);
-  border: 2px solid var(--neon-green);
-  border-radius: 8px;
-  padding: 1.5rem;
-  overflow-x: auto;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-}
-
-/* ========== FEATURE LISTS CYBERPUNK ========== */
-.feature-list {
-  list-style: none;
-  padding: 0;
+  margin-top: var(--space-4);
+  background: var(--syntax-bg);
+  color: var(--syntax-fg);
+  border: 1px solid var(--syntax-pre-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--syntax-pre-shadow);
 }
 
 .feature-list li {
-  background: var(--gray-100);
-  border-left: 4px solid var(--accent-color);
-  padding: 1rem 1.5rem;
-  margin-bottom: 0.5rem;
-  border-radius: 0 8px 8px 0;
-  transition: var(--transition-glow);
-  font-family: var(--font-cyberpunk);
+  background: color-mix(in srgb, var(--gray-100) 92%, transparent);
+  border-left: 3px solid var(--accent-color);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-2);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-family: var(--font-sans);
 }
 
 .feature-list li:hover {
-  background: var(--accent-color-light);
-  box-shadow: 0 0 10px var(--box-shadow);
+  background: color-mix(in srgb, var(--accent-color) 8%, transparent);
+  box-shadow: var(--neon-glow);
 }
 
-/* ========== EDITOR RECOMMENDATION CYBERPUNK ========== */
 .editor-recommendation {
-  display: flex;
   align-items: center;
-  gap: 1.5rem;
-  background: var(--gray-100);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 2px solid var(--accent-color);
-  box-shadow: 0 0 15px var(--box-shadow);
-}
-
-.editor-logo {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  border-radius: 8px;
-  border: 1px solid var(--accent-color);
+  gap: var(--space-5);
+  background: color-mix(in srgb, var(--gray-100) 92%, transparent);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 16%, transparent);
+  box-shadow: var(--box-shadow);
 }
 
 .editor-recommendation h5 {
-  color: var(--primary-color);
-  font-family: var(--font-cyberpunk-display);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 0.5rem;
+  color: var(--gray-900);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: none;
 }
 
-/* ========== PROGRESS BARS CYBERPUNK ========== */
 .progress {
-  background: var(--gray-200);
-  border-radius: 8px;
-  height: 20px;
-  overflow: hidden;
-  border: 1px solid var(--accent-color);
+  background: color-mix(in srgb, var(--gray-200) 80%, transparent);
+  border-radius: var(--radius-sm);
+  height: 8px;
+  border: none;
 }
 
 .progress-bar {
-  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-  height: 100%;
-  transition: width 0.3s ease;
-  box-shadow: var(--neon-glow-blue);
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-500),
+    var(--color-purple-500)
+  );
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-primary-400) 40%, transparent);
 }
 
-/* ========== BADGES CYBERPUNK ========== */
 .badge {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: 4px;
-  font-family: var(--font-cyberpunk);
+  text-transform: none;
+  border-radius: 6px;
+  font-family: var(--font-sans);
 }
 
 .badge-primary {
-  background: var(--neon-blue);
-  color: var(--cyber-black);
+  background: color-mix(in srgb, var(--neon-blue) 22%, transparent);
+  color: var(--primary-color);
+  border: 1px solid color-mix(in srgb, var(--neon-blue) 35%, transparent);
 }
 
 .badge-secondary {
-  background: var(--neon-purple);
-  color: var(--cyber-white);
+  background: color-mix(in srgb, var(--neon-purple) 18%, transparent);
+  color: var(--neon-purple);
+  border: 1px solid color-mix(in srgb, var(--neon-purple) 30%, transparent);
 }
 
 .badge-success {
-  background: var(--neon-green);
-  color: var(--cyber-black);
+  background: color-mix(in srgb, var(--success-color) 18%, transparent);
+  color: var(--success-color);
 }
 
 .badge-warning {
-  background: var(--neon-orange);
-  color: var(--cyber-black);
-}
-
-/* ========== TOOLTIPS CYBERPUNK ========== */
-.tooltip {
-  position: relative;
-  display: inline-block;
+  background: color-mix(in srgb, var(--warning-color) 18%, transparent);
+  color: var(--warning-color);
 }
 
 .tooltip .tooltiptext {
-  visibility: hidden;
-  width: 200px;
-  background: var(--cyber-black);
-  color: var(--neon-green);
-  text-align: center;
-  border-radius: 6px;
-  padding: 0.5rem;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -100px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-family: var(--font-cyberpunk);
-  font-size: 0.875rem;
-  border: 1px solid var(--neon-green);
-  box-shadow: var(--neon-glow-green);
+  background: var(--color-surface-alt);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
+  box-shadow: var(--box-shadow-md);
+  font-family: var(--font-sans);
 }
 
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* ========== LOADING SPINNER CYBERPUNK ========== */
 .spinner {
-  border: 3px solid var(--gray-200);
+  border: 3px solid color-mix(in srgb, var(--gray-600) 30%, transparent);
   border-top: 3px solid var(--primary-color);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* ========== MODAL CYBERPUNK ========== */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .modal-content {
+  background: color-mix(in srgb, var(--gray-100) 96%, transparent);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .modal-content {
   background: var(--white);
-  margin: 5% auto;
-  padding: 2rem;
-  border: 2px solid var(--accent-color);
-  border-radius: 12px;
-  width: 80%;
-  max-width: 600px;
-  box-shadow: 0 0 30px var(--box-shadow);
-}
-
-.close {
-  color: var(--accent-color);
-  float: right;
-  font-size: 2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: var(--transition-glow);
-}
-
-.close:hover {
-  text-shadow: var(--neon-glow-blue);
-}
-
-/* ========== SCROLLBAR CYBERPUNK ========== */
-::-webkit-scrollbar {
-  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--gray-200);
+  background: var(--color-bg-elevated);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 6px;
+  background: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  border-radius: 999px;
+  border: 3px solid var(--color-bg-elevated);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-color);
-  box-shadow: var(--neon-glow-blue);
-}
-
-/* ========== ANIMATIONS CYBERPUNK ========== */
-@keyframes neon-pulse {
-  0%, 100% {
-    text-shadow: var(--neon-glow);
-  }
-  50% {
-    text-shadow: 0 0 20px currentColor, 0 0 30px currentColor, 0 0 40px currentColor;
-  }
+  background: color-mix(in srgb, var(--color-purple-500) 55%, transparent);
 }
 
 .neon-pulse {
-  animation: neon-pulse 2s ease-in-out infinite;
+  animation: none;
 }
 
-/* ========== THEME TOGGLE BUTTON ========== */
 .theme-toggle {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-  background: var(--primary-color);
-  color: var(--cyber-black);
-  border: 2px solid var(--accent-color);
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 1.5rem;
+  top: var(--space-5);
+  right: var(--space-5);
+  z-index: 1001;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 999px;
+
+  background: color-mix(in srgb, var(--color-surface-alt) 90%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
+  color: var(--primary-color);
+  box-shadow: var(--box-shadow), var(--glow-blue-soft);
   cursor: pointer;
-  box-shadow: var(--neon-glow-blue);
-  transition: var(--transition-glow);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.125rem;
+  transition: transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
 }
 
 .theme-toggle:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 25px var(--accent-color);
-  background: var(--accent-color);
-  color: var(--cyber-black);
+  transform: scale(1.04);
+  box-shadow: var(--box-shadow-md);
 }
 
 .theme-toggle:active {
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
-/* ========== PRINT STYLES ========== */
-@media print {
-  .theme-toggle,
-  .toggle-menu {
-    display: none !important;
-  }
-  
-  body {
-    background: white !important;
-    color: black !important;
-  }
-  
-  .card {
-    border: 1px solid #ccc !important;
-    box-shadow: none !important;
-  }
-  
-  nav {
-    display: none !important;
-  }
-}
-
-/* ========== CLASSES UTILITÁRIAS ADICIONAIS ========== */
 .text-error {
+  color: var(--color-error);
+}
+
+[data-theme="dark"] .text-error {
   color: var(--neon-pink);
-  font-weight: 600;
 }
 
 .img-responsive {
@@ -545,6 +513,336 @@
 
 .text-center-container {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-6);
   width: 100%;
+}
+
+.lesson-media {
+  text-align: center;
+  margin-bottom: var(--space-6);
+  width: 100%;
+}
+
+.lesson-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lesson-media--lg img {
+  max-width: min(100%, 800px);
+}
+
+.lesson-media--md img {
+  max-width: min(100%, 600px);
+}
+
+@media print {
+  .theme-toggle,
+  .toggle-menu {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  nav {
+    display: none !important;
+  }
+
+  pre,
+  .code-header {
+    box-shadow: none !important;
+  }
+}
+
+/* ========== Página inicial (principal.html) ========== */
+.principal-page h2 {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.hero-section {
+  margin-top: var(--space-6);
+}
+
+.hero-card {
+  border-left: 3px solid var(--primary-color);
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent) !important;
+  box-shadow: var(--box-shadow);
+}
+
+[data-theme="light"] .hero-card {
+  background: var(--white) !important;
+}
+
+.principal-page .lead-text {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--gray-700);
+}
+
+.principal-page .section-title {
+  margin-bottom: var(--space-5);
+  color: var(--gray-900);
+  border-bottom: 1px solid color-mix(in srgb, var(--gray-600) 25%, transparent);
+  padding-bottom: var(--space-3);
+}
+
+.principal-page .section-title.with-icon i {
+  color: var(--primary-color);
+}
+
+.principal-page .feature-card {
+  border-top: 3px solid color-mix(in srgb, var(--primary-color) 85%, transparent);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.principal-page .feature-card .card-header {
+  padding: var(--space-5) var(--space-5) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid color-mix(in srgb, var(--gray-600) 18%, transparent);
+}
+
+.principal-page .feature-card .card-body {
+  padding: var(--space-5);
+  flex-grow: 1;
+}
+
+.principal-page .feature-card .card-footer {
+  padding: var(--space-3) var(--space-5);
+  text-align: center;
+  background: color-mix(in srgb, var(--gray-100) 90%, transparent);
+}
+
+.principal-page .feature-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: var(--space-3);
+}
+
+.principal-page .feature-list li {
+  list-style: none;
+  padding: var(--space-2) 0 var(--space-2) var(--space-7);
+  border-bottom: 1px dashed color-mix(in srgb, var(--gray-600) 22%, transparent);
+  position: relative;
+  border-radius: 0;
+  border-left: none !important;
+  background: transparent;
+}
+
+.principal-page .feature-list li:hover {
+  background: transparent;
+  box-shadow: none;
+}
+
+.principal-page .feature-list li:last-child {
+  border-bottom: none;
+}
+
+.principal-page .feature-list li::before {
+  content: "✓";
+  color: var(--success-color);
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  font-weight: 700;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.skill-tag {
+  background: color-mix(in srgb, var(--gray-200) 75%, transparent);
+  color: var(--gray-800);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 15%, transparent);
+}
+
+[data-theme="dark"] .skill-tag {
+  color: var(--color-text-secondary);
+}
+
+.ml-2 {
+  margin-left: var(--space-2);
+}
+
+.book-thumbnail {
+  width: 80px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--box-shadow);
+}
+
+.biblio-preview {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.principal-page blockquote.message-box {
+  font-style: italic;
+  margin: var(--space-6) 0;
+  padding: var(--space-6);
+}
+
+.principal-page .message-box p {
+  margin-bottom: var(--space-2);
+}
+
+.principal-page .message-box footer {
+  text-align: right;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--gray-600);
+}
+
+[data-theme="dark"] .principal-page .message-box footer {
+  color: var(--color-text-muted);
+}
+
+.devfast-highlight {
+  background: linear-gradient(
+    132deg,
+    color-mix(in srgb, var(--color-purple-600) 75%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary-600) 55%, transparent) 100%
+  ) !important;
+  color: var(--white) !important;
+  border: 1px solid color-mix(in srgb, var(--color-primary-400) 35%, transparent) !important;
+}
+
+.devfast-highlight .lead-text {
+  color: rgba(248, 250, 252, 0.95) !important;
+}
+
+.devfast-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.devfast-header {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+.devfast-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid color-mix(in srgb, var(--white) 35%, transparent);
+  box-shadow: var(--box-shadow);
+}
+
+.devfast-header h4 {
+  color: var(--white);
+  margin-top: 0;
+}
+
+.book-highlight {
+  border-left: 3px solid var(--primary-color);
+  background: color-mix(in srgb, var(--gray-100) 95%, transparent) !important;
+}
+
+.book-main-preview {
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.book-main-cover {
+  width: 150px;
+  height: 210px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--box-shadow-md);
+  flex-shrink: 0;
+}
+
+.book-link-card {
+  padding: var(--space-5);
+  background: color-mix(in srgb, var(--gray-100) 96%, transparent) !important;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--box-shadow);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 12%, transparent);
+  text-align: center;
+}
+
+[data-theme="light"] .book-link-card {
+  background: var(--white) !important;
+}
+
+.book-link-card h4 {
+  color: var(--primary-color);
+  margin-bottom: var(--space-3);
+}
+
+.principal-page .btn-secondary {
+  background: color-mix(in srgb, var(--color-purple-500) 22%, transparent);
+  border-color: color-mix(in srgb, var(--color-purple-400) 40%, transparent);
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .principal-page .btn-secondary {
+  color: var(--color-text-primary);
+}
+
+.principal-page .btn-secondary:hover {
+  background: color-mix(in srgb, var(--color-purple-500) 32%, transparent);
+}
+
+@media (max-width: 992px) {
+  .principal-page .feature-card {
+    margin-bottom: var(--space-5);
+  }
+}
+
+@media (max-width: 768px) {
+  .biblio-preview {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .book-thumbnail {
+    margin-bottom: var(--space-4);
+  }
+
+  .devfast-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .devfast-logo {
+    margin-bottom: var(--space-4);
+  }
+
+  .book-main-preview {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .book-main-cover {
+    margin-bottom: var(--space-4);
+  }
 }

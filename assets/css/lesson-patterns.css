@@ -1,0 +1,929 @@
+/*
+ * Padrões compartilhados pelas aulas (substitui <style> injetados no DOM).
+ * Usa apenas variáveis do tema — nunca redeclare :root aqui.
+ */
+
+/* Largura vem de main#content > article — não redefine max-width aqui */
+.lesson-content {
+  padding: 0;
+}
+
+/*
+ * Grade estilo Bootstrap (aulas legacy) sem CSS por página.
+ * Uso: .row > .col-md-6 | .col-md-4 dentro de article.
+ */
+article .row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+  align-items: start;
+}
+
+article .row [class*="col-md-6"],
+article .row [class*="col-md-4"] {
+  grid-column: span 12;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  article .row [class*="col-md-6"] {
+    grid-column: span 6;
+  }
+
+  article .row [class*="col-md-4"] {
+    grid-column: span 4;
+  }
+}
+
+/* ----- Git: conceitos em grade ----- */
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.concept-item {
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 14%, transparent);
+  box-shadow: var(--box-shadow);
+  text-align: center;
+}
+
+.concept-title {
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+}
+
+.concept-desc {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--gray-700);
+}
+
+[data-theme="dark"] .concept-desc {
+  color: var(--color-text-secondary);
+}
+
+/* Listas numeradas das aulas */
+.numbered-steps {
+  list-style: decimal;
+  margin: var(--space-4) 0 var(--space-4) 1.5rem;
+  padding-left: var(--space-3);
+}
+
+.numbered-steps li {
+  margin-bottom: var(--space-3);
+}
+
+/* ----- Git / exercícios ----- */
+details.collapse-section {
+  margin: var(--space-4) 0;
+}
+
+.lesson-content .card-header h4 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-display);
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .lesson-content .card-header h4 {
+  color: var(--color-text-primary);
+}
+
+.lesson-content .card-header h4 i {
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.exercise-card {
+  background: color-mix(in srgb, var(--gray-100) 92%, transparent);
+  border-left: 3px solid color-mix(in srgb, var(--neon-pink) 85%, transparent);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 16%, transparent);
+}
+
+.exercise-card h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .exercise-card h3 {
+  color: var(--color-text-primary);
+}
+
+.exercise-card details {
+  margin-top: var(--space-4);
+}
+
+.lesson-content .solution pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Tabs (Git — reservado) */
+.tab-container {
+  margin-top: var(--space-4);
+}
+
+.tab-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.tab-button {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 35%, transparent);
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .tab-button {
+  color: var(--color-text-secondary);
+}
+
+.tab-button.active,
+.tab-button:hover {
+  background: color-mix(in srgb, var(--primary-color) 22%, transparent);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .tab-button.active,
+[data-theme="dark"] .tab-button:hover {
+  color: var(--color-text-primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ----- Git: fluxo de trabalho ----- */
+.workflow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.workflow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.workflow-step .step-number {
+  background: linear-gradient(
+    145deg,
+    var(--color-primary-500),
+    var(--color-purple-500)
+  );
+  color: var(--black);
+  font-weight: 700;
+  border-radius: 999px;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  box-shadow: var(--neon-glow);
+}
+
+[data-theme="dark"] .workflow-step .step-number {
+  color: var(--color-text-primary);
+}
+
+.step-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.step-title {
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--space-1);
+}
+
+[data-theme="dark"] .step-title {
+  color: var(--color-text-primary);
+}
+
+.step-code {
+  font-family: var(--font-code);
+  background: var(--syntax-bg);
+  color: var(--syntax-fg);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-2);
+  font-size: 0.8125rem;
+  border: 1px solid var(--syntax-pre-border);
+}
+
+/* ----- Git: plataformas ----- */
+.platforms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.platform-item {
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 12%, transparent);
+  box-shadow: var(--box-shadow);
+}
+
+.platform-icon {
+  font-size: 1.75rem;
+  margin-bottom: var(--space-2);
+  color: var(--primary-color);
+}
+
+.platform-title {
+  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  color: var(--gray-900);
+  margin-bottom: var(--space-1);
+}
+
+[data-theme="dark"] .platform-title {
+  color: var(--color-text-primary);
+}
+
+.platform-desc {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--gray-700);
+}
+
+[data-theme="dark"] .platform-desc {
+  color: var(--color-text-muted);
+}
+
+/* ----- Lista dentro de .card (ambientação ✓ | Git texto simples) ----- */
+.lesson-content .card .feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lesson-content .card .feature-list li {
+  position: relative;
+  padding: var(--space-2) 0 var(--space-2) var(--space-7);
+  border-bottom: 1px dashed color-mix(in srgb, var(--gray-600) 28%, transparent);
+  border-left: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+.lesson-content .card .feature-list li::before {
+  content: "✓";
+  color: var(--success-color);
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  font-weight: 700;
+}
+
+.lesson-content .card .feature-list li:hover {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.lesson-content .card .feature-list li:last-child {
+  border-bottom: none;
+}
+
+.lesson-content.git-lesson .card .feature-list li {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.lesson-content.git-lesson .card .feature-list li::before {
+  content: none;
+}
+
+/* ----- Professor ----- */
+.professor-page h2 {
+  margin-bottom: var(--space-6);
+}
+
+.professor-page .profile-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+  box-shadow: var(--box-shadow);
+}
+
+.professor-page .professor-info h3 {
+  color: var(--gray-900);
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+  font-size: 1.5rem;
+}
+
+[data-theme="dark"] .professor-page .professor-info h3 {
+  color: var(--color-text-primary);
+}
+
+.professor-page .experience-header,
+.professor-page .education-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--gray-600) 22%, transparent);
+}
+
+.professor-page .experience-icon,
+.professor-page .education-icon {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--gray-100) 90%, transparent);
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, transparent);
+}
+
+.professor-page .experience-content,
+.professor-page .education-content {
+  color: var(--gray-700);
+}
+
+[data-theme="dark"] .professor-page .experience-content,
+[data-theme="dark"] .professor-page .education-content {
+  color: var(--color-text-secondary);
+}
+
+.professor-page .sector-list {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-3);
+}
+
+.professor-page .sector-list li {
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.professor-page .sector-list li i {
+  color: var(--primary-color);
+  width: 20px;
+  text-align: center;
+}
+
+.professor-page .certification-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.professor-page .certification-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: color-mix(in srgb, var(--gray-100) 92%, transparent);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 15%, transparent);
+  transition: transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.professor-page .certification-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
+}
+
+.professor-page .certification-icon {
+  color: var(--primary-color);
+}
+
+.professor-page .specialties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.professor-page .specialty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-5) var(--space-4);
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 14%, transparent);
+  box-shadow: var(--box-shadow);
+  transition: transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.professor-page .specialty-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--box-shadow-md);
+}
+
+.professor-page .specialty-icon {
+  color: var(--primary-color);
+  font-size: 1.75rem;
+  margin-bottom: var(--space-4);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--gray-200) 70%, transparent);
+  border-radius: 999px;
+}
+
+.professor-page .specialty-name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .professor-page .specialty-name {
+  color: var(--color-text-primary);
+}
+
+.professor-page .personal-info {
+  border-left: 3px solid var(--primary-color);
+}
+
+.professor-page .message-professor {
+  background: color-mix(in srgb, var(--gray-100) 92%, transparent);
+  border-left: 3px solid var(--neon-pink);
+  padding: var(--space-6);
+  font-style: italic;
+  margin: var(--space-6) 0;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.professor-page .message-professor footer {
+  margin-top: var(--space-4);
+  text-align: right;
+  font-weight: 600;
+  font-style: normal;
+  color: var(--gray-600);
+}
+
+@media (max-width: 768px) {
+  .professor-page .certification-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .professor-page .specialties-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .professor-page .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* ----- Bibliografia ----- */
+.bibliografia-page .intro-text {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  max-width: 850px;
+  color: var(--gray-700);
+}
+
+[data-theme="dark"] .bibliografia-page .intro-text {
+  color: var(--color-text-secondary);
+}
+
+.bibliografia-item {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.biblio-header {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.biblio-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bibliografia-page .biblio-content .btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.book-cover {
+  width: 100px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--box-shadow);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 12%, transparent);
+}
+
+.biblio-header h4 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-family: var(--font-display);
+}
+
+.bibliografia-page .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.bibliografia-page .tag {
+  background: color-mix(in srgb, var(--gray-200) 88%, transparent);
+  color: var(--gray-700);
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--gray-600) 15%, transparent);
+}
+
+.bibliografia-page .resource-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bibliografia-page .resource-list li {
+  padding: var(--space-4);
+  border-bottom: 1px solid color-mix(in srgb, var(--gray-600) 18%, transparent);
+  margin-bottom: var(--space-4);
+}
+
+.bibliografia-page .resource-list li:last-child {
+  border-bottom: none;
+}
+
+.bibliografia-page .resource-list a {
+  font-weight: 600;
+}
+
+.bibliografia-page .resource-list p {
+  margin: var(--space-2) 0 0;
+  color: var(--gray-700);
+}
+
+[data-theme="dark"] .bibliografia-page .resource-list p {
+  color: var(--color-text-secondary);
+}
+
+.bibliografia-page .resource-list li a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.bibliografia-page .channel-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 999px;
+  object-fit: cover;
+  margin-right: var(--space-4);
+  flex-shrink: 0;
+}
+
+@media (max-width: 576px) {
+  .biblio-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .book-cover {
+    width: 120px;
+    height: 160px;
+  }
+}
+
+/* ----- Ambientação ----- */
+.lesson-content .shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.lesson-content .shortcut-item {
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 14%, transparent);
+}
+
+.lesson-content .shortcut-platform {
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  color: var(--gray-900);
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+}
+
+[data-theme="dark"] .lesson-content .shortcut-platform {
+  color: var(--color-text-primary);
+}
+
+.lesson-content kbd {
+  display: inline-block;
+  padding: 0.15em 0.45em;
+  font-size: 0.8125rem;
+  font-family: var(--font-code);
+  color: var(--syntax-fg);
+  background: var(--syntax-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--syntax-pre-border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.lesson-content .devtools-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
+}
+
+.lesson-content .devtool-tab {
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 16%, transparent);
+  border-left: 3px solid var(--primary-color);
+}
+
+.lesson-content .devtool-tab h5 {
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.lesson-content .devtool-tab p {
+  color: var(--gray-700);
+  margin-bottom: var(--space-4);
+}
+
+[data-theme="dark"] .lesson-content .devtool-tab p {
+  color: var(--color-text-secondary);
+}
+
+.lesson-content .tab-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.lesson-content .tab-feature {
+  background: color-mix(in srgb, var(--gray-100) 88%, transparent);
+  padding: var(--space-2) var(--space-3);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--gray-700);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 12%, transparent);
+}
+
+.lesson-content .links-card {
+  border-left: 3px solid var(--info-color);
+  padding-left: 0;
+}
+
+@media (max-width: 576px) {
+  .lesson-content .card-body {
+    padding: var(--space-4);
+  }
+
+  .lesson-content .installation-steps {
+    padding-left: 1.25rem;
+  }
+
+  .lesson-content .os-summary {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .lesson-content .os-content {
+    padding: var(--space-4);
+  }
+}
+
+.lesson-content .resources-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lesson-content .resources-list li {
+  margin-bottom: var(--space-3);
+}
+
+.lesson-content .resource-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid color-mix(in srgb, var(--gray-600) 14%, transparent);
+  transition: background var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.lesson-content .resource-link:hover {
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  transform: translateY(-2px);
+}
+
+.lesson-content .resource-link i {
+  color: var(--primary-color);
+  font-size: 1.125rem;
+}
+
+.lesson-content .resource-title {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.lesson-content .resource-desc {
+  font-size: 0.8125rem;
+  color: var(--gray-600);
+}
+
+.lesson-content .installation-guides {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.lesson-content details.os-details {
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--gray-600) 18%, transparent);
+}
+
+.lesson-content .os-summary {
+  background: color-mix(in srgb, var(--gray-100) 96%, transparent);
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  list-style: none;
+  position: relative;
+  color: var(--gray-900);
+}
+
+[data-theme="dark"] .lesson-content .os-summary {
+  color: var(--color-text-primary);
+}
+
+.lesson-content .os-summary::-webkit-details-marker {
+  display: none;
+}
+
+.lesson-content .os-summary:hover {
+  background: color-mix(in srgb, var(--gray-200) 90%, transparent);
+}
+
+.lesson-content .os-summary i.fa-windows {
+  color: #0078d6;
+}
+
+.lesson-content .os-summary i.fa-apple {
+  color: #cbd5e1;
+}
+
+.lesson-content .os-summary i.fa-linux {
+  color: #f59e0b;
+}
+
+.lesson-content .os-summary::after {
+  content: "+";
+  position: absolute;
+  right: var(--space-5);
+  font-size: 1.125rem;
+  color: var(--gray-600);
+}
+
+.lesson-content .os-details[open] .os-summary::after {
+  content: "−";
+}
+
+.lesson-content .os-details[open] .os-summary {
+  background: linear-gradient(
+    92deg,
+    color-mix(in srgb, var(--color-primary-500) 28%, transparent),
+    color-mix(in srgb, var(--color-purple-500) 18%, transparent)
+  );
+  color: var(--color-text-primary);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
+}
+
+.lesson-content .os-details[open] .os-summary i {
+  color: inherit;
+}
+
+.lesson-content .os-content {
+  padding: var(--space-5);
+  background: color-mix(in srgb, var(--gray-100) 95%, transparent);
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+@media (max-width: 992px) {
+  .lesson-content .devtools-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .lesson-content .shortcut-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lesson-content .editor-recommendation {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .lesson-content .editor-logo {
+    margin-bottom: var(--space-4);
+  }
+}
+
+/* ----- Fundamentos JS (intro) — exemplo code.typeof ----- */
+.lesson-content code.typeof {
+  background: var(--syntax-inline-bg) !important;
+  color: var(--syntax-keyword) !important;
+  border-color: var(--syntax-inline-border) !important;
+}
+
+[data-theme="light"] .lesson-content code.typeof {
+  background: var(--syntax-bg) !important;
+  color: var(--syntax-keyword) !important;
+  border-color: var(--syntax-inline-border) !important;
+}

@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,15 +7,33 @@
       name="description"
       content="Apostila de Desenvolvimento Web - Material para estudo de HTML, CSS, JavaScript e tecnologias web modernas."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/cyberpunk-aulas.css" />
+    <link rel="stylesheet" href="assets/css/cyberpunk-override.css" />
+    <link rel="stylesheet" href="assets/css/lesson-patterns.css" />
+    <link rel="stylesheet" href="assets/css/prism-premium-overrides.css" />
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
     <title>Apostila de Desenvolvimento Web</title>
   </head>
   <body>
+    <button
+      type="button"
+      class="theme-toggle"
+      id="apostila-theme-toggle"
+      aria-label="Alternar entre tema claro e escuro"
+    >
+      <i class="fas fa-sun" id="apostila-theme-icon" aria-hidden="true"></i>
+    </button>
     <header>
       <h1>Apostila de Desenvolvimento Web - Prof. Daniel Cintra</h1>
       <button class="toggle-menu" aria-label="Menu de navegação">
@@ -207,7 +225,7 @@
     </div>
 
     <footer>
-      <p>&copy; 2025 - Apostila de Desenvolvimento Web - Daniel Cintra</p>
+      <p>&copy; 2026 - Apostila de Desenvolvimento Web - Daniel Cintra</p>
       <div class="footer-links">
         <a
           href="https://github.com/DanielLCintra"
@@ -219,15 +237,16 @@
       </div>
     </footer>
 
-    <!-- Adicionando biblioteca Prism.js para destacar sintaxe de código -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="assets/js/lesson-prism-setup.js"></script>
 
     <script>
       // Função para carregar o conteúdo das aulas
@@ -250,7 +269,7 @@
         });
 
         const activeLink = document.querySelector(
-          `nav a[onclick="loadContent('${pageName}')"]`
+          `nav a[onclick="loadContent('${pageName}')"]`,
         );
         if (activeLink) {
           activeLink.setAttribute("aria-current", "page");
@@ -272,7 +291,9 @@
           .then((html) => {
             contentElement.innerHTML = html;
 
-            // Destacar blocos de código com Prism.js
+            if (window.normalizeLessonSyntax) {
+              normalizeLessonSyntax(contentElement);
+            }
             if (window.Prism) {
               Prism.highlightAll();
             }
@@ -335,27 +356,63 @@
       // Função para verificar e redirecionar rotas especiais
       function handleSpecialRoutes() {
         const pathname = window.location.pathname;
-        
+
         // Se a rota for /apostila-java, redirecionar para a apostila de Java
-        if (pathname.endsWith('/apostila-java') || pathname.endsWith('/apostila-java/')) {
+        if (
+          pathname.endsWith("/apostila-java") ||
+          pathname.endsWith("/apostila-java/")
+        ) {
           // Construir o caminho relativo para a apostila de Java
           // Remove /apostila-java do final e adiciona /apostila-java/index.html
-          const basePath = pathname.replace(/\/apostila-java\/?$/, '');
-          const javaPath = (basePath || '') + '/apostila-java/index.html';
+          const basePath = pathname.replace(/\/apostila-java\/?$/, "");
+          const javaPath = (basePath || "") + "/apostila-java/index.html";
           window.location.replace(javaPath);
           return true;
         }
-        
+
         return false;
+      }
+
+      // Tema claro/escuro (design system — localStorage)
+      const APOSTILA_THEME_KEY = "fiap-apostila-theme";
+
+      function initApostilaTheme() {
+        const root = document.documentElement;
+        const saved = localStorage.getItem(APOSTILA_THEME_KEY);
+        if (saved === "light" || saved === "dark") {
+          root.setAttribute("data-theme", saved);
+        } else {
+          root.setAttribute("data-theme", "dark");
+        }
+        syncApostilaThemeIcon();
+        const btn = document.getElementById("apostila-theme-toggle");
+        if (btn) {
+          btn.addEventListener("click", function () {
+            const next =
+              root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+            root.setAttribute("data-theme", next);
+            localStorage.setItem(APOSTILA_THEME_KEY, next);
+            syncApostilaThemeIcon();
+          });
+        }
+      }
+
+      function syncApostilaThemeIcon() {
+        const icon = document.getElementById("apostila-theme-icon");
+        if (!icon) return;
+        const dark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        icon.className = dark ? "fas fa-sun" : "fas fa-moon";
       }
 
       // Carregar conteúdo inicial quando a página é carregada
       document.addEventListener("DOMContentLoaded", function () {
+        initApostilaTheme();
         // Verificar rotas especiais primeiro
         if (handleSpecialRoutes()) {
           return; // Se redirecionou, não continuar
         }
-        
+
         // Verificar se há uma página específica na URL
         const pageParam = getUrlParameter("page");
         if (pageParam) {
@@ -388,7 +445,7 @@
         if (handleSpecialRoutes()) {
           return;
         }
-        
+
         if (event.state && event.state.page) {
           loadContent(event.state.page);
         } else {

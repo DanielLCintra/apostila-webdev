@@ -1,5 +1,10 @@
+/*
+ * Base da apostila; tema premium (cores, tipo, HUD) em cyberpunk-override.css.
+ */
 /* ========== VARIÁVEIS GLOBAIS ========== */
 :root {
+  /* Texto secundário (parágrafos, legendas) — alinhado ao tema em override */
+  --text-secondary: var(--gray-600);
   --primary-color: #3498db;
   --primary-color-dark: #2980b9;
   --secondary-color: #2c3e50;
@@ -26,8 +31,8 @@
   --gray-800: #343a40;
   --gray-900: #212529;
   
-  --font-family-base: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  --font-family-code: "Courier New", monospace;
+  --font-family-base: "Inter", system-ui, sans-serif;
+  --font-family-code: "JetBrains Mono", ui-monospace, monospace;
   
   --border-radius-sm: 0.25rem;
   --border-radius: 0.5rem;
@@ -688,3 +693,13 @@ details[open] summary {
 .text-danger { color: var(--accent-color); }
 .text-warning { color: var(--warning-color); }
 .text-muted { color: var(--gray-600); }
+
+/* Complementos usados em fragmentos de aula (Tailwind-like local) */
+.rounded { border-radius: var(--border-radius); }
+.shadow { box-shadow: var(--box-shadow); }
+.img-fluid { max-width: 100%; height: auto; }
+
+.centered-img {
+  display: block;
+  margin-inline: auto;
+}
