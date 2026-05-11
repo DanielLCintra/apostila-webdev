@@ -317,6 +317,66 @@ header h1 {
   text-shadow: none;
 }
 
+header .header-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+  --header-tool-size: 48px;
+  --header-tool-icon: 1.125rem;
+}
+
+/* Mesmo tamanho e círculo que o tema — par visual no header */
+header .header-tools .theme-toggle,
+header .header-tools .toggle-menu {
+  width: var(--header-tool-size);
+  height: var(--header-tool-size);
+  min-width: var(--header-tool-size);
+  min-height: var(--header-tool-size);
+  padding: 0;
+  border-radius: 999px;
+  box-sizing: border-box;
+  font-size: var(--header-tool-icon);
+  line-height: 1;
+}
+
+header .header-tools .toggle-menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--color-surface-alt) 90%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
+  color: var(--primary-color);
+  box-shadow: var(--box-shadow), var(--glow-blue-soft);
+  transition: transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+header .header-tools .toggle-menu:hover {
+  transform: scale(1.04);
+  box-shadow: var(--box-shadow-md);
+  background: color-mix(in srgb, var(--color-surface-alt) 94%, transparent);
+}
+
+header .header-tools .toggle-menu:active {
+  transform: scale(0.98);
+}
+
+[data-theme="light"] header .header-tools .toggle-menu {
+  background: color-mix(in srgb, var(--white) 88%, transparent);
+  color: var(--primary-color-dark);
+  border-color: color-mix(in srgb, var(--color-primary-500) 22%, transparent);
+  box-shadow: var(--box-shadow);
+}
+
+[data-theme="light"] header .header-tools .toggle-menu:hover {
+  background: color-mix(in srgb, var(--white) 96%, transparent);
+}
+
 [data-theme="dark"] header h1 {
   color: var(--color-text-primary);
 }
@@ -902,6 +962,19 @@ details:not(.solucao):not(.os-details)[open] > summary {
 
 /* Responsivo */
 @media (max-width: 768px) {
+  header {
+    gap: var(--space-2);
+  }
+
+  header h1 {
+    flex: 1 1 0%;
+    min-width: 0;
+    padding-right: var(--space-1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .container {
     flex-direction: column;
   }
@@ -919,7 +992,7 @@ details:not(.solucao):not(.os-details)[open] > summary {
     display: block;
   }
 
-  .toggle-menu {
+  header .header-tools .toggle-menu {
     display: flex;
     align-items: center;
     justify-content: center;
