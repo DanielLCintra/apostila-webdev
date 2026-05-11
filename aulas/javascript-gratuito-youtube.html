@@ -1,0 +1,74 @@
+<article
+  class="lesson-content video-embed-page youtube-playlist-grid-page-root js-curso-youtube-page"
+  data-youtube-playlist-grid-page
+  data-yt-linear-lessons
+  data-yt-show-lesson-index
+  data-videos-src="assets/data/javascript-gratuito-youtube-videos.json"
+  data-yt-empty-hint="Nenhuma aula no JSON. Rode: python3 scripts/sync_javascript_gratuito_playlist.py"
+>
+  <h2>JavaScript gratuito no YouTube</h2>
+
+  <p class="intro-text mb-4">
+    Curso em vídeo na ordem certa para o aluno seguir da primeira à última
+    aula. Clique na miniatura ou use
+    <strong>aula anterior</strong>
+    /
+    <strong>próxima aula</strong>
+    abaixo do player. A apostila complementa com exercícios e referência.
+  </p>
+
+  <p class="mb-4">
+    <a
+      href="https://www.youtube.com/watch?v=uitVg1TyrRQ&amp;list=PLVqMckwJhEhbZho9gdClTsK6xucXgXd0-"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn btn-primary"
+    >
+      <i class="fab fa-youtube" aria-hidden="true"></i>
+      Abrir playlist completa no YouTube
+    </a>
+  </p>
+
+  <section class="mb-3" aria-labelledby="js-curso-player-heading">
+    <h3 id="js-curso-player-heading" class="section-title with-icon">
+      <i class="fas fa-play-circle" aria-hidden="true"></i>
+      Aula atual
+    </h3>
+    <div
+      class="youtube-embed-shell youtube-embed-shell--main"
+      title="Aula do curso gratuito de JavaScript"
+    >
+      <iframe
+        data-yt-grid-iframe
+        title="Vídeo da aula selecionada — curso gratuito de JavaScript"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin"
+      ></iframe>
+    </div>
+
+    <div class="yt-seq-nav" data-yt-seq-nav hidden>
+      <button type="button" class="btn btn-outline yt-seq-nav__btn" data-yt-prev>
+        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+        Aula anterior
+      </button>
+      <span class="yt-seq-nav__label" data-yt-seq-label aria-live="polite"></span>
+      <button type="button" class="btn btn-outline yt-seq-nav__btn" data-yt-next>
+        Próxima aula
+        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </section>
+
+  <section class="mb-4" aria-labelledby="js-curso-grid-heading">
+    <h3 id="js-curso-grid-heading" class="section-title with-icon">
+      <i class="fas fa-list-ol" aria-hidden="true"></i>
+      Todas as aulas em sequência
+    </h3>
+    <p
+      class="intro-text text-muted mb-4 youtube-playlist-meta-line"
+      data-yt-grid-meta
+    ></p>
+    <div data-yt-grid-root class="yt-video-grid yt-video-grid--course"></div>
+  </section>
+</article>

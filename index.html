@@ -56,6 +56,19 @@
               <i class="fas fa-user-graduate"></i> Sobre o professor
             </a>
           </li>
+          <li>
+            <a href="#" onclick="loadContent('devfast-canal-youtube')">
+              <i class="fab fa-youtube"></i> Canal DevFast (YouTube)
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onclick="loadContent('javascript-gratuito-youtube')"
+            >
+              <i class="fab fa-js"></i> JavaScript gratuito (YouTube)
+            </a>
+          </li>
         </ul>
 
         <!-- Conteúdo do Curso -->
@@ -247,8 +260,59 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <script src="assets/js/lesson-prism-setup.js"></script>
+    <script src="assets/js/youtube-playlist-grid-page.js"></script>
 
     <script>
+      const apostilaIncludeCache = new Map();
+
+      /**
+       * Substitui nós com data-include="caminho/relativo/a/aulas/..." pelo HTML buscado.
+       * Permite reutilizar blocos (ex.: cursos Alura) sem duplicar markup.
+       */
+      function resolveApostilaIncludes(container) {
+        const slots = container.querySelectorAll("[data-include]");
+        if (!slots.length) {
+          return Promise.resolve();
+        }
+
+        return Promise.all(
+          [...slots].map((slot) => {
+            const relative = slot.getAttribute("data-include");
+            if (!relative) {
+              slot.remove();
+              return Promise.resolve();
+            }
+
+            const url = `aulas/${relative}`;
+
+            const applyHtml = (raw) => {
+              slot.outerHTML = raw.trim();
+            };
+
+            if (apostilaIncludeCache.has(url)) {
+              applyHtml(apostilaIncludeCache.get(url));
+              return Promise.resolve();
+            }
+
+            return fetch(url)
+              .then((res) => {
+                if (!res.ok) {
+                  throw new Error(String(res.status));
+                }
+                return res.text();
+              })
+              .then((fragment) => {
+                apostilaIncludeCache.set(url, fragment);
+                applyHtml(fragment);
+              })
+              .catch((err) => {
+                console.warn("Apostila: falha ao carregar include", url, err);
+                slot.remove();
+              });
+          }),
+        );
+      }
+
       // Função para carregar o conteúdo das aulas
       function loadContent(pageName) {
         const contentElement = document.getElementById("content");
@@ -290,7 +354,14 @@
           })
           .then((html) => {
             contentElement.innerHTML = html;
-
+            return resolveApostilaIncludes(contentElement);
+          })
+          .then(() =>
+            typeof window.setupYoutubePlaylistGridPages === "function"
+              ? window.setupYoutubePlaylistGridPages(contentElement)
+              : Promise.resolve(),
+          )
+          .then(() => {
             if (window.normalizeLessonSyntax) {
               normalizeLessonSyntax(contentElement);
             }
