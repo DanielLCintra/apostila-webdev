@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 07 - Docker + Swagger</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 07 - Docker + Swagger</h1>
+            <p class="subtitle">Containerização e documentação de API</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <p>
+                        Nas <strong>Aulas 03 a 06</strong>, você criou APIs REST completas com Spring Boot, JPA, 
+                        DTOs e validações. Agora vamos aprender a <strong>containerizar sua aplicação</strong> com 
+                        Docker e <strong>documentar sua API</strong> com Swagger, ferramentas essenciais para 
+                        desenvolvimento profissional.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Spring Boot, APIs REST, JPA, DTOs, validações
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Como gerar um JAR executável, como criar 
+                        Dockerfiles, como usar Docker para rodar sua aplicação, e como documentar sua API com Swagger
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📦 Gerando o JAR</h2>
+                
+                <div class="step-box">
+                    <h3>1. Build do Projeto</h3>
+                    <ol>
+                        <li>No terminal, na raiz do projeto:</li>
+                        <li><code>mvn clean package</code></li>
+                        <li>Ou no IntelliJ: Maven → Lifecycle → clean → package</li>
+                        <li>O JAR será gerado em: <code>target/nome-do-projeto.jar</code></li>
+                    </ol>
+                </div>
+
+                <div class="step-box">
+                    <h3>2. Executar JAR</h3>
+                    <div class="code-block">
+<pre># Executar o JAR gerado
+java -jar target/minha-api-0.0.1-SNAPSHOT.jar
+
+# Ou com perfil específico
+java -jar target/minha-api-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🐳 Docker - Containerização</h2>
+                
+                <div class="concept-box">
+                    <h3>O que é Docker? (Para Iniciantes)</h3>
+                    <p>
+                        <strong>Docker</strong> é uma plataforma que permite criar, executar e gerenciar containers. 
+                        Um container é como uma "caixa" que contém sua aplicação e tudo que ela precisa para rodar.
+                    </p>
+                    
+                    <h4>Por que usar Docker?</h4>
+                    <ul>
+                        <li><strong>"Funciona na minha máquina":</strong> Com Docker, funciona em qualquer máquina</li>
+                        <li><strong>Isolamento:</strong> Cada container é independente</li>
+                        <li><strong>Consistência:</strong> Mesmo ambiente em desenvolvimento e produção</li>
+                        <li><strong>Fácil deploy:</strong> Basta executar o container</li>
+                        <li><strong>Escalabilidade:</strong> Fácil criar múltiplas instâncias</li>
+                    </ul>
+
+                    <div class="tip-box">
+                        <strong>💡 Analogia:</strong> Docker é como uma "máquina virtual leve". 
+                        Mas ao invés de virtualizar um sistema operacional completo, 
+                        containers compartilham o kernel do sistema operacional, sendo muito mais leves e rápidos.
+                    </div>
+
+                    <h4>Conceitos Importantes:</h4>
+                    <ul>
+                        <li><strong>Image (Imagem):</strong> Template read-only usado para criar containers</li>
+                        <li><strong>Container:</strong> Instância executável de uma imagem</li>
+                        <li><strong>Dockerfile:</strong> Arquivo de texto com instruções para construir uma imagem</li>
+                        <li><strong>Docker Compose:</strong> Ferramenta para definir e executar múltiplos containers</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h3>Instalar Docker</h3>
+                    <p>Se você ainda não tem Docker instalado:</p>
+                    <ul>
+                        <li><strong>Windows/Mac:</strong> Baixe <a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker Desktop</a></li>
+                        <li><strong>Linux:</strong> <code>sudo apt install docker.io docker-compose</code></li>
+                        <li>Verifique: <code>docker --version</code></li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h3>1. Criar Dockerfile</h3>
+                    <p>Crie o arquivo <code>Dockerfile</code> na raiz do projeto:</p>
+                    
+                    <div class="code-block">
+<pre># Dockerfile
+# Etapa 1: Build
+FROM maven:3.8.6-openjdk-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Etapa 2: Runtime
+FROM openjdk:17-jre-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+
+# Expor porta
+EXPOSE 8080
+
+# Comando para executar
+ENTRYPOINT ["java", "-jar", "app.jar"]</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>2. Build da Imagem Docker</h3>
+                    <div class="code-block">
+<pre># Build da imagem
+docker build -t minha-api:1.0 .
+
+# Verificar imagem criada
+docker images</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>3. Executar Container</h3>
+                    <div class="code-block">
+<pre># Executar container
+docker run -d -p 8080:8080 --name minha-api-container minha-api:1.0
+
+# Ver logs
+docker logs minha-api-container
+
+# Parar container
+docker stop minha-api-container
+
+# Remover container
+docker rm minha-api-container</div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Comandos Docker úteis:</strong>
+                    <ul>
+                        <li><code>docker ps</code> - Lista containers em execução</li>
+                        <li><code>docker ps -a</code> - Lista todos os containers</li>
+                        <li><code>docker logs &lt;container&gt;</code> - Ver logs</li>
+                        <li><code>docker exec -it &lt;container&gt; bash</code> - Entrar no container</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📚 Swagger - Documentação de API</h2>
+                
+                <div class="step-box">
+                    <h3>1. Adicionar Dependência</h3>
+                    <div class="code-block">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
+    &lt;artifactId&gt;springdoc-openapi-starter-webmvc-ui&lt;/artifactId&gt;
+    &lt;version&gt;2.2.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>2. Configuração Básica</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SwaggerConfig {
+    
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+            .info(new Info()
+                .title("Minha API")
+                .version("1.0.0")
+                .description("Documentação da API REST"));
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>3. Anotar Controllers</h3>
+                    <div class="code-block">
+<pre>import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
+@RestController
+@RequestMapping("/usuarios")
+@Tag(name = "Usuários", description = "Endpoints para gerenciamento de usuários")
+public class UsuarioController {
+    
+    @GetMapping
+    @Operation(summary = "Listar usuários", 
+               description = "Retorna lista de todos os usuários cadastrados")
+    @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    public List&lt;UsuarioResponseDTO&gt; listar() {
+        return usuarioService.listarTodos();
+    }
+    
+    @PostMapping
+    @Operation(summary = "Criar usuário", 
+               description = "Cria um novo usuário no sistema")
+    @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    public ResponseEntity&lt;UsuarioResponseDTO&gt; criar(
+            @Valid @RequestBody CriarUsuarioDTO dto) {
+        // ...
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>4. Acessar Swagger UI</h3>
+                    <ol>
+                        <li>Inicie a aplicação</li>
+                        <li>Acesse: <code>http://localhost:8080/swagger-ui.html</code></li>
+                        <li>Ou: <code>http://localhost:8080/swagger-ui/index.html</code></li>
+                        <li>Explore os endpoints e teste diretamente na interface</li>
+                    </ol>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Configuração Avançada (application.properties)</h3>
+                    <div class="code-block">
+<pre># Swagger Configuration
+springdoc.api-docs.path=/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.operationsSorter=method
+springdoc.swagger-ui.tagsSorter=alpha</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔧 Docker Compose (Opcional)</h2>
+                
+                <div class="concept-box">
+                    <h3>docker-compose.yml</h3>
+                    <p>Docker Compose facilita gerenciar múltiplos containers.</p>
+                    
+                    <div class="code-block">
+<pre>version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=minhaapi
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=senha123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>Comandos Docker Compose</h3>
+                    <div class="code-block">
+<pre># Subir todos os serviços
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f
+
+# Parar serviços
+docker-compose down
+
+# Rebuild e subir
+docker-compose up --build</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧠 Mini-Desafio</h2>
+                <div class="challenge-box">
+                    <h3>Desafio: Dockerizar e Documentar API</h3>
+                    <p><strong>Objetivo:</strong> Containerizar aplicação e adicionar Swagger.</p>
+                    
+                    <h4>Requisitos:</h4>
+                    <ol>
+                        <li>Crie um <code>Dockerfile</code> para sua aplicação</li>
+                        <li>Build e execute a imagem Docker</li>
+                        <li>Adicione Swagger ao projeto</li>
+                        <li>Documente pelo menos 3 endpoints com anotações</li>
+                        <li>Acesse <code>http://localhost:8080/swagger-ui.html</code></li>
+                        <li>Teste os endpoints diretamente no Swagger UI</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>💡 Dicas Finais</h2>
+                
+                <div class="tip-box">
+                    <ul>
+                        <li><strong>Docker:</strong> Use multi-stage builds para imagens menores</li>
+                        <li><strong>Swagger:</strong> Documente sempre que possível - facilita integração</li>
+                        <li><strong>JAR:</strong> Teste o JAR localmente antes de containerizar</li>
+                        <li><strong>Variáveis de ambiente:</strong> Use para configurações sensíveis</li>
+                        <li><strong>.dockerignore:</strong> Crie para excluir arquivos desnecessários do build</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 07</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Gerou JAR com mvn clean package</li>
+                        <li>✅ Executou o JAR com java -jar</li>
+                        <li>✅ Entendeu o que é Docker e containers</li>
+                        <li>✅ Criou um Dockerfile para sua aplicação</li>
+                        <li>✅ Buildou imagem Docker (docker build)</li>
+                        <li>✅ Executou container (docker run)</li>
+                        <li>✅ Adicionou SpringDoc OpenAPI ao projeto</li>
+                        <li>✅ Configurou Swagger e acessou /swagger-ui.html</li>
+                        <li>✅ Documentou endpoints com anotações do Swagger</li>
+                        <li>✅ Testou endpoints diretamente no Swagger UI</li>
+                        <li>✅ Completou o mini-desafio de dockerizar e documentar</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🎉 Parabéns!</h2>
+                <p>Você completou a <strong>Semana 1</strong>! Agora você tem uma base sólida em Java e Spring Boot.</p>
+                <p>Na próxima semana, vamos mergulhar em <strong>Arquitetura Hexagonal</strong> e práticas avançadas!</p>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-06.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-08.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

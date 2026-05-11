@@ -1,0 +1,1919 @@
+<!-- ==================== Aula React 11 - API Backend com PostgreSQL no Next.js ==================== -->
+<article class="lesson-content">
+  <h2>
+    <i class="fas fa-server"></i> React – Criando API Backend com PostgreSQL no
+    Next.js
+  </h2>
+
+  <div class="intro-box mb-5">
+    <p>
+      <strong
+        >🚀 Transforme seu projeto em uma aplicação full-stack completa!</strong
+      >
+    </p>
+    <p>
+      Nesta aula vamos evoluir nosso projeto de contatos para usar um backend
+      real com PostgreSQL. Você aprenderá a criar APIs RESTful dentro do
+      Next.js, conectar com banco de dados PostgreSQL no AWS RDS, criar
+      migrations para estruturar o banco, e adaptar o front-end para consumir
+      sua própria API ao invés do MockAPI.
+    </p>
+    <ul>
+      <li>✅ Subir API completa dentro do Next.js usando API Routes</li>
+      <li>✅ Conectar com PostgreSQL usando AWS RDS (instância gratuita)</li>
+      <li>✅ Criar migrations para estruturar banco de dados</li>
+      <li>✅ Implementar endpoints CRUD completos para contatos</li>
+      <li>✅ Criar endpoint de autenticação (login de usuários)</li>
+      <li>✅ Adaptar front-end para consumir a nova API</li>
+      <li>✅ Substituir MockAPI por API própria</li>
+    </ul>
+  </div>
+
+  <blockquote>
+    <p>
+      "Full-stack é sobre construir pontes entre frontend e backend de forma
+      elegante e eficiente." - Next.js Team
+    </p>
+  </blockquote>
+
+  <div class="alert alert-info">
+    <strong>Pré-requisito:</strong> Projeto da aula anterior "React – Consumo de
+    API com axios e useEffect" funcionando com MockAPI, Context, hooks
+    customizados, cache offline e sincronização.
+  </div>
+
+  <div class="alert alert-warning">
+    <strong>🔧 Configuração do PostgreSQL AWS RDS:</strong> Para esta aula,
+    vamos usar as seguintes credenciais do banco de dados:
+    <ul>
+      <li><strong>Database:</strong> contacts_db</li>
+      <li><strong>User:</strong> contacts</li>
+      <li><strong>Password:</strong> contacts_2025#</li>
+      <li>
+        <strong>Host:</strong>
+        contacts-db.cqub0jviveo4.us-east-1.rds.amazonaws.com
+      </li>
+      <li><strong>Port:</strong> 5432</li>
+    </ul>
+  </div>
+
+  <!-- 1. Introdução ao Backend no Next.js -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-code"></i> 1. Introdução ao Backend no Next.js
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>1.1 O que são API Routes?</h4>
+        <p>
+          As <strong>API Routes</strong> do Next.js permitem criar endpoints de
+          API diretamente dentro do projeto, sem precisar de um servidor
+          separado. Cada arquivo dentro da pasta <code>app/api/</code> se torna
+          um endpoint HTTP.
+        </p>
+
+        <h5>Estrutura de pastas:</h5>
+        <pre><code class="language-plaintext">app/
+├── api/
+│   ├── contacts/
+│   │   ├── route.js        # GET /api/contacts (listar)
+│   │   └── [id]/
+│   │       └── route.js    # GET /api/contacts/123, PUT, DELETE
+│   ├── auth/
+│   │   └── login/
+│   │       └── route.js    # POST /api/auth/login
+│   └── health/
+│       └── route.js        # GET /api/health (status do servidor)
+├── components/
+└── ...</code></pre>
+
+        <h4>1.2 Vantagens de usar API Routes no Next.js</h4>
+        <ul>
+          <li>
+            <strong>Full-stack em um só projeto:</strong> Frontend e backend no
+            mesmo código
+          </li>
+          <li><strong>Deploy unificado:</strong> Tudo sobe junto no Vercel</li>
+          <li>
+            <strong>Simplicidade:</strong> Não precisa gerenciar dois projetos
+            separados
+          </li>
+          <li>
+            <strong>Produtividade:</strong> Desenvolvimento mais rápido e
+            integrado
+          </li>
+          <li><strong>Type-safe:</strong> TypeScript funciona end-to-end</li>
+        </ul>
+
+        <h4>1.3 Métodos HTTP suportados</h4>
+        <p>
+          Cada arquivo <code>route.js</code> pode exportar funções para
+          diferentes métodos HTTP:
+        </p>
+        <pre><code class="language-js">// app/api/contacts/route.js
+export async function GET(request) {
+  // Buscar todos os contatos
+  return Response.json({ contacts: [] });
+}
+
+export async function POST(request) {
+  // Criar novo contato
+  return Response.json({ success: true });
+}</code></pre>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Dica:</strong> No Next.js 13+ (App Router), usamos
+          <code>async function GET/POST/PUT/DELETE</code> ao invés de
+          <code>export default function handler(req, res)</code> do Pages
+          Router.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Instalando e Configurando PostgreSQL -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-download"></i> 2. Instalando e Configurando PostgreSQL
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>2.1 Instalar dependências</h4>
+        <p>Primeiro, vamos instalar o cliente PostgreSQL para Node.js:</p>
+
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">cd contatos
+npm install pg --save
+npm install dotenv --save-dev</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>📦 Dependências:</strong>
+          <ul>
+            <li><strong>pg:</strong> Cliente PostgreSQL para Node.js</li>
+            <li>
+              <strong>dotenv:</strong> Para gerenciar variáveis de ambiente
+            </li>
+          </ul>
+        </div>
+
+        <h4>2.2 Configurar variáveis de ambiente</h4>
+        <p>Vamos criar arquivos para gerenciar as credenciais do banco:</p>
+
+        <h5>📁 Arquivo: .env.local</h5>
+        <pre><code class="language-plaintext"># Banco de Dados PostgreSQL AWS RDS
+DATABASE_URL=postgresql://contacts:contacts_2025%23@contacts-db.cqub0jviveo4.us-east-1.rds.amazonaws.com:5432/contacts_db
+
+# Variáveis individuais (opcional, para referencia)
+DB_HOST=contacts-db.cqub0jviveo4.us-east-1.rds.amazonaws.com
+DB_PORT=5432
+DB_NAME=contacts_db
+DB_USER=contacts
+DB_PASSWORD=contacts_2025#</code></pre>
+
+        <div class="alert alert-warning mt-3">
+          <strong>⚠️ Importante:</strong> O arquivo <code>.env.local</code> NÃO
+          deve ser commitado no git! Adicione ao <code>.gitignore</code>.
+        </div>
+
+        <h5>📁 Arquivo: .gitignore (adicionar linhas)</h5>
+        <pre><code class="language-plaintext"># Variáveis de ambiente
+.env
+.env.local
+.env.production</code></pre>
+
+        <h4>2.3 Criar arquivo de conexão com o banco</h4>
+        <p>Vamos criar um arquivo para gerenciar a conexão com PostgreSQL:</p>
+
+        <h5>📁 Arquivo: app/lib/db.js</h5>
+        <pre><code class="language-js">// app/lib/db.js
+import pkg from 'pg';
+const { Pool } = pkg;
+
+// Configuração do pool de conexões usando DATABASE_URL
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false // Necessário para AWS RDS
+    }
+});
+
+// Função de teste de conexão
+async function testConnection() {
+    try {
+        const client = await pool.connect();
+        console.log('✅ Conectado ao banco de dados PostgreSQL');
+        client.release();
+        return true;
+    } catch (err) {
+        console.error('❌ Erro ao conectar ao banco:', err.message);
+        return false;
+    }
+}
+
+export {
+    pool,
+    testConnection
+};</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>📌 O que é um Pool?</strong> O pool gerencia múltiplas
+          conexões ao banco, melhorando performance e evitando overhead de
+          criar/fechar conexões a cada requisição.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Criar Migrations e Tabelas -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-database"></i> 3. Criar Migrations e Tabelas
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>3.1 Estrutura das tabelas</h4>
+        <p>Vamos criar duas tabelas no banco:</p>
+
+        <h5>Tabela: users</h5>
+        <pre><code class="language-sql">CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+        <h5>Tabela: contacts</h5>
+        <pre><code class="language-sql">CREATE TABLE contacts (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100),
+  telephone VARCHAR(20),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+        <h4>3.2 Script de migration manual</h4>
+        <p>Crie um script para rodar as migrations:</p>
+
+        <h5>📁 Arquivo: app/lib/migrate.js</h5>
+        <pre><code class="language-js">// app/lib/migrate.js
+import dotenv from 'dotenv';
+import pkg from 'pg';
+const { Pool } = pkg;
+
+// Load .env.local file
+dotenv.config({ path: '.env.local' });
+
+async function runMigrations() {
+    try {
+        console.log('🔄 Iniciando migrations...');
+
+        // Conectar ao banco de dados padrão para criar o banco se não existir
+        const adminUrl = process.env.DATABASE_URL.replace(process.env.DB_NAME, 'postgres');
+        const adminPool = new Pool({
+            connectionString: adminUrl,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+
+        // Verificar e criar o banco de dados
+        const dbCheck = await adminPool.query(
+            `SELECT 1 FROM pg_database WHERE datname = $1`,
+            [process.env.DB_NAME]
+        );
+
+        if (dbCheck.rows.length === 0) {
+            await adminPool.query(`CREATE DATABASE ${process.env.DB_NAME}`);
+            console.log(`✅ Banco de dados ${process.env.DB_NAME} criado`);
+        } else {
+            console.log(`ℹ️  Banco de dados ${process.env.DB_NAME} já existe`);
+        }
+
+        await adminPool.end();
+
+        // Agora usar o pool normal para criar as tabelas
+        const { pool } = await import('./db.js');
+
+        // Criar tabela users
+        await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(100) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        role VARCHAR(50) DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+        console.log('✅ Tabela users criada');
+
+        // Verificar e adicionar campo email se não existir
+        const emailColumnCheck = await pool.query(`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='users' AND column_name='email'
+    `);
+
+        if (emailColumnCheck.rows.length === 0) {
+            await pool.query('ALTER TABLE users ADD COLUMN email VARCHAR(100) UNIQUE');
+            console.log('✅ Campo email adicionado à tabela users');
+        }
+
+        // Criar tabela contacts
+        await pool.query(`
+      CREATE TABLE IF NOT EXISTS contacts (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(100),
+        telephone VARCHAR(20),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+        console.log('✅ Tabela contacts criada');
+
+        // Inserir usuários de teste
+        const testUsers = [
+            { name: 'Administrador', email: 'admin@contatos.com', password: '123456', role: 'admin' },
+            { name: 'Usuário Teste', email: 'user@contatos.com', password: 'senha123', role: 'user' },
+            { name: 'Demo', email: 'demo@contatos.com', password: 'demo123', role: 'user' }
+        ];
+
+        for (const user of testUsers) {
+            const existingUser = await pool.query(
+                'SELECT id FROM users WHERE email = $1',
+                [user.email]
+            );
+
+            if (existingUser.rows.length === 0) {
+                await pool.query(
+                    'INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4)',
+                    [user.name, user.email, user.password, user.role]
+                );
+                console.log(`✅ Usuário ${user.name} (${user.email}) inserido`);
+            }
+        }
+
+        console.log('🎉 Migrations concluídas com sucesso!');
+        process.exit(0);
+    } catch (err) {
+        console.error('❌ Erro nas migrations:', err);
+        process.exit(1);
+    }
+}
+
+runMigrations();</code></pre>
+
+        <h4>3.3 Adicionar script de migration</h4>
+        <p>
+          Vamos adicionar um script no <code>package.json</code> para facilitar
+          a execução das migrations:
+        </p>
+
+        <h5>📁 Arquivo: package.json</h5>
+        <pre><code class="language-json">{
+  "name": "contatos",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "migrate": "node app/lib/migrate.js"
+  },
+  ...
+}</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>📝 O que fazemos:</strong> Adicionamos a linha
+          <code>"type": "module"</code> para habilitar ES modules e a linha
+          <code>"migrate": "node app/lib/migrate.js"</code> na seção de scripts.
+          Isso permite executar as migrations com um comando simples.
+        </div>
+
+        <h4>3.4 Rodar as migrations</h4>
+        <p>Agora vamos executar o script de migration usando npm:</p>
+
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">cd contatos
+npm run migrate</code></pre>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Resultado esperado:</strong>
+          <pre><code>🔄 Iniciando migrations...
+✅ Tabela users criada
+✅ Tabela contacts criada
+✅ Usuário Administrador inserido
+✅ Usuário Usuário Teste inserido
+🎉 Migrations concluídas com sucesso!</code></pre>
+        </div>
+
+        <h4>3.5 Verificar as tabelas</h4>
+        <p>
+          Para confirmar que as tabelas foram criadas, você pode usar um cliente
+          SQL como DBeaver, pgAdmin ou DataGrip conectado ao banco AWS RDS.
+        </p>
+
+        <div class="alert alert-info mt-3">
+          <strong>💡 Comandos úteis do projeto:</strong>
+          <ul>
+            <li><code>npm run migrate</code> - Executar migrations do banco</li>
+            <li>
+              <code>npm run dev</code> - Iniciar servidor de desenvolvimento
+            </li>
+            <li><code>npm run build</code> - Build para produção</li>
+            <li><code>npm run start</code> - Iniciar servidor de produção</li>
+            <li><code>npm run lint</code> - Executar linter do código</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Mudanças de Nomenclatura dos Campos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-exchange-alt"></i> 4. Mudanças de Nomenclatura dos Campos
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>⚠️ Importante: Campos Agora em Inglês</h4>
+        <p>
+          Nas versões anteriores do projeto, os campos de contato estavam em
+          português. Agora que estamos integrando com PostgreSQL e criando uma
+          API própria,
+          <strong>os campos foram padronizados para inglês</strong>:
+        </p>
+
+        <div class="alert alert-warning mt-3">
+          <strong>📝 Mudanças de Nomenclatura:</strong>
+          <ul class="mt-2">
+            <li><code>nome</code> → <code>name</code></li>
+            <li><code>telefone</code> → <code>telephone</code></li>
+            <li><code>email</code> → <code>email</code> (sem mudança)</li>
+          </ul>
+        </div>
+
+        <h5>Arquivos que precisam ser atualizados</h5>
+        <p>
+          Se você está migrando de uma versão anterior com campos em português,
+          estes arquivos precisam ser atualizados:
+        </p>
+
+        <ul>
+          <li>
+            <code>app/components/ContactForm.js</code> - Campos do formulário
+          </li>
+          <li>
+            <code>app/components/ContactItem.js</code> - Exibição de contato
+          </li>
+          <li><code>app/hooks/useForm.js</code> - Estado do formulário</li>
+          <li>
+            <code>app/hooks/useFilter.js</code> - Filtro por name e telephone
+          </li>
+          <li><code>app/hooks/useStatistics.js</code> - Estatísticas</li>
+          <li>
+            <code>app/contexts/ContactsContext.js</code> - Sincronização offline
+          </li>
+        </ul>
+
+        <div class="alert alert-info mt-3">
+          <strong>💡 Nota:</strong> Os arquivos de backend criados nesta aula
+          (route.js, migrate.js) já vêm com os nomes corretos em inglês, pois
+          foram criados do zero nesta aula.
+        </div>
+
+        <div class="alert alert-info mt-3">
+          <strong>💡 Dica:</strong> Se você está seguindo esta aula e já tinha
+          um projeto funcionando com campos em português, use "Find and Replace"
+          para atualizar todos os arquivos de uma vez. Busque por:
+          <ul class="mt-2">
+            <li><code>contact.nome</code> → <code>contact.name</code></li>
+            <li>
+              <code>contact.telefone</code> → <code>contact.telephone</code>
+            </li>
+            <li><code>nome:</code> → <code>name:</code> (em objetos)</li>
+            <li>
+              <code>telefone:</code> → <code>telephone:</code> (em objetos)
+            </li>
+          </ul>
+        </div>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Essa mudança é necessária porque:</strong>
+          <ul>
+            <li>A database usa campos em inglês (padrão da indústria)</li>
+            <li>Facilita integração com outros sistemas</li>
+            <li>Torna o código mais profissional e internacional</li>
+            <li>Evita problemas com caracteres especiais</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-warning mt-3">
+          <strong>⚠️ Atenção:</strong> Se você está seguindo esta aula do zero,
+          os arquivos já vêm com os nomes corretos em inglês. Esta seção serve
+          principalmente como referência para quem está migrando de uma versão
+          anterior do projeto.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Criar Endpoints de API -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-plug"></i> 5. Criar Endpoints de API
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>5.1 Endpoint: Listar Todos os Contatos</h4>
+        <p>Crie o arquivo para listar todos os contatos:</p>
+
+        <h5>📁 Arquivo: app/api/contacts/route.js</h5>
+        <pre><code class="language-js">// app/api/contacts/route.js
+import { pool } from '../../lib/db';
+
+// GET /api/contacts - Listar todos os contatos
+export async function GET(request) {
+  try {
+    const result = await pool.query(
+      'SELECT id, name, email, telephone, created_at FROM contacts ORDER BY id DESC'
+    );
+
+    return Response.json({
+      success: true,
+      data: result.rows
+    }, { status: 200 });
+  } catch (error) {
+    console.error('Erro ao listar contatos:', error);
+    return Response.json({
+      success: false,
+      message: 'Erro ao buscar contatos',
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
+// POST /api/contacts - Criar novo contato
+export async function POST(request) {
+  try {
+    const { name, email, telephone } = await request.json();
+
+    // Validação
+    if (!name) {
+      return Response.json({
+        success: false,
+        message: 'Nome é obrigatório'
+      }, { status: 400 });
+    }
+
+    const result = await pool.query(
+      'INSERT INTO contacts (name, email, telephone) VALUES ($1, $2, $3) RETURNING id, name, email, telephone, created_at',
+      [name, email || null, telephone || null]
+    );
+
+    return Response.json({
+      success: true,
+      data: result.rows[0]
+    }, { status: 201 });
+  } catch (error) {
+    console.error('Erro ao criar contato:', error);
+    return Response.json({
+      success: false,
+      message: 'Erro ao criar contato',
+      error: error.message
+    }, { status: 500 });
+  }
+}</code></pre>
+
+        <h4>5.2 Endpoint: Operações em Contato Específico</h4>
+        <p>Crie o arquivo para operações em um contato específico:</p>
+
+        <h5>📁 Arquivo: app/api/contacts/[id]/route.js</h5>
+        <pre><code class="language-js">// app/api/contacts/[id]/route.js
+import { pool } from '../../../lib/db';
+
+// GET /api/contacts/:id - Buscar um contato
+export async function GET(request, { params }) {
+  try {
+    const { id } = params;
+
+    const result = await pool.query(
+      'SELECT id, name, email, telephone, created_at FROM contacts WHERE id = $1',
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return Response.json({
+        success: false,
+        message: 'Contato não encontrado'
+      }, { status: 404 });
+    }
+
+    return Response.json({
+      success: true,
+      data: result.rows[0]
+    }, { status: 200 });
+  } catch (error) {
+    console.error('Erro ao buscar contato:', error);
+    return Response.json({
+      success: false,
+      message: 'Erro ao buscar contato',
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
+// PUT /api/contacts/:id - Atualizar um contato
+export async function PUT(request, { params }) {
+  try {
+    const { id } = params;
+    const { name, email, telephone } = await request.json();
+
+    // Validação
+    if (!name) {
+      return Response.json({
+        success: false,
+        message: 'Nome é obrigatório'
+      }, { status: 400 });
+    }
+
+    const result = await pool.query(
+      'UPDATE contacts SET name = $1, email = $2, telephone = $3 WHERE id = $4 RETURNING id, name, email, telephone, created_at',
+      [name, email || null, telephone || null, id]
+    );
+
+    if (result.rows.length === 0) {
+      return Response.json({
+        success: false,
+        message: 'Contato não encontrado'
+      }, { status: 404 });
+    }
+
+    return Response.json({
+      success: true,
+      data: result.rows[0]
+    }, { status: 200 });
+  } catch (error) {
+    console.error('Erro ao atualizar contato:', error);
+    return Response.json({
+      success: false,
+      message: 'Erro ao atualizar contato',
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
+// DELETE /api/contacts/:id - Deletar um contato
+export async function DELETE(request, { params }) {
+  try {
+    const { id } = params;
+
+    const result = await pool.query(
+      'DELETE FROM contacts WHERE id = $1 RETURNING id',
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return Response.json({
+        success: false,
+        message: 'Contato não encontrado'
+      }, { status: 404 });
+    }
+
+    return Response.json({
+      success: true,
+      message: 'Contato deletado com sucesso'
+    }, { status: 200 });
+  } catch (error) {
+    console.error('Erro ao deletar contato:', error);
+    return Response.json({
+      success: false,
+      message: 'Erro ao deletar contato',
+      error: error.message
+    }, { status: 500 });
+  }
+}</code></pre>
+
+        <h4>5.3 Endpoint: Login de Usuários</h4>
+        <p>Crie o arquivo para autenticação:</p>
+
+        <h5>📁 Arquivo: app/api/auth/login/route.js</h5>
+        <pre><code class="language-js">// app/api/auth/login/route.js
+import { pool } from '../../../lib/db';
+
+// POST /api/auth/login - Login de usuários
+export async function POST(request) {
+  try {
+    const { email, password } = await request.json();
+
+    // Validação
+    if (!email || !password) {
+      return Response.json({
+        success: false,
+        message: 'Email e senha são obrigatórios'
+      }, { status: 400 });
+    }
+
+    // Buscar usuário no banco
+    const result = await pool.query(
+      'SELECT id, name, email, password, role FROM users WHERE email = $1',
+      [email]
+    );
+
+    if (result.rows.length === 0) {
+      return Response.json({
+        success: false,
+        message: 'Usuário não encontrado'
+      }, { status: 401 });
+    }
+
+    const user = result.rows[0];
+
+    // Validar senha (comparação simples - em produção usar bcrypt)
+    if (user.password !== password) {
+      return Response.json({
+        success: false,
+        message: 'Senha incorreta'
+      }, { status: 401 });
+    }
+
+    // Remover senha da resposta
+    delete user.password;
+
+    return Response.json({
+      success: true,
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        token: `token_${user.id}_${Date.now()}` // Token mockado
+      }
+    }, { status: 200 });
+  } catch (error) {
+    console.error('Erro ao fazer login:', error);
+    return Response.json({
+      success: false,
+      message: 'Erro ao fazer login',
+      error: error.message
+    }, { status: 500 });
+  }
+}</code></pre>
+
+        <div class="alert alert-warning mt-3">
+          <strong>⚠️ Segurança:</strong> Em produção, sempre:
+          <ul>
+            <li>Use <code>bcrypt</code> para hash de senhas</li>
+            <li>Use JWT tokens ao invés de tokens mockados</li>
+            <li>Implemente rate limiting</li>
+            <li>Use HTTPS em todas as conexões</li>
+          </ul>
+        </div>
+
+        <h4>5.4 Endpoint: Health Check</h4>
+        <p>Crie um endpoint para verificar se a API está funcionando:</p>
+
+        <h5>📁 Arquivo: app/api/health/route.js</h5>
+        <pre><code class="language-js">// app/api/health/route.js
+import { testConnection } from '../../lib/db';
+
+// GET /api/health - Verificar status da API e banco
+export async function GET() {
+  const dbConnected = await testConnection();
+
+  return Response.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    database: dbConnected ? 'connected' : 'disconnected'
+  }, { status: dbConnected ? 200 : 503 });
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Testar os Endpoints -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-vials"></i> 6. Testar os Endpoints
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>6.1 Iniciar o servidor</h4>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">cd contatos
+npm run dev</code></pre>
+
+        <p>O servidor estará rodando em <code>http://localhost:3000</code></p>
+
+        <h4>6.2 Testar Health Check</h4>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">curl http://localhost:3000/api/health</code></pre>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Resposta esperada:</strong>
+          <pre><code>{
+  "status": "ok",
+  "timestamp": "2025-01-15T10:30:00.000Z",
+  "database": "connected"
+}</code></pre>
+        </div>
+
+        <h4>6.3 Testar Login</h4>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@contatos.com","password":"123456"}'</code></pre>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Resposta esperada:</strong>
+          <pre><code>{
+  "success": true,
+  "data": {
+    "id": 1,
+    "name": "Administrador",
+    "email": "admin@contatos.com",
+    "role": "admin",
+    "token": "token_1_1736948400000"
+  }
+}</code></pre>
+        </div>
+
+        <h4>6.4 Testar CRUD de Contatos</h4>
+
+        <h5>a) Listar contatos (GET)</h5>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">curl http://localhost:3000/api/contacts</code></pre>
+
+        <h5>b) Criar contato (POST)</h5>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">curl -X POST http://localhost:3000/api/contacts \
+  -H "Content-Type: application/json" \
+  -d '{"name":"João Silva","email":"joao@email.com","telephone":"11999999999"}'</code></pre>
+
+        <h5>c) Buscar contato específico (GET)</h5>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">curl http://localhost:3000/api/contacts/1</code></pre>
+
+        <h5>d) Atualizar contato (PUT)</h5>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">curl -X PUT http://localhost:3000/api/contacts/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"João Silva Atualizado","email":"joao.novo@email.com","telephone":"11888888888"}'</code></pre>
+
+        <h5>e) Deletar contato (DELETE)</h5>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash">curl -X DELETE http://localhost:3000/api/contacts/1</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>💡 Dica:</strong> Você também pode usar ferramentas gráficas
+          como Postman, Insomnia ou Thunder Client (VS Code) para testar os
+          endpoints de forma mais visual.
+        </div>
+
+        <h4>6.5 Importar Collection do Postman</h4>
+        <p>
+          Para facilitar os testes, criamos uma collection completa do Postman
+          com todos os endpoints:
+        </p>
+
+        <div class="alert alert-info mb-3">
+          <strong>📥 Download da Collection:</strong>
+          <a
+            href="assets/json/Contacts App.postman_collection.json"
+            download="Contacts App.postman_collection.json"
+            class="btn btn-primary ml-2"
+          >
+            <i class="fas fa-download"></i> Baixar Collection do Postman
+          </a>
+        </div>
+
+        <ol>
+          <li>
+            Clique no botão de download acima para baixar o arquivo da
+            collection
+          </li>
+          <li>
+            Abra o Postman no seu computador (baixe em
+            <a
+              href="https://www.postman.com/downloads/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >postman.com</a
+            >
+            se não tiver)
+          </li>
+          <li>
+            Clique em <strong>"Import"</strong> no canto superior esquerdo
+          </li>
+          <li>
+            Selecione o arquivo
+            <code>Contacts App.postman_collection.json</code> que você baixou
+          </li>
+          <li>A collection será importada com todos os endpoints</li>
+        </ol>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Endpoints incluídos na collection:</strong>
+          <ul>
+            <li>GET /api/contacts - Listar todos os contatos</li>
+            <li>POST /api/contacts - Criar novo contato</li>
+            <li>GET /api/contacts/:id - Buscar contato por ID</li>
+            <li>PUT /api/contacts/:id - Atualizar contato</li>
+            <li>DELETE /api/contacts/:id - Deletar contato</li>
+            <li>POST /api/auth/login - Login</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-warning mt-3">
+          <strong>⚠️ Importante:</strong> Antes de usar a collection,
+          certifique-se de que o servidor está rodando com
+          <code>npm run dev</code> e ajuste o campo de login para usar
+          <code>email</code> ao invés de <code>name</code>:
+          <pre><code>{
+  "email": "admin@contatos.com",
+  "password": "123456"
+}</code></pre>
+        </div>
+
+        <p><strong>Como usar:</strong></p>
+        <ol>
+          <li>
+            Clique em qualquer endpoint na collection do Postman para expandir
+          </li>
+          <li>Clique em <strong>"Send"</strong> para executar a requisição</li>
+          <li>Veja a resposta no painel inferior</li>
+          <li>Ajuste parâmetros (como ID) nas variáveis quando necessário</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Adaptar Front-end para Nova API -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-sync-alt"></i> 7. Adaptar Front-end para Nova API
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>7.1 Atualizar arquivo api.js</h4>
+        <p>Vamos mudar o <code>baseURL</code> do axios para nossa API local:</p>
+
+        <h5>📁 Arquivo: app/utils/api.js</h5>
+        <pre><code class="language-js">// app/utils/api.js
+import axios from 'axios';
+
+// Configuração base do axios - NOVA API LOCAL
+const api = axios.create({
+    baseURL: '/api', // ✅ NOVA API LOCAL (Next.js já está na mesma origem)
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    validateStatus: function (status) {
+        return status < 500; // Resolver sempre que a resposta não for um erro do servidor
+    }
+});
+
+// Adicionar interceptors para tratamento global
+api.interceptors.request.use(
+    (config) => {
+        console.log('Enviando requisição:', config.method, config.url);
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+api.interceptors.response.use(
+    (response) => {
+        console.log('Resposta recebida:', response.status);
+        return response;
+    },
+    (error) => {
+        console.error('Erro na requisição:', error.message);
+        return Promise.reject(error);
+    }
+);
+
+export default api;</code></pre>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Mudança principal:</strong> Alteramos de
+          <code>https://68d96d1b90a75154f0da61ae.mockapi.io</code> para
+          <code>/api</code> que funciona tanto em desenvolvimento quanto
+          produção.
+        </div>
+
+        <h4>7.2 Adaptar ContactsContext para Nova API</h4>
+        <p>A API que criamos retorna os dados em formato diferente:</p>
+
+        <h5>📁 Arquivo: app/contexts/ContactsContext.js</h5>
+        <p>
+          Você precisará adaptar as chamadas para extrair
+          <code>response.data.data</code> ao invés de
+          <code>response.data</code>:
+        </p>
+
+        <pre><code class="language-js">// ANTES (MockAPI):
+const response = await api.get('/contacts');
+const apiContacts = response.data; // Array direto
+
+// DEPOIS (Nossa API):
+const response = await api.get('/contacts');
+const apiContacts = response.data.data; // Array dentro de { success: true, data: [...] }</code></pre>
+
+        <h5>Exemplo de adaptação completa:</h5>
+
+        <pre><code class="language-js">// app/contexts/ContactsContext.js - Função loadContacts
+const loadContacts = useCallback(async () => {
+    let isMounted = true;
+
+    try {
+        if (isMounted) {
+            setLoading(true);
+            setError(null);
+        }
+
+        // Verificar cache primeiro
+        const cachedContacts = cacheService.get();
+        if (cachedContacts && isMounted) {
+            setContacts(cachedContacts);
+            setLoading(false);
+        }
+
+        // Tentar carregar da API
+        try {
+            const response = await api.get('/contacts');
+            const apiContacts = response.data.data;
+
+            if (isMounted) {
+                // Salvar no cache service
+                cacheService.set(apiContacts);
+                setContacts(apiContacts);
+                setIsOffline(false);
+            }
+        } catch (apiError) {
+            // Se API falhar e não há cache, mostrar erro
+            if (isMounted) {
+                if (!cachedContacts) {
+                    setIsOffline(true);
+                    setError('Erro ao carregar contatos e sem cache disponível.');
+                } else {
+                    setIsOffline(true);
+                    console.log('API offline, usando cache');
+                }
+            }
+        }
+    } catch (err) {
+        if (isMounted) {
+            setError('Erro ao carregar contatos');
+        }
+    } finally {
+        if (isMounted) {
+            setLoading(false);
+        }
+    }
+}, []);</code></pre>
+
+        <h4>7.3 Adaptar addContact</h4>
+        <pre><code class="language-js">// app/contexts/ContactsContext.js - Função addContact
+const addContact = useCallback(async (newContact) => {
+    try {
+        // Tentar salvar via API primeiro
+        try {
+            const response = await api.post('/contacts', newContact);
+
+            const contactWithId = response.data.data;
+            setContacts(prev => {
+                const updated = [...prev, contactWithId];
+                cacheService.set(updated);
+                return updated;
+            });
+            return contactWithId;
+        } catch (apiError) {
+            // Se API falhar, salvar localmente
+            console.log('API offline, salvando localmente');
+            const contactWithId = { ...newContact, id: Date.now() };
+            setContacts(prev => {
+                const updated = [...prev, contactWithId];
+                cacheService.set(updated);
+                return updated;
+            });
+            return contactWithId;
+        }
+    } catch (err) {
+        throw new Error('Erro ao adicionar contato');
+    }
+}, []);</code></pre>
+
+        <h4>7.4 Sincronização Offline com useEffect</h4>
+        <p>
+          Adicione um useEffect que sincroniza contatos salvos offline quando
+          voltar online:
+        </p>
+
+        <pre><code class="language-js">// app/contexts/ContactsContext.js - useEffect para sincronização
+useEffect(() => {
+    const syncPendingContacts = async () => {
+        try {
+            // Buscar contatos da API
+            const response = await api.get('/contacts');
+            const serverContacts = response.data.data;
+
+            // Buscar contatos locais
+            const localContacts = contacts;
+
+            // Encontrar contatos que existem localmente mas não no servidor
+            const pendingContacts = localContacts.filter(localContact => {
+                // Se o ID é um timestamp (salvo offline), precisa sincronizar
+                return typeof localContact.id === 'number' &&
+                    localContact.id > 1000000000000 && // Timestamp válido
+                    !serverContacts.some(serverContact =>
+                        serverContact.nome === localContact.nome &&
+                        serverContact.email === localContact.email &&
+                        serverContact.telefone === localContact.telefone
+                    );
+            });
+
+            // Enviar contatos pendentes para a API
+            for (const pendingContact of pendingContacts) {
+                try {
+                    const { id, ...contactData } = pendingContact;
+                    const response = await api.post('/contacts', contactData);
+
+                    // Atualizar o contato local com o ID da API
+                    setContacts(prev => prev.map(contact =>
+                        contact.id === pendingContact.id
+                            ? { ...contact, id: response.data.id }
+                            : contact
+                    ));
+
+                    console.log('Contato sincronizado:', contactData.nome);
+                } catch (err) {
+                    console.error('Erro ao sincronizar contato:', err);
+                }
+            }
+
+            // Atualizar com dados do servidor
+            setContacts(serverContacts);
+            cacheService.set(serverContacts);
+
+        } catch (err) {
+            console.error('Erro na sincronização:', err);
+        }
+    };
+
+    const handleOnline = () => {
+        setIsOffline(false);
+        console.log('Voltou online - sincronizando...');
+        syncPendingContacts();
+    };
+
+    const handleOffline = () => {
+        setIsOffline(true);
+        console.log('Ficou offline - usando cache local');
+    };
+
+    // Verificar status inicial
+    setIsOffline(!navigator.onLine);
+
+    // Adicionar listeners
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+    };
+}, [contacts]);</code></pre>
+
+        <h4>7.5 Adicionar função getContact</h4>
+        <p>
+          Adicione uma função para buscar um contato específico com fallback
+          offline:
+        </p>
+
+        <pre><code class="language-js">// app/contexts/ContactsContext.js - Função getContact
+// Buscar contato específico por ID
+const getContact = useCallback(async (id) => {
+    try {
+        // Primeiro, tentar buscar da API
+        try {
+            const response = await api.get(`/contacts/${id}`);
+            return response.data.data;
+        } catch (apiError) {
+            // Se API falhar, buscar do cache local
+            console.log('API offline, buscando do cache local');
+            const cachedContacts = cacheService.get();
+            if (cachedContacts) {
+                const foundContact = cachedContacts.find(c => c.id === parseInt(id));
+                if (foundContact) {
+                    return foundContact;
+                }
+            }
+            throw new Error('Contato não encontrado');
+        }
+    } catch (err) {
+        console.error('Erro ao buscar contato:', err);
+        throw err;
+    }
+}, []);</code></pre>
+
+        <h4>7.6 Adaptar AuthContext</h4>
+        <p>Adapte o login para usar a nova API:</p>
+
+        <pre><code class="language-js">// app/contexts/AuthContext.js - Importar api
+import api from '../utils/api';
+
+// Função login
+const login = useCallback(async (email, password) => {
+    try {
+        setLoading(true);
+        setError(null);
+
+        // 🆕 NOVA CHAMADA PARA API
+        const response = await api.post('/auth/login', {
+            email,
+            password
+        });
+
+        if (response.data.success) {
+            const { id, name, email, role, token } = response.data.data;
+
+            // Salvar no localStorage
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('userData', JSON.stringify({
+                id,
+                name,
+                role
+            }));
+
+            setUser({ id, name, role });
+
+            return { success: true };
+        } else {
+            throw new Error(response.data.message);
+        }
+    } catch (err) {
+        setError(err.response?.data?.message || 'Erro ao fazer login');
+        throw err;
+    } finally {
+        setLoading(false);
+    }
+}, []);</code></pre>
+
+        <div class="alert alert-info mt-3">
+          <strong>📌 Mudanças necessárias:</strong>
+          <ul>
+            <li>
+              Alterar <code>response.data</code> para
+              <code>response.data.data</code>
+            </li>
+            <li>Verificar <code>response.data.success</code> antes de usar</li>
+            <li>
+              Lidar com mensagens de erro de <code>response.data.message</code>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Quiz -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-clipboard-check"></i> 8. Teste seus Conhecimentos (Quiz)
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <ol>
+          <li class="mb-3">
+            Qual é a principal vantagem de usar API Routes no Next.js ao invés
+            de criar um backend separado?
+            <div>
+              a) Melhor performance &nbsp; b) Full-stack em um só projeto com
+              deploy unificado &nbsp; c) Mais seguro &nbsp; d) Mais rápido
+            </div>
+          </li>
+          <li class="mb-3">
+            Por que usamos um pool de conexões ao invés de criar uma conexão a
+            cada requisição?
+            <div>
+              a) É mais seguro &nbsp; b) Melhor performance, evita overhead
+              &nbsp; c) Mais simples &nbsp; d) Não tem diferença
+            </div>
+          </li>
+          <li class="mb-3">
+            O que faz o código <code>CREATE DATABASE IF NOT EXISTS</code> no
+            script de migration?
+            <div>
+              a) Deleta o banco se existir &nbsp; b) Verifica e cria o banco se
+              não existir &nbsp; c) Atualiza o banco &nbsp; d) Backup do banco
+            </div>
+          </li>
+          <li class="mb-3">
+            Por que usamos <code>/api</code> ao invés de
+            <code>http://localhost:3000/api</code> no axios?
+            <div>
+              a) É mais curto &nbsp; b) Funciona em dev e produção
+              automaticamente &nbsp; c) Mais seguro &nbsp; d) Mais rápido
+            </div>
+          </li>
+          <li class="mb-3">
+            Qual é a diferença entre usar <code>response.data</code> e
+            <code>response.data.data</code> na nossa API?
+            <div>
+              a) Nenhuma diferença &nbsp; b) Nossa API retorna
+              <code>{success: true, data: [...]}</code>, então precisamos
+              extrair data.data &nbsp; c) response.data.data é mais rápido
+              &nbsp; d) Sempre usa response.data.data
+            </div>
+          </li>
+          <li class="mb-3">
+            Por que adicionamos SSL com
+            <code>rejectUnauthorized: false</code> na configuração do pool?
+            <div>
+              a) Para desabilitar SSL &nbsp; b) Para aceitar certificados
+              self-signed do AWS RDS &nbsp; c) Para melhorar performance &nbsp;
+              d) Para debug
+            </div>
+          </li>
+          <li class="mb-3">
+            O que é uma migration no contexto de banco de dados?
+            <div>
+              a) Uma cópia do banco &nbsp; b) Um script que cria e estrutura o
+              banco de dados &nbsp; c) Uma query SQL &nbsp; d) Um backup
+            </div>
+          </li>
+        </ol>
+
+        <details class="solucao">
+          <summary>Mostrar gabarito</summary>
+          <ol>
+            <li>b) Full-stack em um só projeto com deploy unificado</li>
+            <li>b) Melhor performance, evita overhead</li>
+            <li>
+              b) Verifica e cria o banco se não existir (embora PostgreSQL use
+              outra sintaxe)
+            </li>
+            <li>b) Funciona em dev e produção automaticamente</li>
+            <li>
+              b) Nossa API retorna <code>{success: true, data: [...]}</code>,
+              então precisamos extrair data.data
+            </li>
+            <li>b) Para aceitar certificados self-signed do AWS RDS</li>
+            <li>b) Um script que cria e estrutura o banco de dados</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Exercícios Práticos -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-chalkboard-teacher"></i> 9. Exercícios Práticos
+    </h3>
+
+    <div class="desafio">
+      <h4>Exercício 1: Implementar Busca e Filtros na API</h4>
+      <p>
+        <strong>Objetivo:</strong> Adicionar funcionalidade de busca na API de
+        contatos.
+      </p>
+      <ol>
+        <li>
+          Criar novo endpoint <code>GET /api/contacts/search?q=termo</code>
+        </li>
+        <li>Buscar contatos por nome, email ou telefone</li>
+        <li>Usar ILIKE para busca case-insensitive</li>
+        <li>Retornar array de contatos que correspondam ao termo de busca</li>
+        <li>Testar com curl ou Postman</li>
+      </ol>
+      <details class="solucao">
+        <summary>Ver solução</summary>
+        <pre><code class="language-js">// app/api/contacts/search/route.js
+import { pool } from '../../../../lib/db';
+
+export async function GET(request) {
+    const { searchParams } = new URL(request.url);
+    const query = searchParams.get('q');
+
+    if (!query) {
+        return Response.json({
+            success: false,
+            message: 'Parâmetro de busca é obrigatório'
+        }, { status: 400 });
+    }
+
+    try {
+        const result = await pool.query(
+            `SELECT id, name, email, telephone, created_at 
+            FROM contacts 
+            WHERE name ILIKE $1 OR email ILIKE $1 OR telephone ILIKE $1
+            ORDER BY name`,
+            [`%${query}%`]
+        );
+
+        return Response.json({
+            success: true,
+            data: result.rows
+        }, { status: 200 });
+    } catch (error) {
+        console.error('Erro na busca:', error);
+        return Response.json({
+            success: false,
+            message: 'Erro ao buscar contatos'
+        }, { status: 500 });
+    }
+}</code></pre>
+        <p>
+          <strong>Testar:</strong>
+          <code>curl http://localhost:3000/api/contacts/search?q=joao</code>
+        </p>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 2: Implementar Paginação</h4>
+      <p>
+        <strong>Objetivo:</strong> Adicionar paginação ao endpoint de listagem
+        de contatos.
+      </p>
+      <ol>
+        <li>
+          Aceitar parâmetros <code>page</code> e <code>limit</code> na query
+          string
+        </li>
+        <li>Calcular offset com base na página</li>
+        <li>Usar LIMIT e OFFSET na query SQL</li>
+        <li>Retornar total de registros e metadados de paginação</li>
+        <li>Implementar no front-end para exibir contatos paginados</li>
+      </ol>
+      <details class="solucao">
+        <summary>Ver solução</summary>
+        <pre><code class="language-js">// Adaptar app/api/contacts/route.js
+export async function GET(request) {
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
+    const offset = (page - 1) * limit;
+
+    try {
+        // Buscar total de registros
+        const countResult = await pool.query('SELECT COUNT(*) FROM contacts');
+        const total = parseInt(countResult.rows[0].count);
+
+        // Buscar contatos paginados
+        const result = await pool.query(
+            'SELECT id, name, email, telephone, created_at FROM contacts ORDER BY id DESC LIMIT $1 OFFSET $2',
+            [limit, offset]
+        );
+
+        return Response.json({
+            success: true,
+            data: result.rows,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit)
+            }
+        }, { status: 200 });
+    } catch (error) {
+        console.error('Erro ao listar contatos:', error);
+        return Response.json({
+            success: false,
+            message: 'Erro ao buscar contatos'
+        }, { status: 500 });
+    }
+}</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 3: Adicionar Validação de Dados</h4>
+      <p>
+        <strong>Objetivo:</strong> Implementar validação robusta dos dados
+        recebidos pela API.
+      </p>
+      <ol>
+        <li>Criar função de validação de email com regex</li>
+        <li>Validar formato de telefone</li>
+        <li>Validar que nome não está vazio</li>
+        <li>Retornar erros específicos para cada campo inválido</li>
+        <li>Reutilizar validações nos endpoints CREATE e UPDATE</li>
+      </ol>
+      <details class="solucao">
+        <summary>Ver solução</summary>
+        <pre><code class="language-js">// lib/validators.js
+export function validateContact(contact) {
+    const errors = [];
+
+    // Validar nome
+    if (!contact.name || contact.name.trim().length === 0) {
+        errors.push({ field: 'name', message: 'Nome é obrigatório' });
+    }
+
+    // Validar email (opcional, mas se informado deve ser válido)
+    if (contact.email && !isValidEmail(contact.email)) {
+        errors.push({ field: 'email', message: 'Email inválido' });
+    }
+
+    // Validar telefone (opcional, mas se informado deve ter formato)
+    if (contact.telephone && !isValidPhone(contact.telephone)) {
+        errors.push({ 
+            field: 'telephone', 
+            message: 'Telefone deve ter formato válido' 
+        });
+    }
+
+    return {
+        isValid: errors.length === 0,
+        errors
+    };
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function isValidPhone(phone) {
+    const phoneRegex = /^[\d\s\(\)\-\+]+$/;
+    return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 10;
+}
+
+// Usar no endpoint
+import { validateContact } from '../../../lib/validators';
+
+export async function POST(request) {
+    const contact = await request.json();
+    
+    const validation = validateContact(contact);
+    if (!validation.isValid) {
+        return Response.json({
+            success: false,
+            message: 'Dados inválidos',
+            errors: validation.errors
+        }, { status: 400 });
+    }
+    
+    // ... resto da lógica
+}</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 4: Implementar Log de Auditoria</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar tabela de logs para rastrear ações no
+        sistema.
+      </p>
+      <ol>
+        <li>
+          Criar tabela <code>audit_logs</code> com timestamp, user_id, action,
+          table_name
+        </li>
+        <li>Criar middleware que loga cada operação CRUD na tabela contacts</li>
+        <li>Endpoint para listar logs com filtros por data</li>
+        <li>Adicionar coluna updated_at na tabela contacts</li>
+        <li>Exibir histórico de modificações no front-end</li>
+      </ol>
+      <details class="solucao">
+        <summary>Ver solução</summary>
+        <pre><code class="language-js">// Migration: Adicionar campo updated_at
+ALTER TABLE contacts ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+// Migration: Criar tabela de logs
+CREATE TABLE audit_logs (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    action VARCHAR(50),
+    table_name VARCHAR(50),
+    record_id INTEGER,
+    details JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+// Middleware de log
+export async function logAction(userId, action, tableName, recordId, details) {
+    await pool.query(
+        'INSERT INTO audit_logs (user_id, action, table_name, record_id, details) VALUES ($1, $2, $3, $4, $5)',
+        [userId, action, tableName, recordId, JSON.stringify(details)]
+    );
+}
+
+// Usar no endpoint
+await logAction(null, 'UPDATE', 'contacts', id, { changes: {...} });</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 5: Adicionar Endpoint de Estatísticas</h4>
+      <p>
+        <strong>Objetivo:</strong> Criar API que retorna estatísticas agregadas
+        dos contatos.
+      </p>
+      <ol>
+        <li>Criar endpoint <code>GET /api/contacts/stats</code></li>
+        <li>
+          Retornar: total de contatos, contatos por mês, contatos com email, sem
+          telefone, etc.
+        </li>
+        <li>Usar SQL com COUNT, GROUP BY</li>
+        <li>Criar componente no front-end para exibir gráficos</li>
+        <li>Atualizar estatísticas em tempo real</li>
+      </ol>
+      <details class="solucao">
+        <summary>Ver solução</summary>
+        <pre><code class="language-js">// app/api/contacts/stats/route.js
+export async function GET() {
+    try {
+        const stats = {
+            total: (await pool.query('SELECT COUNT(*) FROM contacts')).rows[0].count,
+            comEmail: (await pool.query("SELECT COUNT(*) FROM contacts WHERE email IS NOT NULL AND email != ''")).rows[0].count,
+            semTelefone: (await pool.query('SELECT COUNT(*) FROM contacts WHERE telephone IS NULL OR telephone = \'\'')).rows[0].count,
+            porMes: (await pool.query(`
+                SELECT DATE_TRUNC('month', created_at) as mes, COUNT(*) as total
+                FROM contacts
+                GROUP BY mes
+                ORDER BY mes DESC
+                LIMIT 12
+            `)).rows
+        };
+
+        return Response.json({
+            success: true,
+            data: stats
+        }, { status: 200 });
+    } catch (error) {
+        console.error('Erro ao buscar estatísticas:', error);
+        return Response.json({
+            success: false,
+            message: 'Erro ao buscar estatísticas'
+        }, { status: 500 });
+    }
+}</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 6: Implementar Upload de Foto de Contato</h4>
+      <p>
+        <strong>Objetivo:</strong> Adicionar campo de foto aos contatos com
+        upload.
+      </p>
+      <ol>
+        <li>Adicionar coluna <code>photo_url</code> na tabela contacts</li>
+        <li>
+          Criar endpoint <code>POST /api/contacts/:id/photo</code> para upload
+        </li>
+        <li>Salvar imagem no servidor ou usar serviço (Cloudinary, AWS S3)</li>
+        <li>Retornar URL da foto após upload</li>
+        <li>Atualizar front-end para exibir fotos dos contatos</li>
+      </ol>
+      <details class="solucao">
+        <summary>Ver solução</summary>
+        <pre><code class="language-js">// Migration
+ALTER TABLE contacts ADD COLUMN photo_url TEXT;
+
+// app/api/contacts/[id]/photo/route.js
+import { writeFile } from 'fs/promises';
+import path from 'path';
+
+export async function POST(request, { params }) {
+    const { id } = params;
+    const formData = await request.formData();
+    const file = formData.get('photo');
+
+    if (!file) {
+        return Response.json({
+            success: false,
+            message: 'Arquivo não enviado'
+        }, { status: 400 });
+    }
+
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const filename = `${id}_${Date.now()}_${file.name}`;
+    const filepath = path.join(process.cwd(), 'public/photos', filename);
+
+    await writeFile(filepath, buffer);
+
+    const photoUrl = `/photos/${filename}`;
+
+    await pool.query(
+        'UPDATE contacts SET photo_url = $1 WHERE id = $2',
+        [photoUrl, id]
+    );
+
+    return Response.json({
+        success: true,
+        data: { photoUrl }
+    }, { status: 200 });
+}</code></pre>
+      </details>
+    </div>
+
+    <div class="desafio">
+      <h4>Exercício 7: Melhorar Segurança com Rate Limiting</h4>
+      <p>
+        <strong>Objetivo:</strong> Implementar proteção contra abuse de API.
+      </p>
+      <ol>
+        <li>
+          Instalar e configurar biblioteca de rate limiting (ex:
+          <code>@upstash/ratelimit</code> ou implementar com Redis)
+        </li>
+        <li>Limitar 100 requisições por minuto por IP</li>
+        <li>
+          Adicionar middleware que verifica rate limit antes de processar
+          requisições
+        </li>
+        <li>Retornar HTTP 429 quando limite for excedido</li>
+        <li>Documentar limites para usuários da API</li>
+      </ol>
+      <details class="solucao">
+        <summary>Ver solução</summary>
+        <pre><code class="language-js">// lib/rateLimit.js
+const requestCounts = new Map();
+
+export function rateLimit(request, maxRequests = 100, windowMs = 60000) {
+    const ip = request.headers.get('x-forwarded-for') || 
+               request.headers.get('x-real-ip') || 
+               'unknown';
+    
+    const now = Date.now();
+    const userRequests = requestCounts.get(ip) || [];
+
+    // Remove requisições antigas
+    const recentRequests = userRequests.filter(
+        time => now - time < windowMs
+    );
+
+    if (recentRequests.length >= maxRequests) {
+        return false;
+    }
+
+    recentRequests.push(now);
+    requestCounts.set(ip, recentRequests);
+    return true;
+}
+
+// Usar no endpoint
+export async function POST(request) {
+    if (!rateLimit(request, 100, 60000)) {
+        return Response.json({
+            success: false,
+            message: 'Rate limit excedido'
+        }, { status: 429 });
+    }
+    // ... resto do código
+}</code></pre>
+      </details>
+    </div>
+  </section>
+
+  <!-- 10. Deploy e Produção -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-rocket"></i> 10. Deploy e Produção
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>10.1 Variáveis de ambiente em produção</h4>
+        <p>No Vercel, configure as variáveis de ambiente:</p>
+
+        <ol>
+          <li>Acesse o projeto no Vercel</li>
+          <li>Vá em Settings → Environment Variables</li>
+          <li>
+            Adicione as seguintes variáveis:
+            <ul>
+              <li>
+                <code>DB_HOST</code>:
+                contacts-db.cqub0jviveo4.us-east-1.rds.amazonaws.com
+              </li>
+              <li><code>DB_PORT</code>: 5432</li>
+              <li><code>DB_NAME</code>: contacts_db</li>
+              <li><code>DB_USER</code>: contacts</li>
+              <li><code>DB_PASSWORD</code>: contacts_2025#</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h4>10.2 Adaptar baseURL para produção</h4>
+        <p>Crie uma variável de ambiente para a base da API:</p>
+
+        <h5>📁 Arquivo: app/utils/api.js (versão produção)</h5>
+        <pre><code class="language-js">// app/utils/api.js
+import axios from 'axios';
+
+const api = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+// ... resto do código</code></pre>
+
+        <h5>📁 Arquivo: .env.local (produção)</h5>
+        <pre><code class="language-plaintext"># URL da API (usa a mesma do Next.js por ser full-stack)
+NEXT_PUBLIC_API_URL=https://seu-projeto.vercel.app/api</code></pre>
+
+        <h4>10.3 Deploy no Vercel</h4>
+        <div class="code-header">Terminal</div>
+        <pre><code class="language-bash"># Commit e push
+git add .
+git commit -m "Adicionar API backend com PostgreSQL"
+git push origin main
+
+# Deploy automático no Vercel
+# (conecte o repositório no Vercel se ainda não conectou)</code></pre>
+
+        <div class="alert alert-success mt-3">
+          <strong>✅ Vantagens do deploy unificado:</strong>
+          <ul>
+            <li>Frontend e backend sobem juntos</li>
+            <li>Uma única URL para tudo</li>
+            <li>Gerenciamento simplificado</li>
+            <li>Custo reduzido</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Resumo e Conclusão -->
+  <section class="mb-5">
+    <h3 class="section-title with-icon">
+      <i class="fas fa-check-circle"></i> 11. Resumo e Conclusão
+    </h3>
+    <div class="card mb-4">
+      <div class="card-body">
+        <h4>O que você aprendeu nesta aula:</h4>
+        <ul>
+          <li>✅ Criar API Routes no Next.js usando App Router</li>
+          <li>✅ Conectar com PostgreSQL usando o cliente pg</li>
+          <li>✅ Criar migrations para estruturar o banco de dados</li>
+          <li>✅ Implementar endpoints CRUD completos</li>
+          <li>✅ Criar endpoint de autenticação</li>
+          <li>✅ Adaptar front-end para consumir a nova API</li>
+          <li>✅ Substituir MockAPI por API própria</li>
+          <li>✅ Configurar variáveis de ambiente</li>
+          <li>✅ Deploy de aplicação full-stack</li>
+        </ul>
+
+        <h4>Estrutura final do projeto:</h4>
+        <pre><code class="language-plaintext">contatos/
+├── app/
+│   ├── api/                    # 🆕 API Routes
+│   │   ├── contacts/
+│   │   │   ├── route.js        # GET, POST /api/contacts
+│   │   │   └── [id]/
+│   │   │       └── route.js    # GET, PUT, DELETE /api/contacts/:id
+│   │   ├── auth/
+│   │   │   └── login/
+│   │   │       └── route.js    # POST /api/auth/login
+│   │   └── health/
+│   │       └── route.js        # GET /api/health
+│   ├── lib/                    # 🆕 Backend helpers
+│   │   ├── db.js               # Conexão PostgreSQL
+│   │   └── migrate.js          # Script de migrations
+│   ├── components/
+│   ├── contexts/
+│   └── utils/
+│       └── api.js              # ✅ Atualizado para /api
+├── .env.local                  # 🆕 Variáveis de ambiente
+└── package.json                # ✅ pg adicionado</code></pre>
+
+        <h4>Próximos passos:</h4>
+        <ul>
+          <li>Implementar hash de senhas com bcrypt</li>
+          <li>Adicionar JWT tokens para autenticação real</li>
+          <li>Implementar validação com Zod ou Yup</li>
+          <li>Adicionar paginação nos endpoints</li>
+          <li>Implementar filtros e busca</li>
+          <li>Adicionar logs e monitoring</li>
+          <li>Implementar rate limiting</li>
+          <li>Adicionar testes unitários e de integração</li>
+        </ul>
+
+        <div class="alert alert-success">
+          <strong>🎉 Parabéns!</strong> Você agora sabe como criar uma API
+          completa dentro do Next.js e conectar com PostgreSQL. Esta é a base de
+          aplicações full-stack modernas!
+        </div>
+      </div>
+    </div>
+  </section>
+</article>

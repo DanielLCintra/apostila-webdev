@@ -35,6 +35,24 @@
           <code>DELETE</code> para interagir com dados.
         </p>
 
+        <h4>Códigos de Status HTTP</h4>
+        <p>
+          Toda requisição HTTP retorna um código de status que indica o resultado da operação. 
+          É importante entender esses códigos para tratar adequadamente as respostas da API:
+        </p>
+        <img src="assets/images/http_codes.jpeg" alt="Códigos de Status HTTP" class="img-fluid mb-4" />
+        <p>
+          <strong>Códigos mais comuns:</strong>
+        </p>
+        <ul>
+          <li><strong>200 OK:</strong> Requisição bem-sucedida</li>
+          <li><strong>201 Created:</strong> Recurso criado com sucesso</li>
+          <li><strong>400 Bad Request:</strong> Erro na requisição (dados inválidos)</li>
+          <li><strong>401 Unauthorized:</strong> Não autenticado</li>
+          <li><strong>404 Not Found:</strong> Recurso não encontrado</li>
+          <li><strong>500 Internal Server Error:</strong> Erro no servidor</li>
+        </ul>
+
         <h4>Exemplo prático: MockAPI</h4>
         <p>
           Para esta aula, criamos uma API de produtos utilizando o serviço

@@ -501,6 +501,39 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );</code></pre>
+
+        <h4>3.4 Códigos de Status HTTP</h4>
+        <p>
+          Toda resposta HTTP vem com um código de status que indica o resultado
+          da operação. No interceptor acima, vemos
+          <code>response.status</code> sendo logado. É fundamental entender
+          esses códigos para tratar adequadamente as respostas da API:
+        </p>
+        <img
+          src="assets/images/http_codes.jpeg"
+          alt="Códigos de Status HTTP"
+          class="img-fluid mb-4"
+        />
+        <p>
+          <strong>Códigos mais comuns em APIs REST:</strong>
+        </p>
+        <ul>
+          <li><strong>200 OK:</strong> Requisição bem-sucedida (GET, PUT)</li>
+          <li>
+            <strong>201 Created:</strong> Recurso criado com sucesso (POST)
+          </li>
+          <li>
+            <strong>204 No Content:</strong> Sucesso sem conteúdo (DELETE)
+          </li>
+          <li>
+            <strong>400 Bad Request:</strong> Erro na requisição (dados
+            inválidos)
+          </li>
+          <li><strong>401 Unauthorized:</strong> Não autenticado</li>
+          <li><strong>403 Forbidden:</strong> Sem permissão</li>
+          <li><strong>404 Not Found:</strong> Recurso não encontrado</li>
+          <li><strong>500 Internal Server Error:</strong> Erro no servidor</li>
+        </ul>
       </div>
     </div>
   </section>

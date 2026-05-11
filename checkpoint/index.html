@@ -1,0 +1,545 @@
+<!-- Execute esse arquivo com LiveServer ou  Microsoft Edge Tools for VS Code-->
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkpoint #1 – Ambiente, Git e Fundamentos de JavaScript</title>
+    <style>
+      :root {
+        --primary: #d92c2c;
+        --background: #fdfdfd;
+        --surface: #ffffff;
+        --border: #e0e0e0;
+        --text: #333;
+        --code-bg: #f4f4f4;
+        --success: #28a745;
+        --error: #dc3545;
+        --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--background);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 10px;
+        margin: 0 auto 30px;
+        max-width: 1100px;
+      }
+
+      header img {
+        height: 60px;
+        margin-right: 20px;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 1.8em;
+        color: var(--primary);
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      h2 {
+        color: #222;
+        margin-top: 40px;
+      }
+
+      h3 {
+        color: #222;
+        margin-top: 24px;
+      }
+
+      code {
+        background-color: var(--code-bg);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      pre {
+        background-color: var(--code-bg);
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin-bottom: 16px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+      }
+
+      pre code {
+        background: transparent;
+        padding: 0;
+      }
+
+      ul,
+      ol {
+        padding-left: 1.5em;
+        margin: 10px 0 20px;
+      }
+
+      li {
+        margin: 6px 0;
+      }
+
+      hr {
+        margin: 50px 0;
+        border: none;
+        border-top: 1px solid var(--border);
+      }
+
+      i {
+        color: red;
+      }
+
+      .highlight {
+        background-color: #fff3cd;
+        border-left: 5px solid #ffc107;
+        padding: 10px 15px;
+        margin: 20px 0;
+        border-radius: 6px;
+      }
+
+      .muted {
+        color: #666;
+        font-size: 0.95em;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 18px 18px 8px;
+        box-shadow: var(--shadow);
+      }
+
+      .question {
+        margin: 0 0 26px;
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 12mm;
+        }
+
+        body {
+          margin: 0;
+          padding: 6mm;
+          background: #fff;
+          color: #000;
+        }
+
+        header,
+        main {
+          max-width: none;
+          margin: 0;
+        }
+
+        header {
+          border-bottom: 1px solid #bbb;
+          margin-bottom: 14px;
+        }
+
+        hr {
+          margin: 18px 0;
+          break-after: avoid;
+        }
+
+        h1,
+        h2,
+        h3 {
+          break-after: avoid-page;
+        }
+
+        pre,
+        .card,
+        .question,
+        ul,
+        ol {
+          break-inside: avoid;
+        }
+
+        p,
+        li {
+          orphans: 2;
+          widows: 2;
+        }
+
+        pre {
+          box-shadow: none;
+          border: 1px solid #ddd;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Fiap-logo-novo.jpg"
+        alt="FIAP"
+      />
+      <div>
+        <h1>Checkpoint #1 – Ambiente, Git e Fundamentos de JavaScript</h1>
+      </div>
+    </header>
+
+    <main>
+
+    <p class="highlight">
+      <strong>⚠️ Atenção:</strong> Leia e siga todas as instruções para não ter
+      pontos descontados. <strong>A prova será com consulta</strong> e a
+      execução do projeto é <strong>em trio</strong> (3 alunos).
+    </p>
+
+    <h2>📌 Instruções Gerais</h2>
+    <ol>
+       <li>
+        Crie um repositório <strong>privado</strong> com o nome
+        <code>checkpoint-1-webdev-nome-da-turma</code>.<br /><strong
+          >Ex:</strong
+        >
+        <code>checkpoint-1-webdev-1ESS</code>
+      </li>
+      <li>
+        Adicione o e-mail <strong>cintra.70@gmail.com</strong> como colaborador. <br>
+        <strong>(OBRIGATÓRIO) Se não der acesso ao professor será descontado 1 ponto.</strong>
+      </li>
+      <li>
+        Em trio: apenas <strong>um</strong> aluno cria o repositório e adiciona
+        os colegas como colaboradores.
+        <br>
+        <strong>(OBRIGATÓRIO) Pelo menos 1 commit de cada aluno ou será descontado 1 ponto</strong>
+      </li>
+      <li>
+        Faça o clone do repositório na sua máquina local.
+      </li>
+      <li>O conteúdo final da solução das questões deve estar na <code>main</code> branch.</li>
+      <li>
+        Crie o arquivo <code>participantes.md</code> com o nome e RM de cada um dos integrantes da equipe. <br>
+        <strong>(OBRIGATÓRIO) Se não tiver esse arquivo será descontado 1 ponto.</strong>
+      </li>
+
+      <li>
+        Crie apenas 1 arquivo <code>index.html</code> e 1 arquivo
+        <code>script.js</code> e não use nenhuma biblioteca ou framework.
+        <br />
+        A resolução das questões deve ser feita apenas com JavaScript puro no
+        arquivo <code>script.js</code>, separando as questões por blocos (ex.:
+        <code>// Questão 1</code>, <code>// Questão 2</code>, etc.).
+      </li>
+      <li>
+        No <code>index.html</code>, inclua o
+        <code>&lt;script src="script.js"&gt;&lt;/script&gt;</code> antes do
+        fechamento do <code>&lt;/body&gt;</code>.
+      </li>
+      <li>
+        <strong>Exceção:</strong> além desses dois arquivos, é obrigatório ter o
+        <code>participantes.md</code> na raiz do repositório (conforme a regra
+        acima).
+      </li>
+    </ol>
+
+    <hr />
+
+    <section class="question">
+      <h2>Questão 1 – Verificação de Ambiente</h2>
+      <p>
+        <strong>Arquivo:</strong> <code>script.js</code>
+      </p>
+      <ol>
+        <li>
+          Insira no arquivo (copie e cole, em comentário) as saídas dos comandos:
+          <ul>
+            <li><code>node -v</code></li>
+            <li><code>npm -v</code></li>
+            <li><code>git --version</code></li>
+          </ul>
+        </li>
+      </ol>
+      <p>
+        <em
+          >(Mesmo que ainda não utilizem Node.js, precisamos confirmar que está
+          instalado.)</em
+        >
+      </p>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 2 – Primeiro HTML + JavaScript</h2>
+      <p>
+        <strong>Arquivos:</strong> <code>index.html</code> e
+        <code>script.js</code>
+      </p>
+      <ol>
+        <li>
+          Em <code>index.html</code>, inclua um <code>&lt;h1&gt;</code> com o
+          texto <strong>“Checkpoint #1”</strong>.
+        </li>
+        <li>
+          Em <code>script.js</code>, faça:
+          <ul>
+            <li><code>console.log("Mensagem inicial")</code></li>
+            <li><code>alert("Bem-vindo ao Checkpoint!")</code></li>
+          </ul>
+        </li>
+        <li>
+          Abra o <code>index.html</code> no navegador (ou Live Server) e verifique
+          o funcionamento.
+        </li>
+      </ol>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 3 – Repositório e Primeiro Commit</h2>
+      <p>
+        <strong>Arquivo:</strong> <code>script.js</code>
+      </p>
+      <ol>
+        <li>
+          Adicione uma <strong>descrição mínima</strong> do seu repositório (por
+          exemplo: “Repositório para o Checkpoint #1 de Engenharia de Software”)
+          em um comentário no topo do arquivo <code>script.js</code>.
+        </li>
+        <li>
+          Faça seu <strong>commit inicial</strong> (caso ainda não tenha feito).
+        </li>
+        <li>
+          Faça <strong>push</strong> das alterações para seu repositório privado
+          no GitHub.
+        </li>
+      </ol>
+      <p><em>(Esta questão não requer HTML/JS, pois é somente sobre Git.)</em></p>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 4 – Declaração de Variáveis</h2>
+      <ol>
+        <li>
+          Em <code>script.js</code>:
+          <ul>
+            <li>
+              Declare <strong>6 variáveis</strong>: duas com <code>var</code>,
+              duas com <code>let</code> e duas com <code>const</code>.
+            </li>
+            <li>
+              Faça um <code>console.log()</code> para cada variável, mostrando
+              seus valores iniciais.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Abra o <code>index.html</code> no navegador (ou Live Server) e confira
+          no console.
+        </li>
+      </ol>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 5 – Operadores Aritméticos</h2>
+      <ol>
+        <li>
+          Em <code>script.js</code>:
+          <ul>
+            <li>
+              Declare <strong>duas variáveis numéricas</strong>: <code>a</code> e
+              <code>b</code>.
+            </li>
+            <li>
+              Exiba no console o resultado de: <code>a + b</code>,
+              <code>a - b</code>, <code>a * b</code>, <code>a / b</code>.
+            </li>
+          </ul>
+        </li>
+        <li>Abra o <code>index.html</code> no navegador para testar.</li>
+      </ol>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 6 – Operadores de Comparação</h2>
+      <ol>
+        <li>
+          Em <code>script.js</code>:
+          <ul>
+            <li>
+              Usando valores numéricos ou strings, mostre exemplos de:
+              <ul>
+                <li><code>==</code> e <code>===</code></li>
+                <li><code>!=</code> e <code>!==</code></li>
+                <li>
+                  Pelo menos um exemplo de <code>&gt;</code> ou <code>&lt;</code>
+                </li>
+              </ul>
+            </li>
+            <li>
+              Faça <code>console.log()</code> de cada comparação, mostrando se o
+              resultado é <code>true</code> ou <code>false</code>.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Abra o <code>index.html</code> no navegador para verificar o console.
+        </li>
+      </ol>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 7 – Operadores Lógicos</h2>
+      <ol>
+        <li>
+          Em <code>script.js</code>:
+          <ul>
+            <li>
+              Declare variáveis booleanas ou numéricas para testar:
+              <ul>
+                <li><code>&amp;&amp;</code> (AND)</li>
+                <li><code>||</code> (OR)</li>
+                <li><code>!</code> (NOT)</li>
+              </ul>
+            </li>
+            <li>
+              Exiba os resultados no console (por exemplo,
+              <code>console.log(a &amp;&amp; b)</code>).
+            </li>
+          </ul>
+        </li>
+        <li>
+          Abra o <code>index.html</code> no navegador para conferir o resultado.
+        </li>
+      </ol>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 8 – Nova Branch e Merge (Git)</h2>
+      <p>
+        <strong>Arquivo:</strong> <code>script.js</code>
+      </p>
+      <ol>
+        <li>
+          Crie uma <strong>nova branch</strong> localmente chamada
+          <code>feature/questao8</code>.
+        </li>
+        <li>
+          Dentro de <code>feature/questao8</code>, adicione no arquivo
+          <code>script.js</code> (em comentário) o texto
+          <strong>“Exemplo de branch e merge”</strong> no bloco da Questão 8.
+        </li>
+        <li>Faça commit e push dessa branch para o repositório remoto.</li>
+        <li>
+          Abra um Pull Request (se desejar) ou faça o merge
+          <strong>diretamente via Git</strong> ou
+          <strong>interface do GitHub</strong> para a branch <code>main</code>.
+        </li>
+        <li><strong>Não é necessário criar conflitos</strong>.</li>
+      </ol>
+      <p>
+        <em>(Esta questão não precisa de HTML/JS, pois é somente sobre Git.)</em>
+      </p>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 9 – Função de Comparação (Esqueleto) rodando no navegador</h2>
+      <ol>
+        <li>
+          Em <code>script.js</code>, copie o esqueleto abaixo e
+          <strong>complete a lógica</strong>:
+        </li>
+      </ol>
+      <pre><code>function compararNumeros(a, b) {
+  // TODO: implementar a lógica
+  // se a &gt; b, retorne "A é maior"
+  // se b &gt; a, retorne "B é maior"
+  // caso contrário, retorne "Ambos são iguais"
+}
+
+console.log(compararNumeros(5, 10)); // esperado: "B é maior"
+console.log(compararNumeros(10, 5)); // esperado: "A é maior"
+console.log(compararNumeros(7, 7));  // esperado: "Ambos são iguais"
+</code></pre>
+      <ol start="3">
+        <li>
+          Preencha o <code>// TODO: implementar a lógica</code> com os if/else
+          adequados.
+        </li>
+        <li>
+          Abra o <code>index.html</code> no navegador e verifique o console para
+          ver se o resultado confere.
+        </li>
+      </ol>
+      <hr />
+    </section>
+
+    <section class="question">
+      <h2>Questão 10 – Operadores no Navegador</h2>
+      <ol>
+        <li>
+          Em <code>script.js</code>:
+          <ul>
+            <li>
+              Declare duas variáveis numéricas e exiba
+              <code>console.log("Soma:", a + b)</code>.
+            </li>
+            <li>
+              Declare duas variáveis booleanas e exiba o resultado de
+              <code>&amp;&amp;</code> ou <code>||</code> no console.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Abra o <code>index.html</code> no navegador e verifique o console.
+        </li>
+      </ol>
+      <hr />
+    </section>
+
+    <h2>Como entregar</h2>
+    <ol>
+      <li>
+        Resolva todas as questões em um único <code>script.js</code>, separando
+        cada questão com um bloco/título (ex.: <code>// Questão 1</code>, <code>// Questão 2</code>, ...).
+      </li>
+      <li>
+        Realize <strong>commits separados</strong>, um para cada questão, com
+        mensagens de commit claras.
+      </li>
+      <li>
+        Faça <strong>push</strong> para o repositório
+        <strong>privado</strong> no GitHub.
+      </li>
+      <li>
+        Garanta que o professor <strong>cintra.70@gmail.com</strong> tenha
+        acesso como colaborador.
+      </li>
+      <li>Envie o link do repositório e um zip do projeto ao professor através do teams</li>
+    </ol>
+
+    <hr />
+
+    <p><strong>Boa sorte e boa prática!</strong></p>
+    </main>
+  </body>
+</html>

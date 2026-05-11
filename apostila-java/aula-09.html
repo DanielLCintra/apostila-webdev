@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 09 - Ports and Adapters na Prática</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 09 - Ports and Adapters na Prática</h1>
+            <p class="subtitle">Implementação completa da arquitetura hexagonal</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com a Aula Anterior</h2>
+                <div class="concept-box">
+                    <p>
+                        Na <strong>Aula 08</strong>, você entendeu os conceitos da Arquitetura Hexagonal: Domain, 
+                        Ports (Inbound/Outbound) e Adapters. Agora vamos <strong>implementar tudo na prática</strong>, 
+                        transformando o código que você já conhece em uma arquitetura hexagonal completa.
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Conceitos de Arquitetura Hexagonal, Domain, Ports, Adapters
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Como implementar cada camada na prática, 
+                        como conectar tudo usando Dependency Injection do Spring, e como transformar seu código 
+                        atual em uma arquitetura hexagonal
+                    </p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔨 Implementação Completa</h2>
+                
+                <div class="concept-box">
+                    <h3>1. Domínio - Entidade Pura</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.domain;
+
+public class Task {
+    private Long id;
+    private String titulo;
+    private String descricao;
+    private boolean concluida;
+    private LocalDateTime dataCriacao;
+    
+    // Construtor para nova tarefa
+    public Task(String titulo, String descricao) {
+        if (titulo == null || titulo.isBlank()) {
+            throw new IllegalArgumentException("Título é obrigatório");
+        }
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.concluida = false;
+        this.dataCriacao = LocalDateTime.now();
+    }
+    
+    // Construtor completo (para reconstruir do banco)
+    public Task(Long id, String titulo, String descricao, 
+                boolean concluida, LocalDateTime dataCriacao) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.concluida = concluida;
+        this.dataCriacao = dataCriacao;
+    }
+    
+    // Regras de negócio
+    public void marcarComoConcluida() {
+        if (this.concluida) {
+            throw new IllegalStateException("Tarefa já está concluída");
+        }
+        this.concluida = true;
+    }
+    
+    public void atualizarTitulo(String novoTitulo) {
+        if (novoTitulo == null || novoTitulo.isBlank()) {
+            throw new IllegalArgumentException("Título não pode ser vazio");
+        }
+        this.titulo = novoTitulo;
+    }
+    
+    // Getters
+    public Long getId() { return id; }
+    public String getTitulo() { return titulo; }
+    public String getDescricao() { return descricao; }
+    public boolean isConcluida() { return concluida; }
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>2. Application - Ports</h3>
+                    <div class="code-block">
+<pre>// Port de entrada
+package com.exemplo.application.port.in;
+
+public interface CreateTaskUseCase {
+    Task criar(CriarTaskCommand command);
+}
+
+// Port de saída
+package com.exemplo.application.port.out;
+
+public interface TaskRepositoryPort {
+    Task salvar(Task task);
+    Optional&lt;Task&gt; buscarPorId(Long id);
+    List&lt;Task&gt; listar();
+    void deletar(Long id);
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>3. Application - Service (Use Case)</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.application.service;
+
+import com.exemplo.application.port.in.CreateTaskUseCase;
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+
+@Service
+public class CreateTaskService implements CreateTaskUseCase {
+    
+    private final TaskRepositoryPort repository;
+    
+    public CreateTaskService(TaskRepositoryPort repository) {
+        this.repository = repository;
+    }
+    
+    @Override
+    public Task criar(CriarTaskCommand command) {
+        // Criar entidade de domínio (regras de negócio)
+        Task task = new Task(command.titulo(), command.descricao());
+        
+        // Salvar via port (não sabe se é JPA, MongoDB, etc)
+        return repository.salvar(task);
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>4. Infrastructure - Entity JPA</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.infrastructure.persistence.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "tasks")
+public class TaskEntity {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false)
+    private String titulo;
+    
+    private String descricao;
+    
+    private boolean concluida;
+    
+    private LocalDateTime dataCriacao;
+    
+    // Construtores, getters e setters
+    public TaskEntity() {}
+    
+    // ... getters e setters
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>5. Infrastructure - Mapper</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.infrastructure.persistence.mapper;
+
+import com.exemplo.domain.Task;
+import com.exemplo.infrastructure.persistence.entity.TaskEntity;
+
+@Component
+public class TaskMapper {
+    
+    public TaskEntity toEntity(Task task) {
+        TaskEntity entity = new TaskEntity();
+        entity.setId(task.getId());
+        entity.setTitulo(task.getTitulo());
+        entity.setDescricao(task.getDescricao());
+        entity.setConcluida(task.isConcluida());
+        entity.setDataCriacao(task.getDataCriacao());
+        return entity;
+    }
+    
+    public Task toDomain(TaskEntity entity) {
+        return new Task(
+            entity.getId(),
+            entity.getTitulo(),
+            entity.getDescricao(),
+            entity.isConcluida(),
+            entity.getDataCriacao()
+        );
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>6. Infrastructure - Adapter JPA</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.infrastructure.persistence;
+
+import com.exemplo.application.port.out.TaskRepositoryPort;
+import com.exemplo.domain.Task;
+import com.exemplo.infrastructure.persistence.entity.TaskEntity;
+import com.exemplo.infrastructure.persistence.mapper.TaskMapper;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class JpaTaskRepositoryAdapter implements TaskRepositoryPort {
+    
+    private final TaskJpaRepository jpaRepository;
+    private final TaskMapper mapper;
+    
+    public JpaTaskRepositoryAdapter(
+            TaskJpaRepository jpaRepository, 
+            TaskMapper mapper) {
+        this.jpaRepository = jpaRepository;
+        this.mapper = mapper;
+    }
+    
+    @Override
+    public Task salvar(Task task) {
+        TaskEntity entity = mapper.toEntity(task);
+        TaskEntity saved = jpaRepository.save(entity);
+        return mapper.toDomain(saved);
+    }
+    
+    @Override
+    public Optional&lt;Task&gt; buscarPorId(Long id) {
+        return jpaRepository.findById(id)
+            .map(mapper::toDomain);
+    }
+    
+    @Override
+    public List&lt;Task&gt; listar() {
+        return jpaRepository.findAll().stream()
+            .map(mapper::toDomain)
+            .collect(Collectors.toList());
+    }
+    
+    @Override
+    public void deletar(Long id) {
+        jpaRepository.deleteById(id);
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>7. Adapter de Entrada - Controller</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.adapters.in.web;
+
+import com.exemplo.application.port.in.CreateTaskUseCase;
+import com.exemplo.application.command.CriarTaskCommand;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/tasks")
+public class TaskController {
+    
+    private final CreateTaskUseCase createTaskUseCase;
+    
+    public TaskController(CreateTaskUseCase createTaskUseCase) {
+        this.createTaskUseCase = createTaskUseCase;
+    }
+    
+    @PostMapping
+    public ResponseEntity&lt;TaskResponseDTO&gt; criar(
+            @Valid @RequestBody CriarTaskDTO dto) {
+        
+        // Converter DTO para Command
+        CriarTaskCommand command = new CriarTaskCommand(
+            dto.titulo(), 
+            dto.descricao()
+        );
+        
+        // Chamar use case
+        Task task = createTaskUseCase.criar(command);
+        
+        // Converter para DTO de resposta
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(TaskResponseDTO.from(task));
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🔗 Injeção de Dependência</h2>
+                
+                <div class="concept-box">
+                    <h3>Configuração do Spring</h3>
+                    <p>O Spring automaticamente injeta as implementações corretas:</p>
+                    
+                    <div class="code-block">
+<pre>// Spring encontra a implementação do port
+@Repository
+public class JpaTaskRepositoryAdapter implements TaskRepositoryPort {
+    // ...
+}
+
+// Spring injeta automaticamente
+@Service
+public class CreateTaskService implements CreateTaskUseCase {
+    private final TaskRepositoryPort repository;  // Injeta JpaTaskRepositoryAdapter
+    // ...
+}
+
+// Spring injeta automaticamente
+@RestController
+public class TaskController {
+    private final CreateTaskUseCase createTaskUseCase;  // Injeta CreateTaskService
+    // ...
+}</pre>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Vantagem:</strong> Se você quiser trocar de JPA para MongoDB, 
+                    basta criar um novo adapter implementando <code>TaskRepositoryPort</code> 
+                    e o Spring injetará automaticamente. Nenhuma mudança no domínio ou services!
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧠 Mini-Desafio</h2>
+                <div class="challenge-box">
+                    <h3>Desafio: Implementar CRUD Completo</h3>
+                    <p><strong>Objetivo:</strong> Implementar toda a arquitetura hexagonal para um CRUD.</p>
+                    
+                    <h4>Requisitos:</h4>
+                    <ol>
+                        <li>Complete a implementação do <code>CreateTaskService</code></li>
+                        <li>Crie <code>ListTasksUseCase</code> e <code>ListTasksService</code></li>
+                        <li>Crie <code>CompleteTaskUseCase</code> e <code>CompleteTaskService</code></li>
+                        <li>Implemente todos os métodos no <code>JpaTaskRepositoryAdapter</code></li>
+                        <li>Crie <code>TaskMapper</code> para converter entre Domain e Entity</li>
+                        <li>Crie endpoints no <code>TaskController</code>:
+                            <ul>
+                                <li>POST /tasks</li>
+                                <li>GET /tasks</li>
+                                <li>GET /tasks/{id}</li>
+                                <li>PUT /tasks/{id}/complete</li>
+                                <li>DELETE /tasks/{id}</li>
+                            </ul>
+                        </li>
+                        <li>Teste todos os endpoints</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 09</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Implementou entidade de domínio pura (sem JPA)</li>
+                        <li>✅ Criou ports (interfaces) inbound e outbound</li>
+                        <li>✅ Implementou services que usam os ports</li>
+                        <li>✅ Criou TaskEntity (JPA) separada do domínio</li>
+                        <li>✅ Criou TaskMapper para converter entre Domain e Entity</li>
+                        <li>✅ Implementou adapter JPA que implementa o port outbound</li>
+                        <li>✅ Criou controller que usa os use cases (ports inbound)</li>
+                        <li>✅ Entendeu como o Spring conecta tudo via Dependency Injection</li>
+                        <li>✅ Testou que a aplicação funciona end-to-end</li>
+                        <li>✅ Completou o mini-desafio do CRUD completo</li>
+                    </ul>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-08.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-10.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

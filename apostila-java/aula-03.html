@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 03 - Entrando no Spring Boot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Voltar ao Menu</a>
+            <h1>Aula 03 - Entrando no Spring Boot</h1>
+            <p class="subtitle">Primeira API REST, controllers, services e dependency injection</p>
+        </header>
+
+        <div class="content">
+            <section class="section">
+                <h2>📚 Conectando com as Aulas Anteriores</h2>
+                <div class="concept-box">
+                    <p>
+                        Nas <strong>Aulas 01 e 02</strong>, você dominou a sintaxe Java e os conceitos de OOP. 
+                        Agora vamos usar esse conhecimento para criar sua primeira <strong>API REST</strong> com Spring Boot!
+                    </p>
+                    <p>
+                        <strong>O que você já sabe:</strong> Classes, métodos, interfaces, packages, encapsulamento
+                    </p>
+                    <p>
+                        <strong>O que vamos aprender agora:</strong> Spring Boot, Dependency Injection, Controllers, 
+                        Services, criação de APIs REST e como tudo isso se conecta com o que você já aprendeu
+                    </p>
+                    <div class="tip-box">
+                        <strong>💡 Não se preocupe!</strong> Spring Boot usa todos os conceitos que você já aprendeu. 
+                        Você vai ver classes, interfaces, anotações e tudo mais que já conhece, mas agora aplicado 
+                        em um contexto real de desenvolvimento de APIs.
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🌱 O que é Spring Boot? (Para Iniciantes)</h2>
+                
+                <div class="concept-box">
+                    <h3>Spring Framework vs Spring Boot</h3>
+                    <p>
+                        <strong>Spring Framework</strong> é um framework Java que facilita desenvolvimento de aplicações. 
+                        Ele fornece funcionalidades como Dependency Injection, MVC, etc.
+                    </p>
+                    <p>
+                        <strong>Spring Boot</strong> é uma extensão do Spring Framework que simplifica ainda mais o desenvolvimento:
+                    </p>
+                    <ul>
+                        <li><strong>Auto-configuração:</strong> Configura automaticamente muitas coisas (banco de dados, servidor web, etc.)</li>
+                        <li><strong>Convention over Configuration:</strong> Segue convenções, reduzindo necessidade de configuração</li>
+                        <li><strong>Embedded Server:</strong> Inclui servidor web (Tomcat) embutido - não precisa instalar servidor separado</li>
+                        <li><strong>Starter Dependencies:</strong> Dependências pré-configuradas para funcionalidades comuns</li>
+                        <li><strong>Production Ready:</strong> Inclui ferramentas para produção (health checks, métricas, etc.)</li>
+                    </ul>
+                    
+                    <div class="tip-box">
+                        <strong>💡 Analogia:</strong> Se Spring Framework é um conjunto de ferramentas, 
+                        Spring Boot é uma "caixa de ferramentas pré-montada" que já vem com tudo configurado.
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Por que usar Spring Boot?</h3>
+                    <ul>
+                        <li><strong>Rápido para começar:</strong> Crie uma API REST em minutos</li>
+                        <li><strong>Menos configuração:</strong> Muito código boilerplate é gerado automaticamente</li>
+                        <li><strong>Padrão da indústria:</strong> Amplamente usado em projetos corporativos</li>
+                        <li><strong>Ecossistema rico:</strong> Muitas integrações prontas (banco de dados, segurança, etc.)</li>
+                        <li><strong>Comunidade grande:</strong> Muito suporte e documentação</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🚀 Criando o Primeiro Projeto Spring Boot</h2>
+                
+                <div class="step-box">
+                    <h3>1. O que é Spring Initializr?</h3>
+                    <p>
+                        <strong>Spring Initializr</strong> é uma ferramenta web que gera projetos Spring Boot prontos para uso. 
+                        É como um "gerador de projetos" - você escolhe as dependências e ele cria toda a estrutura.
+                    </p>
+                    <p>
+                        <strong>Endereço:</strong> <a href="https://start.spring.io" target="_blank"><strong>https://start.spring.io</strong></a>
+                    </p>
+                </div>
+
+                <div class="step-box">
+                    <h3>2. Gerar Projeto no Spring Initializr - Passo a Passo Detalhado</h3>
+                    
+                    <h4>Passo 1: Acessar o Site</h4>
+                    <ol>
+                        <li>Abra seu navegador</li>
+                        <li>Acesse: <a href="https://start.spring.io" target="_blank"><strong>https://start.spring.io</strong></a></li>
+                        <li>Você verá um formulário para configurar seu projeto</li>
+                    </ol>
+
+                    <h4>Passo 2: Configurar Projeto (Parte Superior do Formulário)</h4>
+                    <ul>
+                        <li><strong>Project:</strong> Selecione <strong>Maven</strong> (gerenciador de dependências)</li>
+                        <li><strong>Language:</strong> Selecione <strong>Java</strong></li>
+                        <li><strong>Spring Boot:</strong> Selecione <strong>3.2.0</strong> (ou a versão mais recente estável)
+                            <ul>
+                                <li>⚠️ <strong>Importante:</strong> Use versão 3.x (não 2.x) para compatibilidade com Java 17</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4>Passo 3: Project Metadata (Metadados do Projeto)</h4>
+                    <p>Preencha os campos:</p>
+                    <ul>
+                        <li><strong>Group:</strong> <code>com.exemplo</code>
+                            <ul>
+                                <li>É como o "namespace" do seu projeto</li>
+                                <li>Geralmente usa o domínio invertido (com.exemplo ao invés de exemplo.com)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Artifact:</strong> <code>minha-api</code>
+                            <ul>
+                                <li>É o nome do seu projeto</li>
+                                <li>Use letras minúsculas e hífens (sem espaços)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Name:</strong> <code>minha-api</code> (geralmente igual ao Artifact)</li>
+                        <li><strong>Description:</strong> <code>Minha primeira API Spring Boot</code> (opcional)</li>
+                        <li><strong>Package name:</strong> <code>com.exemplo</code> (geralmente igual ao Group)</li>
+                        <li><strong>Packaging:</strong> Selecione <strong>Jar</strong>
+                            <ul>
+                                <li>Jar = Java Archive (arquivo executável)</li>
+                                <li>War = Web Archive (para servidores de aplicação)</li>
+                                <li>Para APIs REST, use Jar</li>
+                            </ul>
+                        </li>
+                        <li><strong>Java:</strong> Selecione <strong>17</strong>
+                            <ul>
+                                <li>Deve ser compatível com o Java que você instalou</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4>Passo 4: Adicionar Dependências</h4>
+                    <ol>
+                        <li>Clique no botão <strong>"Add Dependencies"</strong> (ou "ADD DEPENDENCIES")</li>
+                        <li>Uma janela se abrirá com uma lista de dependências</li>
+                        <li>Digite na busca ou procure por:
+                            <ul>
+                                <li><strong>Spring Web</strong>
+                                    <ul>
+                                        <li>Clique na dependência "Spring Web"</li>
+                                        <li>Ela será adicionada à lista de dependências selecionadas</li>
+                                        <li>Esta dependência inclui tudo para criar APIs REST</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Spring Boot DevTools</strong>
+                                    <ul>
+                                        <li>Adicione esta dependência também</li>
+                                        <li>Permite reload automático durante desenvolvimento</li>
+                                        <li>Quando você salva um arquivo, a aplicação reinicia automaticamente</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Clique em "Add" ou feche a janela</li>
+                        <li>Você verá as dependências listadas no formulário</li>
+                    </ol>
+
+                    <h4>Passo 5: Gerar e Baixar Projeto</h4>
+                    <ol>
+                        <li>Clique no botão <strong>"Generate"</strong> (ou pressione Ctrl+Enter / Cmd+Enter)</li>
+                        <li>O Spring Initializr vai processar e gerar um arquivo ZIP</li>
+                        <li>O download começará automaticamente</li>
+                        <li>O arquivo terá o nome: <code>minha-api.zip</code> (ou o nome do artifact que você escolheu)</li>
+                    </ol>
+
+                    <h4>Passo 6: Extrair o Projeto</h4>
+                    <ol>
+                        <li>Encontre o arquivo ZIP baixado (geralmente na pasta Downloads)</li>
+                        <li>Extraia o ZIP em uma pasta de sua escolha
+                            <ul>
+                                <li>Windows: Clique direito → Extrair tudo</li>
+                                <li>Mac: Clique duplo no arquivo</li>
+                                <li>Linux: <code>unzip minha-api.zip</code></li>
+                            </ul>
+                        </li>
+                        <li>Você terá uma pasta com o nome do projeto</li>
+                    </ol>
+
+                    <h4>Passo 7: Abrir no IntelliJ IDEA</h4>
+                    <ol>
+                        <li>Abra o IntelliJ IDEA</li>
+                        <li>File → Open (ou File → Open Project)</li>
+                        <li>Navegue até a pasta extraída e selecione-a</li>
+                        <li>Clique em "OK" ou "Open"</li>
+                        <li>O IntelliJ vai detectar automaticamente que é um projeto Maven</li>
+                        <li>Uma mensagem aparecerá: "Maven projects need to be imported"</li>
+                        <li>Clique em <strong>"Import Maven Project"</strong> ou <strong>"Enable Auto-Import"</strong></li>
+                        <li>O IntelliJ começará a baixar as dependências (isso pode levar alguns minutos na primeira vez)</li>
+                        <li>Você verá uma barra de progresso no canto inferior direito</li>
+                        <li>Aguarde até que todas as dependências sejam baixadas</li>
+                    </ol>
+
+                    <div class="tip-box">
+                        <strong>💡 Dica:</strong> Se o IntelliJ não detectar automaticamente, você pode:
+                        <ol>
+                            <li>File → New → Project from Existing Sources</li>
+                            <li>Selecione a pasta do projeto</li>
+                            <li>Escolha "Import project from external model" → Maven</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>3. Entender a Estrutura do Projeto Gerado</h3>
+                    <p>Após abrir no IntelliJ, você verá esta estrutura:</p>
+                    <div class="code-block">
+                        <pre>
+projeto-spring/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── exemplo/
+│   │   │           └── MinhaApiApplication.java  # Classe principal
+│   │   └── resources/
+│   │       └── application.properties            # Configurações
+│   └── test/
+│       └── java/
+│           └── com/
+│               └── exemplo/
+│                   └── MinhaApiApplicationTests.java  # Testes
+├── pom.xml                                        # Configuração Maven
+└── .mvn/                                          # Configurações Maven (geralmente oculto)
+                        </pre>
+                    </div>
+
+                    <div class="concept-box">
+                        <h4>Arquivos Importantes Explicados:</h4>
+                        <ul>
+                            <li><strong>MinhaApiApplication.java:</strong>
+                                <ul>
+                                    <li>Classe principal da aplicação</li>
+                                    <li>Contém o método <code>main()</code> que inicia a aplicação</li>
+                                    <li>Tem a anotação <code>@SpringBootApplication</code></li>
+                                    <li>É a partir desta classe que você executa a aplicação</li>
+                                </ul>
+                            </li>
+                            <li><strong>application.properties:</strong>
+                                <ul>
+                                    <li>Arquivo de configuração da aplicação</li>
+                                    <li>Aqui você configura porta, banco de dados, etc.</li>
+                                    <li>Pode ser substituído por <code>application.yml</code> (formato YAML)</li>
+                                </ul>
+                            </li>
+                            <li><strong>pom.xml:</strong>
+                                <ul>
+                                    <li>Configuração do Maven</li>
+                                    <li>Define dependências do projeto</li>
+                                    <li>Configura plugins e versões</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="concept-box">
+                        <h4>O que o Spring Initializr criou automaticamente?</h4>
+                        <ul>
+                            <li>✅ Estrutura de pastas Maven padrão</li>
+                            <li>✅ Classe principal com <code>@SpringBootApplication</code></li>
+                            <li>✅ Classe de teste de exemplo</li>
+                            <li>✅ <code>pom.xml</code> configurado com Spring Boot</li>
+                            <li>✅ Dependências adicionadas ao <code>pom.xml</code></li>
+                            <li>✅ Configurações básicas</li>
+                        </ul>
+                        <p>
+                            <strong>Tudo isso você teria que fazer manualmente sem o Spring Initializr!</strong> 
+                            É por isso que ele é tão útil.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🎯 Criando sua Primeira API</h2>
+                
+                <div class="concept-box">
+                    <h3>@RestController - Endpoint Simples</h3>
+                    <div class="code-block">
+<pre>package com.exemplo.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+    
+    @GetMapping("/hello")
+    public String hello() {
+        return "Olá, Spring Boot!";
+    }
+    
+    @GetMapping("/hello/{nome}")
+    public String helloComNome(@PathVariable String nome) {
+        return "Olá, " + nome + "!";
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="step-box">
+                    <h3>4. Executar a Aplicação - Passo a Passo</h3>
+                    
+                    <h4>Método 1: Executar no IntelliJ IDEA</h4>
+                    <ol>
+                        <li>No IntelliJ, abra o arquivo <code>MinhaApiApplication.java</code></li>
+                        <li>Você verá um ícone de "play" (▶️) ao lado da linha do método <code>main</code></li>
+                        <li>Clique no ícone de play</li>
+                        <li>Ou clique direito no arquivo → "Run 'MinhaApiApplication'"</li>
+                        <li>Ou use o atalho: <code>Shift + F10</code> (Windows/Linux) ou <code>Ctrl + R</code> (Mac)</li>
+                    </ol>
+
+                    <h4>O que acontece quando você executa?</h4>
+                    <ol>
+                        <li>O Spring Boot inicia o servidor web embutido (Tomcat)</li>
+                        <li>Carrega todas as configurações</li>
+                        <li>Escaneia e registra todos os componentes (@Controller, @Service, etc.)</li>
+                        <li>A aplicação fica "escutando" na porta 8080</li>
+                        <li>Você verá logs no console do IntelliJ</li>
+                    </ol>
+
+                    <div class="code-block">
+                        <pre>
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.0)
+
+... (logs de inicialização) ...
+
+Started MinhaApiApplication in 2.456 seconds
+                        </pre>
+                    </div>
+
+                    <h4>Método 2: Executar via Terminal</h4>
+                    <ol>
+                        <li>Abra o terminal na raiz do projeto</li>
+                        <li>Execute:
+                            <div class="code-block">
+                                <pre>
+mvn spring-boot:run
+                                </pre>
+                            </div>
+                        </li>
+                        <li>Aguarde a inicialização</li>
+                    </ol>
+
+                    <h4>Verificar se está funcionando</h4>
+                    <ol>
+                        <li>Abra seu navegador</li>
+                        <li>Acesse: <code>http://localhost:8080/hello</code></li>
+                        <li>Você deve ver: <strong>"Olá, Spring Boot!"</strong></li>
+                    </ol>
+
+                    <div class="tip-box">
+                        <strong>💡 Problema comum:</strong> Se aparecer "Connection refused" ou "This site can't be reached":
+                        <ul>
+                            <li>Verifique se a aplicação realmente iniciou (veja os logs)</li>
+                            <li>Verifique se a porta 8080 não está sendo usada por outro programa</li>
+                            <li>Verifique se há erros no console</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📚 Anotações Spring Essenciais</h2>
+                
+                <div class="concept-box">
+                    <h3>@RestController vs @Controller</h3>
+                    <div class="code-block">
+<pre>// @RestController = @Controller + @ResponseBody
+// Retorna dados diretamente (JSON, XML, etc)
+@RestController
+public class ApiController {
+    @GetMapping("/dados")
+    public Dados obterDados() {
+        return new Dados("valor1", "valor2");
+    }
+}
+
+// @Controller - retorna nome de view (para páginas HTML)
+@Controller
+public class WebController {
+    @GetMapping("/home")
+    public String home() {
+        return "home";  // Procura home.html
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Mapeamento de Rotas</h3>
+                    <div class="code-block">
+<pre>@RestController
+@RequestMapping("/api/usuarios")  // Prefixo para todas as rotas
+public class UsuarioController {
+    
+    // GET /api/usuarios
+    @GetMapping
+    public List&lt;Usuario&gt; listar() {
+        return usuarios;
+    }
+    
+    // GET /api/usuarios/{id}
+    @GetMapping("/{id}")
+    public Usuario buscar(@PathVariable Long id) {
+        return usuarios.stream()
+            .filter(u -&gt; u.getId().equals(id))
+            .findFirst()
+            .orElse(null);
+    }
+    
+    // POST /api/usuarios
+    @PostMapping
+    public Usuario criar(@RequestBody Usuario usuario) {
+        usuarios.add(usuario);
+        return usuario;
+    }
+    
+    // PUT /api/usuarios/{id}
+    @PutMapping("/{id}")
+    public Usuario atualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
+        // Lógica de atualização
+        return usuario;
+    }
+    
+    // DELETE /api/usuarios/{id}
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Long id) {
+        usuarios.removeIf(u -&gt; u.getId().equals(id));
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🏗️ Arquitetura em Camadas</h2>
+                
+                <div class="concept-box">
+                    <h3>Controller → Service → Repository</h3>
+                    <p>Separação de responsabilidades é fundamental no Spring Boot.</p>
+                    
+                    <h4>1. Controller (Camada de Apresentação)</h4>
+                    <div class="code-block">
+<pre>@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+    
+    private final UsuarioService usuarioService;
+    
+    // Injeção via construtor (recomendado)
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+    
+    @GetMapping
+    public List&lt;Usuario&gt; listar() {
+        return usuarioService.listarTodos();
+    }
+    
+    @PostMapping
+    public Usuario criar(@RequestBody Usuario usuario) {
+        return usuarioService.criar(usuario);
+    }
+}</pre>
+                    </div>
+
+                    <h4>2. Service (Camada de Negócio)</h4>
+                    <div class="code-block">
+<pre>@Service
+public class UsuarioService {
+    
+    private final UsuarioRepository usuarioRepository;
+    
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+    
+    public List&lt;Usuario&gt; listarTodos() {
+        return usuarioRepository.findAll();
+    }
+    
+    public Usuario criar(Usuario usuario) {
+        // Validações de negócio
+        if (usuario.getEmail() == null || usuario.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Email é obrigatório");
+        }
+        return usuarioRepository.save(usuario);
+    }
+}</pre>
+                    </div>
+
+                    <h4>3. Repository (Camada de Dados)</h4>
+                    <div class="code-block">
+<pre>@Repository
+public class UsuarioRepository {
+    
+    // Simulação em memória (será substituído por JPA depois)
+    private List&lt;Usuario&gt; usuarios = new ArrayList&lt;&gt;();
+    
+    public List&lt;Usuario&gt; findAll() {
+        return new ArrayList&lt;&gt;(usuarios);
+    }
+    
+    public Usuario save(Usuario usuario) {
+        usuario.setId(System.currentTimeMillis());  // ID temporário
+        usuarios.add(usuario);
+        return usuario;
+    }
+    
+    public Optional&lt;Usuario&gt; findById(Long id) {
+        return usuarios.stream()
+            .filter(u -&gt; u.getId().equals(id))
+            .findFirst();
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>💉 Dependency Injection</h2>
+                
+                <div class="concept-box">
+                    <h3>@Autowired e Injeção de Dependência</h3>
+                    <p>Spring gerencia automaticamente as dependências. Você não precisa criar objetos manualmente.</p>
+                    
+                    <div class="code-block">
+<pre>// Forma 1: Injeção via construtor (RECOMENDADO)
+@Service
+public class UsuarioService {
+    private final UsuarioRepository repository;
+    
+    public UsuarioService(UsuarioRepository repository) {
+        this.repository = repository;  // Spring injeta automaticamente
+    }
+}
+
+// Forma 2: @Autowired no construtor (redundante, mas explícito)
+@Service
+public class UsuarioService {
+    private final UsuarioRepository repository;
+    
+    @Autowired
+    public UsuarioService(UsuarioRepository repository) {
+        this.repository = repository;
+    }
+}
+
+// Forma 3: @Autowired em campo (NÃO RECOMENDADO - dificulta testes)
+@Service
+public class UsuarioService {
+    @Autowired
+    private UsuarioRepository repository;
+}</pre>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Regra de Ouro:</strong> Sempre use injeção via construtor. É mais testável, 
+                    permite campos final (imutáveis) e torna dependências explícitas.
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>⚙️ Configuração com application.properties</h2>
+                
+                <div class="concept-box">
+                    <h3>Arquivo application.properties</h3>
+                    <div class="code-block">
+<pre># src/main/resources/application.properties
+
+# Porta do servidor
+server.port=8080
+
+# Context path
+server.servlet.context-path=/api
+
+# Logging
+logging.level.com.exemplo=DEBUG
+logging.level.org.springframework.web=INFO
+
+# Mensagens personalizadas
+app.nome=Minha API
+app.versao=1.0.0</div>
+                    </div>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Usando @Value para Injetar Propriedades</h3>
+                    <div class="code-block">
+<pre>@RestController
+public class ConfigController {
+    
+    @Value("${app.nome}")
+    private String nomeApp;
+    
+    @Value("${app.versao}")
+    private String versao;
+    
+    @GetMapping("/info")
+    public Map&lt;String, String&gt; info() {
+        Map&lt;String, String&gt; info = new HashMap&lt;&gt;();
+        info.put("nome", nomeApp);
+        info.put("versao", versao);
+        return info;
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>🧠 Mini-Desafio</h2>
+                <div class="challenge-box">
+                    <h3>Desafio: API /users com CRUD em Memória</h3>
+                    <p><strong>Objetivo:</strong> Criar uma API completa de usuários com operações CRUD.</p>
+                    
+                    <h4>Requisitos:</h4>
+                    <ol>
+                        <li>Crie a classe <code>Usuario</code> com: id, nome, email</li>
+                        <li>Crie <code>UsuarioRepository</code> para armazenar em memória (List)</li>
+                        <li>Crie <code>UsuarioService</code> com lógica de negócio</li>
+                        <li>Crie <code>UsuarioController</code> com endpoints:
+                            <ul>
+                                <li>GET /users - listar todos</li>
+                                <li>GET /users/{id} - buscar por ID</li>
+                                <li>POST /users - criar novo</li>
+                                <li>PUT /users/{id} - atualizar</li>
+                                <li>DELETE /users/{id} - deletar</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h4>Dica:</h4>
+                    <p>Use <code>@PathVariable</code> para parâmetros de URL e <code>@RequestBody</code> para dados JSON no POST/PUT.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>✅ Checklist da Aula 03</h2>
+                <div class="challenge-box">
+                    <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+                    <ul>
+                        <li>✅ Criou projeto no Spring Initializr com Spring Web e DevTools</li>
+                        <li>✅ Abriu o projeto no IntelliJ e baixou as dependências</li>
+                        <li>✅ Criou um Controller com @RestController</li>
+                        <li>✅ Criou endpoints com @GetMapping, @PostMapping</li>
+                        <li>✅ Entendeu o que é Dependency Injection</li>
+                        <li>✅ Criou um Service com @Service</li>
+                        <li>✅ Injetou dependências via construtor</li>
+                        <li>✅ Executou a aplicação e testou os endpoints</li>
+                        <li>✅ Completou o mini-desafio da API /users</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>👉 Recursos Adicionais</h2>
+                <div class="resources-box">
+                    <a href="https://www.youtube.com/results?search_query=Spring+Boot+Crash+Course+Amigoscode" target="_blank" class="resource-link">
+                        🎥 Spring Boot Crash Course – Amigoscode (2h)
+                    </a>
+                    <a href="https://spring.io/guides" target="_blank" class="resource-link">
+                        📖 Spring Official Guides
+                    </a>
+                </div>
+            </section>
+
+            <nav class="lesson-nav">
+                <a href="aula-02.html" class="nav-link">← Aula Anterior</a>
+                <a href="index.html" class="nav-link">Menu Principal</a>
+                <a href="aula-04.html" class="nav-link">Próxima Aula →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aula 01 - Setup e Sintaxe Moderna</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="index.html" class="back-link">← Voltar ao Menu</a>
+        <h1>Aula 01 - Setup e Sintaxe Moderna</h1>
+        <p class="subtitle">
+          Java moderno, estrutura de projetos e recursos da linguagem
+        </p>
+      </header>
+
+      <div class="content">
+        <section class="section">
+          <h2>📚 O que é Java? (Para Iniciantes)</h2>
+
+          <div class="concept-box">
+            <h3>Java é uma Linguagem de Programação</h3>
+            <p>
+              Java é uma linguagem de programação criada pela Sun Microsystems
+              (agora Oracle) em 1995. É uma das linguagens mais populares do
+              mundo, especialmente para desenvolvimento de aplicações
+              empresariais e backend.
+            </p>
+
+            <h4>Por que Java?</h4>
+            <ul>
+              <li>
+                <strong>Multiplataforma:</strong> "Write Once, Run Anywhere" -
+                código Java roda em Windows, Linux, Mac
+              </li>
+              <li>
+                <strong>Orientada a Objetos:</strong> Organiza código em classes
+                e objetos
+              </li>
+              <li>
+                <strong>Robusta:</strong> Sistema de tipos forte previne muitos
+                erros
+              </li>
+              <li>
+                <strong>Grande Ecossistema:</strong> Muitas bibliotecas e
+                frameworks disponíveis
+              </li>
+              <li>
+                <strong>Amplamente Usada:</strong> Usada por grandes empresas
+                (Google, Amazon, Netflix, etc.)
+              </li>
+            </ul>
+          </div>
+
+          <div class="concept-box">
+            <h3>JDK vs JRE vs JVM - Entendendo os Componentes</h3>
+            <p>É importante entender a diferença entre esses termos:</p>
+
+            <ul>
+              <li>
+                <strong>JVM (Java Virtual Machine):</strong>
+                A "máquina virtual" que executa código Java. É ela que permite
+                que Java rode em qualquer sistema operacional.
+              </li>
+              <li>
+                <strong>JRE (Java Runtime Environment):</strong>
+                Contém a JVM + bibliotecas necessárias para EXECUTAR programas
+                Java. Você precisa disso para rodar aplicações Java, mas não
+                para desenvolver.
+              </li>
+              <li>
+                <strong>JDK (Java Development Kit):</strong>
+                Contém JRE + ferramentas para DESENVOLVER programas Java
+                (compilador, debugger, etc.).
+                <strong>Você precisa do JDK para este curso!</strong>
+              </li>
+            </ul>
+
+            <div class="tip-box">
+              <strong>💡 Resumo:</strong> Para desenvolver, instale o
+              <strong>JDK</strong>. Ele já inclui tudo que você precisa (JRE +
+              JVM + ferramentas de desenvolvimento).
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>📦 Instalação Passo a Passo</h2>
+
+          <div class="step-box">
+            <h3>1. Instalar Java 17 (JDK)</h3>
+            <p>
+              <strong>Java 17 é uma versão LTS (Long Term Support)</strong> -
+              isso significa que recebe suporte de longo prazo e é recomendada
+              para projetos corporativos. É a versão que usaremos neste curso.
+            </p>
+
+            <h4>Windows:</h4>
+            <ol>
+              <li>
+                Acesse
+                <a href="https://adoptium.net" target="_blank"
+                  >https://adoptium.net</a
+                >
+              </li>
+              <li>
+                Clique em "Latest LTS Release" (deve ser Java 17 ou superior)
+              </li>
+              <li>Selecione seu sistema operacional (Windows x64)</li>
+              <li>Baixe o instalador (.msi)</li>
+              <li>Execute o instalador e siga as instruções</li>
+              <li>Marque a opção "Add to PATH" se disponível</li>
+            </ol>
+
+            <h4>macOS:</h4>
+            <ol>
+              <li>
+                Acesse
+                <a href="https://adoptium.net" target="_blank"
+                  >https://adoptium.net</a
+                >
+              </li>
+              <li>Baixe o instalador para macOS (.pkg)</li>
+              <li>Execute o instalador</li>
+              <li>Ou use Homebrew: <code>brew install openjdk@17</code></li>
+            </ol>
+
+            <h4>Linux (Ubuntu/Debian):</h4>
+            <div class="code-block">
+              <pre>
+# Atualizar lista de pacotes
+sudo apt update
+
+# Instalar JDK 17
+sudo apt install openjdk-17-jdk
+
+# Verificar instalação
+java -version
+              </pre>
+            </div>
+
+            <h4>Verificar Instalação:</h4>
+            <p>Abra o terminal (ou Prompt de Comando no Windows) e execute:</p>
+            <div class="code-block">
+              <pre>
+java -version
+              </pre>
+            </div>
+            <p>Você deve ver algo como:</p>
+            <div class="code-block">
+              <pre>
+openjdk version "17.0.x" 2023-xx-xx
+OpenJDK Runtime Environment (build 17.0.x+xx)
+OpenJDK 64-Bit Server VM (build 17.0.x+xx, mixed mode, sharing)
+              </pre>
+            </div>
+
+            <div class="tip-box">
+              <strong>⚠️ Problema Comum:</strong> Se aparecer "command not
+              found" ou "não é reconhecido", o Java não está no PATH. Reinstale
+              e marque a opção "Add to PATH", ou adicione manualmente o
+              diretório bin do Java ao PATH do sistema.
+            </div>
+          </div>
+
+          <div class="step-box">
+            <h3>2. Instalar Maven</h3>
+
+            <div class="concept-box">
+              <h4>O que é Maven?</h4>
+              <p>
+                <strong
+                  >Maven é uma ferramenta de gerenciamento de projetos
+                  Java.</strong
+                >
+                Ele faz várias coisas importantes:
+              </p>
+              <ul>
+                <li>
+                  <strong>Gerenciamento de Dependências:</strong> Baixa
+                  automaticamente bibliotecas que seu projeto precisa
+                </li>
+                <li>
+                  <strong>Build (Compilação):</strong> Compila seu código Java
+                </li>
+                <li>
+                  <strong>Estrutura Padrão:</strong> Define uma estrutura de
+                  pastas padrão para projetos
+                </li>
+                <li><strong>Testes:</strong> Executa testes automaticamente</li>
+                <li>
+                  <strong>Empacotamento:</strong> Cria arquivos JAR (Java
+                  Archive) para distribuição
+                </li>
+              </ul>
+
+              <p>
+                <strong>Por que usar Maven?</strong> Sem Maven, você teria que:
+              </p>
+              <ul>
+                <li>Baixar manualmente cada biblioteca que precisa</li>
+                <li>Gerenciar versões de dependências manualmente</li>
+                <li>Compilar código manualmente com comandos longos</li>
+                <li>Organizar estrutura de pastas do zero</li>
+              </ul>
+              <p>Maven faz tudo isso automaticamente!</p>
+            </div>
+
+            <h4>Windows:</h4>
+            <ol>
+              <li>
+                Acesse
+                <a href="https://maven.apache.org/download.cgi" target="_blank"
+                  >https://maven.apache.org/download.cgi</a
+                >
+              </li>
+              <li>
+                Baixe o arquivo "Binary zip archive"
+                (apache-maven-x.x.x-bin.zip)
+              </li>
+              <li>
+                Extraia para uma pasta (ex: C:\Program Files\Apache\maven)
+              </li>
+              <li>
+                Adicione a pasta "bin" ao PATH do sistema:
+                <ul>
+                  <li>
+                    Painel de Controle → Sistema → Configurações Avançadas do
+                    Sistema
+                  </li>
+                  <li>Variáveis de Ambiente → Path → Editar → Novo</li>
+                  <li>Adicione: C:\Program Files\Apache\maven\bin</li>
+                </ul>
+              </li>
+            </ol>
+
+            <h4>macOS:</h4>
+            <div class="code-block">
+              <pre>
+# Usando Homebrew (mais fácil)
+brew install maven
+
+# Ou baixe manualmente de https://maven.apache.org/download.cgi
+              </pre>
+            </div>
+
+            <h4>Linux (Ubuntu/Debian):</h4>
+            <div class="code-block">
+              <pre>
+sudo apt install maven
+              </pre>
+            </div>
+
+            <h4>Verificar Instalação:</h4>
+            <div class="code-block">
+              <pre>
+mvn -version
+              </pre>
+            </div>
+            <p>Você deve ver algo como:</p>
+            <div class="code-block">
+              <pre>
+Apache Maven 3.9.x
+Maven home: /usr/share/maven
+Java version: 17.0.x, vendor: Eclipse Adoptium
+              </pre>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <h3>3. Instalar IntelliJ IDEA Community</h3>
+
+            <div class="concept-box">
+              <h4>O que é uma IDE?</h4>
+              <p>
+                <strong>IDE (Integrated Development Environment)</strong> é um
+                editor de código com ferramentas integradas que facilitam o
+                desenvolvimento:
+              </p>
+              <ul>
+                <li>
+                  <strong>Editor de Código:</strong> Com syntax highlighting
+                  (cores no código)
+                </li>
+                <li>
+                  <strong>Debugger:</strong> Para encontrar e corrigir erros
+                </li>
+                <li>
+                  <strong>Autocomplete:</strong> Sugere código enquanto você
+                  digita
+                </li>
+                <li>
+                  <strong>Integração com Maven:</strong> Gerencia dependências
+                  automaticamente
+                </li>
+                <li>
+                  <strong>Refatoração:</strong> Ajuda a reorganizar código
+                </li>
+              </ul>
+
+              <p>
+                <strong>IntelliJ IDEA</strong> é a IDE mais popular para Java. A
+                versão Community é gratuita e tem tudo que você precisa para
+                este curso.
+              </p>
+            </div>
+
+            <h4>Instalação:</h4>
+            <ol>
+              <li>
+                Acesse
+                <a
+                  href="https://www.jetbrains.com/idea/download"
+                  target="_blank"
+                  >https://www.jetbrains.com/idea/download</a
+                >
+              </li>
+              <li>Baixe a versão "Community" (gratuita)</li>
+              <li>Execute o instalador</li>
+              <li>Siga as instruções (aceite os padrões)</li>
+            </ol>
+
+            <h4>Configuração Inicial:</h4>
+            <ol>
+              <li>Abra o IntelliJ IDEA</li>
+              <li>Na primeira vez, ele pedirá para configurar o JDK</li>
+              <li>Selecione o JDK 17 que você instalou</li>
+              <li>Pronto! Você pode começar a desenvolver</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🚀 Criando seu Primeiro Projeto</h2>
+
+          <div class="step-box">
+            <h3>Opção 1: Usar o Gerador de Projetos (Recomendado)</h3>
+            <p>
+              Esta apostila inclui um script que cria projetos Java rapidamente,
+              similar ao <code>create-next-app</code> do Next.js.
+            </p>
+
+            <h4>Passo a Passo:</h4>
+            <ol>
+              <li>
+                <strong>Baixe o script:</strong> Na página principal da
+                apostila, na seção "Downloads e Recursos", baixe o arquivo
+                <code>create-java-project.sh</code>
+              </li>
+              <li>
+                <strong>Dê permissão de execução:</strong> Abra o terminal na
+                pasta onde baixou o script
+                <div class="code-block">
+                  <pre>
+# Linux/macOS
+chmod +x create-java-project.sh
+
+# Windows: O script pode ser executado diretamente ou via Git Bash
+                  </pre>
+                </div>
+              </li>
+              <li>
+                <strong>Execute o script:</strong>
+                <div class="code-block">
+                  <pre>
+# Linux/macOS
+./create-java-project.sh meu-primeiro-projeto
+
+# Windows (Git Bash ou WSL)
+bash create-java-project.sh meu-primeiro-projeto
+                  </pre>
+                </div>
+              </li>
+              <li>
+                <strong>Entre no projeto criado:</strong>
+                <div class="code-block">
+                  <pre>
+cd meu-primeiro-projeto
+                  </pre>
+                </div>
+              </li>
+              <li>
+                <strong>Teste se funcionou:</strong>
+                <div class="code-block">
+                  <pre>
+# Compilar o projeto
+mvn clean compile
+
+# Executar testes
+mvn test
+
+# Executar a aplicação
+mvn exec:java -Dexec.mainClass="com.exemplo.App"
+                  </pre>
+                </div>
+              </li>
+            </ol>
+
+            <div class="tip-box">
+              <strong>💡 O que o script cria:</strong>
+              <ul>
+                <li>Estrutura completa de pastas Maven</li>
+                <li>Arquivo <code>pom.xml</code> configurado</li>
+                <li>Classe principal de exemplo (<code>App.java</code>)</li>
+                <li>Classe de teste de exemplo (<code>AppTest.java</code>)</li>
+                <li>Arquivo <code>.gitignore</code> para versionamento</li>
+                <li><code>README.md</code> com instruções</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <h3>Opção 2: Criar Projeto Manualmente (Para Entender Melhor)</h3>
+            <p>
+              Se preferir criar manualmente para entender como tudo funciona,
+              siga estes passos:
+            </p>
+
+            <h4>Passo 1: Criar Estrutura de Pastas</h4>
+            <p>
+              Crie a seguinte estrutura de pastas (isso é a convenção padrão do
+              Maven):
+            </p>
+            <div class="code-block">
+              <pre>
+meu-projeto/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── exemplo/
+│   │   └── resources/
+│   └── test/
+│       ├── java/
+│       │   └── com/
+│       │       └── exemplo/
+│       └── resources/
+└── pom.xml
+              </pre>
+            </div>
+
+            <div class="concept-box">
+              <h4>Por que essa estrutura?</h4>
+              <ul>
+                <li>
+                  <strong>src/main/java:</strong> Código fonte principal da
+                  aplicação
+                </li>
+                <li>
+                  <strong>src/main/resources:</strong> Arquivos de configuração
+                  (properties, XML, etc.)
+                </li>
+                <li><strong>src/test/java:</strong> Código de testes</li>
+                <li>
+                  <strong>src/test/resources:</strong> Recursos usados apenas
+                  nos testes
+                </li>
+                <li>
+                  <strong>com/exemplo:</strong> Packages Java (organização por
+                  domínio invertido)
+                </li>
+              </ul>
+              <p>
+                <strong>Packages:</strong> Em Java, packages são como "pastas
+                lógicas" que organizam classes. A convenção é usar o domínio
+                invertido (com.exemplo ao invés de exemplo.com) para evitar
+                conflitos.
+              </p>
+            </div>
+
+            <h4>Passo 2: Criar o arquivo pom.xml</h4>
+            <p>
+              O <code>pom.xml</code> (Project Object Model) é o arquivo de
+              configuração do Maven. Ele define dependências, versão do Java, e
+              outras configurações do projeto.
+            </p>
+            <p>
+              Crie o arquivo <code>pom.xml</code> na raiz do projeto com este
+              conteúdo:
+            </p>
+            <div class="code-block">
+              <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.exemplo&lt;/groupId&gt;
+    &lt;artifactId&gt;meu-projeto&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- JUnit para testes --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+            &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+            &lt;version&gt;5.10.0&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.11.0&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;source&gt;17&lt;/source&gt;
+                    &lt;target&gt;17&lt;/target&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+              </pre>
+            </div>
+
+            <div class="concept-box">
+              <h4>Explicação do pom.xml:</h4>
+              <ul>
+                <li>
+                  <strong>groupId:</strong> Identifica a organização (geralmente
+                  o domínio invertido)
+                </li>
+                <li><strong>artifactId:</strong> Nome do projeto</li>
+                <li><strong>version:</strong> Versão do projeto</li>
+                <li>
+                  <strong>packaging:</strong> Tipo de empacotamento (jar = Java
+                  Archive)
+                </li>
+                <li>
+                  <strong>properties:</strong> Define versão do Java (17) e
+                  encoding (UTF-8)
+                </li>
+                <li>
+                  <strong>dependencies:</strong> Lista de bibliotecas que o
+                  projeto usa (JUnit para testes)
+                </li>
+                <li>
+                  <strong>build/plugins:</strong> Plugins do Maven (compilador,
+                  etc.)
+                </li>
+              </ul>
+            </div>
+
+            <h4>Passo 3: Criar Classe Principal</h4>
+            <p>
+              Crie o arquivo <code>src/main/java/com/exemplo/App.java</code>:
+            </p>
+            <div class="code-block">
+              <pre>
+package com.exemplo;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Olá, Java!");
+    }
+}
+              </pre>
+            </div>
+
+            <div class="concept-box">
+              <h4>Explicação do Código:</h4>
+              <ul>
+                <li>
+                  <strong>package com.exemplo:</strong> Declara que esta classe
+                  pertence ao package com.exemplo
+                </li>
+                <li>
+                  <strong>public class App:</strong> Define uma classe pública
+                  chamada App
+                </li>
+                <li>
+                  <strong>public static void main(String[] args):</strong>
+                  Método principal - ponto de entrada do programa
+                </li>
+                <li>
+                  <strong>System.out.println:</strong> Imprime texto no console
+                </li>
+              </ul>
+            </div>
+
+            <h4>Passo 4: Compilar e Executar</h4>
+            <div class="code-block">
+              <pre>
+# Compilar
+mvn clean compile
+
+# Executar
+mvn exec:java -Dexec.mainClass="com.exemplo.App"
+              </pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>📁 Entendendo a Estrutura de um Projeto Java</h2>
+
+          <div class="concept-box">
+            <h3>Estrutura Completa Explicada</h3>
+            <div class="code-block">
+              <pre>
+projeto-java/
+├── src/                          # Código fonte
+│   ├── main/                     # Código da aplicação
+│   │   ├── java/                 # Classes Java
+│   │   │   └── com/
+│   │   │       └── exemplo/      # Package (organização)
+│   │   │           └── App.java # Suas classes aqui
+│   │   └── resources/           # Arquivos de configuração
+│   │       └── application.properties
+│   └── test/                     # Código de testes
+│       ├── java/                 # Classes de teste
+│       │   └── com/
+│       │       └── exemplo/
+│       │           └── AppTest.java
+│       └── resources/           # Recursos para testes
+├── target/                       # Arquivos compilados (gerado automaticamente)
+│   ├── classes/                  # .class files
+│   └── test-classes/            # Classes de teste compiladas
+└── pom.xml                       # Configuração Maven
+              </pre>
+            </div>
+
+            <div class="tip-box">
+              <strong>💡 Convenção sobre Configuração:</strong> O Maven segue o
+              princípio "Convention over Configuration" - se você seguir a
+              estrutura padrão, o Maven sabe automaticamente onde encontrar seu
+              código, sem precisar configurar nada.
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🔤 Conceitos Fundamentais do Java</h2>
+
+          <div class="concept-box">
+            <h3>1. Classes e Objetos</h3>
+            <p>
+              Java é uma linguagem <strong>orientada a objetos</strong>. Isso
+              significa que tudo em Java é organizado em
+              <strong>classes</strong> e <strong>objetos</strong>.
+            </p>
+
+            <ul>
+              <li>
+                <strong>Classe:</strong> É um "molde" ou "template" que define
+                características e comportamentos
+              </li>
+              <li>
+                <strong>Objeto:</strong> É uma "instância" de uma classe (um
+                exemplo concreto)
+              </li>
+            </ul>
+
+            <p><strong>Exemplo:</strong></p>
+            <div class="code-block">
+              <pre>
+// CLASSE (o molde)
+public class Usuario {
+    // Atributos (características)
+    private String nome;
+    private int idade;
+    
+    // Construtor (cria objetos)
+    public Usuario(String nome, int idade) {
+        this.nome = nome;
+        this.idade = idade;
+    }
+    
+    // Método (comportamento)
+    public String getNome() {
+        return nome;
+    }
+}
+
+// OBJETO (instância da classe)
+Usuario usuario1 = new Usuario("João", 25);
+Usuario usuario2 = new Usuario("Maria", 30);
+              </pre>
+            </div>
+
+            <div class="tip-box">
+              <strong>💡 Analogia:</strong> Pense em uma classe como um
+              "formulário em branco" e um objeto como um "formulário
+              preenchido". A classe define os campos, o objeto tem valores
+              específicos.
+            </div>
+          </div>
+
+          <div class="concept-box">
+            <h3>2. Packages e Imports</h3>
+            <p>
+              <strong>Packages</strong> são como "pastas lógicas" que organizam
+              classes. Eles evitam conflitos de nomes e organizam o código.
+            </p>
+
+            <div class="code-block">
+              <pre>
+// Declara o package desta classe
+package com.exemplo.modelo;
+
+// Importa classes de outros packages
+import java.util.List;        // Import específico
+import java.util.ArrayList;   // Import específico
+import java.util.*;           // Import de todas as classes do package
+
+public class MinhaClasse {
+    // Agora posso usar List e ArrayList sem o nome completo
+    List&lt;String&gt; lista = new ArrayList&lt;&gt;();
+    
+    // Sem import, teria que escrever:
+    // java.util.List&lt;String&gt; lista = new java.util.ArrayList&lt;&gt;();
+}
+              </pre>
+            </div>
+
+            <div class="tip-box">
+              <strong>💡 Convenção de Packages:</strong> Use o domínio invertido
+              (com.exemplo ao invés de exemplo.com) para evitar conflitos. Se
+              você trabalha na empresa "exemplo.com", seus packages começam com
+              "com.exemplo".
+            </div>
+          </div>
+
+          <div class="concept-box">
+            <h3>3. Modificadores: final, static, var</h3>
+
+            <h4>final</h4>
+            <p>
+              Torna uma variável, parâmetro ou método imutável/não modificável.
+            </p>
+            <div class="code-block">
+              <pre>
+final String nome = "João";
+// nome = "Maria";  // ERRO! Não pode alterar
+
+final int idade = 25;
+// idade = 30;  // ERRO! Não pode alterar
+              </pre>
+            </div>
+
+            <h4>static</h4>
+            <p>
+              Indica que algo pertence à <strong>classe</strong>, não a uma
+              <strong>instância</strong>. Pode ser acessado sem criar um objeto.
+            </p>
+            <div class="code-block">
+              <pre>
+public class Exemplo {
+    // Constante (final + static)
+    private static final int MAX_USUARIOS = 100;
+    
+    // Método estático - pode chamar sem criar objeto
+    public static void metodoEstatico() {
+        System.out.println("Método estático");
+    }
+}
+
+// Uso - não precisa criar objeto
+Exemplo.metodoEstatico();
+System.out.println(Exemplo.MAX_USUARIOS);
+              </pre>
+            </div>
+
+            <h4>var (Java 10+)</h4>
+            <p>
+              <strong>Inferência de tipo</strong> - o Java "adivinha" o tipo da
+              variável baseado no valor atribuído.
+            </p>
+            <div class="code-block">
+              <pre>
+// Antes (Java 9 e anteriores)
+String nome = "João";
+List&lt;String&gt; lista = new ArrayList&lt;&gt;();
+
+// Com var (Java 10+)
+var nome = "João";              // Java infere que é String
+var lista = new ArrayList&lt;String&gt;();  // Java infere que é ArrayList&lt;String&gt;
+              </pre>
+            </div>
+          </div>
+
+          <div class="concept-box">
+            <h3>4. Records (Java 14+) - Classes Imutáveis Modernas</h3>
+            <p>
+              <strong>Records</strong> são uma forma simplificada de criar
+              classes imutáveis (que não podem ser alteradas após criação). Eles
+              reduzem muito código repetitivo.
+            </p>
+
+            <div class="code-block">
+              <pre>
+// ANTES: Classe tradicional (muito código)
+public class Usuario {
+    private final String nome;
+    private final int idade;
+    
+    public Usuario(String nome, int idade) {
+        this.nome = nome;
+        this.idade = idade;
+    }
+    
+    public String getNome() { return nome; }
+    public int getIdade() { return idade; }
+    
+    @Override
+    public boolean equals(Object o) { /* código complexo */ }
+    @Override
+    public int hashCode() { /* código complexo */ }
+    @Override
+    public String toString() { /* código complexo */ }
+}
+
+// DEPOIS: Record (código mínimo)
+public record Usuario(String nome, int idade) {
+    // Pode adicionar métodos customizados
+    public boolean ehMaiorDeIdade() {
+        return idade >= 18;
+    }
+}
+
+// Uso
+Usuario user = new Usuario("João", 25);
+System.out.println(user.nome());  // getter automático (sem "get")
+System.out.println(user);         // toString automático
+              </pre>
+            </div>
+
+            <div class="tip-box">
+              <strong>💡 Quando usar Records:</strong>
+              <ul>
+                <li>
+                  DTOs (Data Transfer Objects) - objetos que só carregam dados
+                </li>
+                <li>Value Objects - objetos que representam valores</li>
+                <li>Quando você precisa de imutabilidade</li>
+                <li>Quando você não precisa de setters (valores não mudam)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>📚 Collections e Stream API</h2>
+
+          <div class="concept-box">
+            <h3>Collections - Estruturas de Dados</h3>
+            <p>
+              <strong>Collections</strong> são estruturas de dados prontas do
+              Java para armazenar e manipular grupos de objetos.
+            </p>
+
+            <h4>List - Lista Ordenada</h4>
+            <div class="code-block">
+              <pre>
+import java.util.*;
+
+// List mantém ordem de inserção e permite duplicatas
+List&lt;String&gt; nomes = new ArrayList&lt;&gt;();
+nomes.add("João");
+nomes.add("Maria");
+nomes.add("João");  // Permite duplicatas
+
+System.out.println(nomes.get(0));  // "João" (primeiro elemento)
+              </pre>
+            </div>
+
+            <h4>Map - Chave-Valor</h4>
+            <div class="code-block">
+              <pre>
+// Map armazena pares chave-valor (como dicionário)
+Map&lt;String, Integer&gt; idades = new HashMap&lt;&gt;();
+idades.put("João", 25);
+idades.put("Maria", 30);
+
+System.out.println(idades.get("João"));  // 25
+              </pre>
+            </div>
+
+            <h4>Optional - Evita NullPointerException</h4>
+            <div class="code-block">
+              <pre>
+// Optional representa um valor que pode ou não existir
+Optional&lt;String&gt; nome = Optional.ofNullable(buscarNome());
+
+// Verifica se existe antes de usar
+if (nome.isPresent()) {
+    System.out.println(nome.get());
+}
+
+// Ou de forma mais elegante
+nome.ifPresent(n -&gt; System.out.println(n));
+              </pre>
+            </div>
+          </div>
+
+          <div class="concept-box">
+            <h3>Stream API - Programação Funcional</h3>
+            <p>
+              <strong>Stream API</strong> permite processar coleções de forma
+              declarativa e funcional. É como um "pipeline" de operações.
+            </p>
+
+            <div class="code-block">
+              <pre>
+import java.util.*;
+import java.util.stream.Collectors;
+
+// Lista de usuários
+List&lt;Usuario&gt; usuarios = Arrays.asList(
+    new Usuario("João", 25),
+    new Usuario("Maria", 30),
+    new Usuario("Pedro", 20)
+);
+
+// Stream - processamento em pipeline
+List&lt;String&gt; nomesMaiores = usuarios.stream()        // Cria stream
+    .filter(u -&gt; u.idade() &gt;= 18)                  // Filtra (mantém apenas &gt;= 18)
+    .map(Usuario::nome)                              // Transforma (extrai nome)
+    .collect(Collectors.toList());                   // Coleta resultado
+
+// Operações comuns do Stream
+usuarios.stream()
+    .filter(u -&gt; u.idade() &gt; 25)                    // filter: filtra elementos
+    .map(Usuario::nome)                              // map: transforma cada elemento
+    .sorted()                                        // sorted: ordena
+    .forEach(System.out::println);                   // forEach: executa ação para cada
+              </pre>
+            </div>
+
+            <div class="concept-box">
+              <h4>Operações do Stream Explicadas:</h4>
+              <ul>
+                <li>
+                  <strong>filter:</strong> Filtra elementos que atendem uma
+                  condição
+                </li>
+                <li><strong>map:</strong> Transforma cada elemento em outro</li>
+                <li><strong>sorted:</strong> Ordena os elementos</li>
+                <li>
+                  <strong>forEach:</strong> Executa uma ação para cada elemento
+                </li>
+                <li>
+                  <strong>collect:</strong> Coleta os resultados em uma coleção
+                </li>
+                <li><strong>distinct:</strong> Remove duplicatas</li>
+                <li><strong>limit:</strong> Limita quantidade de elementos</li>
+                <li><strong>count:</strong> Conta elementos</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🧠 Mini-Desafio Prático</h2>
+          <div class="challenge-box">
+            <h3>Desafio: Lista de Usuários com Stream</h3>
+            <p>
+              <strong>Objetivo:</strong> Crie uma lista de usuários e use
+              Stream.filter e map para transformar e imprimir nomes.
+            </p>
+
+            <h4>Passo a Passo Detalhado:</h4>
+            <ol>
+              <li>
+                <strong>Crie um projeto:</strong> Use o gerador de projetos ou
+                crie manualmente
+              </li>
+              <li>
+                <strong>Crie a classe Usuario:</strong> Em
+                <code>src/main/java/com/exemplo/Usuario.java</code>
+                <div class="code-block">
+                  <pre>
+package com.exemplo;
+
+public record Usuario(String nome, int idade) {}
+                  </pre>
+                </div>
+              </li>
+              <li>
+                <strong>Crie a classe Main:</strong> Em
+                <code>src/main/java/com/exemplo/Main.java</code>
+                <div class="code-block">
+                  <pre>
+package com.exemplo;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Main {
+    public static void main(String[] args) {
+        // Criar lista de usuários
+        List&lt;Usuario&gt; usuarios = List.of(
+            new Usuario("João", 25),
+            new Usuario("Maria", 18),
+            new Usuario("Pedro", 30),
+            new Usuario("Ana", 22),
+            new Usuario("Carlos", 19)
+        );
+        
+        // Usar Stream para processar
+        usuarios.stream()
+            .filter(u -&gt; u.idade() &gt; 20)              // Filtrar idade &gt; 20
+            .map(u -&gt; u.nome().toUpperCase())        // Converter nome para maiúsculas
+            .forEach(System.out::println);            // Imprimir cada nome
+    }
+}
+                  </pre>
+                </div>
+              </li>
+              <li>
+                <strong>Compile e execute:</strong>
+                <div class="code-block">
+                  <pre>
+mvn clean compile
+mvn exec:java -Dexec.mainClass="com.exemplo.Main"
+                  </pre>
+                </div>
+              </li>
+              <li>
+                <strong>Resultado esperado:</strong> Você deve ver no console:
+                <div class="code-block">
+                  <pre>
+JOÃO
+PEDRO
+ANA
+                  </pre>
+                </div>
+                (João, Pedro e Ana têm idade maior que 20)
+              </li>
+            </ol>
+
+            <div class="tip-box">
+              <strong>💡 Explicação do Código:</strong>
+              <ul>
+                <li>
+                  <code>List.of()</code> cria uma lista imutável com os
+                  elementos fornecidos
+                </li>
+                <li><code>.stream()</code> converte a lista em um Stream</li>
+                <li>
+                  <code>.filter(u -&gt; u.idade() &gt; 20)</code> mantém apenas
+                  usuários com idade &gt; 20
+                </li>
+                <li>
+                  <code>.map(u -&gt; u.nome().toUpperCase())</code> transforma
+                  cada usuário em seu nome em maiúsculas
+                </li>
+                <li>
+                  <code>.forEach(System.out::println)</code> imprime cada nome
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>🔄 Comandos Maven Essenciais</h2>
+
+          <div class="concept-box">
+            <h3>Comandos que Você Vai Usar Muito</h3>
+
+            <h4>mvn clean</h4>
+            <p>Limpa arquivos compilados (pasta target)</p>
+            <div class="code-block">
+              <pre>mvn clean</pre>
+            </div>
+
+            <h4>mvn compile</h4>
+            <p>Compila o código Java</p>
+            <div class="code-block">
+              <pre>mvn compile</pre>
+            </div>
+
+            <h4>mvn clean compile</h4>
+            <p>Limpa e compila (combinado)</p>
+            <div class="code-block">
+              <pre>mvn clean compile</pre>
+            </div>
+
+            <h4>mvn test</h4>
+            <p>Executa testes</p>
+            <div class="code-block">
+              <pre>mvn test</pre>
+            </div>
+
+            <h4>mvn package</h4>
+            <p>Compila, testa e gera JAR</p>
+            <div class="code-block">
+              <pre>mvn package</pre>
+            </div>
+
+            <h4>mvn exec:java</h4>
+            <p>Executa uma classe Java</p>
+            <div class="code-block">
+              <pre>mvn exec:java -Dexec.mainClass="com.exemplo.Main"</pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>👉 Recursos Adicionais</h2>
+          <div class="resources-box">
+            <a
+              href="https://www.youtube.com/results?search_query=Modern+Java+for+Developers+Amigoscode"
+              target="_blank"
+              class="resource-link"
+            >
+              🎥 Modern Java for Developers – Amigoscode (YouTube, 2h)
+            </a>
+            <a
+              href="https://docs.oracle.com/en/java/javase/17/docs/api/"
+              target="_blank"
+              class="resource-link"
+            >
+              📖 Java 17 API Documentation
+            </a>
+            <a
+              href="https://www.baeldung.com/java-streams"
+              target="_blank"
+              class="resource-link"
+            >
+              📚 Baeldung - Java Streams Guide
+            </a>
+            <a
+              href="https://maven.apache.org/guides/getting-started/"
+              target="_blank"
+              class="resource-link"
+            >
+              📚 Maven Getting Started Guide
+            </a>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>✅ Checklist da Aula 01</h2>
+          <div class="challenge-box">
+            <p>Antes de ir para a próxima aula, certifique-se de que:</p>
+            <ul>
+              <li>✅ Java 17 (JDK) instalado e funcionando</li>
+              <li>✅ Maven instalado e funcionando</li>
+              <li>✅ IntelliJ IDEA instalado</li>
+              <li>✅ Criou seu primeiro projeto Java</li>
+              <li>✅ Compilou e executou um programa</li>
+              <li>✅ Entendeu o que são classes, objetos, packages</li>
+              <li>✅ Praticou com Records e Stream API</li>
+              <li>✅ Completou o mini-desafio</li>
+            </ul>
+          </div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="index.html" class="nav-link">← Menu Principal</a>
+          <a href="aula-02.html" class="nav-link">Próxima Aula →</a>
+        </nav>
+      </div>
+    </div>
+  </body>
+</html>
