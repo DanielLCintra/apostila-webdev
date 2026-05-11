@@ -1,0 +1,69 @@
+<article
+  class="lesson-content video-embed-page youtube-playlist-grid-page-root"
+  data-youtube-playlist-grid-page
+  data-videos-src="assets/data/devfast-channel-videos.json"
+>
+  <h2>Canal DevFast no YouTube</h2>
+
+  <p class="intro-text mb-4">
+    Escolha qualquer vídeo na grade abaixo para assistir aqui mesmo. A lista
+    usa os uploads do canal e
+    <strong>exclui clipes muito curtos</strong>
+    (até 60 segundos, típicos de Shorts), priorizando vídeos em formato
+    tradicional. Use o atalho para abrir o
+    <strong>YouTube</strong>
+    se quiser ver também Shorts, comentários ou outras abas do canal.
+  </p>
+
+  <p class="mb-4 btn-row-devfast">
+    <a
+      href="https://www.youtube.com/@DevFastOficial"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn btn-primary"
+    >
+      <i class="fab fa-youtube" aria-hidden="true"></i>
+      Abrir canal @DevFastOficial no YouTube
+    </a>
+  </p>
+
+  <section class="mb-4" aria-labelledby="devfast-player-heading">
+    <h3 id="devfast-player-heading" class="section-title with-icon">
+      <i class="fas fa-play-circle" aria-hidden="true"></i>
+      Player
+    </h3>
+    <div
+      class="youtube-embed-shell youtube-embed-shell--main"
+      title="Vídeo selecionado — DevFast"
+    >
+      <iframe
+        data-yt-grid-iframe
+        title="Vídeo selecionado do canal DevFast no YouTube"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin"
+      ></iframe>
+    </div>
+  </section>
+
+  <section class="mb-4" aria-labelledby="devfast-grid-heading">
+    <h3 id="devfast-grid-heading" class="section-title with-icon">
+      <i class="fas fa-th-large" aria-hidden="true"></i>
+      Todos os vídeos da lista
+    </h3>
+    <p
+      class="intro-text text-muted mb-3 youtube-playlist-meta-line"
+      data-yt-grid-meta
+    ></p>
+    <label class="yt-filter-label" for="devfast-video-filter">Filtrar por título</label>
+    <input
+      id="devfast-video-filter"
+      type="search"
+      class="yt-video-grid__filter input-like mb-4"
+      data-yt-grid-filter
+      placeholder="Digite parte do título…"
+      autocomplete="off"
+    />
+    <div data-yt-grid-root class="yt-video-grid"></div>
+  </section>
+</article>

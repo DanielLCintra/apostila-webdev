@@ -12,7 +12,8 @@
         --surface: #ffffff;
         --border: #e0e0e0;
         --text: #333;
-        --code-bg: #f4f4f4;
+        --code-bg: #282a36;
+        --code-fg: #f8f8f2;
         --success: #28a745;
         --error: #dc3545;
         --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -69,18 +70,21 @@
 
       code {
         background-color: var(--code-bg);
+        color: var(--code-fg, #f8f8f2);
         padding: 2px 6px;
         border-radius: 4px;
         font-family: "Courier New", Courier, monospace;
+        border: 1px solid rgba(255, 121, 198, 0.2);
       }
 
       pre {
         background-color: var(--code-bg);
+        color: var(--code-fg, #f8f8f2);
         padding: 12px;
         border-radius: 6px;
         overflow-x: auto;
         margin-bottom: 16px;
-        border: 1px solid rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(255, 121, 198, 0.22);
       }
 
       pre code {

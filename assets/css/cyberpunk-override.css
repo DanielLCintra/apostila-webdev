@@ -1,217 +1,447 @@
-/* ========== SOBRESCRITA COMPLETA DO TEMA CYBERPUNK ========== */
+/* =============================================================================
+   Apostila Web — Design system premium (cyberpunk minimal / sci-fi doc)
+   Dark-first; light alternativo. Apenas apresentação — conteúdo HTML intacto.
+   ============================================================================= */
 
-/* ========== VARIÁVEIS CYBERPUNK SOBRESCREVENDO ORIGINAIS ========== */
+/* ----- Design tokens (marca) ----- */
 :root {
-  /* Cores neon cyberpunk */
-  --neon-blue: #00ffff;
-  --neon-purple: #8a2be2;
-  --neon-pink: #ff00ff;
-  --neon-green: #00ff00;
-  --neon-orange: #ff6600;
-  
-  /* Cores base */
-  --cyber-black: #0a0a0a;
-  --cyber-dark: #1a1a1a;
-  --cyber-gray: #2a2a2a;
-  --cyber-light-gray: #3a3a3a;
-  --cyber-white: #ffffff;
-  --cyber-off-white: #f0f0f0;
-  
-  /* Fontes cyberpunk */
-  --font-cyberpunk: 'Rajdhani', 'Segoe UI', sans-serif;
-  --font-cyberpunk-display: 'Orbitron', 'Segoe UI', sans-serif;
-  --font-code: 'Courier New', 'Monaco', monospace;
-  
-  /* Transições neon */
-  --neon-glow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
-  --neon-glow-blue: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue);
-  --neon-glow-purple: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple), 0 0 15px var(--neon-purple);
-  --neon-glow-green: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green), 0 0 15px var(--neon-green);
-  
-  /* Transições suaves */
-  --transition-neon: all 0.3s ease;
-  --transition-glow: box-shadow 0.3s ease, text-shadow 0.3s ease;
+  --color-bg-deep: #060816;
+  --color-bg-elevated: #0b1020;
+  --color-surface: #111827;
+  --color-surface-alt: #1a2236;
+
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0284c7;
+
+  --color-purple-400: #a855f7;
+  --color-purple-500: #9333ea;
+  --color-purple-600: #7e22ce;
+
+  --color-cyan: #22d3ee;
+  --color-pink: #ec4899;
+
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /* Brilhos discretos (evitar neon agressivo) */
+  --glow-blue-soft: 0 0 32px rgba(56, 189, 248, 0.12);
+  --glow-purple-soft: 0 0 40px rgba(168, 85, 247, 0.08);
+  --border-glow: 0 0 0 1px rgba(56, 189, 248, 0.12), 0 0 0 1px rgba(168, 85, 247, 0.06);
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", var(--font-sans);
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-fast: 0.18s;
+  --duration-base: 0.24s;
+
+  /* Compatibilidade com cyberpunk-aulas.css (aliases) */
+  --transition-neon: background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+  --transition-glow: box-shadow var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+
+  /* Blocos de código — Dracula sobre fundo sempre preto (qualquer tema) */
+  --syntax-bg: #000000;
+  --syntax-fg: #f8f8f2;
+  /* Barra do rótulo: tom sóbrio sobre preto */
+  --syntax-header-bg: #141414;
+  --syntax-comment: #6272a4;
+  --syntax-pink: #ff79c6;
+  --syntax-purple: #bd93f9;
+  --syntax-green: #50fa7b;
+  --syntax-yellow: #f1fa8c;
+  --syntax-keyword: #8be9fd;
+  --syntax-orange: #ffb86c;
+  --syntax-pre-border: rgba(255, 255, 255, 0.1);
+  --syntax-pre-shadow: 0 10px 36px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --syntax-inline-bg: #000000;
+  --syntax-inline-fg: var(--syntax-purple);
+  --syntax-inline-border: rgba(189, 147, 249, 0.45);
 }
 
-/* ========== TEMA LIGHT ========== */
-[data-theme="light"] {
-  --primary-color: var(--neon-purple);
-  --primary-color-dark: #6a1b9a;
-  --secondary-color: var(--cyber-gray);
-  --accent-color: var(--neon-blue);
-  --accent-color-light: rgba(0, 255, 255, 0.1);
-  --success-color: var(--neon-green);
-  --success-color-light: rgba(0, 255, 0, 0.1);
-  --warning-color: var(--neon-orange);
-  --warning-color-light: rgba(255, 102, 0, 0.1);
-  --info-color: var(--neon-blue);
-  --info-color-light: rgba(0, 255, 255, 0.1);
-  
-  --light-bg: var(--cyber-white);
-  --dark-bg: var(--cyber-dark);
-  --white: var(--cyber-white);
-  --black: var(--cyber-black);
-  --gray-100: var(--cyber-off-white);
-  --gray-200: #e0e0e0;
-  --gray-300: #d0d0d0;
-  --gray-400: #c0c0c0;
-  --gray-500: #a0a0a0;
-  --gray-600: #808080;
-  --gray-700: #606060;
-  --gray-800: #404040;
-  --gray-900: var(--cyber-black);
-  
-  --font-family-base: var(--font-cyberpunk);
-  --font-family-code: var(--font-code);
-  
-  --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-  --box-shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  --box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.2);
-}
-
-/* ========== TEMA DARK ========== */
+/* ----- Tema escuro (padrão da experiência) ----- */
 [data-theme="dark"] {
-  --primary-color: var(--neon-blue);
-  --primary-color-dark: #00cccc;
-  --secondary-color: var(--cyber-dark);
-  --accent-color: var(--neon-blue);
-  --accent-color-light: rgba(0, 255, 255, 0.1);
-  --success-color: var(--neon-green);
-  --success-color-light: rgba(0, 255, 0, 0.1);
-  --warning-color: var(--neon-orange);
-  --warning-color-light: rgba(255, 102, 0, 0.1);
-  --info-color: var(--neon-blue);
-  --info-color-light: rgba(0, 255, 255, 0.1);
-  
-  --light-bg: var(--cyber-black);
-  --dark-bg: var(--cyber-dark);
-  --white: var(--cyber-white);
-  --black: var(--cyber-black);
-  --gray-100: var(--cyber-dark);
-  --gray-200: var(--cyber-gray);
-  --gray-300: var(--cyber-light-gray);
-  --gray-400: #505050;
-  --gray-500: #707070;
-  --gray-600: #909090;
-  --gray-700: #b0b0b0;
-  --gray-800: #d0d0d0;
-  --gray-900: var(--cyber-white);
-  
-  --font-family-base: var(--font-cyberpunk);
-  --font-family-code: var(--font-code);
-  
-  --box-shadow: 0 0.125rem 0.25rem rgba(0, 255, 255, 0.1);
-  --box-shadow-md: 0 0.5rem 1rem rgba(0, 255, 255, 0.15);
-  --box-shadow-lg: 0 1rem 3rem rgba(0, 255, 255, 0.2);
+  --neon-blue: var(--color-primary-400);
+  --neon-purple: var(--color-purple-500);
+  --neon-pink: var(--color-pink);
+  --neon-green: var(--color-success);
+  --neon-orange: var(--color-warning);
+
+  --cyber-black: var(--color-bg-deep);
+  --cyber-dark: var(--color-bg-elevated);
+  --cyber-gray: var(--color-surface);
+  --cyber-light-gray: var(--color-surface-alt);
+  --cyber-white: var(--color-text-primary);
+  --cyber-off-white: #f1f5f9;
+
+  --font-cyberpunk: var(--font-sans);
+  --font-cyberpunk-display: var(--font-display);
+  --font-code: var(--font-mono);
+
+  --neon-glow: var(--glow-blue-soft);
+  --neon-glow-blue: 0 0 24px rgba(56, 189, 248, 0.18);
+  --neon-glow-purple: 0 0 28px rgba(168, 85, 247, 0.14);
+  --neon-glow-green: 0 0 20px rgba(34, 197, 94, 0.12);
+
+  --primary-color: var(--color-primary-400);
+  --primary-color-dark: var(--color-primary-600);
+  --secondary-color: var(--color-surface);
+  --accent-color: var(--color-cyan);
+
+  --success-color: var(--color-success);
+  --success-color-light: rgba(34, 197, 94, 0.12);
+
+  --warning-color: var(--color-warning);
+  --warning-color-light: rgba(245, 158, 11, 0.12);
+
+  --accent-color-light: rgba(34, 211, 238, 0.1);
+
+  --info-color: var(--color-primary-500);
+  --info-color-light: rgba(14, 165, 233, 0.1);
+
+  --light-bg: var(--color-bg-deep);
+  --dark-bg: var(--color-bg-elevated);
+  --white: #ffffff;
+  --black: #020617;
+
+  --gray-100: var(--color-surface);
+  --gray-200: var(--color-surface-alt);
+  --gray-300: rgba(148, 163, 184, 0.22);
+  --gray-400: rgba(148, 163, 184, 0.35);
+  --gray-500: #64748b;
+  --gray-600: var(--color-text-muted);
+  --gray-700: var(--color-text-secondary);
+  --gray-800: #e2e8f0;
+  --gray-900: var(--color-text-primary);
+
+  --text-secondary: var(--color-text-muted);
+
+  --font-family-base: var(--font-sans);
+  --font-family-code: var(--font-mono);
+
+  --border-radius-sm: var(--radius-sm);
+  --border-radius: var(--radius-md);
+  --border-radius-lg: var(--radius-lg);
+
+  --box-shadow: 0 8px 32px rgba(2, 6, 23, 0.45), var(--border-glow);
+  --box-shadow-md: 0 12px 40px rgba(2, 6, 23, 0.55), var(--glow-blue-soft);
+  --box-shadow-lg: 0 24px 64px rgba(2, 6, 23, 0.6);
+
+  --header-height: 64px;
+  --sidebar-width: 272px;
+
+  color-scheme: dark;
 }
 
-/* ========== RESET E ESTILOS BASE CYBERPUNK ========== */
-* {
-  transition: var(--transition-neon);
+/* ----- Tema claro (opcional, legível) ----- */
+[data-theme="light"] {
+  --neon-blue: var(--color-primary-600);
+  --neon-purple: var(--color-purple-600);
+  --neon-pink: #db2777;
+  --neon-green: #16a34a;
+  --neon-orange: #d97706;
+
+  --cyber-black: #0f172a;
+  --cyber-dark: #1e293b;
+  --cyber-gray: #f1f5f9;
+  --cyber-light-gray: #e2e8f0;
+  --cyber-white: #ffffff;
+  --cyber-off-white: #f8fafc;
+
+  --font-cyberpunk: var(--font-sans);
+  --font-cyberpunk-display: var(--font-display);
+  --font-code: var(--font-mono);
+
+  --neon-glow: 0 0 24px rgba(14, 165, 233, 0.15);
+  --neon-glow-blue: 0 0 20px rgba(14, 165, 233, 0.12);
+  --neon-glow-purple: 0 0 20px rgba(147, 51, 234, 0.1);
+  --neon-glow-green: 0 0 16px rgba(22, 163, 74, 0.1);
+
+  --primary-color: var(--color-primary-600);
+  --primary-color-dark: #0369a1;
+  --secondary-color: #1e293b;
+  --accent-color: var(--color-primary-500);
+
+  --success-color: var(--neon-green);
+  --success-color-light: #dcfce7;
+  --warning-color: var(--neon-orange);
+  --warning-color-light: #fef3c7;
+  --accent-color-light: #e0f2fe;
+
+  --info-color: var(--color-primary-600);
+  --info-color-light: #e0f2fe;
+
+  --light-bg: #f8fafc;
+  --dark-bg: #0f172a;
+  --white: #ffffff;
+  --black: #020617;
+
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+
+  --text-secondary: var(--gray-600);
+
+  --font-family-base: var(--font-sans);
+  --font-family-code: var(--font-mono);
+
+  --border-radius-sm: var(--radius-sm);
+  --border-radius: var(--radius-md);
+  --border-radius-lg: var(--radius-lg);
+
+  --box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --box-shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --box-shadow-lg: 0 16px 48px rgba(15, 23, 42, 0.12);
+
+  --header-height: 64px;
+  --sidebar-width: 272px;
+
+  color-scheme: light;
+}
+
+/* ----- Base ----- */
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  font-family: var(--font-cyberpunk);
-  background-color: var(--light-bg);
-  color: var(--gray-900);
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  font-size: 1rem;
   font-weight: 400;
-  letter-spacing: 0.5px;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  background-color: var(--light-bg);
+  background-image: radial-gradient(
+      ellipse 120% 80% at 50% -20%,
+      rgba(56, 189, 248, 0.08),
+      transparent 50%
+    ),
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(168, 85, 247, 0.05), transparent);
+  color: var(--gray-900);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-cyberpunk-display);
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+[data-theme="light"] body {
+  background-image: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  text-transform: none;
 }
 
 a {
   color: var(--primary-color);
   text-decoration: none;
-  transition: var(--transition-glow);
+  transition: color var(--duration-fast) var(--ease-out);
 }
 
 a:hover {
   color: var(--accent-color);
-  text-shadow: var(--neon-glow);
 }
 
-/* ========== LAYOUT PRINCIPAL CYBERPUNK ========== */
+[data-theme="dark"] a:focus-visible {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+/* ----- Cabeçalho (HUD / vidro moderado) ----- */
 header {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--neon-purple) 100%);
-  color: var(--cyber-black);
-  padding: 1rem 2rem;
+  height: var(--header-height);
+  padding: 0 var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: sticky;
   top: 0;
-  box-shadow: var(--neon-glow-blue);
   z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: var(--header-height);
-  border-bottom: 2px solid var(--accent-color);
+
+  background: color-mix(in srgb, var(--color-bg-elevated) 82%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-primary-400) 22%, transparent);
+  box-shadow: 0 4px 24px rgba(2, 6, 23, 0.35),
+    inset 0 1px 0 rgba(248, 250, 252, 0.06);
+}
+
+[data-theme="light"] header {
+  background: color-mix(in srgb, var(--white) 88%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--color-primary-500) 18%, transparent);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
 }
 
 header h1 {
-  font-size: 1.5rem;
-  margin-bottom: 0;
-  font-family: var(--font-cyberpunk-display);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: var(--neon-glow);
+  font-family: var(--font-display);
+  font-size: clamp(0.9375rem, 2vw, 1.125rem);
+  font-weight: 600;
+  margin: 0;
+  color: var(--gray-900);
+  text-shadow: none;
 }
 
+[data-theme="dark"] header h1 {
+  color: var(--color-text-primary);
+}
+
+.toggle-menu {
+  display: none;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid color-mix(in srgb, var(--color-primary-400) 25%, transparent);
+  color: var(--primary-color);
+  font-size: 1.25rem;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.toggle-menu:hover {
+  background: rgba(56, 189, 248, 0.14);
+  text-shadow: none;
+  transform: none;
+}
+
+[data-theme="light"] .toggle-menu {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary-color-dark);
+}
+
+/* ----- Layout ----- */
 .container {
   display: flex;
   min-height: calc(100vh - var(--header-height));
 }
 
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  min-height: 40vh;
+  color: var(--gray-600);
+  font-family: var(--font-sans);
+}
+
+.loading-indicator i {
+  font-size: 2rem;
+  color: var(--primary-color);
+  opacity: 0.85;
+}
+
 main {
   flex: 1;
-  padding: 2rem;
+  padding: var(--space-6) var(--space-5);
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  background-color: var(--light-bg);
+  background: transparent;
+}
+
+/* Aulas injetadas em #content — coluna única centrada (.lesson-content não pode usar max-width:none) */
+main#content > article {
+  width: 100%;
+  max-width: min(56.25rem, 100%);
+  margin-inline: auto;
+  box-sizing: border-box;
 }
 
 footer {
-  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--cyber-gray) 100%);
-  color: var(--white);
   text-align: center;
-  padding: 1rem;
-  border-top: 2px solid var(--accent-color);
-  box-shadow: 0 -2px 10px var(--box-shadow);
+  padding: var(--space-5);
+  margin-top: var(--space-6);
+  border-top: 1px solid color-mix(in srgb, var(--gray-600) 25%, transparent);
+  background: var(--dark-bg);
+  color: var(--gray-700);
 }
 
-/* ========== NAVEGAÇÃO CYBERPUNK ========== */
+[data-theme="dark"] footer {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-muted);
+  border-top-color: rgba(148, 163, 184, 0.12);
+}
+
+.footer-links a {
+  color: var(--primary-color);
+}
+
+.grid {
+  gap: var(--space-5);
+}
+
+/* ----- Navegação ----- */
 nav {
   width: var(--sidebar-width);
-  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--cyber-gray) 100%);
-  color: var(--white);
-  padding: 1rem;
+  flex-shrink: 0;
+  padding: var(--space-5);
   height: calc(100vh - var(--header-height));
   position: sticky;
   top: var(--header-height);
   overflow-y: auto;
-  transition: var(--transition-neon);
-  border-right: 2px solid var(--accent-color);
-  box-shadow: var(--neon-glow-blue);
+
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid color-mix(in srgb, var(--color-primary-400) 12%, transparent);
+  box-shadow: inset -1px 0 0 rgba(248, 250, 252, 0.04);
+}
+
+[data-theme="light"] nav {
+  background: var(--gray-100);
+  border-right: 1px solid var(--gray-200);
+  box-shadow: none;
 }
 
 nav h3 {
-  font-size: 1.2rem;
-  margin: 1.5rem 0 1rem;
-  border-bottom: 2px solid var(--accent-color);
-  padding-bottom: 0.5rem;
-  font-family: var(--font-cyberpunk-display);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--accent-color);
-  text-shadow: var(--neon-glow-blue);
+  letter-spacing: 0.08em;
+  color: var(--gray-600);
+  margin: var(--space-5) 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid color-mix(in srgb, var(--gray-600) 35%, transparent);
+  text-shadow: none;
 }
 
 nav h3:first-child {
@@ -220,112 +450,131 @@ nav h3:first-child {
 
 nav ul {
   list-style: none;
-  margin-bottom: 1.5rem;
+  margin: 0 0 var(--space-5);
+  padding: 0;
 }
 
 nav li {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-1);
 }
 
 nav a {
-  color: var(--white);
-  text-decoration: none;
-  display: block;
-  padding: 0.75rem 1rem;
-  border-radius: var(--border-radius-sm);
-  transition: var(--transition-glow);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--gray-700);
+  font-family: var(--font-sans);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-left: 3px solid transparent;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  border-left: none;
+}
+
+[data-theme="dark"] nav a {
+  color: var(--color-text-secondary);
 }
 
 nav a:hover {
-  background-color: rgba(0, 255, 255, 0.1);
-  color: var(--accent-color);
-  border-left-color: var(--accent-color);
-  text-shadow: var(--neon-glow-blue);
-  box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
+  background: rgba(56, 189, 248, 0.08);
+  color: var(--primary-color);
+  box-shadow: none;
+  text-shadow: none;
 }
 
 nav a.active {
-  background-color: var(--accent-color);
-  color: var(--cyber-black);
-  font-weight: bold;
-  border-left-color: var(--accent-color);
-  box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.3);
+  background: linear-gradient(
+    90deg,
+    rgba(56, 189, 248, 0.18),
+    rgba(168, 85, 247, 0.08)
+  );
+  color: var(--gray-900);
+  font-weight: 600;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
 }
 
-.toggle-menu {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--cyber-black);
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: var(--transition-glow);
+[data-theme="dark"] nav a.active {
+  color: var(--color-text-primary);
 }
 
-.toggle-menu:hover {
-  text-shadow: var(--neon-glow);
-  transform: scale(1.1);
-}
-
-/* ========== COMPONENTES DE CONTEÚDO CYBERPUNK ========== */
+/* ----- Artigo / tipografia pedagogica ----- */
 article {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
 }
 
+article h1 {
+  font-size: clamp(2rem, 4vw, 2.375rem);
+  font-weight: 700;
+  margin-bottom: var(--space-5);
+}
+
 article h2 {
-  color: var(--primary-color);
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--primary-color);
-  padding-bottom: 0.5rem;
-  font-size: 2rem;
-  text-shadow: var(--neon-glow);
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
+  color: var(--gray-900);
+  text-shadow: none;
 }
 
 article h3 {
-  color: var(--accent-color);
-  margin: 2rem 0 1rem;
   font-size: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-weight: 600;
+  margin: var(--space-6) 0 var(--space-4);
+  color: var(--gray-900);
+  text-transform: none;
 }
 
 article h4 {
   font-size: 1.25rem;
-  margin: 1.5rem 0 0.75rem;
+  font-weight: 600;
+  margin: var(--space-5) 0 var(--space-3);
   color: var(--text-secondary);
 }
 
 article p {
-  margin-bottom: 1rem;
-  color: var(--gray-900);
+  margin-bottom: var(--space-4);
+  color: var(--gray-700);
+}
+
+[data-theme="dark"] article p {
+  color: var(--color-text-secondary);
 }
 
 article ul,
 article ol {
-  margin: 1rem 0 1rem 2rem;
+  margin: var(--space-4) 0 var(--space-4) 1.5rem;
 }
 
 article li {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
   color: var(--gray-700);
 }
 
-/* ========== CITAÇÕES CYBERPUNK ========== */
+[data-theme="dark"] article li {
+  color: var(--color-text-secondary);
+}
+
 blockquote {
-  border-left: 4px solid var(--accent-color);
-  padding: 1rem 1.5rem;
-  margin: 1.5rem 0;
-  background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
-  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
-  box-shadow: 0 0 15px var(--box-shadow);
-  font-style: italic;
-  font-family: var(--font-cyberpunk);
+  border-left: 3px solid var(--accent-color);
+  padding: var(--space-4) var(--space-5);
+  margin: var(--space-5) 0;
+  background: color-mix(in srgb, var(--gray-100) 75%, transparent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  box-shadow: var(--box-shadow);
+  font-style: normal;
+  font-family: var(--font-sans);
+}
+
+[data-theme="dark"] blockquote {
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  box-shadow: var(--neon-glow);
 }
 
 blockquote p {
@@ -333,132 +582,165 @@ blockquote p {
   color: var(--gray-700);
 }
 
-/* ========== CÓDIGO CYBERPUNK ========== */
+[data-theme="dark"] blockquote p {
+  color: var(--color-text-secondary);
+}
+
+/* ----- Código inline e blocos (paleta Dracula / editor) ----- */
 code {
-  font-family: var(--font-code);
-  background-color: var(--cyber-black);
-  color: var(--neon-green);
-  padding: 0.2rem 0.4rem;
-  border-radius: var(--border-radius-sm);
+  font-family: var(--font-mono);
   font-size: 0.875em;
-  border: 1px solid var(--neon-green);
-  box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
-}
-
-.code-header {
-  background: linear-gradient(135deg, var(--cyber-gray) 0%, var(--cyber-dark) 100%);
-  color: var(--accent-color);
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-top: 1.5rem;
-  margin-bottom: 0;
-  font-family: var(--font-cyberpunk);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: 1px solid var(--accent-color);
-  border-bottom: none;
-}
-
-pre {
-  background-color: var(--cyber-black);
-  color: var(--neon-green);
-  padding: 1rem;
-  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
-  overflow-x: auto;
-  margin: 0 0 1.5rem 0;
-  border: 1px solid var(--neon-green);
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-}
-
-pre code {
-  background-color: transparent;
-  padding: 0;
-  color: inherit;
-  font-size: 0.9rem;
-  border: none;
+  font-weight: 500;
+  background: var(--syntax-inline-bg);
+  color: var(--syntax-inline-fg);
+  padding: 0.125em 0.4em;
+  border-radius: 6px;
+  border: 1px solid var(--syntax-inline-border);
   box-shadow: none;
 }
 
-/* ========== IMAGENS CYBERPUNK ========== */
-.img-container {
-  margin: 1.5rem 0;
+[data-theme="light"] code {
+  background: var(--syntax-inline-bg);
+  color: var(--syntax-inline-fg);
+  border-color: var(--syntax-inline-border);
 }
 
+.code-header {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: var(--space-6);
+  margin-bottom: 0;
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--syntax-header-bg) 100%, transparent),
+    var(--syntax-bg)
+  );
+  color: var(--syntax-fg);
+  border: 1px solid var(--syntax-pre-border);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border-bottom: none;
+  box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.06);
+}
+
+[data-theme="light"] .code-header {
+  background: linear-gradient(
+    180deg,
+    var(--syntax-header-bg),
+    var(--syntax-bg)
+  );
+  color: var(--syntax-fg);
+  border-color: var(--syntax-pre-border);
+}
+
+pre {
+  background: var(--syntax-bg) !important;
+  color: var(--syntax-fg) !important;
+  padding: var(--space-5) !important;
+  border-radius: 0 0 var(--radius-md) var(--radius-md) !important;
+  border: 1px solid var(--syntax-pre-border);
+  border-top: none;
+  margin: 0 0 var(--space-6) !important;
+  overflow-x: auto;
+  box-shadow: var(--syntax-pre-shadow);
+}
+
+pre code {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
+  padding: 0 !important;
+}
+
+/* Imagens da apostila */
 .img-container img {
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0 4px 15px var(--box-shadow);
-  margin: 0 auto;
-  border: 1px solid var(--accent-color);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 15%, transparent);
+  box-shadow: var(--box-shadow);
 }
 
 .img-caption {
-  text-align: center;
-  font-style: italic;
+  font-size: 0.875rem;
   color: var(--gray-600);
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  font-family: var(--font-cyberpunk);
+  margin-top: var(--space-2);
+  font-family: var(--font-sans);
 }
 
-/* ========== TABELAS CYBERPUNK ========== */
+/* Tabelas */
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5rem 0;
-  background: var(--white);
-  border-radius: var(--border-radius-sm);
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 4px 15px var(--box-shadow);
-  border: 1px solid var(--accent-color);
+  border: 1px solid color-mix(in srgb, var(--gray-600) 22%, transparent);
+  box-shadow: var(--box-shadow);
 }
 
-th, td {
-  padding: 0.75rem;
-  text-align: left;
-  border: 1px solid var(--accent-color);
+th,
+td {
+  border: 1px solid color-mix(in srgb, var(--gray-600) 15%, transparent);
+  padding: var(--space-3) var(--space-4);
 }
 
 th {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--neon-purple) 100%);
-  color: var(--cyber-black);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-primary-500) 25%, transparent),
+    color-mix(in srgb, var(--color-purple-500) 15%, transparent)
+  );
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
   font-weight: 600;
-  font-family: var(--font-cyberpunk);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
+}
+
+[data-theme="light"] th {
+  color: var(--gray-900);
 }
 
 tr:nth-child(even) {
-  background-color: var(--gray-100);
+  background: color-mix(in srgb, var(--gray-100) 50%, transparent);
 }
 
 tr:hover {
-  background-color: var(--accent-color-light);
+  background: color-mix(in srgb, var(--accent-color) 6%, transparent);
 }
 
-/* ========== COMPONENTES UTILITÁRIOS CYBERPUNK ========== */
+/* Caixas de informação */
 .info-box {
-  background: linear-gradient(135deg, var(--info-color-light) 0%, rgba(0, 255, 255, 0.05) 100%);
-  border-left: 4px solid var(--info-color);
-  padding: 1.25rem;
-  margin: 1.5rem 0;
-  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
-  box-shadow: 0 0 10px var(--box-shadow);
+  background: color-mix(in srgb, var(--info-color) 10%, transparent);
+  border-left: 3px solid var(--info-color);
+  padding: var(--space-5);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  box-shadow: var(--box-shadow);
 }
 
-.info-box h4 {
+.info-box h4,
+.info-box h5 {
+  font-family: var(--font-display);
   color: var(--info-color);
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+.info-box h5 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-top: 0;
-  margin-bottom: 0.75rem;
-  font-family: var(--font-cyberpunk-display);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  margin-bottom: var(--space-2);
 }
 
 .warning-box {
-  background: linear-gradient(135deg, var(--warning-color-light) 0%, rgba(255, 102, 0, 0.05) 100%);
-  border-left: 4px solid var(--warning-color);
+  background: color-mix(in srgb, var(--warning-color) 10%, transparent);
+  border-left: 3px solid var(--warning-color);
 }
 
 .warning-box h4 {
@@ -466,232 +748,159 @@ tr:hover {
 }
 
 .success-box {
-  background: linear-gradient(135deg, var(--success-color-light) 0%, rgba(0, 255, 0, 0.05) 100%);
-  border-left: 4px solid var(--success-color);
+  background: color-mix(in srgb, var(--success-color) 10%, transparent);
+  border-left: 3px solid var(--success-color);
 }
 
-.success-box h4 {
+.success-box h4,
+.success-box h5 {
   color: var(--success-color);
 }
 
+.success-box h5 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
 .error-box {
-  background: linear-gradient(135deg, var(--accent-color-light) 0%, rgba(255, 0, 255, 0.05) 100%);
-  border-left: 4px solid var(--neon-pink);
+  background: color-mix(in srgb, var(--color-error) 10%, transparent);
+  border-left: 3px solid var(--color-error);
 }
 
 .error-box h4 {
-  color: var(--neon-pink);
+  color: var(--color-error);
 }
 
-/* ========== DESAFIOS CYBERPUNK ========== */
 .desafio {
-  background: linear-gradient(135deg, var(--warning-color-light) 0%, rgba(255, 102, 0, 0.05) 100%);
-  border-left: 4px solid var(--warning-color);
-  padding: 1.25rem;
-  margin: 1.5rem 0;
-  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
-  box-shadow: 0 0 15px var(--box-shadow);
-  border: 1px solid var(--warning-color);
+  background: color-mix(in srgb, var(--warning-color) 12%, transparent);
+  border-left: 3px solid var(--warning-color);
+  padding: var(--space-5);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: var(--space-5) 0;
+  border: 1px solid color-mix(in srgb, var(--warning-color) 25%, transparent);
+  box-shadow: var(--box-shadow);
 }
 
 .desafio h4 {
+  font-family: var(--font-display);
   color: var(--warning-color);
-  margin-top: 0;
-  margin-bottom: 0.75rem;
-  font-family: var(--font-cyberpunk-display);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-shadow: var(--neon-glow);
+  text-shadow: none;
+  text-transform: none;
 }
 
-/* ========== DETALHES/RESUMO CYBERPUNK ========== */
-details {
-  margin: 1rem 0;
-}
-
-summary {
+details:not(.solucao):not(.os-details) > summary {
   cursor: pointer;
-  padding: 0.75rem;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--neon-purple) 100%);
-  border-radius: var(--border-radius-sm);
-  color: var(--cyber-black);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--gray-200) 80%, transparent);
+  border-radius: var(--radius-sm);
+  color: var(--gray-900);
+  font-family: var(--font-sans);
   font-weight: 600;
-  transition: var(--transition-glow);
-  font-family: var(--font-cyberpunk);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: 1px solid var(--accent-color);
+  font-size: 0.9375rem;
+  text-transform: none;
+  border: 1px solid color-mix(in srgb, var(--gray-600) 18%, transparent);
+  transition: background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
 }
 
-summary:hover {
-  box-shadow: var(--neon-glow-purple);
-  transform: scale(1.02);
+details:not(.solucao):not(.os-details) > summary:hover {
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  transform: none;
+  box-shadow: var(--neon-glow);
 }
 
-details[open] summary {
-  border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+details:not(.solucao):not(.os-details)[open] > summary {
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 }
 
 .solution {
-  margin-top: 0;
-  padding: 1rem;
-  background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
-  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+  padding: var(--space-5);
+  background: var(--gray-100);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   border-left: 3px solid var(--success-color);
-  box-shadow: 0 0 10px var(--box-shadow);
+  border-top: 1px solid color-mix(in srgb, var(--gray-600) 14%, transparent);
 }
 
-/* ========== TIMELINE CYBERPUNK ========== */
-.timeline {
-  position: relative;
-  max-width: 800px;
-  margin: 2rem auto;
-}
-
+/* Timeline */
 .timeline::after {
-  content: "";
-  position: absolute;
-  width: 3px;
-  background: linear-gradient(180deg, var(--primary-color) 0%, var(--accent-color) 100%);
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  margin-left: -1.5px;
-  box-shadow: var(--neon-glow-blue);
-}
-
-.timeline-item {
-  padding: 10px 40px;
-  position: relative;
-  width: 50%;
-  box-sizing: border-box;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--primary-color) 90%, transparent),
+    color-mix(in srgb, var(--color-purple-500) 75%, transparent)
+  );
+  box-shadow: none;
 }
 
 .timeline-item::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: var(--white);
-  border: 3px solid var(--primary-color);
-  border-radius: 50%;
-  top: 15px;
-  z-index: 1;
-  box-shadow: var(--neon-glow-blue);
-}
-
-.timeline-left {
-  left: 0;
-}
-
-.timeline-right {
-  left: 50%;
-}
-
-.timeline-left::after {
-  right: -13px;
-}
-
-.timeline-right::after {
-  left: -13px;
+  background: var(--gray-900);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 35%, transparent);
 }
 
 .timeline-content {
-  padding: 15px;
-  background-color: var(--white);
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0 4px 15px var(--box-shadow);
-  border: 1px solid var(--accent-color);
+  background: color-mix(in srgb, var(--gray-100) 94%, transparent);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 16%, transparent);
+  box-shadow: var(--box-shadow);
 }
 
 .timeline-year {
-  font-weight: bold;
+  font-family: var(--font-display);
   color: var(--primary-color);
-  font-family: var(--font-cyberpunk-display);
 }
 
-/* ========== PROFESSOR PROFILE CYBERPUNK ========== */
 .professor-perfil {
-  display: flex;
-  margin-bottom: 2rem;
-  background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
-  border-radius: var(--border-radius);
-  padding: 1.5rem;
-  gap: 2rem;
-  box-shadow: 0 4px 15px var(--box-shadow);
-  border: 1px solid var(--accent-color);
+  background: color-mix(in srgb, var(--gray-100) 92%, transparent);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 15%, transparent);
+  box-shadow: var(--box-shadow);
 }
 
 .professor-foto img {
-  border-radius: 50%;
-  width: 180px;
-  height: 180px;
-  object-fit: cover;
-  border: 3px solid var(--primary-color);
-  box-shadow: var(--neon-glow-purple);
-}
-
-.professor-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  border-width: 2px;
+  box-shadow: var(--glow-blue-soft);
 }
 
 .professor-cargo {
-  color: var(--accent-color);
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-  font-family: var(--font-cyberpunk);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.professor-social {
-  margin-top: 1rem;
-}
-
-.social-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: var(--transition-glow);
-  font-family: var(--font-cyberpunk);
+  font-family: var(--font-sans);
+  text-transform: none;
 }
 
 .social-link:hover {
-  color: var(--accent-color);
-  text-shadow: var(--neon-glow-blue);
+  text-shadow: none;
 }
 
-/* ========== CARDS CYBERPUNK ========== */
 .card {
-  background-color: var(--white);
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 15px var(--box-shadow);
-  padding: 1.5rem;
-  transition: var(--transition-glow);
-  border: 1px solid var(--accent-color);
+  background: color-mix(in srgb, var(--gray-100) 88%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 14%, transparent);
+  box-shadow: var(--box-shadow);
+  padding: var(--space-5);
+}
+
+[data-theme="light"] .card {
+  background: var(--white);
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px var(--box-shadow-md);
-  border-color: var(--primary-color);
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
+  box-shadow: var(--box-shadow-md), var(--glow-blue-soft);
 }
 
-/* ========== VÍDEO EMBED CYBERPUNK ========== */
 .video-embed {
-  max-width: 100%;
-  width: 640px;
-  height: 360px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px var(--box-shadow);
-  border: 2px solid var(--accent-color);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
+  box-shadow: var(--box-shadow-md);
 }
 
-/* ========== RESPONSIVIDADE CYBERPUNK ========== */
+/* Responsivo */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -702,9 +911,8 @@ details[open] summary {
     height: auto;
     position: static;
     display: none;
-    overflow: hidden;
     border-right: none;
-    border-bottom: 2px solid var(--accent-color);
+    border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 12%, transparent);
   }
 
   nav.active {
@@ -712,16 +920,8 @@ details[open] summary {
   }
 
   .toggle-menu {
-    display: block;
-  }
-
-  .professor-perfil {
-    flex-direction: column;
+    display: flex;
     align-items: center;
-    text-align: center;
-  }
-
-  .professor-social {
     justify-content: center;
   }
 
@@ -743,68 +943,128 @@ details[open] summary {
   .timeline-right {
     left: 0;
   }
+
+  .professor-perfil {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
 }
 
 @media (max-width: 576px) {
-  header h1 {
-    font-size: 1.25rem;
-  }
-
   main {
-    padding: 1.5rem 1rem;
+    padding: var(--space-5) var(--space-4);
   }
 
   .card {
-    padding: 1rem;
+    padding: var(--space-4);
+  }
+
+  article h2 {
+    font-size: 1.5rem;
   }
 }
 
-/* ========== CLASSES UTILITÁRIAS CYBERPUNK ========== */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
+/* Utilitários (cores texto) — alinhados ao erro brand */
+.text-danger {
+  color: var(--color-error);
+}
 
-.mt-0 { margin-top: 0; }
-.mt-1 { margin-top: 0.25rem; }
-.mt-2 { margin-top: 0.5rem; }
-.mt-3 { margin-top: 1rem; }
-.mt-4 { margin-top: 1.5rem; }
-.mt-5 { margin-top: 3rem; }
+[data-theme="dark"] .text-danger {
+  color: var(--neon-pink);
+}
 
-.mb-0 { margin-bottom: 0; }
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-3 { margin-bottom: 1rem; }
-.mb-4 { margin-bottom: 1.5rem; }
-.mb-5 { margin-bottom: 3rem; }
+/* Utilitários usados em trechos tipo Tailwind dentro das aulas */
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
 
-.mx-auto { margin-left: auto; margin-right: auto; }
+.text-gray-600 {
+  color: var(--gray-600);
+}
 
-.p-0 { padding: 0; }
-.p-1 { padding: 0.25rem; }
-.p-2 { padding: 0.5rem; }
-.p-3 { padding: 1rem; }
-.p-4 { padding: 1.5rem; }
-.p-5 { padding: 3rem; }
+.text-gray-500 {
+  color: var(--gray-500);
+}
 
-/* Classes utilitárias para cores de fundo */
-.bg-light { background-color: var(--light-bg); }
-.bg-dark { background-color: var(--dark-bg); }
-.bg-primary { background-color: var(--primary-color); }
-.bg-secondary { background-color: var(--secondary-color); }
-.bg-accent { background-color: var(--accent-color); }
-.bg-success { background-color: var(--success-color); }
-.bg-warning { background-color: var(--warning-color); }
-.bg-gray { background-color: var(--gray-200); }
+.text-gray-700 {
+  color: var(--gray-700);
+}
 
-/* Classes utilitárias para cores de texto */
-.text-light { color: var(--white); }
-.text-dark { color: var(--gray-900); }
-.text-primary { color: var(--primary-color); }
-.text-secondary { color: var(--secondary-color); }
-.text-accent { color: var(--accent-color); }
-.text-success { color: var(--success-color); }
-.text-danger { color: var(--neon-pink); }
-.text-warning { color: var(--warning-color); }
-.text-muted { color: var(--gray-600); }
+.text-gray-900 {
+  color: var(--gray-900);
+}
 
+.text-center {
+  text-align: center;
+}
+
+.mb-3 {
+  margin-bottom: var(--space-3);
+}
+
+.mb-4 {
+  margin-bottom: var(--space-4);
+}
+
+.mt-2 {
+  margin-top: var(--space-2);
+}
+
+.mt-3 {
+  margin-top: var(--space-3);
+}
+
+.mt-4 {
+  margin-top: var(--space-4);
+}
+
+.py-8 {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+.px-6 {
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
+}
+
+.py-3 {
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+.py-4 {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.rounded {
+  border-radius: var(--radius-md);
+}
+
+.border {
+  border: 1px solid color-mix(in srgb, var(--gray-600) 25%, transparent);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.space-x-2 > * + * {
+  margin-left: var(--space-2);
+}

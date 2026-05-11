@@ -1,0 +1,170 @@
+{
+  "playlistId": "PLVqMckwJhEhbZho9gdClTsK6xucXgXd0-",
+  "playlistUrl": "https://www.youtube.com/watch?v=uitVg1TyrRQ&list=PLVqMckwJhEhbZho9gdClTsK6xucXgXd0-",
+  "title": "Curso gratuito de JavaScript (DevFast)",
+  "generatedAt": "2026-05-11T02:18:40.967404+00:00",
+  "note": "Ordem da playlist = ordem sugerida das aulas.",
+  "videoCount": 32,
+  "videos": [
+    {
+      "videoId": "uitVg1TyrRQ",
+      "title": "O que é Javascript? | Curso Gratuito de Javascript - Aula 01",
+      "thumbnail": "https://i.ytimg.com/vi/uitVg1TyrRQ/hqdefault.jpg"
+    },
+    {
+      "videoId": "tdeIaf8lc0I",
+      "title": "Explorando o Poder do console.log em JavaScript | Curso Gratuito de Javascript  - Aula 02",
+      "thumbnail": "https://i.ytimg.com/vi/tdeIaf8lc0I/hqdefault.jpg"
+    },
+    {
+      "videoId": "Sh4eblrTIc4",
+      "title": "Estrutura Léxica e Tipos de Dados em Javascript | Curso Gratuito de Javascript  - Aula 03",
+      "thumbnail": "https://i.ytimg.com/vi/Sh4eblrTIc4/hqdefault.jpg"
+    },
+    {
+      "videoId": "x771DwvHwu8",
+      "title": "Explorando variáveis, com funções, loops e switch case | Curso Gratuito de Javascript  - Aula 04",
+      "thumbnail": "https://i.ytimg.com/vi/x771DwvHwu8/hqdefault.jpg"
+    },
+    {
+      "videoId": "u3bsx32VqTE",
+      "title": "Desvendando os Super Poderes dos Operadores em JavaScript | Curso Gratuito de Javascript  - Aula 05",
+      "thumbnail": "https://i.ytimg.com/vi/u3bsx32VqTE/hqdefault.jpg"
+    },
+    {
+      "videoId": "mA3KgJ4uNHQ",
+      "title": "Valores True e False em Javascript | Curso Gratuito de Javascript - Aula 06",
+      "thumbnail": "https://i.ytimg.com/vi/mA3KgJ4uNHQ/hqdefault.jpg"
+    },
+    {
+      "videoId": "pMkH1ATiti0",
+      "title": "Estrutura de Controle e Instruções Condicionais | Curso Gratuito de Javascript - Aula 07:",
+      "thumbnail": "https://i.ytimg.com/vi/pMkH1ATiti0/hqdefault.jpg"
+    },
+    {
+      "videoId": "_UY23jgZq80",
+      "title": "Como Fazer Funções em Javascript | Curso Gratuito de Javascript - Aula 08:",
+      "thumbnail": "https://i.ytimg.com/vi/_UY23jgZq80/hqdefault.jpg"
+    },
+    {
+      "videoId": "_KtshTdKuw0",
+      "title": "Programação Orientada a Objetos (POO) | Curso Gratuito de Javascript - Aula 09",
+      "thumbnail": "https://i.ytimg.com/vi/_KtshTdKuw0/hqdefault.jpg"
+    },
+    {
+      "videoId": "Y3kTpwOdCGw",
+      "title": "ECMAscript e Typescript | Curso Gratuito de Javascript - Aula 10",
+      "thumbnail": "https://i.ytimg.com/vi/Y3kTpwOdCGw/hqdefault.jpg"
+    },
+    {
+      "videoId": "170SjCXFS0o",
+      "title": "Domine let, const e var com as Atualizações do ES6 | Curso Gratuito de JavaScript - Aula 11",
+      "thumbnail": "https://i.ytimg.com/vi/170SjCXFS0o/hqdefault.jpg"
+    },
+    {
+      "videoId": "zgCd76WT3Nw",
+      "title": "Escopo de variáveis | Curso Gratuito de Javascript - Aula 12",
+      "thumbnail": "https://i.ytimg.com/vi/zgCd76WT3Nw/hqdefault.jpg"
+    },
+    {
+      "videoId": "nkAzqb77emk",
+      "title": "Domine os Template Literals | Curso Gratuito de Javascript - Aula 13",
+      "thumbnail": "https://i.ytimg.com/vi/nkAzqb77emk/hqdefault.jpg"
+    },
+    {
+      "videoId": "Az3ygiZ4lvs",
+      "title": "Funções de Seta (Arrow Functions) | Curso Gratuito de Javascript - Aula 14",
+      "thumbnail": "https://i.ytimg.com/vi/Az3ygiZ4lvs/hqdefault.jpg"
+    },
+    {
+      "videoId": "JSFMLU3ohVo",
+      "title": "Valores default para parâmetros de funções (ES2015) | Curso Gratuito de JavaScript - Aula 15",
+      "thumbnail": "https://i.ytimg.com/vi/JSFMLU3ohVo/hqdefault.jpg"
+    },
+    {
+      "videoId": "bATxcrDyRXI",
+      "title": "Dominando Spread e Rest Operators no JavaScript | Curso Gratuito de JavaScript - Aula 16",
+      "thumbnail": "https://i.ytimg.com/vi/bATxcrDyRXI/hqdefault.jpg"
+    },
+    {
+      "videoId": "8QSRMjOMlwM",
+      "title": "(POO) Programação Orientada a Objetos com Classes | Curso Gratuito de Javascript - Aula 17",
+      "thumbnail": "https://i.ytimg.com/vi/8QSRMjOMlwM/hqdefault.jpg"
+    },
+    {
+      "videoId": "HHPatInQmiE",
+      "title": "O que é herança em Javascript? | Curso Gratuito de Javascript - Aula 18",
+      "thumbnail": "https://i.ytimg.com/vi/HHPatInQmiE/hqdefault.jpg"
+    },
+    {
+      "videoId": "mrqdQR8Gjgk",
+      "title": "Getters e Setters em JavaScript | Curso Gratuito de Javascript - Aula 19",
+      "thumbnail": "https://i.ytimg.com/vi/mrqdQR8Gjgk/hqdefault.jpg"
+    },
+    {
+      "videoId": "uQJSz7ll3ec",
+      "title": "Como usar operador de exponencial com Javascript | Curso Gratuito de Javascript - Aula 20",
+      "thumbnail": "https://i.ytimg.com/vi/uQJSz7ll3ec/hqdefault.jpg"
+    },
+    {
+      "videoId": "rf9DCyQ5dz8",
+      "title": "Como Fazer Estruturação de Código em Projetos Javascript | Curso Gratuito de Javascript - Aula 21",
+      "thumbnail": "https://i.ytimg.com/vi/rf9DCyQ5dz8/hqdefault.jpg"
+    },
+    {
+      "videoId": "xXMXH7P3pNI",
+      "title": "Introdução a Arrays em JavaScript | Curso Gratuito de Javascript - Aula 22",
+      "thumbnail": "https://i.ytimg.com/vi/xXMXH7P3pNI/hqdefault.jpg"
+    },
+    {
+      "videoId": "jEF0T1RJiCo",
+      "title": "Como Manipular Arrays em JavaScript | Curso Gratuito de Javascript - Aula 23",
+      "thumbnail": "https://i.ytimg.com/vi/jEF0T1RJiCo/hqdefault.jpg"
+    },
+    {
+      "videoId": "nTfQlyN-k-o",
+      "title": "Como Adicionar Itens em Array| Curso Gratuito de Javascript - Aula 24",
+      "thumbnail": "https://i.ytimg.com/vi/nTfQlyN-k-o/hqdefault.jpg"
+    },
+    {
+      "videoId": "vkYS7yqqcVI",
+      "title": "Método Push | Aprenda a Construir um Sistema de IKIGAI | Curso Gratuito de Javascript - Aula 25",
+      "thumbnail": "https://i.ytimg.com/vi/vkYS7yqqcVI/hqdefault.jpg"
+    },
+    {
+      "videoId": "aO4DMF351CI",
+      "title": "Array Método Unshift | Curso Gratuito de Javascript - Aula 26",
+      "thumbnail": "https://i.ytimg.com/vi/aO4DMF351CI/hqdefault.jpg"
+    },
+    {
+      "videoId": "_0tfqirCC_g",
+      "title": "Como Remover Elementos No Array com Método Pop | Curso Gratuito de Javascript - Aula 27",
+      "thumbnail": "https://i.ytimg.com/vi/_0tfqirCC_g/hqdefault.jpg"
+    },
+    {
+      "videoId": "GYRABuHgm0s",
+      "title": "Como Remover Elementos No Array com Método Pop | Curso Gratuito de Javascript - Aula 28",
+      "thumbnail": "https://i.ytimg.com/vi/GYRABuHgm0s/hqdefault.jpg"
+    },
+    {
+      "videoId": "hnwMlzTQ0XQ",
+      "title": "Como manipular indicies de array com JavaScript | Curso Gratuito de Javascript - Aula 29",
+      "thumbnail": "https://i.ytimg.com/vi/hnwMlzTQ0XQ/hqdefault.jpg"
+    },
+    {
+      "videoId": "aUAGiDozmhw",
+      "title": "Array bidimensional e multidimensional com JavaScript | Curso Gratuito de Javascript - Aula 30",
+      "thumbnail": "https://i.ytimg.com/vi/aUAGiDozmhw/hqdefault.jpg"
+    },
+    {
+      "videoId": "XPuWAs0JqSk",
+      "title": "Array método some com JavaScript | Curso Gratuito de Javascript - Aula 32",
+      "thumbnail": "https://i.ytimg.com/vi/XPuWAs0JqSk/hqdefault.jpg"
+    },
+    {
+      "videoId": "w0doJWmKBho",
+      "title": "Array método every com JavaScript | Curso Gratuito de Javascript - Aula 31",
+      "thumbnail": "https://i.ytimg.com/vi/w0doJWmKBho/hqdefault.jpg"
+    }
+  ]
+}
