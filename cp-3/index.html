@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Checkpoint #3 – Projeto Final</title>
+    <style>
+      :root {
+        --primary: #d92c2c;
+        --background: #fdfdfd;
+        --border: #e0e0e0;
+        --text: #333;
+        --code-bg: #f4f4f4;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--background);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+      }
+
+      header img {
+        height: 60px;
+        margin-right: 20px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+        color: var(--primary);
+        margin-bottom: 0;
+      }
+
+      h2 {
+        color: #222;
+        margin-top: 40px;
+      }
+
+      code {
+        background-color: var(--code-bg);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      pre {
+        background-color: var(--code-bg);
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin-bottom: 16px;
+      }
+
+      ul,
+      ol {
+        padding-left: 1.5em;
+      }
+
+      hr {
+        margin: 50px 0;
+        border: none;
+        border-top: 1px solid var(--border);
+      }
+
+      i {
+        color: red;
+      }
+
+      .section-title {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-top: 40px;
+      }
+
+      .highlight {
+        background-color: #fff3cd;
+        border-left: 5px solid #ffc107;
+        padding: 10px 15px;
+        margin: 20px 0;
+      }
+
+      .download-box {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        background-color: #f9f9f9;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+        max-width: 320px;
+      }
+
+      .download-box img {
+        width: 100%;
+        max-width: 280px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+
+      .download-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: var(--primary);
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 0.95em;
+        transition: background-color 0.2s ease;
+      }
+
+      .download-btn:hover {
+        background-color: #b71f1f;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Fiap-logo-novo.jpg"
+        alt="FIAP"
+      />
+      <div>
+        <h1>Checkpoint #3 – Web Development</h1>
+        <p>Projeto Final</p>
+      </div>
+    </header>
+
+    <p class="highlight">
+      <strong>⚠️ Atenção:</strong> Leia e siga todas as instruções para não ter
+      pontos descontados.
+    </p>
+
+    <h2>📌 Instruções Gerais</h2>
+    <ol>
+      <li>Todo o conteúdo deve estar na <code>main</code> branch.</li>
+      <li>
+        Crie um repositório <strong>privado</strong> com o nome
+        <code>checkpoint-3-webdev-nome-da-turma</code>.<br /><strong
+          >Ex:</strong
+        >
+        checkpoint-3-webdev-1ESS
+      </li>
+      <li>
+        Adicione o e-mail <strong>cintra.70@gmail.com</strong> como colaborador.
+      </li>
+      <li>
+        Se for em dupla ou trio, apenas um cria e adiciona os colegas como
+        colaboradores.
+      </li>
+      <li>Clone o repositório na sua máquina local.</li>
+      <li>
+        Crie o arquivo <code>participantes.md</code> com o nome de todos os
+        integrantes.<br /><i
+          >Obrigatório mesmo para trabalhos individuais – 1 ponto será
+          descontado se não houver.</i
+        >
+      </li>
+      <li>
+        Crie apenas dois arquivos principais:
+        <ul>
+          <li><code>index.html</code></li>
+          <li><code>script.js</code></li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>🛠️ O Que Deve Ser Feito</h2>
+
+    <p>
+      <strong>Tema:</strong> Painel de Anotações + Consulta de Cartas do Magic:
+      The Gathering
+    </p>
+
+    <ul>
+      <!-- Painel de Anotações -->
+      <li>
+        <h3>1. Painel de Anotações</h3>
+        <img
+          src="assets/images/exemplo-form-anotacoes.png"
+          alt="Formulário de anotações"
+          style="width: 100%; max-width: 400px; margin: 10px 0"
+        />
+        <ul>
+          <li>
+            Crie um <strong>formulário</strong> com um <code>input</code> e um
+            <code>botão</code> para adicionar novas anotações.
+          </li>
+          <li>
+            Exiba a <strong>lista de anotações</strong> que já foram
+            adicionadas.
+          </li>
+          <li>
+            Cada anotação deve ter um
+            <strong>botão de exclusão individual</strong>.
+          </li>
+          <li>
+            As anotações devem mostrar a <strong>data e hora</strong>,
+            preenchidas automaticamente via JavaScript.
+          </li>
+          <li>
+            Salve as anotações no <code>localStorage</code> e restaure ao
+            recarregar a página.
+          </li>
+          <li>
+            Crie um botão <strong>“Limpar Todas”</strong> para remover tudo do
+            DOM e do <code>localStorage</code>. <br />⚠️ Execute a limpeza
+            apenas após uma confirmação do usuário.
+          </li>
+        </ul>
+        <img
+          src="assets/images/confirmacao-exclusao.png"
+          alt="Confirmação de exclusão"
+          style="width: 100%; max-width: 400px; margin: 10px 0"
+        />
+      </li>
+
+      <!-- Consulta de Cartas do Magic -->
+      <li style="margin-top: 40px">
+        <h3>2. Consulta de Cartas do Magic</h3>
+        <img
+          src="assets/images/consulta-cartas-jogo-magic.png"
+          alt="Consulta de cartas do Magic"
+          style="width: 100%; max-width: 1000px; margin: 10px 0"
+        />
+        <ul>
+          <li>
+            Crie um <strong>campo de busca</strong> para digitar o nome da carta
+            (em inglês).
+          </li>
+          <li>
+            Use <code>fetch</code> para consultar a
+            <a href="https://docs.magicthegathering.io/" target="_blank"
+              >API pública</a
+            >.
+          </li>
+          <li>
+            Exiba as informações da carta:
+            <strong>nome</strong>, <strong>tipo</strong>,
+            <strong>texto</strong> e <strong>imagem</strong>. <br />Se não
+            houver imagem, exiba a imagem padrão abaixo (faça o download e
+            salve como <code>assets/imagem-padrao.jpg</code> no seu projeto).
+            <div class="download-box">
+              <img
+                src="assets/images/imagem-padrao.jpg"
+                alt="Imagem padrão para cartas sem imagem"
+              />
+              <a
+                class="download-btn"
+                href="assets/images/imagem-padrao.jpg"
+                download="imagem-padrao.jpg"
+              >
+                ⬇️ Baixar imagem padrão
+              </a>
+            </div>
+          </li>
+          <li>
+            Mostre uma <strong>mensagem de erro</strong> se a carta não for
+            encontrada ou houver falha na requisição.
+          </li>
+        </ul>
+
+        <p>
+          <strong>💡 Algumas cartas que você pode usar para testar:</strong>
+        </p>
+        <ul>
+          <li>
+            <strong>Black Lotus</strong> – Uma das cartas mais famosas e
+            valiosas do jogo.
+          </li>
+          <li>
+            <strong>The One Ring</strong> – Artefato lendário poderoso, muito
+            procurado por colecionadores e jogadores.
+          </li>
+          <li>
+            <strong>Sheoldred, o Apocalipse</strong> – Uma das criaturas pretas
+            mais impactantes dos últimos tempos.
+          </li>
+          <li>
+            <strong>Elspeth, sun's champion</strong> – Planeswalker que
+            representa bem os decks brancos agressivos.
+          </li>
+          <li>
+            <strong>Giada, Font of Hope</strong> – Carta essencial em decks de
+            anjos, com forte sinergia tribal.
+          </li>
+          <li>
+            <strong>Ugin, the Spirit Dragon</strong> – Planeswalker incolor
+            extremamente poderoso e versátil.
+          </li>
+        </ul>
+        <p><strong>📦 Exemplo de chamada à API:</strong></p>
+        <pre><code>const resp = await fetch(
+  `https://api.magicthegathering.io/v1/cards?name=${encodeURIComponent(nome)}`
+);</code></pre>
+      </li>
+    </ul>
+
+    <h2>🚫 Regras Importantes</h2>
+    <ul>
+      <li>Não copie o exemplo pronto da apostila.</li>
+      <li>
+        Não é necessário design avançado, foque no funcionamento e clareza do
+        código.
+      </li>
+      <li>
+        Comente os blocos no <code>script.js</code> explicando cada
+        funcionalidade.
+      </li>
+      <li>
+        Faça commits separados e nomeados conforme a funcionalidade (ex: “cria
+        anotação”).
+      </li>
+    </ul>
+
+    <h2>🔀 Fluxo Obrigatório de Branches</h2>
+
+    <ul>
+      <li>
+        Para este projeto, cada funcionalidade deve ser desenvolvida em sua
+        própria branch. Isso ajuda a manter o código organizado, evita conflitos
+        e permite que cada parte do projeto seja revisada separadamente.
+      </li>
+
+      <li>
+        Crie a branch <code>feature/anotacoes</code> exclusivamente para
+        desenvolver o <strong>Painel de Anotações</strong>.
+      </li>
+
+      <li>
+        Crie a branch <code>feature/consulta-magic</code> exclusivamente para
+        desenvolver a <strong>Consulta de Cartas do Magic</strong>.
+      </li>
+
+      <li>
+        <strong>Importante:</strong> Não faça nenhuma alteração diretamente na
+        branch <code>main</code>. Toda modificação deve passar pelo fluxo de
+        Pull Request.
+      </li>
+
+      <li>
+        Após finalizar o desenvolvimento em cada branch, siga este fluxo:
+        <ul>
+          <li>
+            ✅ Crie um Pull Request de <code>feature/anotacoes</code> →
+            <code>main</code><br />
+            (após testar e revisar a funcionalidade do Painel de Anotações).
+          </li>
+          <li>✅ Faça o merge do Pull Request no GitHub.</li>
+          <li>
+            ✅ Depois, crie um Pull Request de
+            <code>feature/consulta-magic</code> → <code>main</code><br />
+            (após testar e revisar a funcionalidade de Consulta de Cartas).
+          </li>
+          <li>✅ Faça o merge desse segundo Pull Request.</li>
+        </ul>
+      </li>
+
+      <li>
+        <strong>🛑 Atenção:</strong> Esse fluxo faz parte da avaliação. Se você
+        fizer alterações diretamente na <code>main</code> sem seguir esse
+        processo, seu projeto poderá ser penalizado.
+      </li>
+    </ul>
+
+    <h2>✅ Checklist de Avaliação</h2>
+    <ul>
+      <li>Anotações com data/hora e formulário funcional</li>
+      <li>Exclusão individual de anotações</li>
+      <li>Persistência no <code>localStorage</code></li>
+      <li>Botão para limpar todas as anotações</li>
+      <li>Busca de carta com <code>fetch</code></li>
+      <li>Exibição de nome, tipo, texto, imagem (ou erro)</li>
+      <li>Comentários explicativos no código</li>
+      <li>Commits separados e descritivos</li>
+      <li>Arquivo <code>participantes.md</code> presente</li>
+      <li>Uso correto das branches e Pull Requests</li>
+    </ul>
+
+    <h2>📤 Como Entregar</h2>
+    <ol>
+      <li>Faça commits separados e coerentes.</li>
+      <li>Dê push para o repositório <strong>privado</strong> no GitHub.</li>
+      <li>Adicione o professor como colaborador.</li>
+      (<strong>cintra.70@gmail.com</strong>).
+      <li>Envie o link via Teams com acesso liberado.</li>
+    </ol>
+
+    <hr />
+    <p><strong>Boa sorte e criatividade no seu projeto!</strong></p>
+  </body>
+</html>

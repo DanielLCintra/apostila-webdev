@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      Checkpoint #2 – Condicionais, Loops, Funções e Estruturas de Dados I
+    </title>
+    <style>
+      :root {
+        --primary: #d92c2c;
+        --background: #fdfdfd;
+        --border: #e0e0e0;
+        --text: #333;
+        --code-bg: #f4f4f4;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--background);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+      }
+
+      header img {
+        height: 60px;
+        margin-right: 20px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+        color: var(--primary);
+        margin-bottom: 0;
+      }
+
+      h2 {
+        color: #222;
+        margin-top: 40px;
+      }
+
+      code {
+        background-color: var(--code-bg);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      pre {
+        background-color: var(--code-bg);
+        padding: 12px;
+        border-radius: 6px;
+        overflow-x: auto;
+        margin-bottom: 16px;
+      }
+
+      ul,
+      ol {
+        padding-left: 1.5em;
+      }
+
+      hr {
+        margin: 50px 0;
+        border: none;
+        border-top: 1px solid var(--border);
+      }
+
+      i {
+        color: red;
+      }
+
+      .section-title {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-top: 40px;
+      }
+
+      .highlight {
+        background-color: #fff3cd;
+        border-left: 5px solid #ffc107;
+        padding: 10px 15px;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Fiap-logo-novo.jpg"
+        alt="FIAP"
+      />
+      <div>
+        <h1>Checkpoint #2 – Web Development</h1>
+        <p>Condicionais, Loops, Funções e Estruturas de Dados I</p>
+      </div>
+    </header>
+
+    <p class="highlight">
+      <strong>⚠️ Atenção:</strong> Leia e siga todas as instruções para não ter
+      pontos descontados.
+    </p>
+
+    <h2>Instruções</h2>
+    <ol>
+      <li>
+        <b>ATENÇÃO:</b> O conteúdo que será avaliado deve estar na
+        <code>main</code> branch!
+        <p>
+          <i style="color: red">
+            Caso você esqueça de enviar para o GitHub ou algum conteúdo fique em
+            outra branch, não será considerado para avaliação.
+          </i>
+        </p>
+      </li>
+      <li>
+        Crie um repositório privado no seu GitHub com o nome
+        <code>checkpoint-2-webdev-nome-da-turma</code>
+        <p><strong>Ex: checkpoint-2-webdev-1ESS</strong></p>
+      </li>
+      <li>
+        Vá em <em>Settings &gt; Manage access (ou Collaborators)</em> e adicione
+        o e-mail <strong>cintra.70@gmail.com</strong> como colaborador, para que
+        o professor tenha acesso.
+      </li>
+      <li>
+        Se o trabalho for realizado em dupla ou trio, o repositório deve ser
+        criado por apenas uma pessoa, que adicionará os colegas como
+        colaboradores.
+      </li>
+      <li>Clone o repositório na sua máquina local.</li>
+      <li>
+        Crie um arquivo <strong>participantes.md</strong> com o nome completo de
+        todos os alunos participantes.
+        <p>
+          <i style="color: red">
+            Caso não seja criado, será descontado 1 ponto. Mesmo se tiver sido
+            individual, o arquivo precisa ser criado.
+          </i>
+        </p>
+      </li>
+      <li>
+        Crie apenas dois arquivos principais no repositório:
+        <ul>
+          <li><code>index.html</code></li>
+          <li><code>script.js</code></li>
+        </ul>
+        Todas as resoluções das questões devem estar implementadas nesses dois
+        arquivos. Utilize comentários no `script.js` para separar visualmente
+        cada questão e manter a organização.
+      </li>
+      <li>
+        <strong>Não é necessário copiar o enunciado das questões.</strong>
+        Basta entregar o código referente a cada uma, devidamente separado por
+        comentários.
+      </li>
+      <li>
+        <strong>Atenção:</strong> Faça exatamente o que foi pedido em cada
+        questão.
+
+        <p>
+          <i style="color: red">
+            Qualquer código a mais, diferente ou fora do escopo solicitado
+            poderá acarretar desconto de pontos.
+          </i>
+        </p>
+      </li>
+      <li>
+        Faça <strong>commits separados</strong>, um para cada questão, com
+        mensagens de commit claras e padronizadas (ex.: "Questão 1 – Condicional
+        If", "Questão 2 – Condicional completa", etc.).
+
+        <p>
+          <i style="color: red">
+            Caso o commit não seja feito com o conteúdo de cada questão
+            separadamente, poderá ser descontado ponto.
+          </i>
+        </p>
+      </li>
+      <li>Faça <strong>push</strong> das alterações para o GitHub.</li>
+      <li>
+        Envie o <strong>link do repositório privado</strong> como resposta,
+        garantindo que o professor já tenha acesso e consiga visualizar o
+        repositório.
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 1: Condicional If -->
+    <h2>Questão 1 – Condicional If</h2>
+    <ol>
+      <li>
+        Crie uma variável chamada <code>tarefaConcluida</code> e atribua a ela
+        qualquer valor (por exemplo: <code>true</code>, <code>false</code>,
+        <code>null</code>, <code>"sim"</code>, etc.).
+      </li>
+      <li>
+        Utilize uma estrutura <code>if / else</code> para verificar o valor da
+        variável:
+        <ul>
+          <li>
+            Se for exatamente <code>true</code>, exiba no console:
+            <code>"A tarefa está concluída!"</code>
+          </li>
+          <li>
+            Caso contrário, exiba: <code>"A tarefa não foi concluída."</code>
+          </li>
+        </ul>
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 2: Condicional If/Else If/Else -->
+    <h2>Questão 2 – Condicional If/Else If/Else</h2>
+    <ol>
+      <li>
+        Crie uma variável <code>prioridade</code> com um valor numérico (1, 2 ou
+        3).
+      </li>
+      <li>
+        Utilize uma estrutura <code>if/else if/else</code> para exibir:
+        <ul>
+          <li>"Prioridade Baixa" se o valor for 1;</li>
+          <li>"Prioridade Média" se o valor for 2;</li>
+          <li>"Prioridade Alta" se o valor for 3.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 3: Switch Case -->
+    <h2>Questão 3 – Switch Case</h2>
+    <ol>
+      <li>
+        Crie uma variável <code>diaSemana</code> que receba o valor retornado
+        por <code>new Date().getDay()</code>.
+      </li>
+      <li>
+        Utilize a estrutura <code>switch</code> para exibir o nome do dia
+        correspondente (0 para "Domingo", 1 para "Segunda-feira", etc.),
+        utilizando <strong>break</strong> em cada caso.
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 4: Loop For -->
+    <h2>Questão 4 – Loop For</h2>
+    <ol>
+      <li>
+        Crie um loop <code>for</code> que exiba os números de 0 a 9 no console.
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 5: Loop While -->
+    <h2>Questão 5 – Loop While</h2>
+    <ol>
+      <li>
+        Utilize um loop <code>while</code> para somar os números de 1 a 5 e
+        exiba a soma total no console.
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 6: Loop do/while -->
+    <h2>Questão 6 – Loop do/while</h2>
+    <ol>
+      <li>
+        Crie uma contagem regressiva usando <code>do/while</code> que inicie em
+        3 e vá até 1, e que, ao final, exiba "FIM!" no console.
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 7: Verificador de Idade -->
+    <h2>Questão 7 – Verificador de Idade</h2>
+    <ol>
+      <li>
+        Em <code>script.js</code>, crie uma função chamada
+        <code>verificarIdade(idade)</code> que retorne:
+        <ul>
+          <li>"Menor de idade" se <code>idade &lt; 18</code>;</li>
+          <li>
+            "Maior de idade" se <code>idade &gt;= 18 && idade &lt; 60</code>;
+          </li>
+          <li>"Idoso" se <code>idade &gt;= 60</code>.</li>
+        </ul>
+      </li>
+      <li>
+        Teste a função com diferentes idades e exiba os resultados no console.
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 8: Acesso ao Sistema -->
+    <h2>Questão 8 – Acesso ao Sistema</h2>
+    <ol>
+      <li>
+        Em <code>script.js</code>, crie duas variáveis:
+        <ul>
+          <li><code>temSenhaCorreta</code> (valor booleano);</li>
+          <li><code>temBiometriaAutenticada</code> (valor booleano);</li>
+        </ul>
+      </li>
+      <li>
+        Crie uma variável chamada <code>acessoPermitido</code> que será
+        <code>true</code> se:
+        <ul>
+          <li>
+            O usuário tiver a senha correta <strong>OU</strong> a biometria
+            autenticada.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Exiba no console:
+        <ul>
+          <li>O valor de <code>acessoPermitido</code>;</li>
+          <li>
+            O valor inverso (com <code>!</code>) de
+            <code>acessoPermitido</code>, indicando se o acesso foi negado.
+          </li>
+        </ul>
+      </li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 9: Manipulação de Strings -->
+    <h2>Questão 9 – Manipulação de Strings</h2>
+    <ol>
+      <li>Crie uma string contendo várias tarefas separadas por vírgula.</li>
+      <li>
+        Transforme essa string em um array usando <code>split()</code> e depois
+        em uma string formatada com <code>join(" | ")</code>.
+      </li>
+      <li>
+        Verifique se a palavra "Estudar" está presente utilizando
+        <code>includes()</code>.
+      </li>
+      <li>Exiba todos os resultados no console.</li>
+    </ol>
+
+    <hr />
+
+    <!-- Questão 10: Math e Números Aleatórios -->
+    <h2>Questão 10 – Números Aleatórios e Área de Círculo</h2>
+    <ol>
+      <li>Crie uma função que gere um número aleatório entre 5 e 15.</li>
+      <li>
+        Com esse número como raio, calcule a área de um círculo e exiba o
+        resultado com duas casas decimais no console.
+      </li>
+      <li>
+        Dica: utilize <code>Math.random()</code>, <code>Math.PI</code>,
+        <code>Math.pow()</code> e <code>toFixed()</code>.
+      </li>
+    </ol>
+    <hr />
+
+    <h2>Como entregar</h2>
+    <ol>
+      <li>
+        Realize <strong>commits separados</strong>, um para cada questão, com
+        mensagens de commit claras.
+      </li>
+      <li>
+        Faça <strong>push</strong> para o repositório
+        <strong>privado</strong> no GitHub.
+      </li>
+      <li>
+        Garanta que o professor <strong>cintra.70@gmail.com</strong> tenha
+        acesso como colaborador.
+      </li>
+      <li>Envie o link do repositório ao professor através do teams</li>
+    </ol>
+
+    <hr />
+
+    <p><strong>Boa sorte e boa prática!</strong></p>
+  </body>
+</html>
