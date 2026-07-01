@@ -2,11 +2,23 @@
   "channelId": "UCy9DdDXjlk_YLKG_r3ViXOg",
   "playlistId": "UUy9DdDXjlk_YLKG_r3ViXOg",
   "channelUrl": "https://www.youtube.com/@DevFastOficial",
-  "generatedAt": "2026-05-11T02:23:08.196586+00:00",
+  "generatedAt": "2026-07-01T15:59:55.324723+00:00",
   "note": "Uploads do canal sem clipes ≤ 60s (Shorts). O YouTube costuma carregar até ~100 itens por página da playlist.",
   "excludedShortsMaxDurationSec": 60,
-  "videoCount": 33,
+  "videoCount": 35,
   "videos": [
+    {
+      "videoId": "1knxqMwuF1M",
+      "title": "O momento atual da IA: o que esperar para os próximos meses?",
+      "durationSeconds": 865,
+      "thumbnail": "https://i2.ytimg.com/vi/1knxqMwuF1M/hqdefault.jpg"
+    },
+    {
+      "videoId": "glW8HVkgZ7g",
+      "title": "Finalmente atualizei meu setup em 2026!",
+      "durationSeconds": 635,
+      "thumbnail": "https://i4.ytimg.com/vi/glW8HVkgZ7g/hqdefault.jpg"
+    },
     {
       "videoId": "ckf_pnlx23o",
       "title": "O Erro Invisível Que Está Destruindo Sua Produtividade Como Dev",

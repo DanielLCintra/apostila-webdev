@@ -12,9 +12,11 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import ssl
 import urllib.request
 from datetime import datetime, timezone
+from xml.etree import ElementTree as ET
 
 _PLAYLIST_ID = "UUy9DdDXjlk_YLKG_r3ViXOg"
 _CHANNEL_ID = "UCy9DdDXjlk_YLKG_r3ViXOg"
@@ -23,6 +25,13 @@ _SHORTS_MAX_SECONDS = 60
 USER_AGENT = "Mozilla/5.0 (compatible; ApostilaDevFastSync/1.0; +https://github.com/DanielLCintra/apostila-webdev)"
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_PATH = os.path.join(_ROOT, "assets", "data", "devfast-channel-videos.json")
+_RSS_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={_CHANNEL_ID}"
+
+
+def fetch_text(url: str, ctx: ssl.SSLContext) -> str:
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=45, context=ctx) as resp:
+        return resp.read().decode("utf-8", errors="replace")
 
 
 def extract_yt_initial_data(html: str) -> dict | None:
@@ -99,23 +108,82 @@ def dedupe_preserve_order(items: list[dict]) -> list[dict]:
     return out
 
 
+def fetch_video_duration(video_id: str, ctx: ssl.SSLContext) -> int | None:
+    html = fetch_text(f"https://www.youtube.com/watch?v={video_id}", ctx)
+    m = re.search(r'"lengthSeconds":"(\d+)"', html)
+    if m:
+        return int(m.group(1))
+    m = re.search(r'"approxDurationMs":"(\d+)"', html)
+    if m:
+        return round(int(m.group(1)) / 1000)
+    return None
+
+
+def read_existing_videos() -> list[dict]:
+    if not os.path.exists(OUT_PATH):
+        return []
+    with open(OUT_PATH, encoding="utf-8") as f:
+        payload = json.load(f)
+    return payload.get("videos", [])
+
+
+def fetch_rss_videos(ctx: ssl.SSLContext) -> list[dict]:
+    root = ET.fromstring(fetch_text(_RSS_URL, ctx))
+    ns = {
+        "atom": "http://www.w3.org/2005/Atom",
+        "yt": "http://www.youtube.com/xml/schemas/2015",
+        "media": "http://search.yahoo.com/mrss/",
+    }
+    videos: list[dict] = []
+
+    for entry in root.findall("atom:entry", ns):
+        video_id_el = entry.find("yt:videoId", ns)
+        title_el = entry.find("atom:title", ns)
+        if video_id_el is None or title_el is None:
+            continue
+
+        video_id = video_id_el.text
+        title = title_el.text
+        if not video_id or not title:
+            continue
+
+        duration_sec = fetch_video_duration(video_id, ctx)
+        if duration_sec is not None and duration_sec <= _SHORTS_MAX_SECONDS:
+            continue
+
+        thumbnail = f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg"
+        thumbnail_el = entry.find("media:group/media:thumbnail", ns)
+        if thumbnail_el is not None:
+            thumbnail = thumbnail_el.attrib.get("url", thumbnail)
+
+        videos.append(
+            {
+                "videoId": video_id,
+                "title": title,
+                "durationSeconds": duration_sec,
+                "thumbnail": thumbnail,
+            }
+        )
+
+    return videos
+
+
 def main() -> None:
     url = f"https://www.youtube.com/playlist?list={_PLAYLIST_ID}"
     ctx = ssl.create_default_context()
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=45, context=ctx) as resp:
-        html = resp.read().decode("utf-8", errors="replace")
+    html = fetch_text(url, ctx)
 
     data = extract_yt_initial_data(html)
-    if not data:
-        raise SystemExit("Não foi possível localizar ytInitialData na página da playlist.")
-
-    videos = dedupe_preserve_order(walk_playlist_videos(data))
+    videos = dedupe_preserve_order(walk_playlist_videos(data)) if data else []
     if not videos:
-        raise SystemExit(
-            "Nenhum vídeo longo encontrado (todos foram filtrados como Shorts "
-            f"≤ {_SHORTS_MAX_SECONDS}s ou a playlist não retornou itens)."
-        )
+        # O HTML da playlist muda com frequência. O RSS oficial traz os uploads
+        # recentes; combinamos com o JSON existente para não perder o histórico.
+        videos = dedupe_preserve_order(fetch_rss_videos(ctx) + read_existing_videos())
+        if not videos:
+            raise SystemExit(
+                "Nenhum vídeo longo encontrado (todos foram filtrados como Shorts "
+                f"≤ {_SHORTS_MAX_SECONDS}s ou o YouTube não retornou itens)."
+            )
 
     payload = {
         "channelId": _CHANNEL_ID,
