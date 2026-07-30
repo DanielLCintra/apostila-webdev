@@ -25,8 +25,6 @@
     </div>
   </section>
 
-  <div data-include="partials/featured-alura-courses.html"></div>
-
   <section class="mb-5">
     <h3 class="section-title with-icon">
       <i class="fas fa-list-check"></i> Conteúdo Principal
@@ -127,13 +125,52 @@
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-code-branch"></i> Como Começar
+      <i class="fas fa-route"></i> Como usar esta apostila
     </h3>
     <div class="card p-4">
-      <h4 class="mb-3">Clonar o Repositório:</h4>
-      <div class="code-header">Comando Git</div>
-      <pre><code class="language-bash">git clone https://github.com/DanielLCintra/apostila-webdev</code></pre>
-      <div class="mt-4">
+      <h4 class="mb-3">Fluxo recomendado de estudo</h4>
+      <p>
+        Comece pela Ambientação, siga a ordem das aulas no menu lateral e use os
+        materiais complementares quando quiser aprofundar ou revisar algum tema.
+      </p>
+      <div class="grid grid-cols-3 mt-4">
+        <div class="card p-3">
+          <h4>1. Comece pelo básico</h4>
+          <p class="text-muted mb-3">
+            Entenda o ambiente, a proposta da apostila e os pré-requisitos.
+          </p>
+          <a href="?page=ambientacao" class="btn btn-sm btn-outline">
+            Ir para Ambientação <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="card p-3">
+          <h4>2. Siga a sequência</h4>
+          <p class="text-muted mb-3">
+            As aulas foram organizadas para avançar de Git e JavaScript até
+            React.
+          </p>
+          <a
+            href="?page=introducaojs-variaveis-operadores"
+            class="btn btn-sm btn-outline"
+          >
+            Ver primeira aula JS <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="card p-3">
+          <h4>3. Use os complementos</h4>
+          <p class="text-muted mb-3">
+            Cursos, vídeos e livros ajudam a reforçar os temas principais.
+          </p>
+          <a href="?page=bibliografia" class="btn btn-sm btn-outline">
+            Ver bibliografia <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      <div class="info-box mt-4">
+        <h4>Quer baixar ou contribuir?</h4>
+        <p>Use o repositório no GitHub para clonar o projeto localmente.</p>
+        <div class="code-header">Comando Git</div>
+        <pre><code class="language-bash">git clone https://github.com/DanielLCintra/apostila-webdev</code></pre>
         <a
           href="https://github.com/DanielLCintra/apostila-webdev"
           target="_blank"
@@ -145,6 +182,8 @@
       </div>
     </div>
   </section>
+
+  <div data-include="partials/featured-alura-courses.html"></div>
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
@@ -181,50 +220,56 @@
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-book"></i> 📖 Livro DevFast – "Do Zero ao Dev"
+      <i class="fas fa-book"></i> 📖 Livros do professor
     </h3>
     <div class="card p-4 book-highlight">
       <div class="book-main-preview mb-4">
-        <img
-          src="assets/images/CAPA LIVRO DEVFAST final.jpg"
-          alt="Livro DevFast - Do Zero ao Dev"
-          class="book-main-cover"
-        />
         <div>
           <p class="lead-text">
-            Agora o livro oficial do DevFast está disponível! Você pode escolher
-            entre a versão física ou digital:
+            Confira os livros autorais recomendados para complementar seus
+            estudos: a 2ª edição do DevFast, agora com link único para digital e
+            físico, e o novo livro sobre liderança técnica na prática.
           </p>
         </div>
       </div>
       <div class="grid grid-cols-2">
         <div class="book-link-card">
-          <h4>📘 Versão Física</h4>
+          <img
+            src="assets/images/Capa livro devfast 2 edicao.jpg"
+            alt="Capa do livro DevFast - Do Zero ao Dev, 2ª edição"
+            class="book-card-cover"
+          />
+          <h4>📘 DevFast – Do Zero ao Dev</h4>
           <p class="text-muted mb-3">
-            Livro físico disponível na UIClap. Perfeito para quem prefere ter o
-            material em mãos!
+            2ª edição revisada e expandida, com opções digital e física no mesmo
+            link.
           </p>
           <a
-            href="https://loja.uiclap.com/titulo/ua138321/"
+            href="https://www.amazon.com.br/DevFast-zero-dev-ra%CC%81pido-enrolac%CC%A7a%CC%83o-ebook/dp/B0G5HJSZFK/"
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-primary"
           >
-            <i class="fas fa-shopping-cart"></i> Comprar Versão Física
+            <i class="fab fa-amazon"></i> Ver DevFast na Amazon
           </a>
         </div>
         <div class="book-link-card">
-          <h4>💻 Versão Digital</h4>
+          <img
+            src="assets/images/Capa livro techlead.png"
+            alt="Capa do livro Tech Lead na Prática"
+            class="book-card-cover"
+          />
+          <h4>📗 Tech Lead na Prática</h4>
           <p class="text-muted mb-3">
-            Versão digital disponível na Amazon. Leia em qualquer dispositivo!
+            Da excelência técnica à liderança de pessoas, sistemas e decisões.
           </p>
           <a
-            href="https://amzn.to/3OPr2Mt"
+            href="https://www.amazon.com.br/Tech-Lead-Pr%C3%A1tica-excel%C3%AAncia-lideran%C3%A7a-ebook/dp/B0H7JX8TG8/"
             target="_blank"
             rel="noopener noreferrer"
             class="btn btn-primary"
           >
-            <i class="fab fa-amazon"></i> Comprar Versão Digital
+            <i class="fab fa-amazon"></i> Ver Tech Lead na Amazon
           </a>
         </div>
       </div>
@@ -238,44 +283,39 @@
 
   <section class="mb-5">
     <h3 class="section-title with-icon">
-      <i class="fas fa-book"></i> Outros Livros Recomendados
+      <i class="fas fa-compass"></i> Próximos passos
     </h3>
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-3">
       <div class="card">
-        <div class="biblio-preview">
-          <img
-            src="assets/images/livro-js.jpg"
-            alt="JavaScript: O Guia Definitivo"
-            class="book-thumbnail"
-          />
-          <div>
-            <h4>JavaScript: O Guia Definitivo</h4>
-            <p class="text-muted">Editora: O'Reilly</p>
-            <a href="?page=bibliografia" class="btn btn-sm btn-outline mt-2">
-              Ver mais <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
+        <h4>Começar a trilha</h4>
+        <p class="text-muted mb-3">
+          Entre pela Ambientação e siga a sequência oficial das aulas.
+        </p>
+        <a href="?page=ambientacao" class="btn btn-sm btn-outline">
+          Começar agora <i class="fas fa-arrow-right"></i>
+        </a>
       </div>
 
       <div class="card">
-        <div class="biblio-preview">
-          <img
-            src="assets/images/livro-git.jpg"
-            alt="Aprendendo Git"
-            class="book-thumbnail"
-          />
-          <div>
-            <h4>Aprendendo Git</h4>
-            <p class="text-muted">Editora: Novatec</p>
-            <a href="?page=bibliografia" class="btn btn-sm btn-outline mt-2">
-              Ver mais <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
+        <h4>Assistir reforços</h4>
+        <p class="text-muted mb-3">
+          Use o canal DevFast e o curso gratuito de JavaScript como apoio.
+        </p>
+        <a href="?page=devfast-canal-youtube" class="btn btn-sm btn-outline">
+          Ver vídeos <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="card">
+        <h4>Aprofundar com livros</h4>
+        <p class="text-muted mb-3">
+          Consulte a bibliografia completa para livros e referências online.
+        </p>
+        <a href="?page=bibliografia" class="btn btn-sm btn-outline">
+          Abrir bibliografia <i class="fas fa-arrow-right"></i>
+        </a>
       </div>
     </div>
-
   </section>
 
   <section class="author-note mt-5">

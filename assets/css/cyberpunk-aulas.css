@@ -784,6 +784,19 @@
   box-shadow: var(--box-shadow);
   border: 1px solid color-mix(in srgb, var(--primary-color) 12%, transparent);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book-card-cover {
+  width: 132px;
+  height: 188px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--box-shadow-md);
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--primary-color);
 }
 
 [data-theme="light"] .book-link-card {
@@ -793,6 +806,10 @@
 .book-link-card h4 {
   color: var(--primary-color);
   margin-bottom: var(--space-3);
+}
+
+.book-link-card .btn {
+  margin-top: auto;
 }
 
 .principal-page .btn-secondary {

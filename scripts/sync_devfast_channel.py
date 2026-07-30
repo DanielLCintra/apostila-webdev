@@ -20,18 +20,44 @@ from xml.etree import ElementTree as ET
 
 _PLAYLIST_ID = "UUy9DdDXjlk_YLKG_r3ViXOg"
 _CHANNEL_ID = "UCy9DdDXjlk_YLKG_r3ViXOg"
-# Duração máxima (em segundos) para tratar como Short e não incluir na lista.
-_SHORTS_MAX_SECONDS = 60
+# Fallback para tratar clipes curtos como Shorts quando a URL /shorts falhar.
+_SHORTS_FALLBACK_MAX_SECONDS = 180
 USER_AGENT = "Mozilla/5.0 (compatible; ApostilaDevFastSync/1.0; +https://github.com/DanielLCintra/apostila-webdev)"
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_PATH = os.path.join(_ROOT, "assets", "data", "devfast-channel-videos.json")
 _RSS_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={_CHANNEL_ID}"
+_MANUAL_VIDEOS = [
+    {
+        "videoId": "aIQmiS5pk80",
+        "title": "Como é gravar um curso para a Alura? (Tudo o que não te contam)",
+    },
+]
 
 
 def fetch_text(url: str, ctx: ssl.SSLContext) -> str:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=45, context=ctx) as resp:
         return resp.read().decode("utf-8", errors="replace")
+
+
+def is_short_by_duration(duration_sec: int | None) -> bool:
+    return (
+        duration_sec is not None
+        and duration_sec <= _SHORTS_FALLBACK_MAX_SECONDS
+    )
+
+
+def is_youtube_short(video_id: str, duration_sec: int | None, ctx: ssl.SSLContext) -> bool:
+    req = urllib.request.Request(
+        f"https://www.youtube.com/shorts/{video_id}",
+        headers={"User-Agent": USER_AGENT},
+        method="HEAD",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15, context=ctx) as resp:
+            return "/shorts/" in resp.geturl()
+    except OSError:
+        return is_short_by_duration(duration_sec)
 
 
 def extract_yt_initial_data(html: str) -> dict | None:
@@ -76,7 +102,7 @@ def walk_playlist_videos(obj) -> list[dict]:
                         length_sec = int(raw_len) if raw_len is not None else None
                     except (TypeError, ValueError):
                         length_sec = None
-                    if length_sec is not None and length_sec <= _SHORTS_MAX_SECONDS:
+                    if is_short_by_duration(length_sec):
                         pass
                     else:
                         found.append(
@@ -148,7 +174,7 @@ def fetch_rss_videos(ctx: ssl.SSLContext) -> list[dict]:
             continue
 
         duration_sec = fetch_video_duration(video_id, ctx)
-        if duration_sec is not None and duration_sec <= _SHORTS_MAX_SECONDS:
+        if is_youtube_short(video_id, duration_sec, ctx):
             continue
 
         thumbnail = f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg"
@@ -162,6 +188,26 @@ def fetch_rss_videos(ctx: ssl.SSLContext) -> list[dict]:
                 "title": title,
                 "durationSeconds": duration_sec,
                 "thumbnail": thumbnail,
+            }
+        )
+
+    return videos
+
+
+def fetch_manual_videos(ctx: ssl.SSLContext) -> list[dict]:
+    videos: list[dict] = []
+    for video in _MANUAL_VIDEOS:
+        video_id = video["videoId"]
+        duration_sec = fetch_video_duration(video_id, ctx)
+        if is_youtube_short(video_id, duration_sec, ctx):
+            continue
+
+        videos.append(
+            {
+                "videoId": video_id,
+                "title": video["title"],
+                "durationSeconds": duration_sec,
+                "thumbnail": f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg",
             }
         )
 
@@ -182,8 +228,18 @@ def main() -> None:
         if not videos:
             raise SystemExit(
                 "Nenhum vídeo longo encontrado (todos foram filtrados como Shorts "
-                f"≤ {_SHORTS_MAX_SECONDS}s ou o YouTube não retornou itens)."
+                "ou o YouTube não retornou itens)."
             )
+    videos = dedupe_preserve_order(fetch_manual_videos(ctx) + videos)
+    videos = [
+        video
+        for video in videos
+        if not is_youtube_short(
+            video["videoId"],
+            video.get("durationSeconds"),
+            ctx,
+        )
+    ]
 
     payload = {
         "channelId": _CHANNEL_ID,
@@ -191,11 +247,11 @@ def main() -> None:
         "channelUrl": "https://www.youtube.com/@DevFastOficial",
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "note": (
-            "Uploads do canal sem clipes ≤ "
-            f"{_SHORTS_MAX_SECONDS}s (Shorts). "
+            "Uploads do canal sem Shorts detectados pela URL /shorts; "
+            f"fallback para clipes ≤ {_SHORTS_FALLBACK_MAX_SECONDS}s. "
             "O YouTube costuma carregar até ~100 itens por página da playlist."
         ),
-        "excludedShortsMaxDurationSec": _SHORTS_MAX_SECONDS,
+        "excludedShortsFallbackMaxDurationSec": _SHORTS_FALLBACK_MAX_SECONDS,
         "videoCount": len(videos),
         "videos": videos,
     }

@@ -2,11 +2,17 @@
   "channelId": "UCy9DdDXjlk_YLKG_r3ViXOg",
   "playlistId": "UUy9DdDXjlk_YLKG_r3ViXOg",
   "channelUrl": "https://www.youtube.com/@DevFastOficial",
-  "generatedAt": "2026-07-01T15:59:55.324723+00:00",
-  "note": "Uploads do canal sem clipes ≤ 60s (Shorts). O YouTube costuma carregar até ~100 itens por página da playlist.",
-  "excludedShortsMaxDurationSec": 60,
-  "videoCount": 35,
+  "generatedAt": "2026-07-30T22:27:29.847872+00:00",
+  "note": "Uploads do canal sem Shorts detectados pela URL /shorts; fallback para clipes ≤ 180s. O YouTube costuma carregar até ~100 itens por página da playlist.",
+  "excludedShortsFallbackMaxDurationSec": 180,
+  "videoCount": 31,
   "videos": [
+    {
+      "videoId": "aIQmiS5pk80",
+      "title": "Como é gravar um curso para a Alura? (Tudo o que não te contam)",
+      "durationSeconds": 1298,
+      "thumbnail": "https://i.ytimg.com/vi/aIQmiS5pk80/hqdefault.jpg"
+    },
     {
       "videoId": "1knxqMwuF1M",
       "title": "O momento atual da IA: o que esperar para os próximos meses?",
@@ -38,22 +44,10 @@
       "thumbnail": "https://i.ytimg.com/vi/uHNSL8ANTP4/hqdefault.jpg"
     },
     {
-      "videoId": "ameX5zTSfL4",
-      "title": "Ousadia: O Que Aconteceu Quando Prometi o Impossível #desafio #sucesso",
-      "durationSeconds": 67,
-      "thumbnail": "https://i.ytimg.com/vi/ameX5zTSfL4/hqdefault.jpg"
-    },
-    {
       "videoId": "HvXEIqKMHt4",
       "title": "A BUSCA DE EMPREGO FICOU MUITO MAIS FÁCIL!",
       "durationSeconds": 950,
       "thumbnail": "https://i.ytimg.com/vi/HvXEIqKMHt4/hqdefault.jpg"
-    },
-    {
-      "videoId": "C2TtjlgJ12s",
-      "title": "O que os melhores times sabem sobre implementação de tecnologia #sucesso #aprendizado",
-      "durationSeconds": 61,
-      "thumbnail": "https://i.ytimg.com/vi/C2TtjlgJ12s/hqdefault.jpg"
     },
     {
       "videoId": "zVEfR25Mjk8",
@@ -74,22 +68,10 @@
       "thumbnail": "https://i.ytimg.com/vi/CLv1DP4cpuA/hqdefault.jpg"
     },
     {
-      "videoId": "Pl5rFWqrIR8",
-      "title": "Chatbot: como uma ideia 'simples' transformou um negócio!",
-      "durationSeconds": 153,
-      "thumbnail": "https://i.ytimg.com/vi/Pl5rFWqrIR8/hqdefault.jpg"
-    },
-    {
       "videoId": "eNLAr8bbdwk",
       "title": "Essa IA programa enquanto você dorme (Devin AI)",
       "durationSeconds": 1447,
       "thumbnail": "https://i.ytimg.com/vi/eNLAr8bbdwk/hqdefault.jpg"
-    },
-    {
-      "videoId": "FjsIO20ywxA",
-      "title": "Nunca quis ser gestor (e tá tudo bem) #techpride #careerpath",
-      "durationSeconds": 61,
-      "thumbnail": "https://i.ytimg.com/vi/FjsIO20ywxA/hqdefault.jpg"
     },
     {
       "videoId": "EV0bmSHOqqw",
@@ -156,12 +138,6 @@
       "title": "DevCast #07 - Desenvolvedores & Negócios: como resolver dores reais e faturar alto",
       "durationSeconds": 4231,
       "thumbnail": "https://i.ytimg.com/vi/gRyReAe8NOc/hqdefault.jpg"
-    },
-    {
-      "videoId": "v9a_Ugpu_L8",
-      "title": "É hoje, às 19h! Você não pode perder!!! #carreiradev #podcast #devbrasil #devfast",
-      "durationSeconds": 61,
-      "thumbnail": "https://i.ytimg.com/vi/v9a_Ugpu_L8/hqdefault.jpg"
     },
     {
       "videoId": "P5zEsza18-k",
